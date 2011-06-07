@@ -1,0 +1,3 @@
+#!/bin/sh
+./puzzletube
+cd /usr/gp2x; ./gp2xmenu
