@@ -1,6 +1,6 @@
 #==PC==
-#CPP = gcc -g -march=native -DX86CPU
-#SDL = `sdl-config --cflags`
+CPP = gcc -g -march=native -DX86CPU
+SDL = `sdl-config --cflags`
 #==Consoles==
 #==GP2X/WIZ==
 #  REALGP2X activates gp2xspecific optimizations, which the wiz doesn't need
@@ -21,10 +21,10 @@
 #INCLUDE = -I/opt/mipsel-linux-uclibc/usr/include
 #LIB = -L/opt/mipsel-linux-uclibc/usr/lib -Wl,-rpath=/opt/mipsel-linux-uclibc/usr/lib
 #==Pandora==
-CPP = /opt/pandora/arm-2011.03/bin/arm-none-linux-gnueabi-gcc -DARMCPU -DPANDORA
-SDL = `/opt/pandora/arm-2011.03/usr/bin/sdl-config --cflags`
-INCLUDE = -I/opt/pandora/arm-2011.03/usr/include
-LIB = -L/opt/pandora/arm-2011.03/usr/lib -Wl,-rpath=/opt/pandora/arm-2011.03/usr/lib -lpnd
+#CPP = /opt/pandora/arm-2011.03/bin/arm-none-linux-gnueabi-gcc -DARMCPU -DPANDORA
+#SDL = `/opt/pandora/arm-2011.03/usr/bin/sdl-config --cflags`
+#INCLUDE = -I/opt/pandora/arm-2011.03/usr/include
+#LIB = -L/opt/pandora/arm-2011.03/usr/lib -Wl,-rpath=/opt/pandora/arm-2011.03/usr/lib -lpnd
 
 all: puzzletube
 
