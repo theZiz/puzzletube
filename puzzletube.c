@@ -1,5 +1,6 @@
 #include "../3dengine/3dengine.h"
 #include "../3dengine/meshloader.h"
+#include "particle.h"
 #define TIMEOUT 200
 #define FALL_TIME TIMEOUT
 #define NEW_TIME (TIMEOUT/2)
@@ -32,6 +33,11 @@ int timeout;
 char direction;
 
 tstone stone[7][16];
+
+#define STAR_COUNT 200
+
+tpoint star[STAR_COUNT];
+char starkind[STAR_COUNT];
 
 typedef struct swinsituation *pwinsituation;
 typedef struct swinsituation {
@@ -333,6 +339,52 @@ void make_win_situations_invalid()
   }
 }
 
+#define PARTICLE_SPEED 1500
+
+void draw_particle(int posx,int posy,Sint32 r,int time,SDL_Surface* particle)
+{
+  Sint32* modellViewMatrix=engineGetModellViewMatrix();
+  Sint32 matrix[16];
+  memcpy(matrix,modellViewMatrix,sizeof(Sint32)*16);
+    engineTranslate(mycos(-(posx>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,posy,mysin((posx>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2);
+    engineRotate(0,1<<ACCURACY,0,(posx>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1));
+    if (time<PARTICLE_SPEED/4)
+      engineDrawSurface(r*time/(PARTICLE_SPEED/8)-r,r,0,particle);
+    else
+    if (time<PARTICLE_SPEED/2)
+      engineDrawSurface(r,r-r*(time-PARTICLE_SPEED/4)/(PARTICLE_SPEED/8),0,particle);
+    else
+    if (time<3*PARTICLE_SPEED/4)
+      engineDrawSurface(r-r*(time-PARTICLE_SPEED/2)/(PARTICLE_SPEED/8),-r,0,particle);
+    else
+      engineDrawSurface(-r,r-r*(PARTICLE_SPEED-time)/(PARTICLE_SPEED/8),0,particle);
+    
+  memcpy(modellViewMatrix,matrix,sizeof(Sint32)*16);
+}
+
+#define PARTICLE_SPEED2 2500
+
+void draw_particle2(int posx,int posy,Sint32 r,int time,SDL_Surface* particle)
+{
+  Sint32* modellViewMatrix=engineGetModellViewMatrix();
+  Sint32 matrix[16];
+  memcpy(matrix,modellViewMatrix,sizeof(Sint32)*16);
+    engineTranslate(mycos(-(posx>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,posy,mysin((posx>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2);
+    engineRotate(0,1<<ACCURACY,0,(posx>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1));
+    if (time<PARTICLE_SPEED2/4)
+      engineDrawSurface(r-r*time/(PARTICLE_SPEED2/8),r,0,particle);
+    else
+    if (time<PARTICLE_SPEED2/2)
+      engineDrawSurface(r,r*(time-PARTICLE_SPEED2/4)/(PARTICLE_SPEED2/8)-r,0,particle);
+    else
+    if (time<3*PARTICLE_SPEED2/4)
+      engineDrawSurface(r*(time-PARTICLE_SPEED2/2)/(PARTICLE_SPEED2/8)-r,-r,0,particle);
+    else
+      engineDrawSurface(-r,r*(PARTICLE_SPEED2-time)/(PARTICLE_SPEED2/8)-r,0,particle);
+    
+  memcpy(modellViewMatrix,matrix,sizeof(Sint32)*16);
+}
+
 void draw_test(void)
 {
   Sint32* modellViewMatrix=engineGetModellViewMatrix();
@@ -346,10 +398,12 @@ void draw_test(void)
     
   Sint32 matrix[16];
   
-  engineTranslate(0,mysin(w<<3)>>2,-20<<ACCURACY);
+
+  engineTranslate(0,0,-20<<ACCURACY);
 
   engineRotate(0,1<<ACCURACY,0,(-posx[0]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1));
 
+ 
   int add=1;
   if (is_change>0)
   {
@@ -363,10 +417,19 @@ void draw_test(void)
       add++;
     engineRotate(0, 1<<ACCURACY,0,((timeout<<HALF_ACCURACY-1)/TIMEOUT)*(MY_PI>>HALF_ACCURACY+add));
   }
-  
+
+  int a,y;
+  //stars
+  for (a=0;a<STAR_COUNT;a++)
+  {
+    engineDrawSurface(star[a].x,star[a].y,star[a].z,getSmallParticle());
+  }
+
+  //engineTranslate(0,mysin(w<<3)>>2,0);
+
   engineRotate(1<<ACCURACY,0,0,(mysin(w<<3)>>HALF_ACCURACY)*(MY_PI>>HALF_ACCURACY)>>5);
   engineRotate(0,1<<ACCURACY,0,(mycos(w<<3)>>HALF_ACCURACY)*(MY_PI>>HALF_ACCURACY)>>5);
-  int a,y;
+  
   for (a=0;a<16;a++)
     for (y=-6;y<=6;y+=2)
     {
@@ -508,21 +571,54 @@ void draw_test(void)
     particle=particle->next;
   }
     
+  Sint32 r = 28<< ACCURACY-5;
+  
+    
   //engineEllipse(mycos(-(posx[0]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,posy[0],mysin((posx[0]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,4<<ACCURACY-3,4<<ACCURACY-3,getHSV((w*16)%(2*MY_PI),64,255));
-  memcpy(matrix,modellViewMatrix,sizeof(Sint32)*16);
+  /*memcpy(matrix,modellViewMatrix,sizeof(Sint32)*16);
     engineTranslate(mycos(-(posx[0]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,posy[0],mysin((posx[0]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2);
     engineRotate(0,1<<ACCURACY,0,(posx[0]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1));
     engineRotate(0,0,1<<ACCURACY,mysin(w*32)/8);
     drawMesh(border_mesh,getHSV((w*16)%(2*MY_PI),64,255));
-  memcpy(modellViewMatrix,matrix,sizeof(Sint32)*16);
-  engineEllipse(mycos(-(pointposx[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,pointposy[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)],mysin((pointposx[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,3<<ACCURACY-3,3<<ACCURACY-3,getHSV((w*16)%(2*MY_PI),64,255));
+  memcpy(modellViewMatrix,matrix,sizeof(Sint32)*16);*/
+  draw_particle(posx[0],posy[0],r,(SDL_GetTicks())%PARTICLE_SPEED,getSmallParticle());
+  draw_particle(posx[0],posy[0],r,(SDL_GetTicks()+PARTICLE_SPEED/24)%PARTICLE_SPEED,getMiddleParticle());
+  draw_particle(posx[0],posy[0],r,(SDL_GetTicks()+PARTICLE_SPEED/10)%PARTICLE_SPEED,getBigParticle());
+    
+  draw_particle(posx[0],posy[0],r,(SDL_GetTicks()+PARTICLE_SPEED/4)%PARTICLE_SPEED,getSmallParticle());
+  draw_particle(posx[0],posy[0],r,(SDL_GetTicks()+PARTICLE_SPEED/4+PARTICLE_SPEED/24)%PARTICLE_SPEED,getMiddleParticle());
+  draw_particle(posx[0],posy[0],r,(SDL_GetTicks()+PARTICLE_SPEED/4+PARTICLE_SPEED/10)%PARTICLE_SPEED,getBigParticle());
+    
+  draw_particle(posx[0],posy[0],r,(SDL_GetTicks()+PARTICLE_SPEED/2)%PARTICLE_SPEED,getSmallParticle());
+  draw_particle(posx[0],posy[0],r,(SDL_GetTicks()+PARTICLE_SPEED/2+PARTICLE_SPEED/24)%PARTICLE_SPEED,getMiddleParticle());
+  draw_particle(posx[0],posy[0],r,(SDL_GetTicks()+PARTICLE_SPEED/2+PARTICLE_SPEED/10)%PARTICLE_SPEED,getBigParticle());
+    
+  draw_particle(posx[0],posy[0],r,(SDL_GetTicks()+3*PARTICLE_SPEED/4)%PARTICLE_SPEED,getSmallParticle());
+  draw_particle(posx[0],posy[0],r,(SDL_GetTicks()+3*PARTICLE_SPEED/4+PARTICLE_SPEED/24)%PARTICLE_SPEED,getMiddleParticle());
+  draw_particle(posx[0],posy[0],r,(SDL_GetTicks()+3*PARTICLE_SPEED/4+PARTICLE_SPEED/10)%PARTICLE_SPEED,getBigParticle());
+  //engineEllipse(mycos(-(pointposx[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,pointposy[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)],mysin((pointposx[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,3<<ACCURACY-3,3<<ACCURACY-3,getHSV((w*16)%(2*MY_PI),64,255));
+  engineDrawSurface(mycos(-(pointposx[(  TIMEOUT-1+pointstart+2*TIMEOUT-TIMEOUT/4)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,pointposy[(  TIMEOUT-1+pointstart+2*TIMEOUT-TIMEOUT/4)%(2*TIMEOUT)],mysin((pointposx[(  TIMEOUT-1+pointstart+2*TIMEOUT-TIMEOUT/4)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,getMiddleParticle());
+  engineDrawSurface(mycos(-(pointposx[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,pointposy[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)],mysin((pointposx[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,getMiddleParticle());
+  engineDrawSurface(mycos(-(pointposx[(  TIMEOUT-1+pointstart+TIMEOUT/4)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,pointposy[(  TIMEOUT-1+pointstart+TIMEOUT/4)%(2*TIMEOUT)],mysin((pointposx[(  TIMEOUT-1+pointstart+TIMEOUT/4)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,getMiddleParticle());
   //engineEllipse(mycos(-(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],mysin((pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,2<<ACCURACY-3,2<<ACCURACY-3,getHSV((w*16)%(2*MY_PI),64,255));
-  memcpy(matrix,modellViewMatrix,sizeof(Sint32)*16);
+  /*memcpy(matrix,modellViewMatrix,sizeof(Sint32)*16);
     engineTranslate(mycos(-(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],mysin((pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2);
     engineRotate(0,1<<ACCURACY,0,(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1));
     drawMesh(border_thin_mesh,getHSV((w*16)%(2*MY_PI),64,255));
-  memcpy(modellViewMatrix,matrix,sizeof(Sint32)*16);
+  memcpy(modellViewMatrix,matrix,sizeof(Sint32)*16);*/
+  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(SDL_GetTicks()+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(SDL_GetTicks()+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
 
+  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(SDL_GetTicks()+PARTICLE_SPEED2/4+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(SDL_GetTicks()+PARTICLE_SPEED2/4+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+
+  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(SDL_GetTicks()+PARTICLE_SPEED2/2+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(SDL_GetTicks()+PARTICLE_SPEED2/2+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+
+  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(SDL_GetTicks()+3*PARTICLE_SPEED2/4+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(SDL_GetTicks()+3*PARTICLE_SPEED2/4+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+
+  
   engineDrawList();
 
   drawtextMXMY(engineGetSurface(SURFACE_SURFACE),engineWindowX/2,engineWindowY-(engineGetSurface(SURFACE_KEYMAP)->h>>4),"Press "BUTTON_A_NAME" to quit",engineGetSurface(SURFACE_KEYMAP));
@@ -543,6 +639,8 @@ void init_light()
 
 int calc_test(Uint32 steps)
 {
+  if (wasResize())
+    resize_particle(engineGetWindowX(),engineGetWindowY());
   pEngineInput engineInput = engineGetInput();
   if (engineInput->button[BUTTON_START])
   {
@@ -802,8 +900,8 @@ int calc_test(Uint32 steps)
 
 int main(int argc, char **argv)
 {
-  srand(time(NULL));
   int a,y;
+  srand(time(NULL));
   for (y=0;y<7;y++)
     for (a=0;a<16;a++)
     {
@@ -847,6 +945,16 @@ int main(int argc, char **argv)
   border_thin_mesh=loadMesh("./data/border_thin.obj");  
   initEngine();
   init_light();
+  //Stars
+  for (a=0;a<STAR_COUNT;a++)
+  {
+    Sint32 angle = rand()%(2*MY_PI);
+    star[a].x = mycos(angle)*20;
+    star[a].y = rand()%(40<<ACCURACY)-(20<<ACCURACY);
+    star[a].z = mysin(angle)*20;
+    starkind[a] = rand()%10;
+  }
+  resize_particle(engineGetWindowX(),engineGetWindowY());
   engineLoop(draw_test,calc_test,10); //max 100 fps, wenn kein vsync vorhanden
   quitEngine();
   freeMesh(stone_mesh);
