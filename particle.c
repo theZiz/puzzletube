@@ -17,7 +17,6 @@ void resize_particle(int winX,int winY)
   SDL_LockSurface(dummy);
   Uint8* pixel = dummy->pixels;
   int x,y;
-  printf("%i:%i\n",dummy->w,dummy->h);
   for (x = 0; x < dummy->w; x++)
     for (y = 0; y < dummy->h; y++)
     {
@@ -44,7 +43,6 @@ void resize_particle(int winX,int winY)
             winY*7/200,32,0xff000000,0x00ff0000,0x0000ff00,0x000000ff);
   SDL_LockSurface(dummy);
   pixel = dummy->pixels;
-  printf("%i:%i\n",dummy->w,dummy->h);
   for (x = 0; x < dummy->w; x++)
     for (y = 0; y < dummy->h; y++)
     {
@@ -71,7 +69,6 @@ void resize_particle(int winX,int winY)
             winY*5/100,32,0xff000000,0x00ff0000,0x0000ff00,0x000000ff);
   SDL_LockSurface(dummy);
   pixel = dummy->pixels;
-  printf("%i:%i\n",dummy->w,dummy->h);
   for (x = 0; x < dummy->w; x++)
     for (y = 0; y < dummy->h; y++)
     {
