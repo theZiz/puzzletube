@@ -28,11 +28,11 @@ SDL = `sdl-config --cflags`
 
 all: puzzletube
 
-puzzletube: puzzletube.c
-	$(CPP) -O3 puzzletube.c ../3dengine/3dengine.o ../3dengine/graphicstuff.o ../3dengine/meshloader.o ../3dengine/graphicstuff-asm.o $(SDL) $(INCLUDE) $(LIB) -lSDL_image -lSDL -lm $(ORIGINALFW) -o puzzletube
+puzzletube: puzzletube.c particle.o
+	$(CPP) -O3 puzzletube.c particle.o ../3dengine/3dengine.o ../3dengine/graphicstuff.o ../3dengine/meshloader.o ../3dengine/graphicstuff-asm.o $(SDL) $(INCLUDE) $(LIB) -lSDL_image -lSDL -lm $(ORIGINALFW) -o puzzletube
 
-puzzletube4.5: puzzletube.c
-	gcc-4.5 -fforward-propagate -finline -ftoplevel-reorder -ftree-copy-prop -ftree-sink -fomit-frame-pointer -fauto-inc-dec -fcprop-registers -fdce -fdefer-pop -fdelayed-branch -fdse -fguess-branch-probability -fif-conversion2 -fif-conversion -fipa-pure-const -fipa-reference -fmerge-constants -fsplit-wide-types -ftree-builtin-call-dce -ftree-ccp -ftree-ch -ftree-copyrename -ftree-dce -ftree-dominator-opts -ftree-dse -ftree-forwprop -ftree-fre -ftree-phiprop -ftree-sra -ftree-pta -ftree-ter -funit-at-a-time puzzletube.c ../3dengine/3dengine.o ../3dengine/graphicstuff.o ../3dengine/meshloader.o ../3dengine/graphicstuff-asm.o $(SDL) $(INCLUDE) $(LIB) -lSDL_image -lSDL -lm $(ORIGINALFW) -o puzzletube
+particle.o: particle.c particle.h particle.o
+	$(CPP) -O3 -c particle.c $(SDL) $(INCLUDE)
 
 clean:
 	rm puzzletube
