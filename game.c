@@ -635,10 +635,34 @@ void draw_game(void)
         }        
         //s=s*6/8;
       }*/
+      #ifndef REALGP2X
       if (stone[(y>>1)+3][a].type==stone[(y>>1)+3][(a+8)%16].type)
         drawMesh(stone_special_mesh,getHSV(stone[(y>>1)+3][a].h,s,v));
       else
         drawMesh(stone_mesh,getHSV(stone[(y>>1)+3][a].h,s,v));
+      #else
+      if (stone[(y>>1)+3][a].type==stone[(y>>1)+3][(a+8)%16].type)
+      {
+        engineTriangle( 3<<ACCURACY-2, 3<<ACCURACY-2,0,
+                       -3<<ACCURACY-2, 3<<ACCURACY-2,0,
+                        0<<ACCURACY-2,-3<<ACCURACY-2,0,getHSV(stone[(y>>1)+3][a].h,s,v));
+        engineQuad(-3<<ACCURACY-2,-3<<ACCURACY-2,0,
+                   -3<<ACCURACY-2, 3<<ACCURACY-2,0,
+                    3<<ACCURACY-2, 3<<ACCURACY-2,0,
+                    3<<ACCURACY-2,-3<<ACCURACY-2,0,getHSV(stone[(y>>1)+3][a].h,s,v));
+      }
+      else
+      {
+        engineQuad(-3<<ACCURACY-2,-3<<ACCURACY-2,0,
+                    3<<ACCURACY-2,-3<<ACCURACY-2,0,
+                    3<<ACCURACY-2, 3<<ACCURACY-2,0,
+                   -3<<ACCURACY-2, 3<<ACCURACY-2,0,getHSV(stone[(y>>1)+3][a].h,s,v));
+        engineQuad(-3<<ACCURACY-2,-3<<ACCURACY-2,0,
+                   -3<<ACCURACY-2, 3<<ACCURACY-2,0,
+                    3<<ACCURACY-2, 3<<ACCURACY-2,0,
+                    3<<ACCURACY-2,-3<<ACCURACY-2,0,getHSV(stone[(y>>1)+3][a].h,s,v));
+      }      
+      #endif
       memcpy(modellViewMatrix,matrix,sizeof(Sint32)*16);
     }
   //particles
