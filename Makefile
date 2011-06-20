@@ -29,7 +29,7 @@ SDL = `sdl-config --cflags`
 all: puzzletube
 
 puzzletube: puzzletube.c particle.o game.o
-	$(CPP) -O3 puzzletube.c particle.o game.o ../3dengine/3dengine.o ../3dengine/graphicstuff.o ../3dengine/meshloader.o ../3dengine/graphicstuff-asm.o $(SDL) $(INCLUDE) $(LIB) -lSDL_image -lSDL -lm $(ORIGINALFW) -o puzzletube
+	$(CPP) -O3 puzzletube.c particle.o game.o ../3dengine/3dengine.o ../3dengine/graphicstuff.o ../3dengine/meshloader.o ../3dengine/graphicstuff-asm.o $(SDL) $(INCLUDE) $(LIB) -lSDL_mixer -lSDL_image -lSDL -lm $(ORIGINALFW) -o puzzletube
 
 particle.o: particle.c particle.h
 	$(CPP) -O3 -c particle.c $(SDL) $(INCLUDE)
