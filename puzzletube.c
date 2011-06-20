@@ -6,6 +6,7 @@ Mix_Music *music;
 int main(int argc, char **argv)
 {
   srand(time(NULL));
+  engineSetKeymap("./font/StayPuft.ttf");
   initEngine();
   #ifdef REALGP2X
     Mix_OpenAudio(44100,AUDIO_S16SYS,2,256);
