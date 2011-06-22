@@ -641,11 +641,15 @@ void draw_game(void)
       else
         drawMesh(stone_mesh,getHSV(stone[(y>>1)+3][a].h,s,v));
       #else
+      Sint32 frontback =
+        mysin(-(-posx[0]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+(a*MY_PI>>3));
       if (stone[(y>>1)+3][a].type==stone[(y>>1)+3][(a+8)%16].type)
-      {
+      { 
+        if (frontback > -1<<ACCURACY-4) //Front
         engineTriangle( 3<<ACCURACY-2, 3<<ACCURACY-2,0,
                        -3<<ACCURACY-2, 3<<ACCURACY-2,0,
                         0<<ACCURACY-2,-3<<ACCURACY-2,0,getHSV(stone[(y>>1)+3][a].h,s,v));
+        if (frontback < 1<<ACCURACY-4) //Back
         engineQuad(-3<<ACCURACY-2,-3<<ACCURACY-2,0,
                    -3<<ACCURACY-2, 3<<ACCURACY-2,0,
                     3<<ACCURACY-2, 3<<ACCURACY-2,0,
@@ -653,14 +657,16 @@ void draw_game(void)
       }
       else
       {
-        engineQuad(-3<<ACCURACY-2,-3<<ACCURACY-2,0,
-                    3<<ACCURACY-2,-3<<ACCURACY-2,0,
-                    3<<ACCURACY-2, 3<<ACCURACY-2,0,
-                   -3<<ACCURACY-2, 3<<ACCURACY-2,0,getHSV(stone[(y>>1)+3][a].h,s,v));
-        engineQuad(-3<<ACCURACY-2,-3<<ACCURACY-2,0,
-                   -3<<ACCURACY-2, 3<<ACCURACY-2,0,
-                    3<<ACCURACY-2, 3<<ACCURACY-2,0,
-                    3<<ACCURACY-2,-3<<ACCURACY-2,0,getHSV(stone[(y>>1)+3][a].h,s,v));
+        if (frontback > -1<<ACCURACY-4) //Front
+          engineQuad(-3<<ACCURACY-2,-3<<ACCURACY-2,0,
+                      3<<ACCURACY-2,-3<<ACCURACY-2,0,
+                      3<<ACCURACY-2, 3<<ACCURACY-2,0,
+                     -3<<ACCURACY-2, 3<<ACCURACY-2,0,getHSV(stone[(y>>1)+3][a].h,s,v));
+        if (frontback < 1<<ACCURACY-4) //Back
+          engineQuad(-3<<ACCURACY-2,-3<<ACCURACY-2,0,
+                     -3<<ACCURACY-2, 3<<ACCURACY-2,0,
+                      3<<ACCURACY-2, 3<<ACCURACY-2,0,
+                      3<<ACCURACY-2,-3<<ACCURACY-2,0,getHSV(stone[(y>>1)+3][a].h,s,v));
       }      
       #endif
       memcpy(modellViewMatrix,matrix,sizeof(Sint32)*16);
