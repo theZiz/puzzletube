@@ -645,11 +645,11 @@ void draw_game(void)
         mysin(-(-posx[0]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+(a*MY_PI>>3));
       if (stone[(y>>1)+3][a].type==stone[(y>>1)+3][(a+8)%16].type)
       { 
-        if (frontback > -1<<ACCURACY-4) //Front
+        if (frontback > 0) //Front
         engineTriangle( 3<<ACCURACY-2, 3<<ACCURACY-2,0,
                        -3<<ACCURACY-2, 3<<ACCURACY-2,0,
                         0<<ACCURACY-2,-3<<ACCURACY-2,0,getHSV(stone[(y>>1)+3][a].h,s,v));
-        if (frontback < 1<<ACCURACY-4) //Back
+        if (frontback < 0) //Back
         engineQuad(-3<<ACCURACY-2,-3<<ACCURACY-2,0,
                    -3<<ACCURACY-2, 3<<ACCURACY-2,0,
                     3<<ACCURACY-2, 3<<ACCURACY-2,0,
@@ -657,12 +657,12 @@ void draw_game(void)
       }
       else
       {
-        if (frontback > -1<<ACCURACY-4) //Front
+        if (frontback > 0) //Front
           engineQuad(-3<<ACCURACY-2,-3<<ACCURACY-2,0,
                       3<<ACCURACY-2,-3<<ACCURACY-2,0,
                       3<<ACCURACY-2, 3<<ACCURACY-2,0,
                      -3<<ACCURACY-2, 3<<ACCURACY-2,0,getHSV(stone[(y>>1)+3][a].h,s,v));
-        if (frontback < 1<<ACCURACY-4) //Back
+        if (frontback < 0) //Back
           engineQuad(-3<<ACCURACY-2,-3<<ACCURACY-2,0,
                      -3<<ACCURACY-2, 3<<ACCURACY-2,0,
                       3<<ACCURACY-2, 3<<ACCURACY-2,0,

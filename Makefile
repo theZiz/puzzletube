@@ -1,11 +1,11 @@
 #==PC==
-#CPP = gcc -g -march=native -DX86CPU
+#CPP = gcc -g -march=native -DX86CPU -DREALGP2X
 #SDL = `sdl-config --cflags`
 #==Consoles==
 #==GP2X/WIZ==
 #  REALGP2X activates gp2xspecific optimizations, which the wiz doesn't need
 #	 e.g. modells with fewer polygons
-ORIGINALFW = -static -lsmpeg -lstdc++ -lSDL -lfreetype -lpng -lpthread -lz -ljpeg -lm -s
+#ORIGINALFW = -static -lsmpeg -lstdc++ -lSDL -lfreetype -lpng -lpthread -lz -ljpeg -lm -s
 CPP = /opt/open2x/gcc-4.1.1-glibc-2.3.6/bin/arm-open2x-linux-gcc -DMOBILE_DEVICE -DARMCPU -DGP2X -DREALGP2X
 SDL = `/opt/open2x/gcc-4.1.1-glibc-2.3.6/bin/sdl-config --cflags`
 INCLUDE = -I/opt/open2x/gcc-4.1.1-glibc-2.3.6/include
