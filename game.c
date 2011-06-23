@@ -1,3 +1,22 @@
+/*
+ The contents of this file are subject to the Mozilla Public License        
+ Version 1.1 (the "License"); you may not use this file except in           
+ compliance with the License. You may obtain a copy of the License at       
+ http://www.mozilla.org/MPL/                                                
+                                                                            
+ Software distributed under the License is distributed on an "AS IS"        
+ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the    
+ License for the specific language governing rights and limitations         
+ under the License.                                                         
+                                                                            
+ Alternatively, the contents of this file may be used under the terms       
+ of the GNU Lesser General Public license (the  "LGPL License"), in which case the  
+ provisions of LGPL License are applicable instead of those                  
+ above.                                                                     
+                                                                            
+ For feedback and questions about my Files and Projects please mail me,     
+ Alexander Matthes (Ziz) , zizsdl_at_googlemail.com                         
+*/
 #include "game.h"
 
 int playernumber;
@@ -751,7 +770,7 @@ void draw_game(void)
   
   engineDrawList();
 
-  drawtextMXMY(engineGetSurface(SURFACE_SURFACE),engineWindowX/2,engineWindowY-(engineGetSurface(SURFACE_KEYMAP)->h>>4),"Press "BUTTON_A_NAME" to quit",engineGetSurface(SURFACE_KEYMAP));
+  drawtextMXMY(engineGetSurface(SURFACE_SURFACE),engineWindowX/2,engineWindowY-(engineGetSurface(SURFACE_KEYMAP)->h>>4),"Press "BUTTON_START_NAME" to quit",engineGetSurface(SURFACE_KEYMAP));
   char buffer[16];
   sprintf(buffer,"%i",engineGetFps());
   drawtextMY(engineGetSurface(SURFACE_SURFACE),0,engineWindowY-(engineGetSurface(SURFACE_KEYMAP)->h>>4),buffer,engineGetSurface(SURFACE_KEYMAP));
@@ -764,10 +783,10 @@ int calc_game(Uint32 steps)
   if (wasResize())
     resize_particle(engineGetWindowX(),engineGetWindowY());
   pEngineInput engineInput = engineGetInput();
-  if (engineInput->button[BUTTON_START])
+  if (engineInput->button[BUTTON_SELECT])
   {
     pause=!pause;
-    engineInput->button[BUTTON_START]=0;
+    engineInput->button[BUTTON_SELECT]=0;
   }
   if (pause)
     return 0;
@@ -999,7 +1018,7 @@ int calc_game(Uint32 steps)
         direction=3;
         timeout=TIMEOUT+1;
       }
-      if (engineGetInput()->button[BUTTON_B])
+      if (engineGetInput()->button[BUTTON_B] || engineGetInput()->button[BUTTON_A])
       {
         if (is_in_change((20-(posx[0]>>ACCURACY))%16,3+(posy[0]>>ACCURACY+1))==NULL &&
             is_in_change((20-(posx[2]>>ACCURACY))%16,3+(posy[2]>>ACCURACY+1))==NULL &&
@@ -1016,7 +1035,7 @@ int calc_game(Uint32 steps)
     
   
   w+=(steps*16)%(2*MY_PI);
-  if (engineInput->button[BUTTON_A])
+  if (engineInput->button[BUTTON_START])
     return 1;
   return 0; 
 }

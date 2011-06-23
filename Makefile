@@ -1,15 +1,27 @@
 #==PC==
+<<<<<<< HEAD
 #CPP = gcc -g -march=native -DX86CPU -DREALGP2X
 #SDL = `sdl-config --cflags`
+=======
+CPP = gcc -g -march=native -DX86CPU
+SDL = `sdl-config --cflags`
+>>>>>>> 6a3dd4819d10fb4c55cbb36415eca54539e46162
 #==Consoles==
 #==GP2X/WIZ==
 #  REALGP2X activates gp2xspecific optimizations, which the wiz doesn't need
 #	 e.g. modells with fewer polygons
 #ORIGINALFW = -static -lsmpeg -lstdc++ -lSDL -lfreetype -lpng -lpthread -lz -ljpeg -lm -s
+<<<<<<< HEAD
 CPP = /opt/open2x/gcc-4.1.1-glibc-2.3.6/bin/arm-open2x-linux-gcc -DMOBILE_DEVICE -DARMCPU -DGP2X -DREALGP2X
 SDL = `/opt/open2x/gcc-4.1.1-glibc-2.3.6/bin/sdl-config --cflags`
 INCLUDE = -I/opt/open2x/gcc-4.1.1-glibc-2.3.6/include
 LIB = -L/opt/open2x/gcc-4.1.1-glibc-2.3.6/lib -Wl,-rpath=/opt/open2x/gcc-4.1.1-glibc-2.3.6/lib
+=======
+#CPP = /opt/open2x/gcc-4.1.1-glibc-2.3.6/bin/arm-open2x-linux-gcc -DMOBILE_DEVICE -DARMCPU -DGP2X -DREALGP2X
+#SDL = `/opt/open2x/gcc-4.1.1-glibc-2.3.6/bin/sdl-config --cflags`
+#INCLUDE = -I/opt/open2x/gcc-4.1.1-glibc-2.3.6/include
+#LIB = -L/opt/open2x/gcc-4.1.1-glibc-2.3.6/lib -Wl,-rpath=/opt/open2x/gcc-4.1.1-glibc-2.3.6/lib
+>>>>>>> 6a3dd4819d10fb4c55cbb36415eca54539e46162
 #==Caanoo==
 #CPP = /opt/caanoo/gcc-4.2.4-glibc-2.7-eabi/bin/arm-gph-linux-gnueabi-gcc -DMOBILE_DEVICE -DARMCPU -DCAANOO
 #SDL = -I/opt/caanoo/gcc-4.2.4-glibc-2.7-eabi/arm-gph-linux-gnueabi/sys-root/usr/include/SDL -D_GNU_SOURCE=1 -D_REENTRANT
@@ -28,14 +40,17 @@ LIB = -L/opt/open2x/gcc-4.1.1-glibc-2.3.6/lib -Wl,-rpath=/opt/open2x/gcc-4.1.1-g
 
 all: puzzletube
 
-puzzletube: puzzletube.c particle.o game.o
-	$(CPP) -O3 puzzletube.c particle.o game.o ../3dengine/3dengine.o ../3dengine/graphicstuff.o ../3dengine/meshloader.o ../3dengine/graphicstuff-asm.o $(SDL) $(INCLUDE) $(LIB) -lSDL_ttf -lSDL_mixer -lSDL_image -lSDL -lm  $(ORIGINALFW) -o puzzletube
+puzzletube: puzzletube.c particle.o game.o music.o
+	$(CPP) -O3 puzzletube.c particle.o game.o music.o ../3dengine/3dengine.o ../3dengine/graphicstuff.o ../3dengine/meshloader.o ../3dengine/graphicstuff-asm.o $(SDL) $(INCLUDE) $(LIB) -lSDL_ttf -lSDL_mixer -lSDL_image -lSDL -lm  $(ORIGINALFW) -o puzzletube
 
 particle.o: particle.c particle.h
 	$(CPP) -O3 -c particle.c $(SDL) $(INCLUDE)
 
 game.o: game.c game.h
 	$(CPP) -O3 -c game.c $(SDL) $(INCLUDE)
+
+music.o: music.c music.h
+	$(CPP) -O3 -c music.c $(SDL) $(INCLUDE)
 
 clean:
 	rm *.o
