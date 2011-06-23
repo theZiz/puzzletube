@@ -17,20 +17,36 @@
  For feedback and questions about my Files and Projects please mail me,     
  Alexander Matthes (Ziz) , zizsdl_at_googlemail.com                         
 */
-#include "music.h"
-#include "game.h"
 
-int main(int argc, char **argv)
+#include "music.h"
+
+char musicName[256];
+Mix_Music *music;
+
+void init_music()
 {
-  srand(time(NULL));
-  engineSetKeymap("./font/StayPuft.ttf");
-  initEngine();
-  init_music();
-  change_music("Cosmic Conundrum");
-  prepare_game_objects(1,6);
-  run_game(1,timeMode,0);
-  delete_game_objects();
-  quit_music();
-  quitEngine();
-  return 0;
+  #ifdef REALGP2X
+    Mix_OpenAudio(44100,AUDIO_S16SYS,2,256);
+  #else
+    Mix_OpenAudio(44100,AUDIO_S16SYS,2,2048);
+  #endif
+  musicName[0]=0;
+  music = NULL; 
 }
+
+void change_music(char* name)
+{
+  if (strcmp(musicName,name)==0)
+    return;
+  sprintf(musicName,"%s",name);
+  char buffer[512];
+  sprintf(buffer,"./sounds/%s.ogg",name);
+  music = Mix_LoadMUS(buffer);
+  Mix_PlayMusic(music,-1);  
+}
+
+void quit_music()
+{
+  Mix_CloseAudio();
+}
+

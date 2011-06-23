@@ -770,7 +770,7 @@ void draw_game(void)
   
   engineDrawList();
 
-  drawtextMXMY(engineGetSurface(SURFACE_SURFACE),engineWindowX/2,engineWindowY-(engineGetSurface(SURFACE_KEYMAP)->h>>4),"Press "BUTTON_A_NAME" to quit",engineGetSurface(SURFACE_KEYMAP));
+  drawtextMXMY(engineGetSurface(SURFACE_SURFACE),engineWindowX/2,engineWindowY-(engineGetSurface(SURFACE_KEYMAP)->h>>4),"Press "BUTTON_START_NAME" to quit",engineGetSurface(SURFACE_KEYMAP));
   char buffer[16];
   sprintf(buffer,"%i",engineGetFps());
   drawtextMY(engineGetSurface(SURFACE_SURFACE),0,engineWindowY-(engineGetSurface(SURFACE_KEYMAP)->h>>4),buffer,engineGetSurface(SURFACE_KEYMAP));
@@ -783,10 +783,10 @@ int calc_game(Uint32 steps)
   if (wasResize())
     resize_particle(engineGetWindowX(),engineGetWindowY());
   pEngineInput engineInput = engineGetInput();
-  if (engineInput->button[BUTTON_START])
+  if (engineInput->button[BUTTON_SELECT])
   {
     pause=!pause;
-    engineInput->button[BUTTON_START]=0;
+    engineInput->button[BUTTON_SELECT]=0;
   }
   if (pause)
     return 0;
@@ -1018,7 +1018,7 @@ int calc_game(Uint32 steps)
         direction=3;
         timeout=TIMEOUT+1;
       }
-      if (engineGetInput()->button[BUTTON_B])
+      if (engineGetInput()->button[BUTTON_B] || engineGetInput()->button[BUTTON_A])
       {
         if (is_in_change((20-(posx[0]>>ACCURACY))%16,3+(posy[0]>>ACCURACY+1))==NULL &&
             is_in_change((20-(posx[2]>>ACCURACY))%16,3+(posy[2]>>ACCURACY+1))==NULL &&
@@ -1035,7 +1035,7 @@ int calc_game(Uint32 steps)
     
   
   w+=(steps*16)%(2*MY_PI);
-  if (engineInput->button[BUTTON_A])
+  if (engineInput->button[BUTTON_START])
     return 1;
   return 0; 
 }

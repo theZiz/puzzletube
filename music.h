@@ -17,20 +17,12 @@
  For feedback and questions about my Files and Projects please mail me,     
  Alexander Matthes (Ziz) , zizsdl_at_googlemail.com                         
 */
-#include "music.h"
-#include "game.h"
+#ifndef _MUSIC_H
+#define _MUSIC_H
+#include <SDL/SDL_mixer.h>
 
-int main(int argc, char **argv)
-{
-  srand(time(NULL));
-  engineSetKeymap("./font/StayPuft.ttf");
-  initEngine();
-  init_music();
-  change_music("Cosmic Conundrum");
-  prepare_game_objects(1,6);
-  run_game(1,timeMode,0);
-  delete_game_objects();
-  quit_music();
-  quitEngine();
-  return 0;
-}
+void init_music();
+void change_music(char* name);
+void quit_music();
+
+#endif
