@@ -1,8 +1,12 @@
 ToDo:
 + improve 3dengine with arm-div
 + Font
-- Music
-- Point view
++ Music
++ every color >5 has a special function
+  + bomb stone
+  + rainbow stone
+  + block stone
++ Point view
 - Showing getting points
 - Special "things"
   - Combo
@@ -31,21 +35,13 @@ ToDo:
       - pictures up to 10 and a "HYPER CHAIN", where all stones are erased
         and new set (reaction free)
 - GameModes (with combinations)
-  - timeMode
-    - 1 minute time => just like points but the points ARE the time and the time
+  + timeMode
+    - 3 "minutes" time => just like points but the points ARE the time and the time
       decreased faster and faster...
     - every time you get points, you'll get a bit more time
-  - remove all stones of one or two colors (combo!) (in time)
-  - timeMode with highscore
+  + timeMode with highscore (3 minutes)
   - every removed stone will be a block stone
-  - pattern bring time / points / both
-  - random quests ingame (now form a pattern)
 - colors from 4 to 8
-- every color >5 has a special function
-  - bomb stone
-  - rainbow stone
-  - block stone
-- TUBEPLOSION!
 - two player mode
   - against cpu (you big tube, cpu smaller on)
   - against human player landscape

@@ -20,9 +20,11 @@
 #ifndef _MUSIC_H
 #define _MUSIC_H
 #include <SDL/SDL_mixer.h>
-
+#include "../3dengine/3dengine.h"
 void init_music();
-void change_music(char* name);
+void change_music(char* name,char* author,char* license);
+void draw_music();
+void calc_music(int steps);
 void quit_music();
 
 #endif

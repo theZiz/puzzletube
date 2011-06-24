@@ -40,7 +40,13 @@ char direction;
 
 tstone stone[7][16];
 
+int points;
+int gameTime;
+int timeStep;
+int realTime;
+
 #define STAR_COUNT 200
+#define START_TIME 180000
 
 tpoint star[STAR_COUNT];
 char starkind[STAR_COUNT];
@@ -74,41 +80,83 @@ void test_and_set_chain()
   }
 }
 
-
 Sint32 get_type_color_h(int type)
 {
-  return type*MY_PI/3;
+  if (type<6)
+    return type*MY_PI/3;
+  switch (type) //special stone
+  {
+    case 6: return w*10;
+    case 7: return (mysin(w*13)+(1<<ACCURACY)>>HALF_ACCURACY)*(MY_PI/12>>HALF_ACCURACY);
+    case 8: return 0;
+  }
 }
 
 Uint8 get_type_color_s(int type)
 {
-  return 255;
+  if (type<6)
+    return 255;
+  switch (type) //special stone
+  {
+    case 6: return 64;
+    case 7: return 255;
+    case 8: return 0;
+  }
 }
 
 Uint8 get_type_color_v(int type)
 {
-  return 200;
+  if (type<6)
+    return 200;
+  switch (type) //special stone
+  {
+    case 6: return 255;
+    case 7: return ((mysin(w*64)*63)>>ACCURACY)+96;
+    case 8: return 127;
+  }
 }
 
 pwinsituation search_win_situation()
 {
+  pwinsituation finalresult = NULL;
   int x,y;
   for (x=0;x<16;x++)
     for (y=0;y<6;y++)
-      if (stone[y][x].type>=0 &&
-          stone[y][x].type==stone[y+1][ x      ].type &&
-          stone[y][x].type==stone[y  ][(x+1)%16].type &&
-          stone[y][x].type==stone[y+1][(x+1)%16].type)
+    {
+      if (stone[y  ][ x      ].type==8 ||
+          stone[y+1][ x      ].type==8 ||
+          stone[y  ][(x+1)%16].type==8 ||
+          stone[y+1][(x+1)%16].type==8)
+        continue;
+      if ((stone[y][x].type==6 && stone[y+1][x].type==6 && stone[y][(x+1)%16].type==6)
+          ||
+          (stone[y][x].type==6 && stone[y+1][x].type==6 &&
+          (stone[y][(x+1)%16].type==stone[y+1][(x+1)%16].type || stone[y+1][(x+1)%16].type==6))
+          ||
+          (stone[y][x].type==6 &&
+          (stone[y+1][x].type==stone[y  ][(x+1)%16].type || stone[y  ][(x+1)%16].type==6) &&
+          (stone[y+1][x].type==stone[y+1][(x+1)%16].type || stone[y+1][(x+1)%16].type==6))
+          ||
+          (stone[y][x].type>=0 &&
+          (stone[y][x].type==stone[y+1][ x      ].type || stone[y+1][ x      ].type==6) &&
+          (stone[y][x].type==stone[y  ][(x+1)%16].type || stone[y  ][(x+1)%16].type==6) &&
+          (stone[y][x].type==stone[y+1][(x+1)%16].type || stone[y+1][(x+1)%16].type==6)))
       {
         pwinsituation result=(pwinsituation)malloc(sizeof(twinsituation));
         result->x=x;
         result->y=y;
-        result->next=NULL;
+        result->next=finalresult;
         char found=1;
         char noticed[7][16];
         memset(noticed,0,7*16);
         noticed[y][x]=1;
         int type=stone[y][x].type;
+        if (type == 6)
+          type = stone[y+1][x].type;
+        if (type == 6)
+          type = stone[y  ][(x+1)%16].type;
+        if (type == 6)
+          type = stone[y+1][(x+1)%16].type;
         while (found)
         {
           found=0;
@@ -117,7 +165,8 @@ pwinsituation search_win_situation()
           {
             //left
             if (noticed[situation->y][(situation->x+15)%16]==0 &&
-                stone[situation->y][(situation->x+15)%16].type==type)
+                (stone[situation->y][(situation->x+15)%16].type==type ||
+                 stone[situation->y][(situation->x+15)%16].type==6))
             {
               pwinsituation newsituation=(pwinsituation)malloc(sizeof(twinsituation));
               newsituation->x=(situation->x+15)%16;
@@ -125,12 +174,13 @@ pwinsituation search_win_situation()
               newsituation->next=result;
               result=newsituation;
               found=1;
+              noticed[situation->y][(situation->x+15)%16]=1;
             }
-            noticed[situation->y][(situation->x+15)%16]=1;
 
             //Right
             if (noticed[situation->y][(situation->x+1)%16]==0 &&
-                stone[situation->y][(situation->x+1)%16].type==type)
+                (stone[situation->y][(situation->x+1)%16].type==type ||
+                 stone[situation->y][(situation->x+1)%16].type==6))
             {
               pwinsituation newsituation=(pwinsituation)malloc(sizeof(twinsituation));
               newsituation->x=(situation->x+1)%16;
@@ -138,14 +188,15 @@ pwinsituation search_win_situation()
               newsituation->next=result;
               result=newsituation;
               found=1;
+              noticed[situation->y][(situation->x+1)%16]=1;
             }
-            noticed[situation->y][(situation->x+1)%16]=1;
 
             //Down
             if (situation->y>0)
             {
               if (noticed[situation->y-1][situation->x]==0 &&
-                  stone[situation->y-1][situation->x].type==type)
+                  (stone[situation->y-1][situation->x].type==type ||
+                   stone[situation->y-1][situation->x].type==6))
               {
                 pwinsituation newsituation=(pwinsituation)malloc(sizeof(twinsituation));
                 newsituation->x=situation->x;
@@ -153,15 +204,16 @@ pwinsituation search_win_situation()
                 newsituation->next=result;
                 result=newsituation;
                 found=1;
+                noticed[situation->y-1][situation->x]=1;
               }
-              noticed[situation->y-1][situation->x]=1;
             }
             
             //Up
             if (situation->y<6)
             {
               if (noticed[situation->y+1][situation->x]==0 &&
-                  stone[situation->y+1][situation->x].type==type)
+                  (stone[situation->y+1][situation->x].type==type ||
+                   stone[situation->y+1][situation->x].type==6))
               {
                 pwinsituation newsituation=(pwinsituation)malloc(sizeof(twinsituation));
                 newsituation->x=situation->x;
@@ -169,8 +221,8 @@ pwinsituation search_win_situation()
                 newsituation->next=result;
                 result=newsituation;
                 found=1;
+                noticed[situation->y+1][situation->x]=1;
               }
-              noticed[situation->y+1][situation->x]=1;
             }
 
             //Behind
@@ -183,15 +235,80 @@ pwinsituation search_win_situation()
               newsituation->next=result;
               result=newsituation;
               found=1;
+              noticed[situation->y][(situation->x+8)%16]=1;
             }
-            noticed[situation->y][(situation->x+8)%16]=1;
             
             situation=situation->next;
           }
         }
-        return result;
+        if (type==7)
+        {
+          pwinsituation situation=result;
+          while (situation!=finalresult)
+          {
+            if (stone[situation->y][situation->x].type==7)
+            {
+              //left
+              if (noticed[situation->y][(situation->x+15)%16]==0)
+              {
+                pwinsituation newsituation=(pwinsituation)malloc(sizeof(twinsituation));
+                newsituation->x=(situation->x+15)%16;
+                newsituation->y=situation->y;
+                newsituation->next=result;
+                result=newsituation;
+                found=1;
+                noticed[situation->y][(situation->x+15)%16]=1;
+              }
+
+              //Right
+              if (noticed[situation->y][(situation->x+1)%16]==0)
+              {
+                pwinsituation newsituation=(pwinsituation)malloc(sizeof(twinsituation));
+                newsituation->x=(situation->x+1)%16;
+                newsituation->y=situation->y;
+                newsituation->next=result;
+                result=newsituation;
+                found=1;
+                noticed[situation->y][(situation->x+1)%16]=1;
+              }
+
+              //Down
+              if (situation->y>0)
+              {
+                if (noticed[situation->y-1][situation->x]==0)
+                {
+                  pwinsituation newsituation=(pwinsituation)malloc(sizeof(twinsituation));
+                  newsituation->x=situation->x;
+                  newsituation->y=situation->y-1;
+                  newsituation->next=result;
+                  result=newsituation;
+                  found=1;
+                  noticed[situation->y-1][situation->x]=1;
+                }
+              }
+              
+              //Up
+              if (situation->y<6)
+              {
+                if (noticed[situation->y+1][situation->x]==0)
+                {
+                  pwinsituation newsituation=(pwinsituation)malloc(sizeof(twinsituation));
+                  newsituation->x=situation->x;
+                  newsituation->y=situation->y+1;
+                  newsituation->next=result;
+                  result=newsituation;
+                  found=1;
+                  noticed[situation->y+1][situation->x]=1;
+                }
+              }
+            }
+            situation=situation->next;
+          }
+        }
+        finalresult = result;
       }
-  return NULL;
+    }
+  return finalresult;
 }
 
 void delete_win_situation(pwinsituation situation)
@@ -233,6 +350,10 @@ void init_light()
 
 void prepare_game_objects(char complete,int colornumber_)
 {
+  points = 0;
+  gameTime = START_TIME;
+  timeStep = 1;
+  realTime = 0;
   colornumber = colornumber_; 
   chain = 0;
   int a,y;
@@ -402,15 +523,24 @@ void make_win_situations_invalid()
 {
   pwinsituation situation;
   char found = 0;
-  char count = 0;
+  char type_found[12];
   while ((situation=search_win_situation())!=NULL)
   {
-    count++;
+    memset(type_found,0,12);
+    type_found[6]=1;
+    char count = 0;
     found = 1;
     pwinsituation temp=situation;
     int i = 0;
     while (temp!=NULL)
     {
+      if (stone[temp->y][temp->x].type>=0 && type_found[stone[temp->y][temp->x].type] == 0)
+      {
+        printf("__%i__\n",stone[temp->y][temp->x].type);
+        count++;
+        type_found[stone[temp->y][temp->x].type] = 1;
+      }
+
       stone[temp->y][temp->x].type=-1;
       new_particle(mycos((temp->x*MY_PI>>3)-MY_PI/32)*5,((temp->y-3)*2<<ACCURACY)-(1<<ACCURACY-1),mysin((temp->x*MY_PI>>3)-MY_PI/32)*5,
                    stone[temp->y][temp->x].h,stone[temp->y][temp->x].s,stone[temp->y][temp->x].v,
@@ -445,8 +575,9 @@ void make_win_situations_invalid()
         printf("incredible\n");
       else
         printf("supercalifragilisticexpialidocious\n");
-
     delete_win_situation(situation);
+    if (count>0)
+      printf("count: %i (combo if >1)\n",count);
   }
   if (found)
   {
@@ -454,8 +585,6 @@ void make_win_situations_invalid()
     chain_break=100;
     printf("Chain %i\n",chain);
   }
-  if (count>0)
-    printf("count: %i (combo if >1)\n",count);
 }
 
 #define PARTICLE_SPEED 1500
@@ -554,6 +683,9 @@ void draw_game(void)
     {
       if (stone[(y>>1)+3][a].type<0)
         continue;
+      stone[(y>>1)+3][a].h = get_type_color_h(stone[(y>>1)+3][a].type);
+      stone[(y>>1)+3][a].s = get_type_color_s(stone[(y>>1)+3][a].type);
+      stone[(y>>1)+3][a].v = get_type_color_v(stone[(y>>1)+3][a].type);
       memcpy(matrix,modellViewMatrix,sizeof(Sint32)*16);
       pchange change=is_in_change(a,3+y/2);
       Sint32 px=mycos(a*MY_PI>>3)*5;
@@ -654,6 +786,14 @@ void draw_game(void)
         }        
         //s=s*6/8;
       }*/
+      if (v<0)
+        v=0;
+      if (v>255)
+        v=255;
+      if (s<0)
+        s=0;
+      if (s>255)
+        s=255;
       #ifndef REALGP2X
       if (stone[(y>>1)+3][a].type==stone[(y>>1)+3][(a+8)%16].type)
         drawMesh(stone_special_mesh,getHSV(stone[(y>>1)+3][a].h,s,v));
@@ -769,12 +909,44 @@ void draw_game(void)
 
   
   engineDrawList();
+  char buffer[256];
+  //HUD on the right side
+  drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,1*engineWindowY/16,"Game Mode:",engineGetSurface(SURFACE_KEYMAP));
+  if (mode & timeMode)
+    sprintf(buffer,"Time");
+  else
+    sprintf(buffer,"Highscore");
+  drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,2*engineWindowY/16,buffer,engineGetSurface(SURFACE_KEYMAP));
+  if (mode & timeMode)
+  {
+    drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,4*engineWindowY/16,"Time Past:",engineGetSurface(SURFACE_KEYMAP));
+    sprintf(buffer,"%i.%i Sec",realTime/1000,realTime%1000);
+    drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,5*engineWindowY/16,buffer,engineGetSurface(SURFACE_KEYMAP));
+  }
+  else
+  {
+    drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,4*engineWindowY/16,"Points:",engineGetSurface(SURFACE_KEYMAP));
+    sprintf(buffer,"%i",points);
+    drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,5*engineWindowY/16,buffer,engineGetSurface(SURFACE_KEYMAP));
+  }
 
-  drawtextMXMY(engineGetSurface(SURFACE_SURFACE),engineWindowX/2,engineWindowY-(engineGetSurface(SURFACE_KEYMAP)->h>>4),"Press "BUTTON_START_NAME" to quit",engineGetSurface(SURFACE_KEYMAP));
-  char buffer[16];
+  SDL_Rect dstrect;
+  SDL_Rect srcrect;
+  dstrect.x=6*engineWindowX/7-getTimeSurface()->w/2;
+  dstrect.y=13*engineWindowY/32;
+  dstrect.w=gameTime*getTimeSurface()->w/START_TIME;
+  dstrect.h=getTimeSurface()->h;
+  srcrect.x=0;
+  srcrect.y=0;
+  srcrect.w=dstrect.w;
+  srcrect.h=dstrect.h;
+
+  SDL_BlitSurface(getTimeSurface(), &srcrect,engineGetSurface(SURFACE_SURFACE), &dstrect);
+
   sprintf(buffer,"%i",engineGetFps());
-  drawtextMY(engineGetSurface(SURFACE_SURFACE),0,engineWindowY-(engineGetSurface(SURFACE_KEYMAP)->h>>4),buffer,engineGetSurface(SURFACE_KEYMAP));
+  drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,15*engineWindowY/16,buffer,engineGetSurface(SURFACE_KEYMAP));
 
+  draw_music();
   engineFlip();
 }
 
@@ -790,9 +962,20 @@ int calc_game(Uint32 steps)
   }
   if (pause)
     return 0;
+  calc_music(steps);
   int i;
   for (i=0;i<steps;i++)
   {
+    realTime++;
+    if (mode & timeMode)
+    {
+      if (realTime%((11-difficult)*6000) == 0)
+        timeStep*=2; 
+    }
+    gameTime -= timeStep;
+    if (gameTime<=0)
+      return 1;
+
     test_and_set_chain();
     step_changes();
     step_particles();
@@ -1033,6 +1216,11 @@ int calc_game(Uint32 steps)
     }
   }
     
+  if (engineGetInput()->button[BUTTON_X])
+  {
+    engineGetInput()->button[BUTTON_X] = 0;
+    change_music("Cosmic Conundrum","Nick May","CC BY-NC-ND");
+  }
   
   w+=(steps*16)%(2*MY_PI);
   if (engineInput->button[BUTTON_START])

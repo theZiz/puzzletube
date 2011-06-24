@@ -26,5 +26,6 @@
 SDL_Surface* getSmallParticle();
 SDL_Surface* getMiddleParticle();
 SDL_Surface* getBigParticle();
+SDL_Surface* getTimeSurface();
 
 #endif

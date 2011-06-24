@@ -26,9 +26,9 @@ int main(int argc, char **argv)
   engineSetKeymap("./font/StayPuft.ttf");
   initEngine();
   init_music();
-  change_music("Cosmic Conundrum");
-  prepare_game_objects(1,6);
-  run_game(1,timeMode,0);
+  prepare_game_objects(1,9);
+  change_music("Cosmic Conundrum","Nick May","CC BY-NC-ND");
+  run_game(1,timeMode,9);
   delete_game_objects();
   quit_music();
   quitEngine();

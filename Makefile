@@ -1,27 +1,15 @@
 #==PC==
-<<<<<<< HEAD
-#CPP = gcc -g -march=native -DX86CPU -DREALGP2X
-#SDL = `sdl-config --cflags`
-=======
 CPP = gcc -g -march=native -DX86CPU
 SDL = `sdl-config --cflags`
->>>>>>> 6a3dd4819d10fb4c55cbb36415eca54539e46162
 #==Consoles==
 #==GP2X/WIZ==
 #  REALGP2X activates gp2xspecific optimizations, which the wiz doesn't need
 #	 e.g. modells with fewer polygons
 #ORIGINALFW = -static -lsmpeg -lstdc++ -lSDL -lfreetype -lpng -lpthread -lz -ljpeg -lm -s
-<<<<<<< HEAD
-CPP = /opt/open2x/gcc-4.1.1-glibc-2.3.6/bin/arm-open2x-linux-gcc -DMOBILE_DEVICE -DARMCPU -DGP2X -DREALGP2X
-SDL = `/opt/open2x/gcc-4.1.1-glibc-2.3.6/bin/sdl-config --cflags`
-INCLUDE = -I/opt/open2x/gcc-4.1.1-glibc-2.3.6/include
-LIB = -L/opt/open2x/gcc-4.1.1-glibc-2.3.6/lib -Wl,-rpath=/opt/open2x/gcc-4.1.1-glibc-2.3.6/lib
-=======
 #CPP = /opt/open2x/gcc-4.1.1-glibc-2.3.6/bin/arm-open2x-linux-gcc -DMOBILE_DEVICE -DARMCPU -DGP2X -DREALGP2X
 #SDL = `/opt/open2x/gcc-4.1.1-glibc-2.3.6/bin/sdl-config --cflags`
 #INCLUDE = -I/opt/open2x/gcc-4.1.1-glibc-2.3.6/include
 #LIB = -L/opt/open2x/gcc-4.1.1-glibc-2.3.6/lib -Wl,-rpath=/opt/open2x/gcc-4.1.1-glibc-2.3.6/lib
->>>>>>> 6a3dd4819d10fb4c55cbb36415eca54539e46162
 #==Caanoo==
 #CPP = /opt/caanoo/gcc-4.2.4-glibc-2.7-eabi/bin/arm-gph-linux-gnueabi-gcc -DMOBILE_DEVICE -DARMCPU -DCAANOO
 #SDL = -I/opt/caanoo/gcc-4.2.4-glibc-2.7-eabi/arm-gph-linux-gnueabi/sys-root/usr/include/SDL -D_GNU_SOURCE=1 -D_REENTRANT

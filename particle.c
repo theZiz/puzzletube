@@ -22,6 +22,7 @@
 SDL_Surface* smallParticle = NULL;
 SDL_Surface* middleParticle = NULL;
 SDL_Surface* bigParticle = NULL;
+SDL_Surface* timeSurface = NULL;
 
 #define NAMELESSCONSTANT 512.0
 #define ALPHA_FACTOR 0.9
@@ -107,6 +108,28 @@ void resize_particle(int winX,int winY)
   SDL_UnlockSurface(dummy);
   bigParticle = SDL_DisplayFormatAlpha(dummy);
   SDL_FreeSurface(dummy);
+  //timeSurface
+  if (timeSurface)
+    SDL_FreeSurface(timeSurface);
+  dummy = SDL_CreateRGBSurface(SDL_SWSURFACE,winY*2/6,
+            winY*3/100,32,0xff000000,0x00ff0000,0x0000ff00,0x000000ff);
+  SDL_LockSurface(dummy);
+  pixel = dummy->pixels;
+  //memset(pixel,255,dummy->w*dummy->h*4);
+  for (x = 0; x < dummy->w; x++)
+    for (y = 0; y < dummy->h; y++)
+    {
+      pixel[(x+y*dummy->w)*4+0] = 255;
+      if (x < dummy->w/2)
+        pixel[(x+y*dummy->w)*4+1] = 2*x*192/dummy->w;
+      else
+        pixel[(x+y*dummy->w)*4+1] = 2*(dummy->w-x)*192/dummy->w;
+      pixel[(x+y*dummy->w)*4+2] = x*255/dummy->w;
+      pixel[(x+y*dummy->w)*4+3] = 255-x*255/dummy->w;      
+    }
+  SDL_UnlockSurface(dummy);
+  timeSurface = SDL_DisplayFormat(dummy);
+  SDL_FreeSurface(dummy);
 }
 
 SDL_Surface* getSmallParticle()
@@ -122,4 +145,9 @@ SDL_Surface* getMiddleParticle()
 SDL_Surface* getBigParticle()
 {
   return bigParticle;
+}
+
+SDL_Surface* getTimeSurface()
+{
+  return timeSurface;
 }

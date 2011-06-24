@@ -33,7 +33,10 @@
 
 typedef enum GameMode
 {
-  timeMode
+  timeMode = 1, //opposite is pointMode
+  removedBlackMode = 2,
+  randomQuestMode = 4,
+  colorRemoveMode = 8,
 } GameMode;
 
 typedef struct sstone *pstone;

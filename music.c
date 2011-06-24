@@ -21,7 +21,10 @@
 #include "music.h"
 
 char musicName[256];
+char musicAuthor[256];
+char musicLicense[256];
 Mix_Music *music;
+int musicFade;
 
 void init_music()
 {
@@ -34,15 +37,47 @@ void init_music()
   music = NULL; 
 }
 
-void change_music(char* name)
+void change_music(char* name,char* author,char* license)
 {
+  musicFade = 0;
   if (strcmp(musicName,name)==0)
     return;
   sprintf(musicName,"%s",name);
+  sprintf(musicAuthor,"%s",author);
+  sprintf(musicLicense,"%s",license);
   char buffer[512];
   sprintf(buffer,"./sounds/%s.ogg",name);
   music = Mix_LoadMUS(buffer);
   Mix_PlayMusic(music,-1);  
+}
+
+void draw_music()
+{
+  if (musicFade>5000)
+    return;
+  char buffer[800];
+  int add = 0;
+  if (musicFade<1000)
+    add = musicFade/20;
+  else
+  if (musicFade<4000)
+    add = 50;
+  else
+    add = (5000-musicFade)/20;
+  
+  sprintf(buffer,"%s:",musicAuthor);
+  drawtextMX(engineGetSurface(SURFACE_SURFACE),engineGetWindowX()/2,add-3*(engineGetSurface(SURFACE_KEYMAP)->h>>4),buffer,engineGetSurface(SURFACE_KEYMAP));  
+  sprintf(buffer,"\"%s\"",musicName);
+  drawtextMX(engineGetSurface(SURFACE_SURFACE),engineGetWindowX()/2,add-2*(engineGetSurface(SURFACE_KEYMAP)->h>>4),buffer,engineGetSurface(SURFACE_KEYMAP));  
+  sprintf(buffer,"(%s)",musicLicense);
+  drawtextMX(engineGetSurface(SURFACE_SURFACE),engineGetWindowX()/2,add-1*(engineGetSurface(SURFACE_KEYMAP)->h>>4),buffer,engineGetSurface(SURFACE_KEYMAP));  
+}
+
+void calc_music(int steps)
+{
+  if (musicFade>5000)
+    return;
+  musicFade += steps;
 }
 
 void quit_music()
