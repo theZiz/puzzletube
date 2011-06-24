@@ -22,7 +22,7 @@
 #include <SDL/SDL_mixer.h>
 #include "../3dengine/3dengine.h"
 void init_music();
-void change_music(char* name,char* author,char* license);
+void change_music(char* name,char* author);
 void draw_music();
 void calc_music(int steps);
 void quit_music();

@@ -27,8 +27,9 @@ int main(int argc, char **argv)
   initEngine();
   init_music();
   prepare_game_objects(1,9);
-  change_music("Cosmic Conundrum","Nick May","CC BY-NC-ND");
-  run_game(1,timeMode,9);
+  change_music("Midnight Mediation","Nick May");
+  //run_game(1,timeMode,9);
+  run_menu();
   delete_game_objects();
   quit_music();
   quitEngine();

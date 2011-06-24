@@ -45,11 +45,7 @@ int gameTime;
 int timeStep;
 int realTime;
 
-#define STAR_COUNT 200
 #define START_TIME 180000
-
-tpoint star[STAR_COUNT];
-char starkind[STAR_COUNT];
 
 pchange firstchange;
 pparticle firstparticle;
@@ -402,15 +398,7 @@ void prepare_game_objects(char complete,int colornumber_)
     border_thin_mesh=loadMesh("./data/border_thin.obj");  
     resize_particle(engineGetWindowX(),engineGetWindowY());
   }
-  //Stars
-  for (a=0;a<STAR_COUNT;a++)
-  {
-    Sint32 angle = rand()%(2*MY_PI);
-    star[a].x = mycos(angle)*20;
-    star[a].y = rand()%(40<<ACCURACY)-(20<<ACCURACY);
-    star[a].z = mysin(angle)*20;
-    starkind[a] = rand()%10;
-  }
+  init_stars();
   init_light();
 }
 
@@ -667,12 +655,8 @@ void draw_game(void)
   }
 
   int a,y;
-  //stars
-  for (a=0;a<STAR_COUNT;a++)
-  {
-    engineDrawSurface(star[a].x,star[a].y,star[a].z,getSmallParticle());
-  }
 
+  draw_stars();
   //engineTranslate(0,mysin(w<<3)>>2,0);
 
   engineRotate(1<<ACCURACY,0,0,(mysin(w<<3)>>HALF_ACCURACY)*(MY_PI>>HALF_ACCURACY)>>5);
