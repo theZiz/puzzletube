@@ -50,19 +50,29 @@ void draw_menu(void)
       setModellViewMatrixIdentity();
       engineTranslate(0,0,-20<<ACCURACY);
       //Left circle
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+7*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+7*MY_PI/10)-menu_choice*5/2,0,getBigParticle());
       engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+5*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+5*MY_PI/10)-menu_choice*5/2,0,getBigParticle());
       engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+3*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+3*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
       engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+2*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+2*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
       engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+1*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+1*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
       engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+0*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+0*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
+      
+      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+15*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+15*MY_PI/10)-menu_choice*5/2,0,getBigParticle());
+      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+13*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+13*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
+      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+12*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+12*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
+      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+11*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+11*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
+      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+10*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+10*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
       //Right circle
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+7*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+7*MY_PI/10)-menu_choice*5/2,0,getBigParticle());
       engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+5*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+5*MY_PI/10)-menu_choice*5/2,0,getBigParticle());
       engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+3*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+3*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
       engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+2*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+2*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
       engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+1*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+1*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
       engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+0*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+0*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
+
+      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+15*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+15*MY_PI/10)-menu_choice*5/2,0,getBigParticle());
+      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+13*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+13*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
+      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+12*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+12*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
+      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+11*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+11*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
+      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+10*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+10*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
       break;
     case 1: //options
       break;

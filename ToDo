@@ -7,6 +7,13 @@ ToDo:
   + rainbow stone
   + block stone
 + Point view
++ Menu
+- Settings
+  - Stone Quality (nice, ok, gp2x)
+  - Stars Routing on / off
+  - Volume
+  - Particles on / off
+- Volume Control with +/-
 - Showing getting points
 - Special "things"
   - Combo
