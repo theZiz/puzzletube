@@ -17,21 +17,20 @@
  For feedback and questions about my Files and Projects please mail me,     
  Alexander Matthes (Ziz) , zizsdl_at_googlemail.com                         
 */
-#include "music.h"
-#include "game.h"
+#ifndef _SETTINGS_H
+#define _SETTINGS_H
 
-int main(int argc, char **argv)
-{
-  srand(time(NULL));
-  engineSetKeymap("./font/StayPuft.ttf");
-  initEngine();
-  settings_load();
-  init_music();
-  prepare_game_objects(1,9);
-  change_music("Midnight Mediation","Nick May");
-  run_menu();
-  delete_game_objects();
-  quit_music();
-  quitEngine();
-  return 0;
-}
+void settings_load();
+void settings_save();
+
+int settings_get_stone_quality();
+int settings_get_stars_rotating();
+int settings_get_particles();
+int settings_get_volume();
+
+void settings_set_stone_quality(int value);
+void settings_set_stars_rotating(int value);
+void settings_set_particles(int value);
+void settings_set_volume(int value);
+
+#endif
