@@ -26,8 +26,10 @@ int colornumber;
 
 pmesh stone_mesh;
 pmesh stone_special_mesh;
-pmesh border_mesh;
-pmesh border_thin_mesh;
+pmesh stone_mesh_gp2x;
+pmesh stone_special_mesh_gp2x;
+//pmesh border_mesh;
+//pmesh border_thin_mesh;
 Sint32 w=0;
 
 Sint32 posx[4],posy[4];
@@ -386,16 +388,12 @@ void prepare_game_objects(char complete,int colornumber_)
   remove_win_situations();
   if (complete)
   {
-    //the gp2x becomes old :-/
-    #ifdef REALGP2X
-      stone_mesh=loadMesh("./data/stone_gp2x.obj");
-      stone_special_mesh=loadMesh("./data/stone_special_gp2x.obj");
-    #else
-      stone_mesh=loadMesh("./data/stone.obj");
-      stone_special_mesh=loadMesh("./data/stone_special.obj");
-    #endif
-    border_mesh=loadMesh("./data/border.obj");  
-    border_thin_mesh=loadMesh("./data/border_thin.obj");  
+    stone_mesh_gp2x=loadMesh("./data/stone_gp2x.obj");
+    stone_special_mesh_gp2x=loadMesh("./data/stone_special_gp2x.obj");
+    stone_mesh=loadMesh("./data/stone.obj");
+    stone_special_mesh=loadMesh("./data/stone_special.obj");
+    //border_mesh=loadMesh("./data/border.obj");  
+    //border_thin_mesh=loadMesh("./data/border_thin.obj");  
     resize_particle(engineGetWindowX(),engineGetWindowY());
   }
   init_stars();
@@ -406,8 +404,8 @@ void delete_game_objects()
 {
   freeMesh(stone_mesh);
   freeMesh(stone_special_mesh);
-  freeMesh(border_mesh);
-  freeMesh(border_thin_mesh);  
+  //freeMesh(border_mesh);
+  //freeMesh(border_thin_mesh);  
 }
 
 void new_particle(Sint32 x,Sint32 y,Sint32 z,Sint32 h,Uint8 s,Uint8 v,Sint32 rotx,Sint32 roty,Sint32 rotz)
@@ -530,18 +528,21 @@ void make_win_situations_invalid()
       }
 
       stone[temp->y][temp->x].type=-1;
-      new_particle(mycos((temp->x*MY_PI>>3)-MY_PI/32)*5,((temp->y-3)*2<<ACCURACY)-(1<<ACCURACY-1),mysin((temp->x*MY_PI>>3)-MY_PI/32)*5,
-                   stone[temp->y][temp->x].h,stone[temp->y][temp->x].s,stone[temp->y][temp->x].v,
-                   0,2*MY_PI+MY_PI/2-(temp->x*MY_PI>>3),0);
-      new_particle(mycos((temp->x*MY_PI>>3)+MY_PI/32)*5,((temp->y-3)*2<<ACCURACY)-(1<<ACCURACY-1),mysin((temp->x*MY_PI>>3)+MY_PI/32)*5,
-                   stone[temp->y][temp->x].h,stone[temp->y][temp->x].s,stone[temp->y][temp->x].v,
-                   0,2*MY_PI+MY_PI/2-(temp->x*MY_PI>>3),0);
-      new_particle(mycos((temp->x*MY_PI>>3)-MY_PI/32)*5,((temp->y-3)*2<<ACCURACY)+(1<<ACCURACY-1),mysin((temp->x*MY_PI>>3)-MY_PI/32)*5,
-                   stone[temp->y][temp->x].h,stone[temp->y][temp->x].s,stone[temp->y][temp->x].v,
-                   0,2*MY_PI+MY_PI/2-(temp->x*MY_PI>>3),0);
-      new_particle(mycos((temp->x*MY_PI>>3)+MY_PI/32)*5,((temp->y-3)*2<<ACCURACY)+(1<<ACCURACY-1),mysin((temp->x*MY_PI>>3)+MY_PI/32)*5,
-                   stone[temp->y][temp->x].h,stone[temp->y][temp->x].s,stone[temp->y][temp->x].v,
-                   0,2*MY_PI+MY_PI/2-(temp->x*MY_PI>>3),0);
+      if (settings_get_particles())
+      {
+        new_particle(mycos((temp->x*MY_PI>>3)-MY_PI/32)*5,((temp->y-3)*2<<ACCURACY)-(1<<ACCURACY-1),mysin((temp->x*MY_PI>>3)-MY_PI/32)*5,
+                     stone[temp->y][temp->x].h,stone[temp->y][temp->x].s,stone[temp->y][temp->x].v,
+                     0,2*MY_PI+MY_PI/2-(temp->x*MY_PI>>3),0);
+        new_particle(mycos((temp->x*MY_PI>>3)+MY_PI/32)*5,((temp->y-3)*2<<ACCURACY)-(1<<ACCURACY-1),mysin((temp->x*MY_PI>>3)+MY_PI/32)*5,
+                     stone[temp->y][temp->x].h,stone[temp->y][temp->x].s,stone[temp->y][temp->x].v,
+                     0,2*MY_PI+MY_PI/2-(temp->x*MY_PI>>3),0);
+        new_particle(mycos((temp->x*MY_PI>>3)-MY_PI/32)*5,((temp->y-3)*2<<ACCURACY)+(1<<ACCURACY-1),mysin((temp->x*MY_PI>>3)-MY_PI/32)*5,
+                     stone[temp->y][temp->x].h,stone[temp->y][temp->x].s,stone[temp->y][temp->x].v,
+                     0,2*MY_PI+MY_PI/2-(temp->x*MY_PI>>3),0);
+        new_particle(mycos((temp->x*MY_PI>>3)+MY_PI/32)*5,((temp->y-3)*2<<ACCURACY)+(1<<ACCURACY-1),mysin((temp->x*MY_PI>>3)+MY_PI/32)*5,
+                     stone[temp->y][temp->x].h,stone[temp->y][temp->x].s,stone[temp->y][temp->x].v,
+                     0,2*MY_PI+MY_PI/2-(temp->x*MY_PI>>3),0);
+      }
       i++;
       printf("%i:%i\n",temp->x,temp->y);
       temp=temp->next; 
@@ -637,6 +638,9 @@ void draw_game(void)
 
   engineTranslate(0,0,-20<<ACCURACY);
 
+  if (settings_get_stars_rotating()==0)
+    draw_stars();
+
   engineRotate(0,1<<ACCURACY,0,(-posx[0]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1));
 
  
@@ -656,7 +660,8 @@ void draw_game(void)
 
   int a,y;
 
-  draw_stars();
+  if (settings_get_stars_rotating())
+    draw_stars();
   //engineTranslate(0,mysin(w<<3)>>2,0);
 
   engineRotate(1<<ACCURACY,0,0,(mysin(w<<3)>>HALF_ACCURACY)*(MY_PI>>HALF_ACCURACY)>>5);
@@ -778,40 +783,51 @@ void draw_game(void)
         s=0;
       if (s>255)
         s=255;
-      #ifndef REALGP2X
-      if (stone[(y>>1)+3][a].type==stone[(y>>1)+3][(a+8)%16].type)
-        drawMesh(stone_special_mesh,getHSV(stone[(y>>1)+3][a].h,s,v));
+      if (settings_get_stone_quality() == 2)
+      {
+        if (stone[(y>>1)+3][a].type==stone[(y>>1)+3][(a+8)%16].type)
+          drawMesh(stone_special_mesh,getHSV(stone[(y>>1)+3][a].h,s,v));
+        else
+          drawMesh(stone_mesh,getHSV(stone[(y>>1)+3][a].h,s,v));
+      }
       else
-        drawMesh(stone_mesh,getHSV(stone[(y>>1)+3][a].h,s,v));
-      #else
-      Sint32 frontback =
-        mysin(-(-posx[0]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+(a*MY_PI>>3));
-      if (stone[(y>>1)+3][a].type==stone[(y>>1)+3][(a+8)%16].type)
-      { 
-        if (frontback > 0) //Front
-        engineTriangle( 3<<ACCURACY-2, 3<<ACCURACY-2,0,
-                       -3<<ACCURACY-2, 3<<ACCURACY-2,0,
-                        0<<ACCURACY-2,-3<<ACCURACY-2,0,getHSV(stone[(y>>1)+3][a].h,s,v));
-        if (frontback < 0) //Back
-        engineQuad(-3<<ACCURACY-2,-3<<ACCURACY-2,0,
-                   -3<<ACCURACY-2, 3<<ACCURACY-2,0,
-                    3<<ACCURACY-2, 3<<ACCURACY-2,0,
-                    3<<ACCURACY-2,-3<<ACCURACY-2,0,getHSV(stone[(y>>1)+3][a].h,s,v));
+      if (settings_get_stone_quality() == 1)
+      {
+        if (stone[(y>>1)+3][a].type==stone[(y>>1)+3][(a+8)%16].type)
+          drawMesh(stone_special_mesh_gp2x,getHSV(stone[(y>>1)+3][a].h,s,v));
+        else
+          drawMesh(stone_mesh_gp2x,getHSV(stone[(y>>1)+3][a].h,s,v));
       }
       else
       {
-        if (frontback > 0) //Front
-          engineQuad(-3<<ACCURACY-2,-3<<ACCURACY-2,0,
-                      3<<ACCURACY-2,-3<<ACCURACY-2,0,
-                      3<<ACCURACY-2, 3<<ACCURACY-2,0,
-                     -3<<ACCURACY-2, 3<<ACCURACY-2,0,getHSV(stone[(y>>1)+3][a].h,s,v));
-        if (frontback < 0) //Back
+        Sint32 frontback =
+          mysin(-(-posx[0]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+(a*MY_PI>>3));
+        if (stone[(y>>1)+3][a].type==stone[(y>>1)+3][(a+8)%16].type)
+        { 
+          if (frontback > 0) //Front
+          engineTriangle( 3<<ACCURACY-2, 3<<ACCURACY-2,0,
+                         -3<<ACCURACY-2, 3<<ACCURACY-2,0,
+                          0<<ACCURACY-2,-3<<ACCURACY-2,0,getHSV(stone[(y>>1)+3][a].h,s,v));
+          if (frontback < 0) //Back
           engineQuad(-3<<ACCURACY-2,-3<<ACCURACY-2,0,
                      -3<<ACCURACY-2, 3<<ACCURACY-2,0,
                       3<<ACCURACY-2, 3<<ACCURACY-2,0,
                       3<<ACCURACY-2,-3<<ACCURACY-2,0,getHSV(stone[(y>>1)+3][a].h,s,v));
-      }      
-      #endif
+        }
+        else
+        {
+          if (frontback > 0) //Front
+            engineQuad(-3<<ACCURACY-2,-3<<ACCURACY-2,0,
+                        3<<ACCURACY-2,-3<<ACCURACY-2,0,
+                        3<<ACCURACY-2, 3<<ACCURACY-2,0,
+                       -3<<ACCURACY-2, 3<<ACCURACY-2,0,getHSV(stone[(y>>1)+3][a].h,s,v));
+          if (frontback < 0) //Back
+            engineQuad(-3<<ACCURACY-2,-3<<ACCURACY-2,0,
+                       -3<<ACCURACY-2, 3<<ACCURACY-2,0,
+                        3<<ACCURACY-2, 3<<ACCURACY-2,0,
+                        3<<ACCURACY-2,-3<<ACCURACY-2,0,getHSV(stone[(y>>1)+3][a].h,s,v));
+        }      
+      }
       memcpy(modellViewMatrix,matrix,sizeof(Sint32)*16);
     }
   //particles
@@ -824,7 +840,7 @@ void draw_game(void)
     engineRotate(0,1<<ACCURACY,0,particle->roty);
     engineRotate(0,0,1<<ACCURACY,particle->rotz);
     //the gp2x becomes old :-/
-    #ifdef REALGP2X
+    if (settings_get_stone_quality() == 0)
       engineQuad(-(particle->age<<ACCURACY)/PARTICLE_AGE/4,
                  -(particle->age<<ACCURACY)/PARTICLE_AGE/4,0,
                   (particle->age<<ACCURACY)/PARTICLE_AGE/4,
@@ -834,12 +850,16 @@ void draw_game(void)
                  -(particle->age<<ACCURACY)/PARTICLE_AGE/4,
                   (particle->age<<ACCURACY)/PARTICLE_AGE/4,0,
                   getHSV(particle->h,particle->s,particle->v));
-    #else
+    else
+    {
       engineScale((particle->age<<ACCURACY)/PARTICLE_AGE/2,
                   (particle->age<<ACCURACY)/PARTICLE_AGE/2,
                   (particle->age<<ACCURACY)/PARTICLE_AGE/2);
-      drawMesh(stone_mesh,getHSV(particle->h,particle->s,particle->v));
-    #endif
+      if (settings_get_stone_quality() == 2)
+        drawMesh(stone_mesh,getHSV(particle->h,particle->s,particle->v));
+      else
+        drawMesh(stone_mesh_gp2x,getHSV(particle->h,particle->s,particle->v));
+    }
     memcpy(modellViewMatrix,matrix,sizeof(Sint32)*16);
     particle=particle->next;
   }
@@ -897,7 +917,7 @@ void draw_game(void)
   //HUD on the right side
   drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,1*engineWindowY/16,"Game Mode:",engineGetSurface(SURFACE_KEYMAP));
   if (mode & timeMode)
-    sprintf(buffer,"Time");
+    sprintf(buffer,"Time Stole");
   else
     sprintf(buffer,"Highscore");
   drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,2*engineWindowY/16,buffer,engineGetSurface(SURFACE_KEYMAP));

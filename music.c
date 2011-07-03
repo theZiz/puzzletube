@@ -70,8 +70,29 @@ void draw_music()
   drawtextMX(engineGetSurface(SURFACE_SURFACE),engineGetWindowX()/2,add-2*(engineGetSurface(SURFACE_KEYMAP)->h>>4),buffer,engineGetSurface(SURFACE_KEYMAP));  
 }
 
+int volume_wait = 0;
+
 void calc_music(int steps)
-{
+{ 
+  int i;
+  for (i = 0;i<steps;i++)
+  {
+    volume_wait--;
+    if (engineGetInput()->button[BUTTON_VOLPLUS] && volume_wait<=0 && settings_get_volume()<100)
+    {
+      settings_set_volume(settings_get_volume()+1);
+      Mix_VolumeMusic(settings_get_volume()*128/100);
+      settings_save();
+      volume_wait = 25;
+    }
+    if (engineGetInput()->button[BUTTON_VOLMINUS] && volume_wait<=0 && settings_get_volume()>0)
+    {
+      settings_set_volume(settings_get_volume()-1);
+      Mix_VolumeMusic(settings_get_volume()*128/100);
+      settings_save();
+      volume_wait = 25;
+    }
+  }
   if (musicFade>5000)
     return;
   musicFade += steps;

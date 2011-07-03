@@ -86,8 +86,8 @@ void draw_menu(void)
       engineDrawTextMXMY(0,( 10<<ACCURACY-1)+mysin(menu_counter*300+5*MY_PI/3)/4,0,"SETTINGS");
       switch (settings_get_stone_quality())
       {
-        case 0: engineDrawTextMXMY(0,(  5<<ACCURACY-1)+mysin(menu_counter*300+4*MY_PI/3)/4,0,"Stone Quality: GP2X"); break;
-        case 1: engineDrawTextMXMY(0,(  5<<ACCURACY-1)+mysin(menu_counter*300+4*MY_PI/3)/4,0,"Stone Quality: Okayect"); break;
+        case 0: engineDrawTextMXMY(0,(  5<<ACCURACY-1)+mysin(menu_counter*300+4*MY_PI/3)/4,0,"Stone Quality: Flat"); break;
+        case 1: engineDrawTextMXMY(0,(  5<<ACCURACY-1)+mysin(menu_counter*300+4*MY_PI/3)/4,0,"Stone Quality: Okay"); break;
         case 2: engineDrawTextMXMY(0,(  5<<ACCURACY-1)+mysin(menu_counter*300+4*MY_PI/3)/4,0,"Stone Quality: Perfect"); break;
       }
       if (settings_get_stars_rotating())
@@ -162,6 +162,7 @@ int calc_menu(Uint32 steps)
       switch (nextstate)
       {
         case -3: //Free Game
+          prepare_game_objects(0,9);
           run_game(1,timeMode,9);
           engineInput->button[BUTTON_START] = 0;
           engineInput->button[BUTTON_A] = 0;
