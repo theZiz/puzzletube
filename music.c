@@ -46,7 +46,8 @@ void change_music(char* name,char* author)
   char buffer[512];
   sprintf(buffer,"./sounds/%s.ogg",name);
   music = Mix_LoadMUS(buffer);
-  Mix_PlayMusic(music,-1);  
+  Mix_PlayMusic(music,-1);
+  Mix_VolumeMusic(settings_get_volume()*128/100);
 }
 
 void draw_music()
