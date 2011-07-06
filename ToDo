@@ -1,12 +1,8 @@
 ToDo:
-+ Settings
-  + Stone Quality (nice, ok, gp2x)
-  + Stars Routing on / off
-  + Volume
-  + Particles on / off
-+ Volume Control with +/-
 - Game Intro
 - Showing getting points
+- Free Game
+- Highscore
 - Special "things"
   - Combo
     + just two breaks with one move
@@ -46,4 +42,3 @@ ToDo:
   - against human player landscape
     - with explanation picture
 - HURRY UP! 
-- Background Movement to the settings
