@@ -30,6 +30,7 @@ pmesh stone_mesh_gp2x;
 pmesh stone_special_mesh_gp2x;
 //pmesh border_mesh;
 //pmesh border_thin_mesh;
+SDL_Surface *dummySurface = NULL;
 Sint32 w=0;
 
 Sint32 posx[4],posy[4];
@@ -395,6 +396,7 @@ void prepare_game_objects(char complete,int colornumber_)
     //border_mesh=loadMesh("./data/border.obj");  
     //border_thin_mesh=loadMesh("./data/border_thin.obj");  
     resize_particle(engineGetWindowX(),engineGetWindowY());
+    dummySurface = IMG_Load("./images/dummy.png");
   }
   init_stars();
   init_light();
@@ -914,6 +916,28 @@ void draw_game(void)
   
   engineDrawList();
   char buffer[256];
+  SDL_Rect dstrect;
+  SDL_Rect srcrect;
+  //HUD on the left side
+  SDL_Surface* shown = NULL;
+  
+  //setting "shown"
+  shown = dummySurface;
+  
+  if (shown != NULL)
+  {
+      dstrect.x=1*engineWindowX/7-shown->w/2;
+      dstrect.y=engineWindowY/2-shown->h/2;
+      dstrect.w=shown->w;
+      dstrect.h=shown->h;
+      srcrect.x=0;
+      srcrect.y=0;
+      srcrect.w=dstrect.w;
+      srcrect.h=dstrect.h;
+
+      SDL_BlitSurface(shown, &srcrect,engineGetSurface(SURFACE_SURFACE), &dstrect);
+  }
+  
   //HUD on the right side
   drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,1*engineWindowY/16,"Game Mode:",engineGetSurface(SURFACE_KEYMAP));
   if (mode & timeMode)
@@ -924,7 +948,7 @@ void draw_game(void)
   if (mode & timeMode)
   {
     drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,4*engineWindowY/16,"Time Past:",engineGetSurface(SURFACE_KEYMAP));
-    sprintf(buffer,"%i.%i Sec",realTime/1000,realTime%1000);
+    sprintf(buffer,"%i Seconds",realTime/1000);
     drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,5*engineWindowY/16,buffer,engineGetSurface(SURFACE_KEYMAP));
   }
   else
@@ -934,8 +958,6 @@ void draw_game(void)
     drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,5*engineWindowY/16,buffer,engineGetSurface(SURFACE_KEYMAP));
   }
 
-  SDL_Rect dstrect;
-  SDL_Rect srcrect;
   dstrect.x=6*engineWindowX/7-getTimeSurface()->w/2;
   dstrect.y=13*engineWindowY/32;
   dstrect.w=gameTime*getTimeSurface()->w/START_TIME;

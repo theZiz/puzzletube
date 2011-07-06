@@ -163,7 +163,7 @@ int calc_menu(Uint32 steps)
       {
         case -3: //Free Game
           prepare_game_objects(0,9);
-          run_game(1,timeMode,9);
+          run_game(1,0,9);
           engineInput->button[BUTTON_START] = 0;
           engineInput->button[BUTTON_A] = 0;
           engineInput->button[BUTTON_B] = 0;
