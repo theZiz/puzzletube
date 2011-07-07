@@ -23,25 +23,41 @@
 int settings_stone_quality; //2 perfect, 1 okay, 0 gp2x
 int settings_stars_rotating;
 int settings_particles;
+int settings_alpha_blending;
+int settings_font_quality;
 int settings_volume;
+int settings_color;
+int settings_difficult;
+int settings_mode;
 
 void settings_load()
 {
   #ifdef REALGP2X
     settings_stone_quality = 0;
+    settings_stars_rotating = 0;
   #else
     settings_stone_quality = 2;  
+    settings_stars_rotating = 2;
   #endif
-  settings_stars_rotating = 1;
   settings_particles = 1;
+  settings_font_quality = 1;
+  settings_alpha_blending = 1;
   settings_volume = 100;
+  settings_color = 4;
+  settings_difficult = 0;
+  settings_mode = 0; //highscore
   SDL_RWops *file=SDL_RWFromFile("./settings.dat","rb");
   if (file == NULL)
     return;
   SDL_RWread(file,&settings_stone_quality,sizeof(int),1);
   SDL_RWread(file,&settings_stars_rotating,sizeof(int),1);
   SDL_RWread(file,&settings_particles,sizeof(int),1);
+  SDL_RWread(file,&settings_alpha_blending,sizeof(int),1);
+  SDL_RWread(file,&settings_font_quality,sizeof(int),1);
   SDL_RWread(file,&settings_volume,sizeof(int),1);
+  SDL_RWread(file,&settings_color,sizeof(int),1);
+  SDL_RWread(file,&settings_difficult,sizeof(int),1);
+  SDL_RWread(file,&settings_mode,sizeof(int),1);
   SDL_RWclose(file);
 }
 
@@ -51,7 +67,12 @@ void settings_save()
   SDL_RWwrite(file,&settings_stone_quality,sizeof(int),1);
   SDL_RWwrite(file,&settings_stars_rotating,sizeof(int),1);
   SDL_RWwrite(file,&settings_particles,sizeof(int),1);
+  SDL_RWwrite(file,&settings_alpha_blending,sizeof(int),1);
+  SDL_RWwrite(file,&settings_font_quality,sizeof(int),1);
   SDL_RWwrite(file,&settings_volume,sizeof(int),1);
+  SDL_RWwrite(file,&settings_color,sizeof(int),1);
+  SDL_RWwrite(file,&settings_difficult,sizeof(int),1);
+  SDL_RWwrite(file,&settings_mode,sizeof(int),1);
   SDL_RWclose(file);
 }
 
@@ -68,6 +89,16 @@ int settings_get_stars_rotating()
 int settings_get_particles()
 {
   return settings_particles;
+}
+
+int settings_get_alpha_blending()
+{
+  return settings_alpha_blending;
+}
+
+int settings_get_font_quality()
+{
+  return settings_font_quality;
 }
 
 int settings_get_volume()
@@ -90,7 +121,47 @@ void settings_set_particles(int value)
   settings_particles = value;
 }
 
+void settings_set_alpha_blending(int value)
+{
+  settings_alpha_blending = value;
+}
+
+void settings_set_font_quality(int value)
+{
+  settings_font_quality = value;
+}
+
 void settings_set_volume(int value)
 {
   settings_volume = value;
+}
+
+int settings_get_color()
+{
+  return settings_color;
+}
+
+int settings_get_difficult()
+{
+  return settings_difficult;
+}
+
+int settings_get_mode()
+{
+  return settings_mode;
+}
+
+void settings_set_color(int value)
+{
+  settings_color = value;
+}
+
+void settings_set_difficult(int value)
+{
+  settings_difficult = value;
+}
+
+void settings_set_mode(int value)
+{
+  settings_mode = value;
 }

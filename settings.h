@@ -26,11 +26,21 @@ void settings_save();
 int settings_get_stone_quality();
 int settings_get_stars_rotating();
 int settings_get_particles();
+int settings_get_alpha_blending();
+int settings_get_font_quality();
 int settings_get_volume();
+int settings_get_color();
+int settings_get_difficult();
+int settings_get_mode();
 
 void settings_set_stone_quality(int value);
 void settings_set_stars_rotating(int value);
 void settings_set_particles(int value);
+void settings_set_alpha_blending(int value);
+void settings_set_font_quality(int value);
 void settings_set_volume(int value);
+void settings_set_color(int value);
+void settings_set_difficult(int value);
+void settings_set_mode(int value);
 
 #endif

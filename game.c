@@ -351,7 +351,6 @@ void prepare_game_objects(char complete,int colornumber_)
 {
   points = 0;
   gameTime = START_TIME;
-  timeStep = 1;
   realTime = 0;
   colornumber = colornumber_; 
   chain = 0;
@@ -640,7 +639,7 @@ void draw_game(void)
 
   engineTranslate(0,0,-20<<ACCURACY);
 
-  if (settings_get_stars_rotating()==0)
+  if (settings_get_stars_rotating()==1)
     draw_stars();
 
   engineRotate(0,1<<ACCURACY,0,(-posx[0]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1));
@@ -662,7 +661,7 @@ void draw_game(void)
 
   int a,y;
 
-  if (settings_get_stars_rotating())
+  if (settings_get_stars_rotating()==2)
     draw_stars();
   //engineTranslate(0,mysin(w<<3)>>2,0);
 
@@ -943,7 +942,7 @@ void draw_game(void)
   if (mode & timeMode)
     sprintf(buffer,"Time Stole");
   else
-    sprintf(buffer,"Highscore");
+    sprintf(buffer,"Points");
   drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,2*engineWindowY/16,buffer,engineGetSurface(SURFACE_KEYMAP));
   if (mode & timeMode)
   {
@@ -996,7 +995,7 @@ int calc_game(Uint32 steps)
     if (mode & timeMode)
     {
       if (realTime%((11-difficult)*6000) == 0)
-        timeStep*=2; 
+        timeStep = 2*timeStep-timeStep/2; 
     }
     gameTime -= timeStep;
     if (gameTime<=0)
@@ -1259,5 +1258,6 @@ void run_game(int playernumber_,GameMode mode_,int difficult_ /*0..9*/)
   playernumber = playernumber_;
   mode = mode_;
   difficult = difficult_;
+  timeStep = difficult/2+2;
   engineLoop(draw_game,calc_game,10);
 }

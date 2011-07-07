@@ -24,8 +24,10 @@ int main(int argc, char **argv)
 {
   srand(time(NULL));
   engineSetKeymap("./font/StayPuft.ttf");
-  initEngine();
   settings_load();
+  set_font_quality(settings_get_font_quality());
+  set_particle_mode(settings_get_alpha_blending());
+  initEngine();
   init_music();
   prepare_game_objects(1,9);
   change_music("Midnight Mediation","Nick May");

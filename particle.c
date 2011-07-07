@@ -24,8 +24,15 @@ SDL_Surface* middleParticle = NULL;
 SDL_Surface* bigParticle = NULL;
 SDL_Surface* timeSurface = NULL;
 
+int particle_mode = 1;
+
 #define NAMELESSCONSTANT 512.0
 #define ALPHA_FACTOR 0.9
+
+void set_particle_mode(int mode)
+{
+  particle_mode = mode;
+}
 
 void resize_particle(int winX,int winY)
 {
@@ -40,21 +47,29 @@ void resize_particle(int winX,int winY)
   for (x = 0; x < dummy->w; x++)
     for (y = 0; y < dummy->h; y++)
     {
+      pixel[(x+y*dummy->w)*4+1] = 255;
+      pixel[(x+y*dummy->w)*4+2] = 255;
+      pixel[(x+y*dummy->w)*4+3] = 255;      
       int alpha = (int)(sqrt((float)(dummy->w*dummy->w)/4.0-
           ((float)(x)-(float)(dummy->w)/2.0)*
           ((float)(x)-(float)(dummy->w)/2.0)-
           ((float)(y)-(float)(dummy->h)/2.0)*
           ((float)(y)-(float)(dummy->h)/2.0))/(float)(dummy->h)*NAMELESSCONSTANT*ALPHA_FACTOR);
+      if (particle_mode == 0 && alpha<128)
+        pixel[(x+y*dummy->w)*4+2] = 0;
       if (alpha<255)
         pixel[(x+y*dummy->w)*4+0] = alpha;
       else 
         pixel[(x+y*dummy->w)*4+0] = 255;
-      pixel[(x+y*dummy->w)*4+1] = 255;
-      pixel[(x+y*dummy->w)*4+2] = 255;
-      pixel[(x+y*dummy->w)*4+3] = 255;      
     }
   SDL_UnlockSurface(dummy);
-  smallParticle = SDL_DisplayFormatAlpha(dummy);
+    if (particle_mode == 0)
+  {
+    SDL_SetColorKey(dummy, SDL_SRCCOLORKEY | SDL_RLEACCEL,SDL_MapRGB(dummy->format, 255,0,255));    
+    smallParticle = SDL_DisplayFormat(dummy);
+  }
+  else
+    smallParticle = SDL_DisplayFormatAlpha(dummy);
   SDL_FreeSurface(dummy);
   //middleParticle 3.5% of y
   if (middleParticle)
@@ -66,21 +81,29 @@ void resize_particle(int winX,int winY)
   for (x = 0; x < dummy->w; x++)
     for (y = 0; y < dummy->h; y++)
     {
+      pixel[(x+y*dummy->w)*4+1] = 255;
+      pixel[(x+y*dummy->w)*4+2] = 255;
+      pixel[(x+y*dummy->w)*4+3] = 255;      
       int alpha = (int)(sqrt((float)(dummy->w*dummy->w)/4.0-
           ((float)(x)-(float)(dummy->w)/2.0)*
           ((float)(x)-(float)(dummy->w)/2.0)-
           ((float)(y)-(float)(dummy->h)/2.0)*
           ((float)(y)-(float)(dummy->h)/2.0))/(float)(dummy->h)*NAMELESSCONSTANT*ALPHA_FACTOR);
+      if (particle_mode == 0 && alpha<128)
+        pixel[(x+y*dummy->w)*4+2] = 0;
       if (alpha<255)
         pixel[(x+y*dummy->w)*4+0] = alpha;
       else 
         pixel[(x+y*dummy->w)*4+0] = 255;
-      pixel[(x+y*dummy->w)*4+1] = 255;
-      pixel[(x+y*dummy->w)*4+2] = 255;
-      pixel[(x+y*dummy->w)*4+3] = 255;      
     }
   SDL_UnlockSurface(dummy);
-  middleParticle = SDL_DisplayFormatAlpha(dummy);
+  if (particle_mode == 0)
+  {
+    SDL_SetColorKey(dummy, SDL_SRCCOLORKEY | SDL_RLEACCEL,SDL_MapRGB(dummy->format, 255,0,255));    
+    middleParticle = SDL_DisplayFormat(dummy);
+  }
+  else
+    middleParticle = SDL_DisplayFormatAlpha(dummy);
   SDL_FreeSurface(dummy);
   //bigParticle 5% of y
   if (bigParticle)
@@ -92,21 +115,30 @@ void resize_particle(int winX,int winY)
   for (x = 0; x < dummy->w; x++)
     for (y = 0; y < dummy->h; y++)
     {
+      pixel[(x+y*dummy->w)*4+1] = 255;
+      pixel[(x+y*dummy->w)*4+2] = 255;
+      pixel[(x+y*dummy->w)*4+3] = 255;      
+
       int alpha = (int)(sqrt((float)(dummy->w*dummy->w)/4.0-
           ((float)(x)-(float)(dummy->w)/2.0)*
           ((float)(x)-(float)(dummy->w)/2.0)-
           ((float)(y)-(float)(dummy->h)/2.0)*
           ((float)(y)-(float)(dummy->h)/2.0))/(float)(dummy->h)*NAMELESSCONSTANT*ALPHA_FACTOR);
+      if (particle_mode == 0 && alpha<128)
+        pixel[(x+y*dummy->w)*4+2] = 0;
       if (alpha<255)
         pixel[(x+y*dummy->w)*4+0] = alpha;
       else 
         pixel[(x+y*dummy->w)*4+0] = 255;
-      pixel[(x+y*dummy->w)*4+1] = 255;
-      pixel[(x+y*dummy->w)*4+2] = 255;
-      pixel[(x+y*dummy->w)*4+3] = 255;      
     }
   SDL_UnlockSurface(dummy);
-  bigParticle = SDL_DisplayFormatAlpha(dummy);
+  if (particle_mode == 0)
+  {
+    SDL_SetColorKey(dummy, SDL_SRCCOLORKEY | SDL_RLEACCEL,SDL_MapRGB(dummy->format, 255,0,255));    
+    bigParticle = SDL_DisplayFormat(dummy);
+  }
+  else
+    bigParticle = SDL_DisplayFormatAlpha(dummy);
   SDL_FreeSurface(dummy);
   //timeSurface
   if (timeSurface)
