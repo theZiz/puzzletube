@@ -26,5 +26,12 @@ void change_music(char* name,char* author);
 void draw_music();
 void calc_music(int steps);
 void quit_music();
+void move_sound_on();
+void move_sound_off();
+void rotating_sound_on();
+void rotating_sound_off();
+void set_volume(int volume);
+void play_explosion();
+void play_switch();
 
 #endif

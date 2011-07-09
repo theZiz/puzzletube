@@ -529,6 +529,7 @@ void make_win_situations_invalid()
       }
 
       stone[temp->y][temp->x].type=-1;
+      play_explosion();
       if (settings_get_particles())
       {
         new_particle(mycos((temp->x*MY_PI>>3)-MY_PI/32)*5,((temp->y-3)*2<<ACCURACY)-(1<<ACCURACY-1),mysin((temp->x*MY_PI>>3)-MY_PI/32)*5,
@@ -1132,7 +1133,9 @@ int calc_game(Uint32 steps)
         }
         direction=0;
         timeout=TIMEOUT;
+        rotating_sound_on();
       }
+      else
       if (engineGetAxis(0)>0)
       {
         if (direction==0)
@@ -1163,7 +1166,10 @@ int calc_game(Uint32 steps)
         }
         direction=1;
         timeout=TIMEOUT+1;
+        rotating_sound_on();
       }
+      else
+        rotating_sound_off();
       if (engineGetAxis(1)<0 && (((posy[0]>>ACCURACY)>-6 && direction!=3) || (direction==3 && (posy[2]>>ACCURACY)>-6)))
       {
         if (direction==3 && (posy[2]>>ACCURACY)>-6)
@@ -1194,7 +1200,9 @@ int calc_game(Uint32 steps)
         }
         direction=2;
         timeout=TIMEOUT;
+        move_sound_on();
       }
+      else
       if (engineGetAxis(1)>0 && (((posy[0]>>ACCURACY)< 6 && direction!=2) || (direction==2 && (posy[2]>>ACCURACY)< 6)))
       {
         if (direction==2 && (posy[2]>>ACCURACY)< 6)
@@ -1225,8 +1233,12 @@ int calc_game(Uint32 steps)
         }
         direction=3;
         timeout=TIMEOUT+1;
+        move_sound_on();
       }
-      if (engineGetInput()->button[BUTTON_B] || engineGetInput()->button[BUTTON_A])
+      else
+        move_sound_off();
+      if (engineGetInput()->button[BUTTON_B] || engineGetInput()->button[BUTTON_A] ||
+          engineGetInput()->button[BUTTON_X] || engineGetInput()->button[BUTTON_Y])
       {
         if (is_in_change((20-(posx[0]>>ACCURACY))%16,3+(posy[0]>>ACCURACY+1))==NULL &&
             is_in_change((20-(posx[2]>>ACCURACY))%16,3+(posy[2]>>ACCURACY+1))==NULL &&
@@ -1236,7 +1248,10 @@ int calc_game(Uint32 steps)
             stone[3+(posy[2]>>ACCURACY+1)][(20-(posx[2]>>ACCURACY))%16].falling==0 &&
             stone[3+(posy[0]>>ACCURACY+1)][(20-(posx[0]>>ACCURACY))%16].type>=0 &&
             stone[3+(posy[2]>>ACCURACY+1)][(20-(posx[2]>>ACCURACY))%16].type>=0)
+        {
+          play_switch();
           initate_change((20-(posx[0]>>ACCURACY))%16,3+(posy[0]>>ACCURACY+1),(20-(posx[2]>>ACCURACY))%16,3+(posy[2]>>ACCURACY+1));
+        }
       }
     }
   }

@@ -233,8 +233,10 @@ int calc_menu(Uint32 steps)
   if (menu_fade>0)
   {
     menu_fade-=steps*3;
-    if (menu_fade<=0)
+    if (menu_fade<=0) {
       menu_fade = 0;
+      rotating_sound_off();
+    }
     return 0;
   }
   if (menu_fade<0)
@@ -260,8 +262,10 @@ int calc_menu(Uint32 steps)
           engineInput->button[BUTTON_X] = 0;
           engineInput->button[BUTTON_Y] = 0;
           state = 0;
+          rotating_sound_off();
           break;
         case -4:
+          rotating_sound_off();
           return 1;
       }
       return 0;
@@ -280,6 +284,7 @@ int calc_menu(Uint32 steps)
     
     if (menu_move != 0)
     {
+      move_sound_on();
       for (i=0;i<steps;i++)
       {
         menu_choice += menu_move*4 << ACCURACY-10;
@@ -287,6 +292,8 @@ int calc_menu(Uint32 steps)
           menu_move = 0;
       }
     }
+    else
+      move_sound_off();
     if (menu_move == 0 && (engineInput->button[BUTTON_START] ||
         engineInput->button[BUTTON_A] || engineInput->button[BUTTON_B] ||
         engineInput->button[BUTTON_X] || engineInput->button[BUTTON_Y]))
@@ -296,18 +303,22 @@ int calc_menu(Uint32 steps)
         case 1: // Free Game
           nextstate = 2;
           menu_fade = -1;
+          rotating_sound_on();
           break;
         case 2: // Highscore
           nextstate = 3;
           menu_fade = -1;
+          rotating_sound_on();
           break;
         case 3: // Options
           nextstate = 1;
           menu_fade = -1;
+          rotating_sound_on();
           break;
         case 4: // Quit
           nextstate = -4;
           menu_fade = -1;
+          rotating_sound_on();
           break;
       }
     }
@@ -320,6 +331,7 @@ int calc_menu(Uint32 steps)
     
     if (menu_move != 0)
     {
+      move_sound_on();
       for (i=0;i<steps;i++)
       {
         menu_choice += menu_move*4 << ACCURACY-10;
@@ -327,19 +339,21 @@ int calc_menu(Uint32 steps)
           menu_move = 0;
       }
     }
+    else
+      move_sound_off();
     for (i = 0;i < steps;i++)
     {
       menu_wait--;
       if (menu_move == 0 && (menu_choice>>ACCURACY) == 5 && engineGetAxis(0)<0 && menu_wait <= 0 && settings_get_volume()>0)
       {
         settings_set_volume(settings_get_volume()-1);
-        Mix_VolumeMusic(settings_get_volume()*128/100);
+        set_volume(settings_get_volume());
         menu_wait = 25;
       }
       if (menu_move == 0 && (menu_choice>>ACCURACY) == 5 && engineGetAxis(0)>0 && menu_wait <= 0 && settings_get_volume()<100)
       {
         settings_set_volume(settings_get_volume()+1);
-        Mix_VolumeMusic(settings_get_volume()*128/100);
+        set_volume(settings_get_volume());
         menu_wait = 25;
       }
     }
@@ -397,6 +411,7 @@ int calc_menu(Uint32 steps)
           settings_save();
           nextstate = 0;
           menu_fade = -1;
+          rotating_sound_on();
           break;
       }
     }
@@ -409,6 +424,7 @@ int calc_menu(Uint32 steps)
     
     if (menu_move != 0)
     {
+      move_sound_on();
       for (i=0;i<steps;i++)
       {
         menu_choice += menu_move*4 << ACCURACY-10;
@@ -416,6 +432,8 @@ int calc_menu(Uint32 steps)
           menu_move = 0;
       }
     }
+    else
+      move_sound_off();
     if (menu_move == 0 && (menu_choice>>ACCURACY) == 2 && engineGetAxis(0)<0 && menu_wait <= 0 && settings_get_color()>4)
     {
       settings_set_color(settings_get_color()-1);
@@ -451,6 +469,7 @@ int calc_menu(Uint32 steps)
           settings_save();
           nextstate = -2;
           menu_fade = -1;
+          rotating_sound_on();
           break;
         case 1: //Game Mode
           settings_set_mode((settings_get_mode()+1)%2);
@@ -464,6 +483,7 @@ int calc_menu(Uint32 steps)
         case 4: //Back
           nextstate = 0;
           menu_fade = -1;
+          rotating_sound_on();
           break;
       }
     }
@@ -480,6 +500,7 @@ int calc_menu(Uint32 steps)
       engineInput->button[BUTTON_Y] = 0;
       nextstate = 0;
       menu_fade = -1;
+      rotating_sound_on();
     }
     break;
   }
@@ -490,6 +511,7 @@ void run_menu()
 {
   menu_fade = MENUSIZE;
   menu_choice = 0;
+  rotating_sound_on();
   engineLoop(draw_menu,calc_menu,10);
 }
 
