@@ -17,27 +17,13 @@
  For feedback and questions about my Files and Projects please mail me,     
  Alexander Matthes (Ziz) , zizsdl_at_googlemail.com                         
 */
-#include "music.h"
-#include "game.h"
-#include "splashscreen.h"
+#ifndef _SPLASHSCREEN_H
+#define _SPLASHSCREEN_H
 
-int main(int argc, char **argv)
-{
-  srand(time(NULL));
-  engineSetKeymap("./font/StayPuft.ttf");
-  settings_load();
-  set_font_quality(settings_get_font_quality());
-  set_particle_mode(settings_get_alpha_blending());
-  initEngine();
-  run_splashscreen();
-  init_music();
-  refresh_lettering(engineGetWindowX(),engineGetWindowY());
-  prepare_game_objects(1,9);
-  change_music("Midnight Mediation","Nick May");
-  run_menu();
-  delete_lettering();
-  delete_game_objects();
-  quit_music();
-  quitEngine();
-  return 0;
-}
+#include <SDL.h>
+#include <SDL_image.h>
+#include "../3dengine/3dengine.h"
+
+void run_splashscreen();
+
+#endif

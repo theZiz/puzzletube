@@ -17,27 +17,24 @@
  For feedback and questions about my Files and Projects please mail me,     
  Alexander Matthes (Ziz) , zizsdl_at_googlemail.com                         
 */
-#include "music.h"
-#include "game.h"
-#include "splashscreen.h"
 
-int main(int argc, char **argv)
-{
-  srand(time(NULL));
-  engineSetKeymap("./font/StayPuft.ttf");
-  settings_load();
-  set_font_quality(settings_get_font_quality());
-  set_particle_mode(settings_get_alpha_blending());
-  initEngine();
-  run_splashscreen();
-  init_music();
-  refresh_lettering(engineGetWindowX(),engineGetWindowY());
-  prepare_game_objects(1,9);
-  change_music("Midnight Mediation","Nick May");
-  run_menu();
-  delete_lettering();
-  delete_game_objects();
-  quit_music();
-  quitEngine();
-  return 0;
-}
+#ifndef _LETTERING_H
+#define _LETTERING_H
+
+#include <SDL.h>
+#include <SDL_image.h>
+#include "../3dengine/3dengine.h"
+
+typedef struct slettering *plettering;
+typedef struct slettering {
+  char* name;
+  SDL_Surface *surface;
+  plettering next;
+} tlettering;
+
+plettering add_lettering(char* name,int windowx,int windowy);
+void refresh_lettering(int windowx,int windowy);
+void delete_lettering();
+SDL_Surface* get_lettering(char* name);
+
+#endif

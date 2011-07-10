@@ -18,11 +18,16 @@
  Alexander Matthes (Ziz) , zizsdl_at_googlemail.com                         
 */
 #include "game.h"
+#include "lettering.h"
 
 int playernumber;
 GameMode mode;
 int difficult;
 int colornumber;
+int countdown;
+int game_counter;
+
+int star_add;
 
 pmesh stone_mesh;
 pmesh stone_special_mesh;
@@ -30,7 +35,6 @@ pmesh stone_mesh_gp2x;
 pmesh stone_special_mesh_gp2x;
 //pmesh border_mesh;
 //pmesh border_thin_mesh;
-SDL_Surface *dummySurface = NULL;
 Sint32 w=0;
 
 Sint32 posx[4],posy[4];
@@ -395,9 +399,8 @@ void prepare_game_objects(char complete,int colornumber_)
     //border_mesh=loadMesh("./data/border.obj");  
     //border_thin_mesh=loadMesh("./data/border_thin.obj");  
     resize_particle(engineGetWindowX(),engineGetWindowY());
-    dummySurface = IMG_Load("./images/dummy.png");
+    init_stars();
   }
-  init_stars();
   init_light();
 }
 
@@ -624,6 +627,8 @@ void draw_particle2(int posx,int posy,Sint32 r,int time,SDL_Surface* particle)
   memcpy(modellViewMatrix,matrix,sizeof(Sint32)*16);
 }
 
+int last_rotate = 0;
+
 void draw_game(void)
 {
   Sint32* modellViewMatrix=engineGetModellViewMatrix();
@@ -637,14 +642,17 @@ void draw_game(void)
     
   Sint32 matrix[16];
   
-
   engineTranslate(0,0,-20<<ACCURACY);
 
   if (settings_get_stars_rotating()==1)
+  {
+    engineRotate(0,1<<ACCURACY,0,star_add);
     draw_stars();
+    engineRotate(0,-1<<ACCURACY,0,star_add);
+  }
 
   engineRotate(0,1<<ACCURACY,0,(-posx[0]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1));
-
+  last_rotate = (-posx[0]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1);
  
   int add=1;
   if (is_change>0)
@@ -652,18 +660,26 @@ void draw_game(void)
     if (is_change<2)
       add++;
     engineRotate(0,-1<<ACCURACY,0,((timeout<<HALF_ACCURACY-1)/TIMEOUT)*(MY_PI>>HALF_ACCURACY+add));
+    last_rotate += ((timeout<<HALF_ACCURACY-1)/TIMEOUT)*(MY_PI>>HALF_ACCURACY+add);
   }
   if (is_change<0)
   {
     if (is_change>-2)
       add++;
     engineRotate(0, 1<<ACCURACY,0,((timeout<<HALF_ACCURACY-1)/TIMEOUT)*(MY_PI>>HALF_ACCURACY+add));
+    last_rotate += ((timeout<<HALF_ACCURACY-1)/TIMEOUT)*(MY_PI>>HALF_ACCURACY+add);
   }
+  
 
   int a,y;
 
+
   if (settings_get_stars_rotating()==2)
+  {
+    engineRotate(0,1<<ACCURACY,0,star_add);
     draw_stars();
+    engineRotate(0,-1<<ACCURACY,0,star_add);
+  }
   //engineTranslate(0,mysin(w<<3)>>2,0);
 
   engineRotate(1<<ACCURACY,0,0,(mysin(w<<3)>>HALF_ACCURACY)*(MY_PI>>HALF_ACCURACY)>>5);
@@ -876,21 +892,21 @@ void draw_game(void)
     engineRotate(0,0,1<<ACCURACY,mysin(w*32)/8);
     drawMesh(border_mesh,getHSV((w*16)%(2*MY_PI),64,255));
   memcpy(modellViewMatrix,matrix,sizeof(Sint32)*16);*/
-  draw_particle(posx[0],posy[0],r,(SDL_GetTicks())%PARTICLE_SPEED,getSmallParticle());
-  draw_particle(posx[0],posy[0],r,(SDL_GetTicks()+PARTICLE_SPEED/24)%PARTICLE_SPEED,getMiddleParticle());
-  draw_particle(posx[0],posy[0],r,(SDL_GetTicks()+PARTICLE_SPEED/10)%PARTICLE_SPEED,getBigParticle());
+  draw_particle(posx[0],posy[0],r,(game_counter)%PARTICLE_SPEED,getSmallParticle());
+  draw_particle(posx[0],posy[0],r,(game_counter+PARTICLE_SPEED/24)%PARTICLE_SPEED,getMiddleParticle());
+  draw_particle(posx[0],posy[0],r,(game_counter+PARTICLE_SPEED/10)%PARTICLE_SPEED,getBigParticle());
     
-  draw_particle(posx[0],posy[0],r,(SDL_GetTicks()+PARTICLE_SPEED/4)%PARTICLE_SPEED,getSmallParticle());
-  draw_particle(posx[0],posy[0],r,(SDL_GetTicks()+PARTICLE_SPEED/4+PARTICLE_SPEED/24)%PARTICLE_SPEED,getMiddleParticle());
-  draw_particle(posx[0],posy[0],r,(SDL_GetTicks()+PARTICLE_SPEED/4+PARTICLE_SPEED/10)%PARTICLE_SPEED,getBigParticle());
+  draw_particle(posx[0],posy[0],r,(game_counter+PARTICLE_SPEED/4)%PARTICLE_SPEED,getSmallParticle());
+  draw_particle(posx[0],posy[0],r,(game_counter+PARTICLE_SPEED/4+PARTICLE_SPEED/24)%PARTICLE_SPEED,getMiddleParticle());
+  draw_particle(posx[0],posy[0],r,(game_counter+PARTICLE_SPEED/4+PARTICLE_SPEED/10)%PARTICLE_SPEED,getBigParticle());
     
-  draw_particle(posx[0],posy[0],r,(SDL_GetTicks()+PARTICLE_SPEED/2)%PARTICLE_SPEED,getSmallParticle());
-  draw_particle(posx[0],posy[0],r,(SDL_GetTicks()+PARTICLE_SPEED/2+PARTICLE_SPEED/24)%PARTICLE_SPEED,getMiddleParticle());
-  draw_particle(posx[0],posy[0],r,(SDL_GetTicks()+PARTICLE_SPEED/2+PARTICLE_SPEED/10)%PARTICLE_SPEED,getBigParticle());
+  draw_particle(posx[0],posy[0],r,(game_counter+PARTICLE_SPEED/2)%PARTICLE_SPEED,getSmallParticle());
+  draw_particle(posx[0],posy[0],r,(game_counter+PARTICLE_SPEED/2+PARTICLE_SPEED/24)%PARTICLE_SPEED,getMiddleParticle());
+  draw_particle(posx[0],posy[0],r,(game_counter+PARTICLE_SPEED/2+PARTICLE_SPEED/10)%PARTICLE_SPEED,getBigParticle());
     
-  draw_particle(posx[0],posy[0],r,(SDL_GetTicks()+3*PARTICLE_SPEED/4)%PARTICLE_SPEED,getSmallParticle());
-  draw_particle(posx[0],posy[0],r,(SDL_GetTicks()+3*PARTICLE_SPEED/4+PARTICLE_SPEED/24)%PARTICLE_SPEED,getMiddleParticle());
-  draw_particle(posx[0],posy[0],r,(SDL_GetTicks()+3*PARTICLE_SPEED/4+PARTICLE_SPEED/10)%PARTICLE_SPEED,getBigParticle());
+  draw_particle(posx[0],posy[0],r,(game_counter+3*PARTICLE_SPEED/4)%PARTICLE_SPEED,getSmallParticle());
+  draw_particle(posx[0],posy[0],r,(game_counter+3*PARTICLE_SPEED/4+PARTICLE_SPEED/24)%PARTICLE_SPEED,getMiddleParticle());
+  draw_particle(posx[0],posy[0],r,(game_counter+3*PARTICLE_SPEED/4+PARTICLE_SPEED/10)%PARTICLE_SPEED,getBigParticle());
   //engineEllipse(mycos(-(pointposx[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,pointposy[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)],mysin((pointposx[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,3<<ACCURACY-3,3<<ACCURACY-3,getHSV((w*16)%(2*MY_PI),64,255));
   engineDrawSurface(mycos(-(pointposx[(  TIMEOUT-1+pointstart+2*TIMEOUT-TIMEOUT/4)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,pointposy[(  TIMEOUT-1+pointstart+2*TIMEOUT-TIMEOUT/4)%(2*TIMEOUT)],mysin((pointposx[(  TIMEOUT-1+pointstart+2*TIMEOUT-TIMEOUT/4)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,getMiddleParticle());
   engineDrawSurface(mycos(-(pointposx[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,pointposy[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)],mysin((pointposx[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,getMiddleParticle());
@@ -901,17 +917,17 @@ void draw_game(void)
     engineRotate(0,1<<ACCURACY,0,(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1));
     drawMesh(border_thin_mesh,getHSV((w*16)%(2*MY_PI),64,255));
   memcpy(modellViewMatrix,matrix,sizeof(Sint32)*16);*/
-  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(SDL_GetTicks()+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
-  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(SDL_GetTicks()+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
 
-  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(SDL_GetTicks()+PARTICLE_SPEED2/4+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
-  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(SDL_GetTicks()+PARTICLE_SPEED2/4+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+PARTICLE_SPEED2/4+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+PARTICLE_SPEED2/4+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
 
-  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(SDL_GetTicks()+PARTICLE_SPEED2/2+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
-  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(SDL_GetTicks()+PARTICLE_SPEED2/2+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+PARTICLE_SPEED2/2+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+PARTICLE_SPEED2/2+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
 
-  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(SDL_GetTicks()+3*PARTICLE_SPEED2/4+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
-  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(SDL_GetTicks()+3*PARTICLE_SPEED2/4+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+3*PARTICLE_SPEED2/4+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+3*PARTICLE_SPEED2/4+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
 
   
   engineDrawList();
@@ -922,7 +938,14 @@ void draw_game(void)
   SDL_Surface* shown = NULL;
   
   //setting "shown"
-  shown = dummySurface;
+  if (countdown>0)
+  switch ((countdown)/1000)
+  {
+    case  3: shown = get_lettering("3"); break;
+    case  2: shown = get_lettering("2"); break;
+    case  1: shown = get_lettering("1"); break;
+    case  0: shown = get_lettering("go"); break;
+  }
   
   if (shown != NULL)
   {
@@ -969,7 +992,13 @@ void draw_game(void)
 
   SDL_BlitSurface(getTimeSurface(), &srcrect,engineGetSurface(SURFACE_SURFACE), &dstrect);
 
-  sprintf(buffer,"%i",engineGetFps());
+  drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,20*engineWindowY/32,"Select:",engineGetSurface(SURFACE_KEYMAP));
+  drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,22*engineWindowY/32,"Pause",engineGetSurface(SURFACE_KEYMAP));
+  drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,25*engineWindowY/32,"Slart:",engineGetSurface(SURFACE_KEYMAP));
+  drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,27*engineWindowY/32,"Back to Menu",engineGetSurface(SURFACE_KEYMAP));
+
+
+  sprintf(buffer,"fps: %i",engineGetFps());
   drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,15*engineWindowY/16,buffer,engineGetSurface(SURFACE_KEYMAP));
 
   draw_music();
@@ -979,7 +1008,10 @@ void draw_game(void)
 int calc_game(Uint32 steps)
 {
   if (wasResize())
+  {
     resize_particle(engineGetWindowX(),engineGetWindowY());
+    refresh_lettering(engineGetWindowX(),engineGetWindowY());
+  }
   pEngineInput engineInput = engineGetInput();
   if (engineInput->button[BUTTON_SELECT])
   {
@@ -989,6 +1021,12 @@ int calc_game(Uint32 steps)
   if (pause)
     return 0;
   calc_music(steps);
+  if (countdown>0)
+  {
+    countdown-=steps;
+    return 0;
+  }
+  game_counter+=steps;
   int i;
   for (i=0;i<steps;i++)
   {
@@ -1268,11 +1306,18 @@ int calc_game(Uint32 steps)
   return 0; 
 }
 
-void run_game(int playernumber_,GameMode mode_,int difficult_ /*0..9*/)
+int run_game(int playernumber_,GameMode mode_,int difficult_ /*0..9*/,int starAdd)
 {
+  countdown = 4000;
   playernumber = playernumber_;
   mode = mode_;
   difficult = difficult_;
   timeStep = difficult/2+2;
+  star_add = starAdd;
   engineLoop(draw_game,calc_game,10);
+  game_counter = 0;
+  if (settings_get_stars_rotating()<2)
+    return star_add;
+  else
+    return star_add + last_rotate;
 }

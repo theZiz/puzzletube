@@ -51,36 +51,37 @@ void draw_menu(void)
   switch (state)
   {
     case 0: //menu
-      engineDrawTextMXMY(0,( 10<<ACCURACY-1)+mysin(menu_counter*300+5*MY_PI/3)/4,0,"PUZZLE TUBE");
-      engineDrawTextMXMY(0,(  5<<ACCURACY-1)+mysin(menu_counter*300+4*MY_PI/3)/4,0,"Arcade");
-      engineDrawTextMXMY(0,(- 0<<ACCURACY-1)+mysin(menu_counter*300+3*MY_PI/3)/4,0,"Free Game");
-      engineDrawTextMXMY(0,(- 5<<ACCURACY-1)+mysin(menu_counter*300+2*MY_PI/3)/4,0,"Highscore");
-      engineDrawTextMXMY(0,(-10<<ACCURACY-1)+mysin(menu_counter*300+1*MY_PI/3)/4,0,"Settings");
-      engineDrawTextMXMY(0,(-15<<ACCURACY-1)+mysin(menu_counter*300+0*MY_PI/3)/4,0,"Quit");
+      engineDrawTextMXMY(0,( 10<<ACCURACY-1)+mysin(menu_counter*300+6*MY_PI*2/7)/4,0,"PUZZLE TUBE");
+      engineDrawTextMXMY(0,(  5<<ACCURACY-1)+mysin(menu_counter*300+5*MY_PI*2/7)/4,0,"Arcade");
+      engineDrawTextMXMY(0,(  1<<ACCURACY-1)+mysin(menu_counter*300+4*MY_PI*2/7)/4,0,"Free Game");
+      engineDrawTextMXMY(0,(- 3<<ACCURACY-1)+mysin(menu_counter*300+3*MY_PI*2/7)/4,0,"Highscore");
+      engineDrawTextMXMY(0,(- 7<<ACCURACY-1)+mysin(menu_counter*300+2*MY_PI*2/7)/4,0,"Settings");
+      engineDrawTextMXMY(0,(-11<<ACCURACY-1)+mysin(menu_counter*300+1*MY_PI*2/7)/4,0,"About");
+      engineDrawTextMXMY(0,(-15<<ACCURACY-1)+mysin(menu_counter*300+0*MY_PI*2/7)/4,0,"Quit");
       //Left circle
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+5*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+5*MY_PI/10)-menu_choice*5/2,0,getBigParticle());
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+3*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+3*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+2*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+2*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+1*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+1*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+0*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+0*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
+      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+5*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+5*MY_PI/10)-menu_choice*4/2,0,getBigParticle());
+      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+3*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+3*MY_PI/10)-menu_choice*4/2,0,getMiddleParticle());
+      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+2*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+2*MY_PI/10)-menu_choice*4/2,0,getMiddleParticle());
+      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+1*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+1*MY_PI/10)-menu_choice*4/2,0,getSmallParticle());
+      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+0*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+0*MY_PI/10)-menu_choice*4/2,0,getSmallParticle());
       
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+15*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+15*MY_PI/10)-menu_choice*5/2,0,getBigParticle());
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+13*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+13*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+12*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+12*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+11*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+11*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+10*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+10*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
+      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+15*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+15*MY_PI/10)-menu_choice*4/2,0,getBigParticle());
+      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+13*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+13*MY_PI/10)-menu_choice*4/2,0,getMiddleParticle());
+      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+12*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+12*MY_PI/10)-menu_choice*4/2,0,getMiddleParticle());
+      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+11*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+11*MY_PI/10)-menu_choice*4/2,0,getSmallParticle());
+      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+10*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+10*MY_PI/10)-menu_choice*4/2,0,getSmallParticle());
       //Right circle
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+5*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+5*MY_PI/10)-menu_choice*5/2,0,getBigParticle());
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+3*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+3*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+2*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+2*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+1*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+1*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+0*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+0*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
+      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+5*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+5*MY_PI/10)-menu_choice*4/2,0,getBigParticle());
+      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+3*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+3*MY_PI/10)-menu_choice*4/2,0,getMiddleParticle());
+      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+2*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+2*MY_PI/10)-menu_choice*4/2,0,getMiddleParticle());
+      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+1*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+1*MY_PI/10)-menu_choice*4/2,0,getSmallParticle());
+      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+0*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+0*MY_PI/10)-menu_choice*4/2,0,getSmallParticle());
 
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+15*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+15*MY_PI/10)-menu_choice*5/2,0,getBigParticle());
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+13*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+13*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+12*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+12*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+11*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+11*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+10*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+10*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
+      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+15*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+15*MY_PI/10)-menu_choice*4/2,0,getBigParticle());
+      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+13*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+13*MY_PI/10)-menu_choice*4/2,0,getMiddleParticle());
+      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+12*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+12*MY_PI/10)-menu_choice*4/2,0,getMiddleParticle());
+      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+11*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+11*MY_PI/10)-menu_choice*4/2,0,getSmallParticle());
+      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+10*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+10*MY_PI/10)-menu_choice*4/2,0,getSmallParticle());
       break;
     case 1: //options
       engineDrawTextMXMY(0,( 10<<ACCURACY-1)+mysin(menu_counter*300+7*MY_PI/4)/4,0,"SETTINGS");
@@ -218,6 +219,17 @@ void draw_menu(void)
 
       engineDrawTextMXMY(9<<ACCURACY,-33<<ACCURACY-2,0,"R");
       break;
+
+    case 4: //About
+      engineDrawTextMXMY(0,( 10<<ACCURACY-1)+mysin(menu_counter*300+6*MY_PI*2/7)/4,0,"ABOUT");
+      engineDrawTextMXMY(0,(  5<<ACCURACY-1)+mysin(menu_counter*300+5*MY_PI*2/7)/4,0,"Code Monkey: Ziz");
+      engineDrawTextMXMY(0,(  1<<ACCURACY-1)+mysin(menu_counter*300+4*MY_PI*2/7)/4,0,"Sound: Nick May");
+      engineDrawTextMXMY(0,(- 3<<ACCURACY-1)+mysin(menu_counter*300+3*MY_PI*2/7)/4,0,"Backers of the RIOTdigital Contest:");
+      engineDrawTextMXMY(0,(- 6<<ACCURACY-1)+mysin(menu_counter*300+2*MY_PI*2/7)/4,0,"Pandora");
+      engineDrawTextMXMY(0,(- 9<<ACCURACY-1)+mysin(menu_counter*300+1*MY_PI*2/7)/4,0,"GPH");
+      engineDrawTextMXMY(0,(-12<<ACCURACY-1)+mysin(menu_counter*300+0*MY_PI*2/7)/4,0,"DINGOO DIGITAL USA");
+      engineDrawTextMXMY(0,(-15<<ACCURACY-1)+mysin(menu_counter*300+-1*MY_PI*2/7)/4,0,"Etronixmart");
+      break;
   }
 
   engineDrawList();
@@ -255,7 +267,9 @@ int calc_menu(Uint32 steps)
       {
         case -2: //Free Game
           prepare_game_objects(0,settings_get_color());
-          run_game(1,settings_get_mode(),settings_get_difficult());
+          printf("%i\n",menu_counter);
+          menu_counter = run_game(1,settings_get_mode(),settings_get_difficult(),menu_counter*10)/10;
+          printf("%i\n",menu_counter);
           engineInput->button[BUTTON_START] = 0;
           engineInput->button[BUTTON_A] = 0;
           engineInput->button[BUTTON_B] = 0;
@@ -277,7 +291,7 @@ int calc_menu(Uint32 steps)
   switch (state)
   {
   case 0: //menu
-    if (engineGetAxis(1)<0 && menu_move==0 && (menu_choice>>ACCURACY)<4)
+    if (engineGetAxis(1)<0 && menu_move==0 && (menu_choice>>ACCURACY)<5)
       menu_move = 1;
     if (engineGetAxis(1)>0 && menu_move==0 && (menu_choice>>ACCURACY)>0)
       menu_move = -1;
@@ -315,7 +329,12 @@ int calc_menu(Uint32 steps)
           menu_fade = -1;
           rotating_sound_on();
           break;
-        case 4: // Quit
+        case 4: // About
+          nextstate = 4;
+          menu_fade = -1;
+          rotating_sound_on();
+          break;
+        case 5: // Quit
           nextstate = -4;
           menu_fade = -1;
           rotating_sound_on();
@@ -439,7 +458,7 @@ int calc_menu(Uint32 steps)
       settings_set_color(settings_get_color()-1);
       engineSetAxis(0,0);
     }
-    if (menu_move == 0 && (menu_choice>>ACCURACY) == 2 && engineGetAxis(1)>0 && menu_wait <= 0 && settings_get_color()<9)
+    if (menu_move == 0 && (menu_choice>>ACCURACY) == 2 && engineGetAxis(0)>0 && menu_wait <= 0 && settings_get_color()<9)
     {
       settings_set_color(settings_get_color()+1);
       engineSetAxis(0,0);
@@ -488,7 +507,7 @@ int calc_menu(Uint32 steps)
       }
     }
     break;
-  case 3: //high score
+  case 3: case 4: //high score, about
     if (menu_move == 0 && (engineInput->button[BUTTON_START] ||
         engineInput->button[BUTTON_A] || engineInput->button[BUTTON_B] ||
         engineInput->button[BUTTON_X] || engineInput->button[BUTTON_Y]))

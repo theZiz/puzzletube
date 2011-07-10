@@ -75,7 +75,7 @@ typedef struct sparticle {
 } tparticle;
 
 
-void run_game(int playernumber,GameMode mode,int difficult /*0..9*/);
+int run_game(int playernumber_,GameMode mode_,int difficult_ /*0..9*/,int starAdd);
 void prepare_game_objects(char complete,int colornumber_);
 void delete_game_objects();
 

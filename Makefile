@@ -28,8 +28,8 @@ SDL = `sdl-config --cflags`
 
 all: puzzletube
 
-puzzletube: puzzletube.c particle.o game.o music.o menu.o stars.o settings.o
-	$(CPP) -O3 puzzletube.c particle.o game.o music.o menu.o stars.o settings.o ../3dengine/3dengine.o ../3dengine/graphicstuff.o ../3dengine/meshloader.o ../3dengine/graphicstuff-asm.o $(SDL) $(INCLUDE) $(LIB) -lSDL_ttf -lSDL_mixer -lSDL_image -lSDL -lm  $(ORIGINALFW) -o puzzletube
+puzzletube: puzzletube.c particle.o game.o music.o menu.o stars.o settings.o lettering.o splashscreen.o
+	$(CPP) -O3 puzzletube.c particle.o game.o music.o menu.o stars.o settings.o lettering.o splashscreen.o ../3dengine/3dengine.o ../3dengine/graphicstuff.o ../3dengine/meshloader.o ../3dengine/graphicstuff-asm.o $(SDL) $(INCLUDE) $(LIB) -lSDL_ttf -lSDL_mixer -lSDL_image -lSDL -lm  $(ORIGINALFW) -o puzzletube
 
 particle.o: particle.c particle.h
 	$(CPP) -O3 -c particle.c $(SDL) $(INCLUDE)
@@ -48,6 +48,12 @@ stars.o: stars.c stars.h
 
 settings.o: settings.c settings.h
 	$(CPP) -O3 -c settings.c $(SDL) $(INCLUDE)
+
+lettering.o: lettering.c lettering.h
+	$(CPP) -O3 -c lettering.c $(SDL) $(INCLUDE)
+
+splashscreen.o: splashscreen.c splashscreen.h
+	$(CPP) -O3 -c splashscreen.c $(SDL) $(INCLUDE)
 
 clean:
 	rm *.o

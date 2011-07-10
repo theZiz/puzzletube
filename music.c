@@ -80,6 +80,9 @@ void rotating_sound_off()
 void set_volume(int volume)
 {
   volume = volume * 128 / 100;
+  Mix_HaltChannel(-1);
+  rotating_channel = -1;
+  move_channel = -1;
   Mix_VolumeMusic(volume);
   Mix_VolumeChunk(rotating_chunk,volume);
   Mix_VolumeChunk(explosion_chunk[0],volume);
@@ -87,6 +90,7 @@ void set_volume(int volume)
   Mix_VolumeChunk(explosion_chunk[2],volume);
   Mix_VolumeChunk(explosion_chunk[3],volume);
   Mix_VolumeChunk(switch_chunk,volume);
+  Mix_VolumeChunk(move_chunk,volume);
 }
 
 void play_explosion()

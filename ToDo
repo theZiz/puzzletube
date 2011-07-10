@@ -1,8 +1,14 @@
 ToDo:
-- Game Intro
 - Showing getting points
 - Free Game
 - Highscore
+- GameModes (with combinations)
+  + timeMode
+    - 3 "minutes" time => just like points but the points ARE the time and the time
+      decreased faster and faster...
+    - every time you get points, you'll get a bit more time
+  + timeMode with highscore (3 minutes)
+  - every removed stone will be a block stone
 - Special "things"
   - Combo
     + just two breaks with one move
@@ -29,16 +35,4 @@ ToDo:
     - theoreticly infinite chain reactions O_O
       - pictures up to 10 and a "HYPER CHAIN", where all stones are erased
         and new set (reaction free)
-- GameModes (with combinations)
-  + timeMode
-    - 3 "minutes" time => just like points but the points ARE the time and the time
-      decreased faster and faster...
-    - every time you get points, you'll get a bit more time
-  + timeMode with highscore (3 minutes)
-  - every removed stone will be a block stone
-- colors from 4 to 8
-- two player mode
-  - against cpu (you big tube, cpu smaller on)
-  - against human player landscape
-    - with explanation picture
 - HURRY UP! 
