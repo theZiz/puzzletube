@@ -32,6 +32,7 @@ int settings_get_volume();
 int settings_get_color();
 int settings_get_difficult();
 int settings_get_mode();
+int settings_get_highscore_choice();
 
 void settings_set_stone_quality(int value);
 void settings_set_stars_rotating(int value);
@@ -42,5 +43,10 @@ void settings_set_volume(int value);
 void settings_set_color(int value);
 void settings_set_difficult(int value);
 void settings_set_mode(int value);
+void settings_set_highscore_choice(int value);
+
+char get_highscore_name(int i,int j,int k,int l,int m);
+int get_highscore(int i,int j,int k,int l);
+void insert_highscore(int i,int j,int k,char* name,int points);
 
 #endif

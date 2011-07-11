@@ -29,6 +29,52 @@ int settings_volume;
 int settings_color;
 int settings_difficult;
 int settings_mode;
+int highscore_choice;
+
+int highscore[2][6][10][6];
+char highscore_name[2][6][10][6][3];
+
+char get_highscore_name(int i,int j,int k,int l,int m)
+{
+  return highscore_name[i][j][k][l][m];
+}
+
+int get_highscore(int i,int j,int k,int l)
+{
+  return highscore[i][j][k][l];
+}
+
+void insert_highscore(int i,int j,int k,char* name,int points)
+{
+  if (highscore[i][j][k][5] >= points)
+    return;
+  highscore_name[i][j][k][5][0]=name[0];
+  highscore_name[i][j][k][5][1]=name[1];
+  highscore_name[i][j][k][5][2]=name[2];
+  highscore[i][j][k][5]=points;
+  //sort
+  int l;
+  for (l = 5 ; l > 0; l--)
+    if (highscore[i][j][k][l] > highscore[i][j][k][l-1])
+    {
+      int points = highscore[i][j][k][l];
+      char c1 = highscore_name[i][j][k][l][0];
+      char c2 = highscore_name[i][j][k][l][1];
+      char c3 = highscore_name[i][j][k][l][2];
+      
+      highscore[i][j][k][l] = highscore[i][j][k][l-1];
+      highscore_name[i][j][k][l][0] = highscore_name[i][j][k][l-1][0];
+      highscore_name[i][j][k][l][1] = highscore_name[i][j][k][l-1][1];
+      highscore_name[i][j][k][l][2] = highscore_name[i][j][k][l-1][2];
+      
+      highscore[i][j][k][l-1] = points;
+      highscore_name[i][j][k][l-1][0] = c1;
+      highscore_name[i][j][k][l-1][1] = c2;
+      highscore_name[i][j][k][l-1][2] = c3;
+    }
+    else
+      break;
+}
 
 void settings_load()
 {
@@ -46,6 +92,7 @@ void settings_load()
   settings_color = 4;
   settings_difficult = 0;
   settings_mode = 0; //highscore
+  highscore_choice = 0;
   SDL_RWops *file=SDL_RWFromFile("./settings.dat","rb");
   if (file == NULL)
     return;
@@ -58,6 +105,28 @@ void settings_load()
   SDL_RWread(file,&settings_color,sizeof(int),1);
   SDL_RWread(file,&settings_difficult,sizeof(int),1);
   SDL_RWread(file,&settings_mode,sizeof(int),1);
+  SDL_RWread(file,&highscore_choice,sizeof(int),1);
+  SDL_RWclose(file);
+}
+
+void highscore_load()
+{
+  memset(highscore,0,2*6*10*6*sizeof(int));
+  int i,j,k,l;
+  for (i = 0; i < 2; i++)
+    for (j = 0; j < 6; j++)
+      for (k = 0; k < 10; k++)
+        for (l = 0; l < 6; l++)
+        {
+          highscore_name[i][j][k][l][0]='Z';
+          highscore_name[i][j][k][l][1]='I';
+          highscore_name[i][j][k][l][2]='Z';
+        }
+  SDL_RWops *file=SDL_RWFromFile("./highscore.dat","rb");
+  if (file == NULL)
+    return;
+  SDL_RWread(file,highscore,2*6*10*6*sizeof(int),1);
+  SDL_RWread(file,highscore_name,2*6*10*6*3,1);
   SDL_RWclose(file);
 }
 
@@ -72,7 +141,15 @@ void settings_save()
   SDL_RWwrite(file,&settings_volume,sizeof(int),1);
   SDL_RWwrite(file,&settings_color,sizeof(int),1);
   SDL_RWwrite(file,&settings_difficult,sizeof(int),1);
-  SDL_RWwrite(file,&settings_mode,sizeof(int),1);
+  SDL_RWwrite(file,&highscore_choice,sizeof(int),1);
+  SDL_RWclose(file);
+}
+
+void highscore_save()
+{
+  SDL_RWops *file=SDL_RWFromFile("./highscore.dat","wb");
+  SDL_RWwrite(file,highscore,2*6*10*6*sizeof(int),1);
+  SDL_RWwrite(file,highscore_name,2*6*10*6*3,1);
   SDL_RWclose(file);
 }
 
@@ -164,4 +241,14 @@ void settings_set_difficult(int value)
 void settings_set_mode(int value)
 {
   settings_mode = value;
+}
+
+void settings_set_highscore_choice(int value)
+{
+  highscore_choice = value;
+}
+
+int settings_get_highscore_choice()
+{
+  return highscore_choice;
 }

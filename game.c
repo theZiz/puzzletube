@@ -52,6 +52,10 @@ int gameTime;
 int timeStep;
 int realTime;
 
+#define MAX_LETTERING 2000
+SDL_Surface* momLettering;
+int letteringTimeOut;
+
 #define START_TIME 180000
 
 pchange firstchange;
@@ -62,6 +66,69 @@ char pause=0;
 int chain;
 int chain_break;
 int oldchain;
+
+typedef struct sPointVis *pPointVis;
+typedef struct sPointVis {
+  int points;
+  int age;
+  pPointVis next;
+} tPointVis;
+
+pPointVis first_pointVis;
+
+void add_pointVis(int p)
+{
+  pPointVis mom = (pPointVis)malloc(sizeof(tPointVis));
+  mom->points = p;
+  mom->age = 0;
+  mom->next = first_pointVis;
+  first_pointVis = mom;
+}
+
+#define POINTAGE 4000
+
+char name[4]="AAA";
+char insert_name;
+int selected_letter;
+
+void calc_pointVis(int steps)
+{
+  pPointVis mom = first_pointVis;
+  pPointVis last = NULL;
+  while (mom)
+  {
+    mom->age += steps;
+    if (mom->age > POINTAGE)
+    {
+      pPointVis next = mom->next;
+      free(mom);
+      if (last)
+        last->next = next;
+      else
+        first_pointVis = next;
+      mom = next;
+    }
+    last = mom;
+    if (mom)
+      mom = mom -> next;
+  }
+}
+
+void delete_pointVis()
+{
+  while (first_pointVis)
+  {
+    pPointVis next = first_pointVis -> next;
+    free(first_pointVis);
+    first_pointVis = next;
+  }
+}
+
+void show_lettering(char* name)
+{
+  momLettering = get_lettering(name);
+  letteringTimeOut = MAX_LETTERING;
+}
 
 void test_and_set_chain()
 {
@@ -511,6 +578,7 @@ pchange is_in_change(int x,int y)
 
 void make_win_situations_invalid()
 {
+  int new_points = 0;
   pwinsituation situation;
   char found = 0;
   char type_found[12];
@@ -552,32 +620,58 @@ void make_win_situations_invalid()
       printf("%i:%i\n",temp->x,temp->y);
       temp=temp->next; 
     }
-    printf("You broke %i Stones - ",i);
       if (i<7)
-        printf("\n");
+        {}
       else
       if (i<9)
-        printf("well\n");
+        show_lettering("well");
       else
       if (i<12)
-        printf("great\n");
+        show_lettering("great");
       else
       if (i<16)
-        printf("fantastic\n");
+        show_lettering("fantastic");
       else
       if (i<20)
-        printf("incredible\n");
+        show_lettering("incredible");
       else
-        printf("supercalifragilisticexpialidocious\n");
-    delete_win_situation(situation);
-    if (count>0)
-      printf("count: %i (combo if >1)\n",count);
+        show_lettering("supercalifragilisticexpialidocious");
+      if (i>0)
+        new_points = (int)(pow((float)(i),1.5)*100.0);
+      delete_win_situation(situation);
+      if (count>1)
+      {
+        show_lettering("combo");
+        new_points*=3;
+      }
   }
   if (found)
   {
     chain++;
     chain_break=100;
-    printf("Chain %i\n",chain);
+    if (chain>1)
+    {
+      switch (chain)
+      {
+        case 2: show_lettering("chain");break;
+        case 3: show_lettering("chain_2x"); break;
+        case 4: show_lettering("chain_3x"); break;
+        case 5: show_lettering("chain_4x"); break;
+        case 6: show_lettering("chain_5x"); break;
+        default: show_lettering("hyper_chain"); break;
+      }
+      new_points = new_points * 3 / 2;
+    }
+    if (new_points>0)
+      add_pointVis(new_points);
+    if (mode & timeMode)
+    {
+      gameTime += new_points;
+      if (gameTime > START_TIME)
+        gameTime = START_TIME;
+    }
+    else
+      points += new_points;
   }
 }
 
@@ -936,16 +1030,32 @@ void draw_game(void)
   SDL_Rect srcrect;
   //HUD on the left side
   SDL_Surface* shown = NULL;
-  
+
   //setting "shown"
   if (countdown>0)
-  switch ((countdown)/1000)
+    switch ((countdown)/1000)
+    {
+      case  3: shown = get_lettering("3"); break;
+      case  2: shown = get_lettering("2"); break;
+      case  1: shown = get_lettering("1"); break;
+      case  0: shown = get_lettering("go"); break;
+    }
+  else
   {
-    case  3: shown = get_lettering("3"); break;
-    case  2: shown = get_lettering("2"); break;
-    case  1: shown = get_lettering("1"); break;
-    case  0: shown = get_lettering("go"); break;
+    if ((mode & timeMode) && gameTime<START_TIME/5 && momLettering == NULL)
+      shown = get_lettering("hurry_up");
+    else
+      shown = momLettering;
   }
+
+  //Name
+  if (insert_name)
+  {
+    drawtextMX(engineGetSurface(SURFACE_SURFACE),engineWindowX/7, 9*engineWindowY/20,"Name:",engineGetSurface(SURFACE_KEYMAP));
+    drawtextMX(engineGetSurface(SURFACE_SURFACE),engineWindowX/7,11*engineWindowY/20,name,engineGetSurface(SURFACE_KEYMAP));    
+    shown = NULL;
+  }
+
   
   if (shown != NULL)
   {
@@ -959,6 +1069,18 @@ void draw_game(void)
       srcrect.h=dstrect.h;
 
       SDL_BlitSurface(shown, &srcrect,engineGetSurface(SURFACE_SURFACE), &dstrect);
+  }
+  
+  //pointVis
+  
+  pPointVis mom = first_pointVis;
+  while (mom)
+  {
+    int y = mom->age*engineWindowY / (POINTAGE-50);
+    char buffer[32];
+    sprintf(buffer,"+%i",mom->points);
+    drawtextMX(engineGetSurface(SURFACE_SURFACE),engineWindowX/2,engineWindowY/2-y,buffer,engineGetSurface(SURFACE_KEYMAP));
+    mom = mom->next;
   }
   
   //HUD on the right side
@@ -998,7 +1120,7 @@ void draw_game(void)
   drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,27*engineWindowY/32,"Back to Menu",engineGetSurface(SURFACE_KEYMAP));
 
 
-  sprintf(buffer,"fps: %i",engineGetFps());
+  sprintf(buffer,"FPS: %i",engineGetFps());
   drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,15*engineWindowY/16,buffer,engineGetSurface(SURFACE_KEYMAP));
 
   draw_music();
@@ -1018,6 +1140,42 @@ int calc_game(Uint32 steps)
     pause=!pause;
     engineInput->button[BUTTON_SELECT]=0;
   }
+  
+  if (insert_name)
+  {
+    if (engineGetAxis(0)>0)
+    {
+      selected_letter = (selected_letter+1)%3;
+      engineSetAxis(0,0);
+    }
+    if (engineGetAxis(0)<0)
+    {
+      selected_letter = (selected_letter+2)%3;
+      engineSetAxis(0,0);
+    }
+    if (engineGetAxis(1)>0)
+    {
+      name[selected_letter] = (name[selected_letter]-'A' +25)%26+'A';
+      engineSetAxis(1,0);
+    }
+    if (engineGetAxis(1)<0)
+    {
+      name[selected_letter] = (name[selected_letter]-'A' +1)%26+'A';
+      engineSetAxis(1,0);
+    }
+    
+    if (engineInput->button[BUTTON_START])
+    {
+      if (mode & timeMode)
+        insert_highscore(mode,colornumber-4,difficult,name,realTime);
+      else
+        insert_highscore(mode,colornumber-4,difficult,name,points);
+      highscore_save();
+      return 1;
+    }
+    return 0;
+  }
+  
   if (pause)
     return 0;
   calc_music(steps);
@@ -1026,6 +1184,11 @@ int calc_game(Uint32 steps)
     countdown-=steps;
     return 0;
   }
+  if (letteringTimeOut>0)
+    letteringTimeOut -= steps;
+  else
+    momLettering = NULL;
+  calc_pointVis(steps);
   game_counter+=steps;
   int i;
   for (i=0;i<steps;i++)
@@ -1038,7 +1201,15 @@ int calc_game(Uint32 steps)
     }
     gameTime -= timeStep;
     if (gameTime<=0)
-      return 1;
+    {
+      move_sound_off();
+      rotating_sound_off();
+      if (((mode & timeMode) && realTime > get_highscore(mode,colornumber-4,difficult,5)) ||
+          (((mode & timeMode)==0) && points > get_highscore(mode,colornumber-4,difficult,5)))
+        insert_name = 1;      
+      else
+        return 1;
+    }
 
     test_and_set_chain();
     step_changes();
@@ -1314,7 +1485,21 @@ int run_game(int playernumber_,GameMode mode_,int difficult_ /*0..9*/,int starAd
   difficult = difficult_;
   timeStep = difficult/2+2;
   star_add = starAdd;
+  first_pointVis = NULL;
+  insert_name = 0;
+  selected_letter = 0;
+  
+  switch (rand()%4)
+  {
+    case 0: change_music("Midnight Mediation","Nick May"); break;
+    case 1: change_music("Cosmic Conundrum","Nick May"); break;
+    case 2: change_music("Energetic Enigma","Nick May"); break;
+    case 3: change_music("Impossible Paradox","Nick May"); break;
+  }
+  
   engineLoop(draw_game,calc_game,10);
+  
+  delete_pointVis();
   game_counter = 0;
   if (settings_get_stars_rotating()<2)
     return star_add;

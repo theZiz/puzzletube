@@ -19,6 +19,7 @@
 */
 #include "menu.h"
 #include "game.h"
+#include "settings.h"
 
 #define MENUSIZE 1200
 
@@ -47,41 +48,44 @@ void draw_menu(void)
   setModellViewMatrixIdentity();
   engineTranslate(0,0,-20<<ACCURACY);
   engineTranslate(menu_fade<<ACCURACY-6,0,0);
-  
+  int mode;
+  int colors;
+  int difficult;
+  int i;
   switch (state)
   {
     case 0: //menu
       engineDrawTextMXMY(0,( 10<<ACCURACY-1)+mysin(menu_counter*300+6*MY_PI*2/7)/4,0,"PUZZLE TUBE");
-      engineDrawTextMXMY(0,(  5<<ACCURACY-1)+mysin(menu_counter*300+5*MY_PI*2/7)/4,0,"Arcade");
-      engineDrawTextMXMY(0,(  1<<ACCURACY-1)+mysin(menu_counter*300+4*MY_PI*2/7)/4,0,"Free Game");
-      engineDrawTextMXMY(0,(- 3<<ACCURACY-1)+mysin(menu_counter*300+3*MY_PI*2/7)/4,0,"Highscore");
-      engineDrawTextMXMY(0,(- 7<<ACCURACY-1)+mysin(menu_counter*300+2*MY_PI*2/7)/4,0,"Settings");
-      engineDrawTextMXMY(0,(-11<<ACCURACY-1)+mysin(menu_counter*300+1*MY_PI*2/7)/4,0,"About");
+      //engineDrawTextMXMY(0,(  5<<ACCURACY-1)+mysin(menu_counter*300+5*MY_PI*2/7)/4,0,"Arcade");
+      engineDrawTextMXMY(0,(  5<<ACCURACY-1)+mysin(menu_counter*300+4*MY_PI*2/7)/4,0,"Free Game");
+      engineDrawTextMXMY(0,(  0<<ACCURACY-1)+mysin(menu_counter*300+3*MY_PI*2/7)/4,0,"Highscore");
+      engineDrawTextMXMY(0,(- 5<<ACCURACY-1)+mysin(menu_counter*300+2*MY_PI*2/7)/4,0,"Settings");
+      engineDrawTextMXMY(0,(-10<<ACCURACY-1)+mysin(menu_counter*300+1*MY_PI*2/7)/4,0,"About");
       engineDrawTextMXMY(0,(-15<<ACCURACY-1)+mysin(menu_counter*300+0*MY_PI*2/7)/4,0,"Quit");
       //Left circle
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+5*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+5*MY_PI/10)-menu_choice*4/2,0,getBigParticle());
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+3*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+3*MY_PI/10)-menu_choice*4/2,0,getMiddleParticle());
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+2*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+2*MY_PI/10)-menu_choice*4/2,0,getMiddleParticle());
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+1*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+1*MY_PI/10)-menu_choice*4/2,0,getSmallParticle());
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+0*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+0*MY_PI/10)-menu_choice*4/2,0,getSmallParticle());
+      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+5*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+5*MY_PI/10)-menu_choice*5/2,0,getBigParticle());
+      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+3*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+3*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
+      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+2*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+2*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
+      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+1*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+1*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
+      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+0*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+0*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
       
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+15*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+15*MY_PI/10)-menu_choice*4/2,0,getBigParticle());
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+13*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+13*MY_PI/10)-menu_choice*4/2,0,getMiddleParticle());
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+12*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+12*MY_PI/10)-menu_choice*4/2,0,getMiddleParticle());
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+11*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+11*MY_PI/10)-menu_choice*4/2,0,getSmallParticle());
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+10*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+10*MY_PI/10)-menu_choice*4/2,0,getSmallParticle());
+      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+15*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+15*MY_PI/10)-menu_choice*5/2,0,getBigParticle());
+      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+13*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+13*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
+      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+12*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+12*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
+      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+11*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+11*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
+      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+10*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+10*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
       //Right circle
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+5*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+5*MY_PI/10)-menu_choice*4/2,0,getBigParticle());
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+3*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+3*MY_PI/10)-menu_choice*4/2,0,getMiddleParticle());
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+2*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+2*MY_PI/10)-menu_choice*4/2,0,getMiddleParticle());
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+1*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+1*MY_PI/10)-menu_choice*4/2,0,getSmallParticle());
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+0*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+0*MY_PI/10)-menu_choice*4/2,0,getSmallParticle());
+      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+5*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+5*MY_PI/10)-menu_choice*5/2,0,getBigParticle());
+      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+3*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+3*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
+      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+2*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+2*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
+      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+1*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+1*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
+      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+0*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+0*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
 
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+15*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+15*MY_PI/10)-menu_choice*4/2,0,getBigParticle());
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+13*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+13*MY_PI/10)-menu_choice*4/2,0,getMiddleParticle());
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+12*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+12*MY_PI/10)-menu_choice*4/2,0,getMiddleParticle());
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+11*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+11*MY_PI/10)-menu_choice*4/2,0,getSmallParticle());
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+10*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+10*MY_PI/10)-menu_choice*4/2,0,getSmallParticle());
+      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+15*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+15*MY_PI/10)-menu_choice*5/2,0,getBigParticle());
+      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+13*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+13*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
+      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+12*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+12*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
+      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+11*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+11*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
+      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+10*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+10*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
       break;
     case 1: //options
       engineDrawTextMXMY(0,( 10<<ACCURACY-1)+mysin(menu_counter*300+7*MY_PI/4)/4,0,"SETTINGS");
@@ -179,15 +183,28 @@ void draw_menu(void)
       engineDrawSurface(( 8<<ACCURACY)-mycos(menu_counter*700+10*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+10*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
       break;
     case 3: //High Score
+      mode = settings_get_highscore_choice()%2;
+      colors = (settings_get_highscore_choice()/2)%6;
+      difficult = (settings_get_highscore_choice()/12);
       engineDrawTextMXMY(0,( 10<<ACCURACY-1)+mysin(menu_counter*300+6*MY_PI*2/7)/4,0,"HIGHSCORE");
-      engineDrawTextMXMY(0,(  5<<ACCURACY-1)+mysin(menu_counter*300+5*MY_PI*2/7)/4,0,"Zaz - 1.000.000");
-      engineDrawTextMXMY(0,(  2<<ACCURACY-1)+mysin(menu_counter*300+4*MY_PI*2/7)/4,0,"Zez - 500.000");
-      engineDrawTextMXMY(0,(- 1<<ACCURACY-1)+mysin(menu_counter*300+3*MY_PI*2/7)/4,0,"Ziz - 250.000");
-      engineDrawTextMXMY(0,(- 4<<ACCURACY-1)+mysin(menu_counter*300+2*MY_PI*2/7)/4,0,"Zoz - 125.000");
-      engineDrawTextMXMY(0,(- 7<<ACCURACY-1)+mysin(menu_counter*300+1*MY_PI*2/7)/4,0,"Zuz - 62.500");
-      engineDrawTextMXMY(0,(-10<<ACCURACY-1)+mysin(menu_counter*300+0*MY_PI*2/7)/4,0,"Zyz - 62.500");
-      engineDrawTextMXMY(0,(-15<<ACCURACY-1)+mysin(menu_counter*300+-1*MY_PI*2/7)/4,0,"Time Stole - Difficulty 0");
-      engineDrawTextMXMY(0,(-18<<ACCURACY-1)+mysin(menu_counter*300+-2*MY_PI*2/7)/4,0,"4 different stones");
+      for (i = 0; i < 6; i++)
+      {
+        if (mode & timeMode)
+          sprintf(buffer,"%c%c%c - %i ms",get_highscore_name(mode,colors,difficult,i,0),
+            get_highscore_name(mode,colors,difficult,i,1),get_highscore_name(mode,colors,difficult,i,2),get_highscore(mode,colors,difficult,i));
+        else
+          sprintf(buffer,"%c%c%c - %i",get_highscore_name(mode,colors,difficult,i,0),
+            get_highscore_name(mode,colors,difficult,i,1),get_highscore_name(mode,colors,difficult,i,2),get_highscore(mode,colors,difficult,i));        
+        engineDrawTextMXMY(0,(  (5-3*i)<<ACCURACY-1)+mysin(menu_counter*300+(5-i)*MY_PI*2/7)/4,0,buffer);
+      }
+      
+      if (mode & timeMode)
+        sprintf(buffer,"Time Stole - Difficulty %i",difficult);
+      else
+        sprintf(buffer,"Points - Difficulty %i",difficult);
+      engineDrawTextMXMY(0,(-15<<ACCURACY-1)+mysin(menu_counter*300+-1*MY_PI*2/7)/4,0,buffer);
+      sprintf(buffer,"%i different stones",colors+4);
+      engineDrawTextMXMY(0,(-18<<ACCURACY-1)+mysin(menu_counter*300+-2*MY_PI*2/7)/4,0,buffer);
 
       //Left circle
       engineDrawSurface((-9<<ACCURACY)+mycos(menu_counter*700+5*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+5*MY_PI/10)-(21<<ACCURACY-1),0,getBigParticle());
@@ -267,16 +284,15 @@ int calc_menu(Uint32 steps)
       {
         case -2: //Free Game
           prepare_game_objects(0,settings_get_color());
-          printf("%i\n",menu_counter);
+          rotating_sound_off();
+          settings_save();
           menu_counter = run_game(1,settings_get_mode(),settings_get_difficult(),menu_counter*10)/10;
-          printf("%i\n",menu_counter);
           engineInput->button[BUTTON_START] = 0;
           engineInput->button[BUTTON_A] = 0;
           engineInput->button[BUTTON_B] = 0;
           engineInput->button[BUTTON_X] = 0;
           engineInput->button[BUTTON_Y] = 0;
           state = 0;
-          rotating_sound_off();
           break;
         case -4:
           rotating_sound_off();
@@ -291,7 +307,7 @@ int calc_menu(Uint32 steps)
   switch (state)
   {
   case 0: //menu
-    if (engineGetAxis(1)<0 && menu_move==0 && (menu_choice>>ACCURACY)<5)
+    if (engineGetAxis(1)<0 && menu_move==0 && (menu_choice>>ACCURACY)<4)
       menu_move = 1;
     if (engineGetAxis(1)>0 && menu_move==0 && (menu_choice>>ACCURACY)>0)
       menu_move = -1;
@@ -314,27 +330,27 @@ int calc_menu(Uint32 steps)
     {
       switch (menu_choice>>ACCURACY)
       {
-        case 1: // Free Game
+        case 0: // Free Game
           nextstate = 2;
           menu_fade = -1;
           rotating_sound_on();
           break;
-        case 2: // Highscore
+        case 1: // Highscore
           nextstate = 3;
           menu_fade = -1;
           rotating_sound_on();
           break;
-        case 3: // Options
+        case 2: // Options
           nextstate = 1;
           menu_fade = -1;
           rotating_sound_on();
           break;
-        case 4: // About
+        case 3: // About
           nextstate = 4;
           menu_fade = -1;
           rotating_sound_on();
           break;
-        case 5: // Quit
+        case 4: // Quit
           nextstate = -4;
           menu_fade = -1;
           rotating_sound_on();
@@ -507,10 +523,41 @@ int calc_menu(Uint32 steps)
       }
     }
     break;
-  case 3: case 4: //high score, about
-    if (menu_move == 0 && (engineInput->button[BUTTON_START] ||
+  case 3: //high score
+    if (engineInput->button[BUTTON_START] ||
         engineInput->button[BUTTON_A] || engineInput->button[BUTTON_B] ||
-        engineInput->button[BUTTON_X] || engineInput->button[BUTTON_Y]))
+        engineInput->button[BUTTON_X] || engineInput->button[BUTTON_Y])
+    {
+      engineInput->button[BUTTON_START] = 0;
+      engineInput->button[BUTTON_A] = 0;
+      engineInput->button[BUTTON_B] = 0;
+      engineInput->button[BUTTON_X] = 0;
+      engineInput->button[BUTTON_Y] = 0;
+      nextstate = 0;
+      menu_fade = -1;
+      rotating_sound_on();
+    }
+    for (i = 0;i < steps;i++)
+    {
+      menu_wait--;
+      if (engineInput->button[BUTTON_L] && menu_wait <= 0)
+      {
+        settings_set_highscore_choice((settings_get_highscore_choice()+6*10*2-1)%(6*10*2));
+        settings_save();
+        menu_wait = 100;
+      }
+      if (engineInput->button[BUTTON_R] && menu_wait <= 0)
+      {
+        settings_set_highscore_choice((settings_get_highscore_choice()+1)%(6*10*2));
+        settings_save();
+        menu_wait = 100;
+      }
+    }
+    break;
+  case 4: //about
+    if (engineInput->button[BUTTON_START] ||
+        engineInput->button[BUTTON_A] || engineInput->button[BUTTON_B] ||
+        engineInput->button[BUTTON_X] || engineInput->button[BUTTON_Y])
     {
       engineInput->button[BUTTON_START] = 0;
       engineInput->button[BUTTON_A] = 0;

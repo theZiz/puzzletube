@@ -48,6 +48,19 @@ void refresh_lettering(int windowx,int windowy)
   add_lettering("2",windowx,windowy);
   add_lettering("3",windowx,windowy);
   add_lettering("go",windowx,windowy);
+  add_lettering("chain",windowx,windowy);
+  add_lettering("chain_2x",windowx,windowy);
+  add_lettering("chain_3x",windowx,windowy);
+  add_lettering("chain_4x",windowx,windowy);
+  add_lettering("chain_5x",windowx,windowy);
+  add_lettering("hyper_chain",windowx,windowy);
+  add_lettering("combo",windowx,windowy);
+  add_lettering("well",windowx,windowy);
+  add_lettering("great",windowx,windowy);
+  add_lettering("fantastic",windowx,windowy);
+  add_lettering("incredible",windowx,windowy);
+  add_lettering("supercalifragilisticexpialidocious",windowx,windowy);
+  add_lettering("hurry_up",windowx,windowy);
 }
 
 void delete_lettering()
