@@ -28,9 +28,12 @@ Mix_Chunk *move_chunk,*rotating_chunk,*switch_chunk;
 Mix_Chunk *explosion_chunk[4];
 int rotating_channel;
 int move_channel;
+char audio_failed;
 
 void init_music()
 {
+  musicName[0]=0;
+  music = NULL; 
   printf("Try to open Audio...\n");
   if (!
   #ifdef REALGP2X
@@ -38,31 +41,53 @@ void init_music()
   #else
     Mix_OpenAudio(44100,AUDIO_S16SYS,2,2048)
   #endif
-  ) printf("Success\n");
+  )
+  {
+    printf("Success\n");
+    audio_failed = 0;
+  }
   else
+  {
     printf("Failed\n");
-  musicName[0]=0;
-  music = NULL; 
+    audio_failed = 1;
+    move_chunk = NULL;
+    rotating_chunk = NULL;
+    explosion_chunk[0] = NULL;
+    explosion_chunk[1] = NULL;
+    explosion_chunk[2] = NULL;
+    explosion_chunk[3] = NULL;
+    switch_chunk = NULL;
+    return;
+  }
   move_chunk = Mix_LoadWAV("./sounds/Vertical Movement.ogg");
-  printf("Try to load Sound. Error \"%s\". Empty is good ;-)\n", Mix_GetError());
+  if (!move_chunk)
+    printf("Failed load \"./sounds/Vertical Movement.ogg\"\n  Error: \"%s\"\n", Mix_GetError());
   move_channel = -1;
   rotating_chunk = Mix_LoadWAV("./sounds/Rotating.ogg");
-  printf("Try to load Sound. Error \"%s\". Empty is good ;-)\n", Mix_GetError());
+  if (!rotating_chunk)
+    printf("Failed load \"./sounds/Rotating.ogg\"\n  Error: \"%s\"\n", Mix_GetError());
   rotating_channel = -1;
   explosion_chunk[0] = Mix_LoadWAV("./sounds/Explosion1.ogg");
-  printf("Try to load Sound. Error \"%s\". Empty is good ;-)\n", Mix_GetError());
+  if (!explosion_chunk[0])
+    printf("Failed load \"./sounds/Explosion1.ogg\"\n  Error: \"%s\"\n", Mix_GetError());
   explosion_chunk[1] = Mix_LoadWAV("./sounds/Explosion2.ogg");
-  printf("Try to load Sound. Error \"%s\". Empty is good ;-)\n", Mix_GetError());
+  if (!explosion_chunk[1])
+    printf("Failed load \"./sounds/Explosion1.ogg\"\n  Error: \"%s\"\n", Mix_GetError());
   explosion_chunk[2] = Mix_LoadWAV("./sounds/Explosion3.ogg");
-  printf("Try to load Sound. Error \"%s\". Empty is good ;-)\n", Mix_GetError());
+  if (!explosion_chunk[2])
+    printf("Failed load \"./sounds/Explosion1.ogg\"\n  Error: \"%s\"\n", Mix_GetError());
   explosion_chunk[3] = Mix_LoadWAV("./sounds/Explosion4.ogg");
-  printf("Try to load Sound. Error \"%s\". Empty is good ;-)\n", Mix_GetError());
+  if (!explosion_chunk[3])
+    printf("Failed load \"./sounds/Explosion1.ogg\"\n  Error: \"%s\"\n", Mix_GetError());
   switch_chunk = Mix_LoadWAV("./sounds/Tile Switch.ogg");
-  printf("Try to load Sound. Error \"%s\". Empty is good ;-)\n", Mix_GetError());
+  if (!switch_chunk)
+    printf("Failed load \"./sounds/Tile Switch.ogg\"\n  Error: \"%s\"\n", Mix_GetError());
 }
 
 void move_sound_on()
 {
+  if (!move_chunk)
+    return;
   if (move_channel < 0)
     move_channel = Mix_PlayChannel(-1,move_chunk,-1);
   else
@@ -77,6 +102,8 @@ void move_sound_off()
 
 void rotating_sound_on()
 {
+  if (!rotating_chunk)
+    return;
   if (rotating_channel < 0)
     rotating_channel = Mix_PlayChannel(-1,rotating_chunk,-1);
   else
@@ -92,27 +119,40 @@ void rotating_sound_off()
 void set_volume(int volume)
 {
   volume = volume * 128 / 100;
+  if (audio_failed)
+    return;
   Mix_HaltChannel(-1);
   rotating_channel = -1;
   move_channel = -1;
   Mix_VolumeMusic(volume);
-  Mix_VolumeChunk(rotating_chunk,volume);
-  Mix_VolumeChunk(explosion_chunk[0],volume);
-  Mix_VolumeChunk(explosion_chunk[1],volume);
-  Mix_VolumeChunk(explosion_chunk[2],volume);
-  Mix_VolumeChunk(explosion_chunk[3],volume);
-  Mix_VolumeChunk(switch_chunk,volume);
-  Mix_VolumeChunk(move_chunk,volume);
+  if (rotating_chunk)
+    Mix_VolumeChunk(rotating_chunk,volume);
+  if (explosion_chunk[0])    
+    Mix_VolumeChunk(explosion_chunk[0],volume);
+  if (explosion_chunk[1])    
+    Mix_VolumeChunk(explosion_chunk[1],volume);
+  if (explosion_chunk[2])    
+    Mix_VolumeChunk(explosion_chunk[2],volume);
+  if (explosion_chunk[3])    
+    Mix_VolumeChunk(explosion_chunk[3],volume);
+  if (switch_chunk)    
+    Mix_VolumeChunk(switch_chunk,volume);
+  if (move_chunk)    
+    Mix_VolumeChunk(move_chunk,volume);
 }
 
 void play_explosion()
 {
   int number = rand()%4;
-    Mix_PlayChannel(-1,explosion_chunk[number],0);
+  if (!explosion_chunk[number])
+    return;
+  Mix_PlayChannel(-1,explosion_chunk[number],0);
 }
 
 void play_switch()
 {
+  if (!switch_chunk)
+    return;
   Mix_PlayChannel(-1,switch_chunk,0);
 }
 
@@ -127,6 +167,8 @@ void change_music(char* name,char* author)
   sprintf(musicAuthor,"%s",author);
   char buffer[512];
   sprintf(buffer,"./sounds/%s.ogg",name);
+  if (audio_failed)
+    return;
   music = Mix_LoadMUS(buffer);
   Mix_PlayMusic(music,-1);
   set_volume(settings_get_volume());
@@ -189,6 +231,8 @@ void quit_music()
   Mix_FreeChunk(explosion_chunk[2]);
   Mix_FreeChunk(explosion_chunk[3]);
   Mix_FreeChunk(switch_chunk);
+  if (audio_failed)
+    return;
   Mix_CloseAudio();
 }
 
