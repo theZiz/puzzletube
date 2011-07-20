@@ -20,8 +20,8 @@
 #ifndef _GAME_H
 #define _GAME_H
 
-#include "../3dengine/3dengine.h"
-#include "../3dengine/meshloader.h"
+#include "../sparrow3d/3dengine.h"
+#include "../sparrow3d/meshloader.h"
 #include "particle.h"
 #include "stars.h"
 

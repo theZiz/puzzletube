@@ -17,7 +17,7 @@
  For feedback and questions about my Files and Projects please mail me,     
  Alexander Matthes (Ziz) , zizsdl_at_googlemail.com                         
 */
-#include "../3dengine/3dengine.h"
+#include "../sparrow3d/3dengine.h"
 #include "particle.h"
 #include "stars.h"
 

@@ -23,7 +23,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
-#include "../3dengine/3dengine.h"
+#include "../sparrow3d/3dengine.h"
 
 typedef struct slettering *plettering;
 typedef struct slettering {
