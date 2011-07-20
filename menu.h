@@ -20,7 +20,7 @@
 #ifndef _MENU_H
 #define _MENU_H
 
-#include "../3dengine/3dengine.h"
+#include "../sparrow3d/3dengine.h"
 #include "particle.h"
 
 void run_menu();

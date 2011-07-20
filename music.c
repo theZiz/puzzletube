@@ -31,22 +31,34 @@ int move_channel;
 
 void init_music()
 {
+  printf("Try to open Audio...\n");
+  if (!
   #ifdef REALGP2X
-    Mix_OpenAudio(44100,AUDIO_S16SYS,2,256);
+    Mix_OpenAudio(44100,AUDIO_S16SYS,2,256)
   #else
-    Mix_OpenAudio(44100,AUDIO_S16SYS,2,2048);
+    Mix_OpenAudio(44100,AUDIO_S16SYS,2,2048)
   #endif
+  ) printf("Success\n");
+  else
+    printf("Failed\n");
   musicName[0]=0;
   music = NULL; 
   move_chunk = Mix_LoadWAV("./sounds/Vertical Movement.ogg");
+  printf("Try to load Sound. Error \"%s\". Empty is good ;-)\n", Mix_GetError());
   move_channel = -1;
   rotating_chunk = Mix_LoadWAV("./sounds/Rotating.ogg");
+  printf("Try to load Sound. Error \"%s\". Empty is good ;-)\n", Mix_GetError());
   rotating_channel = -1;
   explosion_chunk[0] = Mix_LoadWAV("./sounds/Explosion1.ogg");
+  printf("Try to load Sound. Error \"%s\". Empty is good ;-)\n", Mix_GetError());
   explosion_chunk[1] = Mix_LoadWAV("./sounds/Explosion2.ogg");
+  printf("Try to load Sound. Error \"%s\". Empty is good ;-)\n", Mix_GetError());
   explosion_chunk[2] = Mix_LoadWAV("./sounds/Explosion3.ogg");
+  printf("Try to load Sound. Error \"%s\". Empty is good ;-)\n", Mix_GetError());
   explosion_chunk[3] = Mix_LoadWAV("./sounds/Explosion4.ogg");
+  printf("Try to load Sound. Error \"%s\". Empty is good ;-)\n", Mix_GetError());
   switch_chunk = Mix_LoadWAV("./sounds/Tile Switch.ogg");
+  printf("Try to load Sound. Error \"%s\". Empty is good ;-)\n", Mix_GetError());
 }
 
 void move_sound_on()

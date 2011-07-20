@@ -35,6 +35,7 @@ int main(int argc, char **argv)
   refresh_lettering(engineGetWindowX(),engineGetWindowY());
   prepare_game_objects(1,9);
   change_music("Midnight Mediation","Nick May");
+  highscore_save();
   run_menu();
   delete_lettering();
   delete_game_objects();
