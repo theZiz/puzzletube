@@ -1,2 +1,10 @@
-Important: You need to get 3dengine (git://github.com/theZiz/3dengine.git)
-to compile puzzletube!
+Important: You need to get sparrow3de 
+(git://github.com/theZiz/sparrow3d.git) to compile puzzletube!
+If you got sparrow3d, type "make testengine" to get the files needed by
+puzzleztube. And it is necessary, that the puzzletube folder and the sparrow3d
+folder are in the root directory, e.g.:
+/home/username/stuff/sparrow3d
+/home/username/stuff/puzzletube
+especially the name "sparrow3d" is important, except you want to edit nearly
+every *.h file oft puzzletube ;-)
+
