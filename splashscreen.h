@@ -22,8 +22,8 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
-#include "../sparrow3d/3dengine.h"
+#include "../sparrow3d/sparrow3d.h"
 
-void run_splashscreen();
+void run_splashscreen(void (*resize)(Uint16 w,Uint16 h));
 
 #endif

@@ -19,7 +19,7 @@
 */
 
 #include "music.h"
-
+#include "settings.h"
 char musicName[256];
 char musicAuthor[256];
 Mix_Music *music;
@@ -176,22 +176,25 @@ void change_music(char* name,char* author)
 
 void draw_music()
 {
+  spFontPointer small_font = settings_get_small_font();
+  int engineWindowX=spGetWindowSurface()->w;
+  int engineWindowY=spGetWindowSurface()->h;
   if (musicFade>5000)
     return;
   char buffer[800];
   int add = 0;
   if (musicFade<1000)
-    add = engineGetSurface(SURFACE_KEYMAP)->h*musicFade/5000;
+    add = small_font->maxheight*musicFade*22/10000;
   else
   if (musicFade<4000)
-    add = engineGetSurface(SURFACE_KEYMAP)->h/5;
+    add = small_font->maxheight*22/10; //2.2
   else
-    add = engineGetSurface(SURFACE_KEYMAP)->h*(5000-musicFade)/5000;
+    add = small_font->maxheight*(5000-musicFade)*22/10000;
   
   sprintf(buffer,"%s:",musicAuthor);
-  drawtextMX(engineGetSurface(SURFACE_SURFACE),engineGetWindowX()/2,add-3*(engineGetSurface(SURFACE_KEYMAP)->h>>4),buffer,engineGetSurface(SURFACE_KEYMAP));  
+  spFontDrawMiddle(engineWindowX/2,add-2*(small_font->maxheight),-1,buffer,small_font);
   sprintf(buffer,"\"%s\"",musicName);
-  drawtextMX(engineGetSurface(SURFACE_SURFACE),engineGetWindowX()/2,add-2*(engineGetSurface(SURFACE_KEYMAP)->h>>4),buffer,engineGetSurface(SURFACE_KEYMAP));  
+  spFontDrawMiddle(engineWindowX/2,add-1*(small_font->maxheight),-1,buffer,small_font);
 }
 
 int volume_wait = 0;
@@ -202,14 +205,14 @@ void calc_music(int steps)
   for (i = 0;i<steps;i++)
   {
     volume_wait--;
-    if (engineGetInput()->button[BUTTON_VOLPLUS] && volume_wait<=0 && settings_get_volume()<100)
+    if (spGetInput()->button[SP_BUTTON_VOLPLUS] && volume_wait<=0 && settings_get_volume()<100)
     {
       settings_set_volume(settings_get_volume()+1);
       set_volume(settings_get_volume());
       settings_save();
       volume_wait = 25;
     }
-    if (engineGetInput()->button[BUTTON_VOLMINUS] && volume_wait<=0 && settings_get_volume()>0)
+    if (spGetInput()->button[SP_BUTTON_VOLMINUS] && volume_wait<=0 && settings_get_volume()>0)
     {
       settings_set_volume(settings_get_volume()-1);
       set_volume(settings_get_volume());

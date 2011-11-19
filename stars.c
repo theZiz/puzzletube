@@ -30,9 +30,9 @@ void init_stars()
   for (a=0;a<STAR_COUNT;a++)
   {
     Sint32 angle = rand()%(2*MY_PI);
-    star[a].x = mycos(angle)*20;
+    star[a].x = spCos(angle)*20;
     star[a].y = rand()%(40<<ACCURACY)-(20<<ACCURACY);
-    star[a].z = mysin(angle)*20;
+    star[a].z = spSin(angle)*20;
     starkind[a] = rand()%10;
   }
 }
@@ -43,6 +43,6 @@ void draw_stars()
   int a;
   for (a=0;a<STAR_COUNT;a++)
   {
-    engineDrawSurface(star[a].x,star[a].y,star[a].z,getSmallParticle());
+    spBlit3D(star[a].x,star[a].y,star[a].z,getSmallParticle());
   }
 }

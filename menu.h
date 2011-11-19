@@ -23,6 +23,6 @@
 #include "../sparrow3d/3dengine.h"
 #include "particle.h"
 
-void run_menu();
+void run_menu(void (*resize)(Uint16 w,Uint16 h));
 
 #endif

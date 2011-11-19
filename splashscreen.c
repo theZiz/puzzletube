@@ -22,34 +22,27 @@
 #define SPLASH_WAIT 2000
 
 int splash_counter;
-SDL_Surface* splash1,*splash2;
+SDL_Surface *sparrow,*splash1,*splash2;
 
 void draw_splash(void)
 {
-  engineClearScreen(0);
+  spClearTarget(0);
+  spResetZBuffer();
+  spSetZSet(0);
+  spSetZTest(0);
   
   SDL_Surface *mom = NULL;
-  if (splash_counter>SPLASH_WAIT)
+  if (splash_counter>SPLASH_WAIT*2)
     mom = splash1;
   else
+  if (splash_counter>SPLASH_WAIT && splash_counter<=SPLASH_WAIT*2)
     mom = splash2;
+  else
+    mom = sparrow;
   
   if (mom!=NULL)
-  {
-    SDL_Rect dstrect;
-    SDL_Rect srcrect;
-    dstrect.x=engineGetWindowX()/2-mom->w/2;
-    dstrect.y=engineGetWindowY()/2-mom->h/2;
-    dstrect.w=mom->w;
-    dstrect.h=mom->h;
-    srcrect.x=0;
-    srcrect.y=0;
-    srcrect.w=dstrect.w;
-    srcrect.h=dstrect.h;
-
-    SDL_BlitSurface(mom, &srcrect,engineGetSurface(SURFACE_SURFACE), &dstrect);
-  }
-  engineFlip();  
+    spBlitSurface(spGetWindowSurface()->w/2,spGetWindowSurface()->h/2,-1,mom);
+  spFlip();  
 }
 
 int calc_splash(Uint32 steps)
@@ -57,25 +50,24 @@ int calc_splash(Uint32 steps)
   splash_counter -= steps;
   if (splash_counter <=0)
     return 1;
-  pEngineInput engineInput = engineGetInput();
-  if ((engineInput->button[BUTTON_START] ||
-      engineInput->button[BUTTON_A] || engineInput->button[BUTTON_B] ||
-      engineInput->button[BUTTON_X] || engineInput->button[BUTTON_Y]))
+  PspInput engineInput = spGetInput();
+  if ((engineInput->button[SP_BUTTON_START] ||
+      engineInput->button[SP_BUTTON_A] || engineInput->button[SP_BUTTON_B] ||
+      engineInput->button[SP_BUTTON_X] || engineInput->button[SP_BUTTON_Y]))
   {
-    engineInput->button[BUTTON_START] = 0;
-    engineInput->button[BUTTON_A] = 0;
-    engineInput->button[BUTTON_B] = 0;
-    engineInput->button[BUTTON_X] = 0;
-    engineInput->button[BUTTON_Y] = 0;
+    engineInput->button[SP_BUTTON_START] = 0;
+    engineInput->button[SP_BUTTON_A] = 0;
+    engineInput->button[SP_BUTTON_B] = 0;
+    engineInput->button[SP_BUTTON_X] = 0;
+    engineInput->button[SP_BUTTON_Y] = 0;
     splash_counter = (splash_counter/SPLASH_WAIT)*SPLASH_WAIT;
   }
   return 0;
 }
 
-void run_splashscreen()
+void run_splashscreen(void (*resize)(Uint16 w,Uint16 h))
 {
-  int globalzoom=min(engineGetWindowX()/320,engineGetWindowY()/240);
-  if (globalzoom <= 1)
+  if ((spGetSizeFactor()>>SP_ACCURACY) <= 1)
   {
     splash1 = IMG_Load("./images/splash_320.png");
     splash2 = IMG_Load("./images/sponsor_320.png");
@@ -85,9 +77,11 @@ void run_splashscreen()
     splash1 = IMG_Load("./images/splash_800.png");
     splash2 = IMG_Load("./images/sponsor_800.png");
   }
-  splash_counter = SPLASH_WAIT*2;
-  engineLoop(draw_splash,calc_splash,10);
+  sparrow = IMG_Load("./images/sparrow.png");
+  splash_counter = SPLASH_WAIT*3;
+  spLoop(draw_splash,calc_splash,10,resize);
   SDL_FreeSurface(splash1);
+  SDL_FreeSurface(sparrow);
   SDL_FreeSurface(splash2);
 }
 

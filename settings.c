@@ -18,6 +18,7 @@
  Alexander Matthes (Ziz) , zizsdl_at_googlemail.com                         
 */
 #include "settings.h"
+#include "../sparrow3d/sparrow3d.h"
 #include <SDL.h>
 
 int settings_stone_quality; //2 perfect, 1 okay, 0 gp2x
@@ -30,6 +31,9 @@ int settings_color;
 int settings_difficult;
 int settings_mode;
 int highscore_choice;
+
+spFontPointer settings_font;
+spFontPointer settings_small_font;
 
 int highscore[2][6][10][6];
 char highscore_name[2][6][10][6][3];
@@ -251,4 +255,24 @@ void settings_set_highscore_choice(int value)
 int settings_get_highscore_choice()
 {
   return highscore_choice;
+}
+
+spFontPointer settings_get_font()
+{
+  return settings_font;
+}
+
+void settings_set_font(spFontPointer font)
+{
+  settings_font = font;
+}
+
+spFontPointer settings_get_small_font()
+{
+  return settings_small_font;
+}
+
+void settings_set_small_font(spFontPointer small_font)
+{
+  settings_small_font = small_font;
 }

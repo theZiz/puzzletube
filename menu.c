@@ -1,6 +1,6 @@
 /*
  The contents of this file are subject to the Mozilla Public License        
- Version 1.1 (the "License"); you may not use this file except in           
+ Version 1.1 (the "License",font); you may not use this file except in           
  compliance with the License. You may obtain a copy of the License at       
  http://www.mozilla.org/MPL/                                                
                                                                             
@@ -17,9 +17,11 @@
  For feedback and questions about my Files and Projects please mail me,     
  Alexander Matthes (Ziz) , zizsdl_at_googlemail.com                         
 */
+#include "../sparrow3d/sparrow3d.h"
 #include "menu.h"
 #include "game.h"
 #include "settings.h"
+#include "particle.h"
 
 #define MENUSIZE 1200
 
@@ -33,21 +35,27 @@ int menu_wait = 0;
 
 void draw_menu(void)
 {
-  Sint32* modellViewMatrix=engineGetModellViewMatrix();
-  plight light=engineGetLightPointer();
-  int engineWindowX=engineGetWindowX();
-  int engineWindowY=engineGetWindowY();
-  engineClearScreen(0);
-  setModellViewMatrixIdentity();
-
-  engineTranslate(0,0,-20<<ACCURACY);
-  engineRotate(0,1<<ACCURACY,0,menu_counter*10);
-
+  Sint32* modellViewMatrix=spGetMatrix();
+  int engineWindowX=spGetWindowSurface()->w;
+  int engineWindowY=spGetWindowSurface()->h;
+  spFontPointer font = settings_get_font();
+  spFontPointer small_font = settings_get_small_font();
+  
+  spSetAlphaTest(1);
+  spSetZSet(0);
+  spSetZTest(0);
+  spResetZBuffer();
+  spClearTarget(0);
+  
+  spIdentity();
+  spTranslate(0,0,-20<<SP_ACCURACY);
+  spRotate(0,1<<SP_ACCURACY,0,menu_counter*10);
   draw_stars();
   
-  setModellViewMatrixIdentity();
-  engineTranslate(0,0,-20<<ACCURACY);
-  engineTranslate(menu_fade<<ACCURACY-6,0,0);
+  spIdentity();
+  draw_music();
+  spTranslate(0,0,-20<<SP_ACCURACY);
+  spTranslate(menu_fade<<SP_ACCURACY-6,0,0);  
   int mode;
   int colors;
   int difficult;
@@ -55,138 +63,68 @@ void draw_menu(void)
   switch (state)
   {
     case 0: //menu
-      engineDrawTextMXMY(0,( 10<<ACCURACY-1)+mysin(menu_counter*300+6*MY_PI*2/7)/4,0,"PUZZLE TUBE");
-      //engineDrawTextMXMY(0,(  5<<ACCURACY-1)+mysin(menu_counter*300+5*MY_PI*2/7)/4,0,"Arcade");
-      engineDrawTextMXMY(0,(  5<<ACCURACY-1)+mysin(menu_counter*300+4*MY_PI*2/7)/4,0,"Free Game");
-      engineDrawTextMXMY(0,(  0<<ACCURACY-1)+mysin(menu_counter*300+3*MY_PI*2/7)/4,0,"Highscore");
-      engineDrawTextMXMY(0,(- 5<<ACCURACY-1)+mysin(menu_counter*300+2*MY_PI*2/7)/4,0,"Settings");
-      engineDrawTextMXMY(0,(-10<<ACCURACY-1)+mysin(menu_counter*300+1*MY_PI*2/7)/4,0,"About");
-      engineDrawTextMXMY(0,(-15<<ACCURACY-1)+mysin(menu_counter*300+0*MY_PI*2/7)/4,0,"Quit");
-      //Left circle
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+5*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+5*MY_PI/10)-menu_choice*5/2,0,getBigParticle());
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+3*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+3*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+2*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+2*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+1*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+1*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+0*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+0*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),1*engineWindowY/7+(spSin(menu_counter*300+6*SP_PI*2/7)>>SP_ACCURACY-2),-1,"PUZZLE TUBE",font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/7+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Free Game",font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/7+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Highscore",font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/7+(spSin(menu_counter*300+2*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Settings",font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/7+(spSin(menu_counter*300+1*SP_PI*2/7)>>SP_ACCURACY-2),-1,"About",font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/7+(spSin(menu_counter*300+0*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Quit",font);
       
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+15*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+15*MY_PI/10)-menu_choice*5/2,0,getBigParticle());
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+13*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+13*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+12*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+12*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+11*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+11*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
-      engineDrawSurface((-4<<ACCURACY)+mycos(menu_counter*700+10*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+10*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
-      //Right circle
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+5*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+5*MY_PI/10)-menu_choice*5/2,0,getBigParticle());
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+3*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+3*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+2*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+2*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+1*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+1*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+0*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+0*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
-
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+15*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+15*MY_PI/10)-menu_choice*5/2,0,getBigParticle());
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+13*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+13*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+12*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+12*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+11*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+11*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
-      engineDrawSurface(( 4<<ACCURACY)-mycos(menu_counter*700+10*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+10*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
+      spTranslate(0,1<<SP_ACCURACY-2,3<<SP_ACCURACY-1);
+      spTranslate(-5<<SP_ACCURACY,(3<<ACCURACY)-menu_choice*5/2,0);
+      draw_particle_circle(-1,menu_counter);
+      spTranslate(10<<SP_ACCURACY,0,0);
+      draw_particle_circle(+1,menu_counter);
+ 
       break;
     case 1: //options
-      engineDrawTextMXMY(0,( 10<<ACCURACY-1)+mysin(menu_counter*300+7*MY_PI/4)/4,0,"SETTINGS");
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),1*engineWindowY/7+(spSin(menu_counter*300+7*SP_PI/4)>>SP_ACCURACY-2),-1,"SETTINGS",font);
       switch (settings_get_stone_quality())
       {
-        case 0: engineDrawTextMXMY(0,(  5<<ACCURACY-1)+mysin(menu_counter*300+6*MY_PI/4)/4,0,"Stone Quality: Flat"); break;
-        case 1: engineDrawTextMXMY(0,(  5<<ACCURACY-1)+mysin(menu_counter*300+6*MY_PI/4)/4,0,"Stone Quality: Okay"); break;
-        case 2: engineDrawTextMXMY(0,(  5<<ACCURACY-1)+mysin(menu_counter*300+6*MY_PI/4)/4,0,"Stone Quality: Perfect"); break;
+        case 0: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/7+(spSin(menu_counter*300+6*SP_PI/4)>>SP_ACCURACY-2),-1,"Stone Quality: Color",font); break;
+        case 1: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/7+(spSin(menu_counter*300+6*SP_PI/4)>>SP_ACCURACY-2),-1,"Stone Quality: Texture",font); break;
+        case 2: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/7+(spSin(menu_counter*300+6*SP_PI/4)>>SP_ACCURACY-2),-1,"Stone Quality: Modells",font); break;
       }
       switch (settings_get_stars_rotating())
       {
-        case 0: engineDrawTextMXMY(0,(  2<<ACCURACY-1)+mysin(menu_counter*300+5*MY_PI/4)/4,0,"Stars: Off"); break;
-        case 1: engineDrawTextMXMY(0,(  2<<ACCURACY-1)+mysin(menu_counter*300+5*MY_PI/4)/4,0,"Stars: Still"); break;
-        case 2: engineDrawTextMXMY(0,(  2<<ACCURACY-1)+mysin(menu_counter*300+5*MY_PI/4)/4,0,"Stars: Rotating"); break;
+        case 0: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/7+(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2),-1,"Stars: Off",font); break;
+        case 1: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/7+(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2),-1,"Stars: Still",font); break;
+        case 2: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/7+(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2),-1,"Stars: Rotating",font); break;
       }
       if (settings_get_particles())
-        engineDrawTextMXMY(0,(- 1<<ACCURACY-1)+mysin(menu_counter*300+4*MY_PI/4)/4,0,"Particles: On");
+        spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/7+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,"Particles: On",font);
       else
-        engineDrawTextMXMY(0,(- 1<<ACCURACY-1)+mysin(menu_counter*300+4*MY_PI/4)/4,0,"Particles: Off");
-
-      if (settings_get_alpha_blending())
-        engineDrawTextMXMY(0,(- 4<<ACCURACY-1)+mysin(menu_counter*300+3*MY_PI/4)/4,0,"Blending: Smooth");
-      else
-        engineDrawTextMXMY(0,(- 4<<ACCURACY-1)+mysin(menu_counter*300+3*MY_PI/4)/4,0,"Blending: Hard");
-
-      if (settings_get_font_quality())
-        engineDrawTextMXMY(0,(- 7<<ACCURACY-1)+mysin(menu_counter*300+2*MY_PI/4)/4,0,"Font Quality: Good");
-      else
-        engineDrawTextMXMY(0,(- 7<<ACCURACY-1)+mysin(menu_counter*300+2*MY_PI/4)/4,0,"Font Quality: Fast");
+        spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/7+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,"Particles: Off",font);
 
       char buffer[256];
       sprintf(buffer,"Volume %i%%",settings_get_volume());
-      engineDrawTextMXMY(0,(-11<<ACCURACY-1)+mysin(menu_counter*300+1*MY_PI/4)/4,0,buffer);
-      engineDrawTextMXMY(0,(-14<<ACCURACY-1)+mysin(menu_counter*300+0*MY_PI/4)/4,0,"Back to Menu");
-      //Left circle
-      engineDrawSurface((-7<<ACCURACY)+mycos(menu_counter*700+5*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+5*MY_PI/10)-menu_choice*3/2,0,getBigParticle());
-      engineDrawSurface((-7<<ACCURACY)+mycos(menu_counter*700+3*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+3*MY_PI/10)-menu_choice*3/2,0,getMiddleParticle());
-      engineDrawSurface((-7<<ACCURACY)+mycos(menu_counter*700+2*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+2*MY_PI/10)-menu_choice*3/2,0,getMiddleParticle());
-      engineDrawSurface((-7<<ACCURACY)+mycos(menu_counter*700+1*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+1*MY_PI/10)-menu_choice*3/2,0,getSmallParticle());
-      engineDrawSurface((-7<<ACCURACY)+mycos(menu_counter*700+0*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+0*MY_PI/10)-menu_choice*3/2,0,getSmallParticle());
-      
-      engineDrawSurface((-7<<ACCURACY)+mycos(menu_counter*700+15*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+15*MY_PI/10)-menu_choice*3/2,0,getBigParticle());
-      engineDrawSurface((-7<<ACCURACY)+mycos(menu_counter*700+13*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+13*MY_PI/10)-menu_choice*3/2,0,getMiddleParticle());
-      engineDrawSurface((-7<<ACCURACY)+mycos(menu_counter*700+12*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+12*MY_PI/10)-menu_choice*3/2,0,getMiddleParticle());
-      engineDrawSurface((-7<<ACCURACY)+mycos(menu_counter*700+11*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+11*MY_PI/10)-menu_choice*3/2,0,getSmallParticle());
-      engineDrawSurface((-7<<ACCURACY)+mycos(menu_counter*700+10*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+10*MY_PI/10)-menu_choice*3/2,0,getSmallParticle());
-      //Right circle
-      engineDrawSurface(( 7<<ACCURACY)-mycos(menu_counter*700+5*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+5*MY_PI/10)-menu_choice*3/2,0,getBigParticle());
-      engineDrawSurface(( 7<<ACCURACY)-mycos(menu_counter*700+3*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+3*MY_PI/10)-menu_choice*3/2,0,getMiddleParticle());
-      engineDrawSurface(( 7<<ACCURACY)-mycos(menu_counter*700+2*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+2*MY_PI/10)-menu_choice*3/2,0,getMiddleParticle());
-      engineDrawSurface(( 7<<ACCURACY)-mycos(menu_counter*700+1*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+1*MY_PI/10)-menu_choice*3/2,0,getSmallParticle());
-      engineDrawSurface(( 7<<ACCURACY)-mycos(menu_counter*700+0*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+0*MY_PI/10)-menu_choice*3/2,0,getSmallParticle());
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/7+(spSin(menu_counter*300+1*SP_PI/4)>>SP_ACCURACY-2),-1,buffer,font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/7+(spSin(menu_counter*300+0*SP_PI/4)>>SP_ACCURACY-2),-1,"Back to Menu",font);
 
-      engineDrawSurface(( 7<<ACCURACY)-mycos(menu_counter*700+15*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+15*MY_PI/10)-menu_choice*3/2,0,getBigParticle());
-      engineDrawSurface(( 7<<ACCURACY)-mycos(menu_counter*700+13*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+13*MY_PI/10)-menu_choice*3/2,0,getMiddleParticle());
-      engineDrawSurface(( 7<<ACCURACY)-mycos(menu_counter*700+12*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+12*MY_PI/10)-menu_choice*3/2,0,getMiddleParticle());
-      engineDrawSurface(( 7<<ACCURACY)-mycos(menu_counter*700+11*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+11*MY_PI/10)-menu_choice*3/2,0,getSmallParticle());
-      engineDrawSurface(( 7<<ACCURACY)-mycos(menu_counter*700+10*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+10*MY_PI/10)-menu_choice*3/2,0,getSmallParticle());
+      spTranslate(0,1<<SP_ACCURACY-2,3<<SP_ACCURACY-1);
+      spTranslate(-9<<SP_ACCURACY,(3<<ACCURACY)-menu_choice*5/2,0);
+      draw_particle_circle(-1,menu_counter);
+      spTranslate(18<<SP_ACCURACY,0,0);
+      draw_particle_circle(+1,menu_counter);
       break;
     case 2: //Free Game
-      engineDrawTextMXMY(0,( 10<<ACCURACY-1)+mysin(menu_counter*300+5*MY_PI/3)/4,0,"FREE GAME");
-      engineDrawTextMXMY(0,(  5<<ACCURACY-1)+mysin(menu_counter*300+1*MY_PI/3)/4,0,"<<< Play >>>");
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),( 10<<SP_ACCURACY-1)+spSin(menu_counter*300+5*SP_PI/3)/4,-1,"FREE GAME",font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),(  5<<SP_ACCURACY-1)+spSin(menu_counter*300+1*SP_PI/3)/4,-1,"<<< Play >>>",font);
       if (settings_get_mode() == 0)
-        engineDrawTextMXMY(0,(  0<<ACCURACY-1)+mysin(menu_counter*300+4*MY_PI/3)/4,0,"Game Mode: Points");
+        spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),(  0<<SP_ACCURACY-1)+spSin(menu_counter*300+4*SP_PI/3)/4,-1,"Game Mode: Points",font);
       else
-        engineDrawTextMXMY(0,(  0<<ACCURACY-1)+mysin(menu_counter*300+4*MY_PI/3)/4,0,"Game Mode: Time Stole");
+        spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),(  0<<SP_ACCURACY-1)+spSin(menu_counter*300+4*SP_PI/3)/4,-1,"Game Mode: Time Stole",font);
       sprintf(buffer,"Different stone kinds: %i",settings_get_color());
-      engineDrawTextMXMY(0,(- 5<<ACCURACY-1)+mysin(menu_counter*300+3*MY_PI/3)/4,0,buffer);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),(- 5<<SP_ACCURACY-1)+spSin(menu_counter*300+3*SP_PI/3)/4,-1,buffer,font);
       sprintf(buffer,"Difficulty: %i",settings_get_difficult());
-      engineDrawTextMXMY(0,(-10<<ACCURACY-1)+mysin(menu_counter*300+2*MY_PI/3)/4,0,buffer);
-      engineDrawTextMXMY(0,(-15<<ACCURACY-1)+mysin(menu_counter*300+0*MY_PI/3)/4,0,"Back to Menu");
-      //Left circle
-      engineDrawSurface((-8<<ACCURACY)+mycos(menu_counter*700+5*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+5*MY_PI/10)-menu_choice*5/2,0,getBigParticle());
-      engineDrawSurface((-8<<ACCURACY)+mycos(menu_counter*700+3*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+3*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
-      engineDrawSurface((-8<<ACCURACY)+mycos(menu_counter*700+2*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+2*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
-      engineDrawSurface((-8<<ACCURACY)+mycos(menu_counter*700+1*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+1*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
-      engineDrawSurface((-8<<ACCURACY)+mycos(menu_counter*700+0*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+0*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
-      
-      engineDrawSurface((-8<<ACCURACY)+mycos(menu_counter*700+15*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+15*MY_PI/10)-menu_choice*5/2,0,getBigParticle());
-      engineDrawSurface((-8<<ACCURACY)+mycos(menu_counter*700+13*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+13*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
-      engineDrawSurface((-8<<ACCURACY)+mycos(menu_counter*700+12*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+12*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
-      engineDrawSurface((-8<<ACCURACY)+mycos(menu_counter*700+11*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+11*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
-      engineDrawSurface((-8<<ACCURACY)+mycos(menu_counter*700+10*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+10*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
-      //Right circle
-      engineDrawSurface(( 8<<ACCURACY)-mycos(menu_counter*700+5*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+5*MY_PI/10)-menu_choice*5/2,0,getBigParticle());
-      engineDrawSurface(( 8<<ACCURACY)-mycos(menu_counter*700+3*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+3*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
-      engineDrawSurface(( 8<<ACCURACY)-mycos(menu_counter*700+2*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+2*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
-      engineDrawSurface(( 8<<ACCURACY)-mycos(menu_counter*700+1*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+1*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
-      engineDrawSurface(( 8<<ACCURACY)-mycos(menu_counter*700+0*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+0*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
-
-      engineDrawSurface(( 8<<ACCURACY)-mycos(menu_counter*700+15*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+15*MY_PI/10)-menu_choice*5/2,0,getBigParticle());
-      engineDrawSurface(( 8<<ACCURACY)-mycos(menu_counter*700+13*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+13*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
-      engineDrawSurface(( 8<<ACCURACY)-mycos(menu_counter*700+12*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+12*MY_PI/10)-menu_choice*5/2,0,getMiddleParticle());
-      engineDrawSurface(( 8<<ACCURACY)-mycos(menu_counter*700+11*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+11*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
-      engineDrawSurface(( 8<<ACCURACY)-mycos(menu_counter*700+10*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+10*MY_PI/10)-menu_choice*5/2,0,getSmallParticle());
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),(-10<<SP_ACCURACY-1)+spSin(menu_counter*300+2*SP_PI/3)/4,-1,buffer,font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),(-15<<SP_ACCURACY-1)+spSin(menu_counter*300+0*SP_PI/3)/4,-1,"Back to Menu",font);
       break;
     case 3: //High Score
       mode = settings_get_highscore_choice()%2;
       colors = (settings_get_highscore_choice()/2)%6;
       difficult = (settings_get_highscore_choice()/12);
-      engineDrawTextMXMY(0,( 10<<ACCURACY-1)+mysin(menu_counter*300+6*MY_PI*2/7)/4,0,"HIGHSCORE");
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),( 10<<SP_ACCURACY-1)+spSin(menu_counter*300+6*SP_PI*2/7)/4,-1,"HIGHSCORE",font);
       for (i = 0; i < 6; i++)
       {
         if (mode & timeMode)
@@ -195,70 +133,45 @@ void draw_menu(void)
         else
           sprintf(buffer,"%c%c%c - %i",get_highscore_name(mode,colors,difficult,i,0),
             get_highscore_name(mode,colors,difficult,i,1),get_highscore_name(mode,colors,difficult,i,2),get_highscore(mode,colors,difficult,i));        
-        engineDrawTextMXMY(0,(  (5-3*i)<<ACCURACY-1)+mysin(menu_counter*300+(5-i)*MY_PI*2/7)/4,0,buffer);
+        spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),(  (5-3*i)<<SP_ACCURACY-1)+spSin(menu_counter*300+(5-i)*SP_PI*2/7)/4,-1,buffer,font);
       }
       
       if (mode & timeMode)
         sprintf(buffer,"Time Stole - Difficulty %i",difficult);
       else
         sprintf(buffer,"Points - Difficulty %i",difficult);
-      engineDrawTextMXMY(0,(-15<<ACCURACY-1)+mysin(menu_counter*300+-1*MY_PI*2/7)/4,0,buffer);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),(-15<<SP_ACCURACY-1)+spSin(menu_counter*300+-1*SP_PI*2/7)/4,-1,buffer,font);
       sprintf(buffer,"%i different stones",colors+4);
-      engineDrawTextMXMY(0,(-18<<ACCURACY-1)+mysin(menu_counter*300+-2*MY_PI*2/7)/4,0,buffer);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),(-18<<SP_ACCURACY-1)+spSin(menu_counter*300+-2*SP_PI*2/7)/4,-1,buffer,font);
 
-      //Left circle
-      engineDrawSurface((-9<<ACCURACY)+mycos(menu_counter*700+5*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+5*MY_PI/10)-(21<<ACCURACY-1),0,getBigParticle());
-      engineDrawSurface((-9<<ACCURACY)+mycos(menu_counter*700+3*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+3*MY_PI/10)-(21<<ACCURACY-1),0,getMiddleParticle());
-      engineDrawSurface((-9<<ACCURACY)+mycos(menu_counter*700+2*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+2*MY_PI/10)-(21<<ACCURACY-1),0,getMiddleParticle());
-      engineDrawSurface((-9<<ACCURACY)+mycos(menu_counter*700+1*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+1*MY_PI/10)-(21<<ACCURACY-1),0,getSmallParticle());
-      engineDrawSurface((-9<<ACCURACY)+mycos(menu_counter*700+0*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+0*MY_PI/10)-(21<<ACCURACY-1),0,getSmallParticle());
+      spFontDrawMiddle(-9<<SP_ACCURACY,-33<<SP_ACCURACY-2,-1,"L",font);
       
-      engineDrawSurface((-9<<ACCURACY)+mycos(menu_counter*700+15*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+15*MY_PI/10)-(21<<ACCURACY-1),0,getBigParticle());
-      engineDrawSurface((-9<<ACCURACY)+mycos(menu_counter*700+13*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+13*MY_PI/10)-(21<<ACCURACY-1),0,getMiddleParticle());
-      engineDrawSurface((-9<<ACCURACY)+mycos(menu_counter*700+12*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+12*MY_PI/10)-(21<<ACCURACY-1),0,getMiddleParticle());
-      engineDrawSurface((-9<<ACCURACY)+mycos(menu_counter*700+11*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+11*MY_PI/10)-(21<<ACCURACY-1),0,getSmallParticle());
-      engineDrawSurface((-9<<ACCURACY)+mycos(menu_counter*700+10*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+10*MY_PI/10)-(21<<ACCURACY-1),0,getSmallParticle());
-      
-      engineDrawTextMXMY(-9<<ACCURACY,-33<<ACCURACY-2,0,"L");
-      
-      //Right circle
-      engineDrawSurface((9<<ACCURACY)-mycos(menu_counter*700+5*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+5*MY_PI/10)-(21<<ACCURACY-1),0,getBigParticle());
-      engineDrawSurface((9<<ACCURACY)-mycos(menu_counter*700+3*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+3*MY_PI/10)-(21<<ACCURACY-1),0,getMiddleParticle());
-      engineDrawSurface((9<<ACCURACY)-mycos(menu_counter*700+2*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+2*MY_PI/10)-(21<<ACCURACY-1),0,getMiddleParticle());
-      engineDrawSurface((9<<ACCURACY)-mycos(menu_counter*700+1*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+1*MY_PI/10)-(21<<ACCURACY-1),0,getSmallParticle());
-      engineDrawSurface((9<<ACCURACY)-mycos(menu_counter*700+0*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+0*MY_PI/10)-(21<<ACCURACY-1),0,getSmallParticle());
-
-      engineDrawSurface((9<<ACCURACY)-mycos(menu_counter*700+15*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+15*MY_PI/10)-(21<<ACCURACY-1),0,getBigParticle());
-      engineDrawSurface((9<<ACCURACY)-mycos(menu_counter*700+13*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+13*MY_PI/10)-(21<<ACCURACY-1),0,getMiddleParticle());
-      engineDrawSurface((9<<ACCURACY)-mycos(menu_counter*700+12*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+12*MY_PI/10)-(21<<ACCURACY-1),0,getMiddleParticle());
-      engineDrawSurface((9<<ACCURACY)-mycos(menu_counter*700+11*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+11*MY_PI/10)-(21<<ACCURACY-1),0,getSmallParticle());
-      engineDrawSurface((9<<ACCURACY)-mycos(menu_counter*700+10*MY_PI/10),( 3<<ACCURACY)+mysin(menu_counter*700+10*MY_PI/10)-(21<<ACCURACY-1),0,getSmallParticle());
-
-      engineDrawTextMXMY(9<<ACCURACY,-33<<ACCURACY-2,0,"R");
+      spFontDrawMiddle(9<<SP_ACCURACY,-33<<SP_ACCURACY-2,-1,"R",font);
       break;
 
     case 4: //About
-      engineDrawTextMXMY(0,( 10<<ACCURACY-1)+mysin(menu_counter*300+6*MY_PI*2/7)/4,0,"ABOUT");
-      engineDrawTextMXMY(0,(  5<<ACCURACY-1)+mysin(menu_counter*300+5*MY_PI*2/7)/4,0,"Code Monkey: Ziz");
-      engineDrawTextMXMY(0,(  1<<ACCURACY-1)+mysin(menu_counter*300+4*MY_PI*2/7)/4,0,"Sound: Nick May");
-      engineDrawTextMXMY(0,(- 3<<ACCURACY-1)+mysin(menu_counter*300+3*MY_PI*2/7)/4,0,"Backers of the RIOTdigital Contest:");
-      engineDrawTextMXMY(0,(- 6<<ACCURACY-1)+mysin(menu_counter*300+2*MY_PI*2/7)/4,0,"Pandora");
-      engineDrawTextMXMY(0,(- 9<<ACCURACY-1)+mysin(menu_counter*300+1*MY_PI*2/7)/4,0,"GPH");
-      engineDrawTextMXMY(0,(-12<<ACCURACY-1)+mysin(menu_counter*300+0*MY_PI*2/7)/4,0,"DINGOO DIGITAL USA");
-      engineDrawTextMXMY(0,(-15<<ACCURACY-1)+mysin(menu_counter*300+-1*MY_PI*2/7)/4,0,"Etronixmart");
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),1*engineWindowY/9+(spSin(menu_counter*300+6*SP_PI*2/7)>>SP_ACCURACY-2),-1,"ABOUT",font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/9+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Code Monkey: Ziz",font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/9+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Sound: Nick May",font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/9+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Backers of \"RIOTdigital\":",font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/9+(spSin(menu_counter*300+2*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Pandora",font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/9+(spSin(menu_counter*300+1*SP_PI*2/7)>>SP_ACCURACY-2),-1,"GPH",font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),7*engineWindowY/9+(spSin(menu_counter*300+0*SP_PI*2/7)>>SP_ACCURACY-2),-1,"DINGOO DIGITAL USA",font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),8*engineWindowY/9+(spSin(menu_counter*300+-1*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Etronixmart",font);
       break;
   }
 
-  engineDrawList();
-  draw_music();
-  engineFlip();  
+  char buffer[16];
+  sprintf(buffer,"fps: %i",spGetFPS());
+  spFontDrawRight(engineWindowX,engineWindowY-small_font->maxheight,-1,buffer,small_font);
+  spFlip();
 }
 
 int calc_menu(Uint32 steps)
 {
   menu_counter += steps;
   calc_music(steps);
-  pEngineInput engineInput = engineGetInput();
+  PspInput engineInput = spGetInput();
   if (menu_fade>0)
   {
     menu_fade-=steps*3;
@@ -283,15 +196,15 @@ int calc_menu(Uint32 steps)
       switch (nextstate)
       {
         case -2: //Free Game
-          prepare_game_objects(0,settings_get_color());
+          //prepare_game_objects(0,settings_get_color());
           rotating_sound_off();
           settings_save();
-          menu_counter = run_game(1,settings_get_mode(),settings_get_difficult(),menu_counter*10)/10;
-          engineInput->button[BUTTON_START] = 0;
-          engineInput->button[BUTTON_A] = 0;
-          engineInput->button[BUTTON_B] = 0;
-          engineInput->button[BUTTON_X] = 0;
-          engineInput->button[BUTTON_Y] = 0;
+          //menu_counter = run_game(1,settings_get_mode(),settings_get_difficult(),menu_counter*10)/10;
+          engineInput->button[SP_BUTTON_START] = 0;
+          engineInput->button[SP_BUTTON_A] = 0;
+          engineInput->button[SP_BUTTON_B] = 0;
+          engineInput->button[SP_BUTTON_X] = 0;
+          engineInput->button[SP_BUTTON_Y] = 0;
           state = 0;
           break;
         case -4:
@@ -307,9 +220,9 @@ int calc_menu(Uint32 steps)
   switch (state)
   {
   case 0: //menu
-    if (engineGetAxis(1)<0 && menu_move==0 && (menu_choice>>ACCURACY)<4)
+    if (engineInput->axis[1]<0 && menu_move==0 && (menu_choice>>SP_ACCURACY)<4)
       menu_move = 1;
-    if (engineGetAxis(1)>0 && menu_move==0 && (menu_choice>>ACCURACY)>0)
+    if (engineInput->axis[1]>0 && menu_move==0 && (menu_choice>>SP_ACCURACY)>0)
       menu_move = -1;
     
     if (menu_move != 0)
@@ -317,18 +230,18 @@ int calc_menu(Uint32 steps)
       move_sound_on();
       for (i=0;i<steps;i++)
       {
-        menu_choice += menu_move*4 << ACCURACY-10;
-        if (menu_choice == ((menu_choice >>ACCURACY)<<ACCURACY))
+        menu_choice += menu_move*4 << SP_ACCURACY-10;
+        if (menu_choice == ((menu_choice >>SP_ACCURACY)<<SP_ACCURACY))
           menu_move = 0;
       }
     }
     else
       move_sound_off();
-    if (menu_move == 0 && (engineInput->button[BUTTON_START] ||
-        engineInput->button[BUTTON_A] || engineInput->button[BUTTON_B] ||
-        engineInput->button[BUTTON_X] || engineInput->button[BUTTON_Y]))
+    if (menu_move == 0 && (engineInput->button[SP_BUTTON_START] ||
+        engineInput->button[SP_BUTTON_A] || engineInput->button[SP_BUTTON_B] ||
+        engineInput->button[SP_BUTTON_X] || engineInput->button[SP_BUTTON_Y]))
     {
-      switch (menu_choice>>ACCURACY)
+      switch (menu_choice>>SP_ACCURACY)
       {
         case 0: // Free Game
           nextstate = 2;
@@ -359,9 +272,9 @@ int calc_menu(Uint32 steps)
     }
     break;
   case 1: //options
-    if (engineGetAxis(1)<0 && menu_move==0 && (menu_choice>>ACCURACY)<6)
+    if (engineInput->axis[1]<0 && menu_move==0 && (menu_choice>>SP_ACCURACY)<4)
       menu_move = 1;
-    if (engineGetAxis(1)>0 && menu_move==0 && (menu_choice>>ACCURACY)>0)
+    if (engineInput->axis[1]>0 && menu_move==0 && (menu_choice>>SP_ACCURACY)>0)
       menu_move = -1;
     
     if (menu_move != 0)
@@ -369,8 +282,8 @@ int calc_menu(Uint32 steps)
       move_sound_on();
       for (i=0;i<steps;i++)
       {
-        menu_choice += menu_move*4 << ACCURACY-10;
-        if (menu_choice == ((menu_choice >>ACCURACY)<<ACCURACY))
+        menu_choice += menu_move*4 << SP_ACCURACY-10;
+        if (menu_choice == ((menu_choice >>SP_ACCURACY)<<SP_ACCURACY))
           menu_move = 0;
       }
     }
@@ -379,49 +292,49 @@ int calc_menu(Uint32 steps)
     for (i = 0;i < steps;i++)
     {
       menu_wait--;
-      if (menu_move == 0 && (menu_choice>>ACCURACY) == 5 && engineGetAxis(0)<0 && menu_wait <= 0 && settings_get_volume()>0)
+      if (menu_move == 0 && (menu_choice>>SP_ACCURACY) == 3 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_volume()>0)
       {
         settings_set_volume(settings_get_volume()-1);
         set_volume(settings_get_volume());
         menu_wait = 25;
       }
-      if (menu_move == 0 && (menu_choice>>ACCURACY) == 5 && engineGetAxis(0)>0 && menu_wait <= 0 && settings_get_volume()<100)
+      if (menu_move == 0 && (menu_choice>>SP_ACCURACY) == 3 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_volume()<100)
       {
         settings_set_volume(settings_get_volume()+1);
         set_volume(settings_get_volume());
         menu_wait = 25;
       }
     }
-    if (menu_move == 0 && (menu_choice>>ACCURACY) == 0 && engineGetAxis(0)<0 && menu_wait <= 0 && settings_get_stone_quality()>0)
+    if (menu_move == 0 && (menu_choice>>SP_ACCURACY) == 0 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_stone_quality()>0)
     {
       settings_set_stone_quality(settings_get_stone_quality()-1);
-      engineSetAxis(0,0);
+      engineInput->axis[0] = 0;
     }
-    if (menu_move == 0 && (menu_choice>>ACCURACY) == 0 && engineGetAxis(0)>0 && menu_wait <= 0 && settings_get_stone_quality()<2)
+    if (menu_move == 0 && (menu_choice>>SP_ACCURACY) == 0 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_stone_quality()<2)
     {
       settings_set_stone_quality(settings_get_stone_quality()+1);
-      engineSetAxis(0,0);
+      engineInput->axis[0] = 0;
     }
-    if (menu_move == 0 && (menu_choice>>ACCURACY) == 1 && engineGetAxis(0)<0 && menu_wait <= 0 && settings_get_stars_rotating()>0)
+    if (menu_move == 0 && (menu_choice>>SP_ACCURACY) == 1 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_stars_rotating()>0)
     {
       settings_set_stars_rotating(settings_get_stars_rotating()-1);
-      engineSetAxis(0,0);
+      engineInput->axis[0] = 0;
     }
-    if (menu_move == 0 && (menu_choice>>ACCURACY) == 1 && engineGetAxis(0)>0 && menu_wait <= 0 && settings_get_stars_rotating()<2)
+    if (menu_move == 0 && (menu_choice>>SP_ACCURACY) == 1 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_stars_rotating()<2)
     {
       settings_set_stars_rotating(settings_get_stars_rotating()+1);
-      engineSetAxis(0,0);
+      engineInput->axis[0] = 0;
     }
-    if (menu_move == 0 && (engineInput->button[BUTTON_START] ||
-        engineInput->button[BUTTON_A] || engineInput->button[BUTTON_B] ||
-        engineInput->button[BUTTON_X] || engineInput->button[BUTTON_Y]))
+    if (menu_move == 0 && (engineInput->button[SP_BUTTON_START] ||
+        engineInput->button[SP_BUTTON_A] || engineInput->button[SP_BUTTON_B] ||
+        engineInput->button[SP_BUTTON_X] || engineInput->button[SP_BUTTON_Y]))
     {
-      engineInput->button[BUTTON_START] = 0;
-      engineInput->button[BUTTON_A] = 0;
-      engineInput->button[BUTTON_B] = 0;
-      engineInput->button[BUTTON_X] = 0;
-      engineInput->button[BUTTON_Y] = 0;
-      switch (menu_choice>>ACCURACY)
+      engineInput->button[SP_BUTTON_START] = 0;
+      engineInput->button[SP_BUTTON_A] = 0;
+      engineInput->button[SP_BUTTON_B] = 0;
+      engineInput->button[SP_BUTTON_X] = 0;
+      engineInput->button[SP_BUTTON_Y] = 0;
+      switch (menu_choice>>SP_ACCURACY)
       {
         case 0: //Stone Quality
           settings_set_stone_quality((settings_get_stone_quality()+1)%3);
@@ -432,17 +345,7 @@ int calc_menu(Uint32 steps)
         case 2: //Particles
           settings_set_particles((settings_get_particles()+1)%2);
           break;
-        case 3: //Alpha Blending
-          settings_set_alpha_blending((settings_get_alpha_blending()+1)%2);
-          set_particle_mode(settings_get_alpha_blending());
-          resize_particle(engineGetWindowX(),engineGetWindowY());
-          break;
-        case 4: //Font Quality
-          settings_set_font_quality((settings_get_font_quality()+1)%2);
-          set_font_quality(settings_get_font_quality());
-          loadKeyMap();
-          break;
-        case 6: //Back
+        case 4: //Back
           settings_save();
           nextstate = 0;
           menu_fade = -1;
@@ -452,9 +355,9 @@ int calc_menu(Uint32 steps)
     }
     break;
   case 2: //free game
-    if (engineGetAxis(1)<0 && menu_move==0 && (menu_choice>>ACCURACY)<4)
+    if (engineInput->axis[1]<0 && menu_move==0 && (menu_choice>>SP_ACCURACY)<4)
       menu_move = 1;
-    if (engineGetAxis(1)>0 && menu_move==0 && (menu_choice>>ACCURACY)>0)
+    if (engineInput->axis[1]>0 && menu_move==0 && (menu_choice>>SP_ACCURACY)>0)
       menu_move = -1;
     
     if (menu_move != 0)
@@ -462,43 +365,43 @@ int calc_menu(Uint32 steps)
       move_sound_on();
       for (i=0;i<steps;i++)
       {
-        menu_choice += menu_move*4 << ACCURACY-10;
-        if (menu_choice == ((menu_choice >>ACCURACY)<<ACCURACY))
+        menu_choice += menu_move*4 << SP_ACCURACY-10;
+        if (menu_choice == ((menu_choice >>SP_ACCURACY)<<SP_ACCURACY))
           menu_move = 0;
       }
     }
     else
       move_sound_off();
-    if (menu_move == 0 && (menu_choice>>ACCURACY) == 2 && engineGetAxis(0)<0 && menu_wait <= 0 && settings_get_color()>4)
+    if (menu_move == 0 && (menu_choice>>SP_ACCURACY) == 2 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_color()>4)
     {
       settings_set_color(settings_get_color()-1);
-      engineSetAxis(0,0);
+      engineInput->axis[0] = 0;
     }
-    if (menu_move == 0 && (menu_choice>>ACCURACY) == 2 && engineGetAxis(0)>0 && menu_wait <= 0 && settings_get_color()<9)
+    if (menu_move == 0 && (menu_choice>>SP_ACCURACY) == 2 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_color()<9)
     {
       settings_set_color(settings_get_color()+1);
-      engineSetAxis(0,0);
+      engineInput->axis[0] = 0;
     }
-    if (menu_move == 0 && (menu_choice>>ACCURACY) == 3 && engineGetAxis(0)<0 && menu_wait <= 0 && settings_get_difficult()>0)
+    if (menu_move == 0 && (menu_choice>>SP_ACCURACY) == 3 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_difficult()>0)
     {
       settings_set_difficult(settings_get_difficult()-1);
-      engineSetAxis(0,0);
+      engineInput->axis[0] = 0;
     }
-    if (menu_move == 0 && (menu_choice>>ACCURACY) == 3 && engineGetAxis(0)>0 && menu_wait <= 0 && settings_get_difficult()<9)
+    if (menu_move == 0 && (menu_choice>>SP_ACCURACY) == 3 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_difficult()<9)
     {
       settings_set_difficult(settings_get_difficult()+1);
-      engineSetAxis(0,0);
+      engineInput->axis[0] = 0;
     }
-    if (menu_move == 0 && (engineInput->button[BUTTON_START] ||
-        engineInput->button[BUTTON_A] || engineInput->button[BUTTON_B] ||
-        engineInput->button[BUTTON_X] || engineInput->button[BUTTON_Y]))
+    if (menu_move == 0 && (engineInput->button[SP_BUTTON_START] ||
+        engineInput->button[SP_BUTTON_A] || engineInput->button[SP_BUTTON_B] ||
+        engineInput->button[SP_BUTTON_X] || engineInput->button[SP_BUTTON_Y]))
     {
-      engineInput->button[BUTTON_START] = 0;
-      engineInput->button[BUTTON_A] = 0;
-      engineInput->button[BUTTON_B] = 0;
-      engineInput->button[BUTTON_X] = 0;
-      engineInput->button[BUTTON_Y] = 0;
-      switch (menu_choice>>ACCURACY)
+      engineInput->button[SP_BUTTON_START] = 0;
+      engineInput->button[SP_BUTTON_A] = 0;
+      engineInput->button[SP_BUTTON_B] = 0;
+      engineInput->button[SP_BUTTON_X] = 0;
+      engineInput->button[SP_BUTTON_Y] = 0;
+      switch (menu_choice>>SP_ACCURACY)
       {
         case 0: //Play
           settings_save();
@@ -524,15 +427,15 @@ int calc_menu(Uint32 steps)
     }
     break;
   case 3: //high score
-    if (engineInput->button[BUTTON_START] ||
-        engineInput->button[BUTTON_A] || engineInput->button[BUTTON_B] ||
-        engineInput->button[BUTTON_X] || engineInput->button[BUTTON_Y])
+    if (engineInput->button[SP_BUTTON_START] ||
+        engineInput->button[SP_BUTTON_A] || engineInput->button[SP_BUTTON_B] ||
+        engineInput->button[SP_BUTTON_X] || engineInput->button[SP_BUTTON_Y])
     {
-      engineInput->button[BUTTON_START] = 0;
-      engineInput->button[BUTTON_A] = 0;
-      engineInput->button[BUTTON_B] = 0;
-      engineInput->button[BUTTON_X] = 0;
-      engineInput->button[BUTTON_Y] = 0;
+      engineInput->button[SP_BUTTON_START] = 0;
+      engineInput->button[SP_BUTTON_A] = 0;
+      engineInput->button[SP_BUTTON_B] = 0;
+      engineInput->button[SP_BUTTON_X] = 0;
+      engineInput->button[SP_BUTTON_Y] = 0;
       nextstate = 0;
       menu_fade = -1;
       rotating_sound_on();
@@ -540,13 +443,13 @@ int calc_menu(Uint32 steps)
     for (i = 0;i < steps;i++)
     {
       menu_wait--;
-      if (engineInput->button[BUTTON_L] && menu_wait <= 0)
+      if (engineInput->button[SP_BUTTON_L] && menu_wait <= 0)
       {
         settings_set_highscore_choice((settings_get_highscore_choice()+6*10*2-1)%(6*10*2));
         settings_save();
         menu_wait = 100;
       }
-      if (engineInput->button[BUTTON_R] && menu_wait <= 0)
+      if (engineInput->button[SP_BUTTON_R] && menu_wait <= 0)
       {
         settings_set_highscore_choice((settings_get_highscore_choice()+1)%(6*10*2));
         settings_save();
@@ -555,15 +458,15 @@ int calc_menu(Uint32 steps)
     }
     break;
   case 4: //about
-    if (engineInput->button[BUTTON_START] ||
-        engineInput->button[BUTTON_A] || engineInput->button[BUTTON_B] ||
-        engineInput->button[BUTTON_X] || engineInput->button[BUTTON_Y])
+    if (engineInput->button[SP_BUTTON_START] ||
+        engineInput->button[SP_BUTTON_A] || engineInput->button[SP_BUTTON_B] ||
+        engineInput->button[SP_BUTTON_X] || engineInput->button[SP_BUTTON_Y])
     {
-      engineInput->button[BUTTON_START] = 0;
-      engineInput->button[BUTTON_A] = 0;
-      engineInput->button[BUTTON_B] = 0;
-      engineInput->button[BUTTON_X] = 0;
-      engineInput->button[BUTTON_Y] = 0;
+      engineInput->button[SP_BUTTON_START] = 0;
+      engineInput->button[SP_BUTTON_A] = 0;
+      engineInput->button[SP_BUTTON_B] = 0;
+      engineInput->button[SP_BUTTON_X] = 0;
+      engineInput->button[SP_BUTTON_Y] = 0;
       nextstate = 0;
       menu_fade = -1;
       rotating_sound_on();
@@ -573,11 +476,11 @@ int calc_menu(Uint32 steps)
   return 0;
 }
 
-void run_menu()
+void run_menu(void (*resize)(Uint16 w,Uint16 h))
 {
   menu_fade = MENUSIZE;
   menu_choice = 0;
   rotating_sound_on();
-  engineLoop(draw_menu,calc_menu,10);
+  spLoop(draw_menu,calc_menu,10,resize);
 }
 

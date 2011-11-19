@@ -29,5 +29,5 @@ SDL_Surface* getBigParticle();
 SDL_Surface* getTimeSurface();
 void resize_particle(int winX,int winY);
 void set_particle_mode(int mode); //1 good, 0 bad
-
+void draw_particle_circle(int direction,int counter);
 #endif

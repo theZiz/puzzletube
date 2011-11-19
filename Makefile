@@ -1,4 +1,6 @@
-CFLAGS = -O3
+#==global Flags. Even on the gp2x with 16 kb Cache, -O3 is much better then -Os
+CFLAGS = -O3 -fsingle-precision-constant -fPIC
+GENERAL_TWEAKS = -DFAST_BUT_UGLY -DFAST_BUT_UGLY_2 -ffast-math -fgcse-lm -fgcse-sm -fsched-spec-load
 #==PC==
 CPP = gcc -g -march=native -DX86CPU
 SDL = `sdl-config --cflags`
@@ -7,30 +9,44 @@ SDL = `sdl-config --cflags`
 #  REALGP2X activates gp2xspecific optimizations, which the wiz doesn't need
 #	 e.g. modells with fewer polygons
 #ORIGINALFW = -static -lsmpeg -lstdc++ -lSDL -lfreetype -lpng -lpthread -lz -ljpeg -lm -s
-#CPP = /opt/open2x/gcc-4.1.1-glibc-2.3.6/bin/arm-open2x-linux-gcc -DMOBILE_DEVICE -DARMCPU -DGP2X -DREALGP2X
-#SDL = `/opt/open2x/gcc-4.1.1-glibc-2.3.6/bin/sdl-config --cflags`
-#INCLUDE = -I/opt/open2x/gcc-4.1.1-glibc-2.3.6/include
-#LIB = -L/opt/open2x/gcc-4.1.1-glibc-2.3.6/lib -Wl,-rpath=/opt/open2x/gcc-4.1.1-glibc-2.3.6/lib
+ifeq ($(TARGET),gp2x)
+CPP = /opt/open2x/gcc-4.1.1-glibc-2.3.6/bin/arm-open2x-linux-gcc -DMOBILE_DEVICE -DARMCPU -DGP2X $(GENERAL_TWEAKS) -DFAST_BUT_UGLY_2 
+SDL = `/opt/open2x/gcc-4.1.1-glibc-2.3.6/bin/sdl-config --cflags`
+INCLUDE = -I/opt/open2x/gcc-4.1.1-glibc-2.3.6/include
+LIB = -L/opt/open2x/gcc-4.1.1-glibc-2.3.6/lib -Wl,-rpath=/opt/open2x/gcc-4.1.1-glibc-2.3.6/lib
+endif
 #==Caanoo==
-#CPP = /opt/caanoo/gcc-4.2.4-glibc-2.7-eabi/bin/arm-gph-linux-gnueabi-gcc -DMOBILE_DEVICE -DARMCPU -DCAANOO
-#SDL = -I/opt/caanoo/gcc-4.2.4-glibc-2.7-eabi/arm-gph-linux-gnueabi/sys-root/usr/include/SDL -D_GNU_SOURCE=1 -D_REENTRANT
-#INCLUDE = -I/opt/caanoo/gcc-4.2.4-glibc-2.7-eabi/arm-gph-linux-gnueabi/sys-root/usr/include
-#LIB = -L/opt/caanoo/gcc-4.2.4-glibc-2.7-eabi/arm-gph-linux-gnueabi/sys-root/usr/lib -Wl,-rpath=/opt/caanoo/gcc-4.2.4-glibc-2.7-eabi/arm-gph-linux-gnueabi/sys-root/usr/lib
+ifeq ($(TARGET),caanoo)
+CPP = /opt/caanoo/gcc-4.2.4-glibc-2.7-eabi/bin/arm-gph-linux-gnueabi-gcc -DMOBILE_DEVICE -DARMCPU -DCAANOO $(GENERAL_TWEAKS)
+SDL = -I/opt/caanoo/gcc-4.2.4-glibc-2.7-eabi/arm-gph-linux-gnueabi/sys-root/usr/include/SDL -D_GNU_SOURCE=1 -D_REENTRANT
+INCLUDE = -I/opt/caanoo/gcc-4.2.4-glibc-2.7-eabi/arm-gph-linux-gnueabi/sys-root/usr/include
+LIB = -L/opt/caanoo/gcc-4.2.4-glibc-2.7-eabi/arm-gph-linux-gnueabi/sys-root/usr/lib -Wl,-rpath=/opt/caanoo/gcc-4.2.4-glibc-2.7-eabi/arm-gph-linux-gnueabi/sys-root/usr/lib
+endif
 #==Dingoo==
-#CPP = /opt/mipsel-linux-uclibc/usr/bin/mipsel-linux-gcc -DDINGOO
-#SDL = -I/opt/mipsel-linux-uclibc/usr/mipsel-linux-uclibc/sys-include/SDL -D_GNU_SOURCE=1 -D_REENTRANT
-#INCLUDE = -I/opt/mipsel-linux-uclibc/usr/mipsel-linux-uclibc/sys-include
-#LIB = -L/opt/mipsel-linux-uclibc/usr/lib -Wl,-rpath=/opt/mipsel-linux-uclibc/usr/lib
+ifeq ($(TARGET),dingoo)
+CPP = /opt/mipsel-linux-uclibc/usr/bin/mipsel-linux-gcc -DDINGOO $(GENERAL_TWEAKS)
+SDL = -I/opt/mipsel-linux-uclibc/usr/mipsel-linux-uclibc/sys-include/SDL -D_GNU_SOURCE=1 -D_REENTRANT
+INCLUDE = -I/opt/mipsel-linux-uclibc/usr/mipsel-linux-uclibc/sys-include
+LIB = -L/opt/mipsel-linux-uclibc/usr/lib -Wl,-rpath=/opt/mipsel-linux-uclibc/usr/lib
+endif
 #==Pandora==
-#CPP = /opt/pandora/arm-2011.03/bin/arm-none-linux-gnueabi-gcc -DARMCPU -DPANDORA
-#SDL = `/opt/pandora/arm-2011.03/usr/bin/sdl-config --cflags`
-#INCLUDE = -I/opt/pandora/arm-2011.03/usr/include
-#LIB = -L/opt/pandora/arm-2011.03/usr/lib -Wl,-rpath=/opt/pandora/arm-2011.03/usr/lib -lpnd
+ifeq ($(TARGET),pandora)
+CPP = /opt/pandora/arm-2011.03/bin/arm-none-linux-gnueabi-gcc -DARMCPU -DPANDORA $(GENERAL_TWEAKS)
+SDL = `/opt/pandora/arm-2011.03/usr/bin/sdl-config --cflags`
+INCLUDE = -I/opt/pandora/arm-2011.03/usr/include
+LIB = -L/opt/pandora/arm-2011.03/usr/lib -Wl,-rpath=/opt/pandora/arm-2011.03/usr/lib -lpnd
+endif
 
-all: puzzletube
+all: puzzletube_new
+
+targets:
+	@echo "gp2x (=wiz), caanoo, dingoo, pandora"
+
+puzzletube_new: puzzletube.c music.o menu.o stars.o settings.o particle.o splashscreen.o
+	$(CPP) $(CFLAGS) puzzletube.c music.o menu.o stars.o settings.o particle.o splashscreen.o $(SDL) $(INCLUDE) $(LIB) -L. -lSDL_ttf -lSDL_mixer -lSDL_image -lSDL -lm  -lsparrow3d $(ORIGINALFW) -o puzzletube
 
 puzzletube: puzzletube.c particle.o game.o music.o menu.o stars.o settings.o lettering.o splashscreen.o
-	$(CPP) $(CFLAGS) puzzletube.c particle.o game.o music.o menu.o stars.o settings.o lettering.o splashscreen.o ../sparrow3d/3dengine.o ../sparrow3d/graphicstuff.o ../sparrow3d/meshloader.o ../sparrow3d/graphicstuff-asm.o $(SDL) $(INCLUDE) $(LIB) -lSDL_ttf -lSDL_mixer -lSDL_image -lSDL -lm  $(ORIGINALFW) -o puzzletube
+	$(CPP) $(CFLAGS) puzzletube.c particle.o game.o music.o menu.o stars.o settings.o lettering.o splashscreen.o $(SDL) $(INCLUDE) $(LIB) -L. -lSDL_ttf -lSDL_mixer -lSDL_image -lSDL -lm  -lsparrow3d $(ORIGINALFW) -o puzzletube
 
 particle.o: particle.c particle.h
 	$(CPP) $(CFLAGS) -c particle.c $(SDL) $(INCLUDE)

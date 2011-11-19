@@ -20,6 +20,8 @@
 #ifndef _SETTINGS_H
 #define _SETTINGS_H
 
+#include "../sparrow3d/sparrow3d.h"
+
 void settings_load();
 void settings_save();
 
@@ -48,5 +50,10 @@ void settings_set_highscore_choice(int value);
 char get_highscore_name(int i,int j,int k,int l,int m);
 int get_highscore(int i,int j,int k,int l);
 void insert_highscore(int i,int j,int k,char* name,int points);
+
+spFontPointer settings_get_font();
+void settings_set_font(spFontPointer font);
+spFontPointer settings_get_small_font();
+void settings_set_small_font(spFontPointer small_font);
 
 #endif

@@ -18,6 +18,7 @@
  Alexander Matthes (Ziz) , zizsdl_at_googlemail.com                         
 */
 #include "particle.h"
+#include "../sparrow3d/sparrow3d.h"
 
 SDL_Surface* smallParticle = NULL;
 SDL_Surface* middleParticle = NULL;
@@ -39,125 +40,91 @@ void resize_particle(int winX,int winY)
   //smallParticle 2% of y
   if (smallParticle)
     SDL_FreeSurface(smallParticle);
-  SDL_Surface* dummy = SDL_CreateRGBSurface(SDL_SWSURFACE,winY*2/100,
-            winY*2/100,32,0xff000000,0x00ff0000,0x0000ff00,0x000000ff);
+  int w = winY*2/100;
+  if (w&1)
+    w++;
+  SDL_Surface* dummy = SDL_CreateRGBSurface(SDL_SWSURFACE,w,w,16,0,0,0,0);
   SDL_LockSurface(dummy);
-  Uint8* pixel = dummy->pixels;
+  Uint16* pixel = dummy->pixels;
   int x,y;
   for (x = 0; x < dummy->w; x++)
     for (y = 0; y < dummy->h; y++)
     {
-      pixel[(x+y*dummy->w)*4+1] = 255;
-      pixel[(x+y*dummy->w)*4+2] = 255;
-      pixel[(x+y*dummy->w)*4+3] = 255;      
-      int alpha = (int)(sqrt((float)(dummy->w*dummy->w)/4.0-
-          ((float)(x)-(float)(dummy->w)/2.0)*
-          ((float)(x)-(float)(dummy->w)/2.0)-
-          ((float)(y)-(float)(dummy->h)/2.0)*
-          ((float)(y)-(float)(dummy->h)/2.0))/(float)(dummy->h)*NAMELESSCONSTANT*ALPHA_FACTOR);
-      if (particle_mode == 0 && alpha<128)
-        pixel[(x+y*dummy->w)*4+2] = 0;
-      if (alpha<255)
-        pixel[(x+y*dummy->w)*4+0] = alpha;
-      else 
-        pixel[(x+y*dummy->w)*4+0] = 255;
+      int X = dummy->w/2-x;
+      int Y = dummy->h/2-y;
+      int R = dummy->w/2;
+      if (X*X+Y*Y < R*R)
+        pixel[x+y*dummy->w] = 65535;
+      else
+        pixel[x+y*dummy->w] = SP_ALPHA_COLOR;
     }
   SDL_UnlockSurface(dummy);
-    if (particle_mode == 0)
-  {
-    SDL_SetColorKey(dummy, SDL_SRCCOLORKEY | SDL_RLEACCEL,SDL_MapRGB(dummy->format, 255,0,255));    
-    smallParticle = SDL_DisplayFormat(dummy);
-  }
-  else
-    smallParticle = SDL_DisplayFormatAlpha(dummy);
+  smallParticle = SDL_DisplayFormat(dummy);
   SDL_FreeSurface(dummy);
   //middleParticle 3.5% of y
   if (middleParticle)
     SDL_FreeSurface(middleParticle);
-  dummy = SDL_CreateRGBSurface(SDL_SWSURFACE,winY*7/200,
-            winY*7/200,32,0xff000000,0x00ff0000,0x0000ff00,0x000000ff);
+  w = winY*7/200;
+  if (w&1)
+    w++;
+  dummy = SDL_CreateRGBSurface(SDL_SWSURFACE,w,w,16,0,0,0,0);
   SDL_LockSurface(dummy);
   pixel = dummy->pixels;
   for (x = 0; x < dummy->w; x++)
     for (y = 0; y < dummy->h; y++)
     {
-      pixel[(x+y*dummy->w)*4+1] = 255;
-      pixel[(x+y*dummy->w)*4+2] = 255;
-      pixel[(x+y*dummy->w)*4+3] = 255;      
-      int alpha = (int)(sqrt((float)(dummy->w*dummy->w)/4.0-
-          ((float)(x)-(float)(dummy->w)/2.0)*
-          ((float)(x)-(float)(dummy->w)/2.0)-
-          ((float)(y)-(float)(dummy->h)/2.0)*
-          ((float)(y)-(float)(dummy->h)/2.0))/(float)(dummy->h)*NAMELESSCONSTANT*ALPHA_FACTOR);
-      if (particle_mode == 0 && alpha<128)
-        pixel[(x+y*dummy->w)*4+2] = 0;
-      if (alpha<255)
-        pixel[(x+y*dummy->w)*4+0] = alpha;
-      else 
-        pixel[(x+y*dummy->w)*4+0] = 255;
+      int X = dummy->w/2-x;
+      int Y = dummy->h/2-y;
+      int R = dummy->w/2;
+      if (X*X+Y*Y < R*R)
+        pixel[x+y*dummy->w] = 65535;
+      else
+        pixel[x+y*dummy->w] = SP_ALPHA_COLOR;
     }
   SDL_UnlockSurface(dummy);
-  if (particle_mode == 0)
-  {
-    SDL_SetColorKey(dummy, SDL_SRCCOLORKEY | SDL_RLEACCEL,SDL_MapRGB(dummy->format, 255,0,255));    
-    middleParticle = SDL_DisplayFormat(dummy);
-  }
-  else
-    middleParticle = SDL_DisplayFormatAlpha(dummy);
+  middleParticle = SDL_DisplayFormat(dummy);
   SDL_FreeSurface(dummy);
   //bigParticle 5% of y
   if (bigParticle)
     SDL_FreeSurface(bigParticle);
-  dummy = SDL_CreateRGBSurface(SDL_SWSURFACE,winY*5/100,
-            winY*5/100,32,0xff000000,0x00ff0000,0x0000ff00,0x000000ff);
+  w = winY*5/100;
+  if (w&1)
+    w++;
+  dummy = SDL_CreateRGBSurface(SDL_SWSURFACE,w,w,16,0,0,0,0);
   SDL_LockSurface(dummy);
   pixel = dummy->pixels;
   for (x = 0; x < dummy->w; x++)
     for (y = 0; y < dummy->h; y++)
     {
-      pixel[(x+y*dummy->w)*4+1] = 255;
-      pixel[(x+y*dummy->w)*4+2] = 255;
-      pixel[(x+y*dummy->w)*4+3] = 255;      
-
-      int alpha = (int)(sqrt((float)(dummy->w*dummy->w)/4.0-
-          ((float)(x)-(float)(dummy->w)/2.0)*
-          ((float)(x)-(float)(dummy->w)/2.0)-
-          ((float)(y)-(float)(dummy->h)/2.0)*
-          ((float)(y)-(float)(dummy->h)/2.0))/(float)(dummy->h)*NAMELESSCONSTANT*ALPHA_FACTOR);
-      if (particle_mode == 0 && alpha<128)
-        pixel[(x+y*dummy->w)*4+2] = 0;
-      if (alpha<255)
-        pixel[(x+y*dummy->w)*4+0] = alpha;
-      else 
-        pixel[(x+y*dummy->w)*4+0] = 255;
+      int X = dummy->w/2-x;
+      int Y = dummy->h/2-y;
+      int R = dummy->w/2;
+      if (X*X+Y*Y < R*R)
+        pixel[x+y*dummy->w] = 65535;
+      else
+        pixel[x+y*dummy->w] = SP_ALPHA_COLOR;
     }
   SDL_UnlockSurface(dummy);
-  if (particle_mode == 0)
-  {
-    SDL_SetColorKey(dummy, SDL_SRCCOLORKEY | SDL_RLEACCEL,SDL_MapRGB(dummy->format, 255,0,255));    
-    bigParticle = SDL_DisplayFormat(dummy);
-  }
-  else
-    bigParticle = SDL_DisplayFormatAlpha(dummy);
+  bigParticle = SDL_DisplayFormat(dummy);
   SDL_FreeSurface(dummy);
   //timeSurface
   if (timeSurface)
     SDL_FreeSurface(timeSurface);
-  dummy = SDL_CreateRGBSurface(SDL_SWSURFACE,winY*2/6,
-            winY*3/100,32,0xff000000,0x00ff0000,0x0000ff00,0x000000ff);
+  dummy = SDL_CreateRGBSurface(SDL_SWSURFACE,winY*2/6,winY*3/100,16,0,0,0,0);
   SDL_LockSurface(dummy);
   pixel = dummy->pixels;
   //memset(pixel,255,dummy->w*dummy->h*4);
   for (x = 0; x < dummy->w; x++)
     for (y = 0; y < dummy->h; y++)
     {
-      pixel[(x+y*dummy->w)*4+0] = 255;
+      /*pixel[(x+y*dummy->w)*4+0] = 255;
       if (x < dummy->w/2)
         pixel[(x+y*dummy->w)*4+1] = 2*x*192/dummy->w;
       else
         pixel[(x+y*dummy->w)*4+1] = 2*(dummy->w-x)*192/dummy->w;
       pixel[(x+y*dummy->w)*4+2] = x*255/dummy->w;
-      pixel[(x+y*dummy->w)*4+3] = 255-x*255/dummy->w;      
+      pixel[(x+y*dummy->w)*4+3] = 255-x*255/dummy->w;      */
+      pixel[x+y*dummy->w] = 65535;
     }
   SDL_UnlockSurface(dummy);
   timeSurface = SDL_DisplayFormat(dummy);
@@ -183,3 +150,37 @@ SDL_Surface* getTimeSurface()
 {
   return timeSurface;
 }
+
+void draw_particle_circle(int direction,int counter)
+{
+  if (direction == -1)
+  {
+    //Left Circle
+    spBlit3D(+spCos(counter*700+5*SP_PI/10),spSin(counter*700+5*SP_PI/10),0,getBigParticle());
+    spBlit3D(+spCos(counter*700+3*SP_PI/10),spSin(counter*700+3*SP_PI/10),0,getMiddleParticle());
+    spBlit3D(+spCos(counter*700+2*SP_PI/10),spSin(counter*700+2*SP_PI/10),0,getMiddleParticle());
+    spBlit3D(+spCos(counter*700+1*SP_PI/10),spSin(counter*700+1*SP_PI/10),0,getSmallParticle());
+    spBlit3D(+spCos(counter*700+0*SP_PI/10),spSin(counter*700+0*SP_PI/10),0,getSmallParticle());
+    
+    spBlit3D(+spCos(counter*700+15*SP_PI/10),spSin(counter*700+15*SP_PI/10),0,getBigParticle());
+    spBlit3D(+spCos(counter*700+13*SP_PI/10),spSin(counter*700+13*SP_PI/10),0,getMiddleParticle());
+    spBlit3D(+spCos(counter*700+12*SP_PI/10),spSin(counter*700+12*SP_PI/10),0,getMiddleParticle());
+    spBlit3D(+spCos(counter*700+11*SP_PI/10),spSin(counter*700+11*SP_PI/10),0,getSmallParticle());
+    spBlit3D(+spCos(counter*700+10*SP_PI/10),spSin(counter*700+10*SP_PI/10),0,getSmallParticle());
+  }
+  if (direction == 1)
+  {  
+    //Right circle
+    spBlit3D(-spCos(counter*700+5*SP_PI/10),spSin(counter*700+5*SP_PI/10),0,getBigParticle());
+    spBlit3D(-spCos(counter*700+3*SP_PI/10),spSin(counter*700+3*SP_PI/10),0,getMiddleParticle());
+    spBlit3D(-spCos(counter*700+2*SP_PI/10),spSin(counter*700+2*SP_PI/10),0,getMiddleParticle());
+    spBlit3D(-spCos(counter*700+1*SP_PI/10),spSin(counter*700+1*SP_PI/10),0,getSmallParticle());
+    spBlit3D(-spCos(counter*700+0*SP_PI/10),spSin(counter*700+0*SP_PI/10),0,getSmallParticle());
+
+    spBlit3D(-spCos(counter*700+15*SP_PI/10),spSin(counter*700+15*SP_PI/10),0,getBigParticle());
+    spBlit3D(-spCos(counter*700+13*SP_PI/10),spSin(counter*700+13*SP_PI/10),0,getMiddleParticle());
+    spBlit3D(-spCos(counter*700+12*SP_PI/10),spSin(counter*700+12*SP_PI/10),0,getMiddleParticle());
+    spBlit3D(-spCos(counter*700+11*SP_PI/10),spSin(counter*700+11*SP_PI/10),0,getSmallParticle());
+    spBlit3D(-spCos(counter*700+10*SP_PI/10),spSin(counter*700+10*SP_PI/10),0,getSmallParticle());
+  }
+}  
