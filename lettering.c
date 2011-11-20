@@ -19,13 +19,15 @@
 */
 
 #include "lettering.h"
+#include <stdlib.h>
+#include <string.h>
 
 plettering first_lettering = NULL;
 plettering dummy_lettering = NULL;
 
 plettering add_lettering(char* name,int windowx,int windowy)
 {
-  int globalzoom=min(windowx/320,windowy/240);
+  int globalzoom=spMin(windowx/320,windowy/240);
   plettering lettering = (plettering)malloc(sizeof(tlettering));
   lettering->name = (char*)malloc(strlen(name)+1);
   sprintf(lettering->name,"%s",name);
@@ -34,7 +36,7 @@ plettering add_lettering(char* name,int windowx,int windowy)
     sprintf(buffer,"./images/%s_small.png",name);
   else
     sprintf(buffer,"./images/%s.png",name);
-  lettering->surface = IMG_Load(buffer);
+  lettering->surface = spLoadSurface(buffer);
   lettering->next = first_lettering;
   first_lettering = lettering;
   return lettering;

@@ -110,7 +110,7 @@ void resize_particle(int winX,int winY)
   //timeSurface
   if (timeSurface)
     SDL_FreeSurface(timeSurface);
-  dummy = SDL_CreateRGBSurface(SDL_SWSURFACE,winY*2/6,winY*3/100,16,0,0,0,0);
+  dummy = SDL_CreateRGBSurface(SDL_SWSURFACE,winY*2/6,winY*5/100,16,0,0,0,0);
   SDL_LockSurface(dummy);
   pixel = dummy->pixels;
   //memset(pixel,255,dummy->w*dummy->h*4);
@@ -124,7 +124,14 @@ void resize_particle(int winX,int winY)
         pixel[(x+y*dummy->w)*4+1] = 2*(dummy->w-x)*192/dummy->w;
       pixel[(x+y*dummy->w)*4+2] = x*255/dummy->w;
       pixel[(x+y*dummy->w)*4+3] = 255-x*255/dummy->w;      */
-      pixel[x+y*dummy->w] = 65535;
+      if ((x == 0) ^ (y == 0) ^ (x == dummy->w-1) ^ (y == dummy->h-1))
+        pixel[x+y*dummy->w] = 65535;
+      else
+      {
+        int g = (x*255/dummy->w)>>2;
+        int r = (255-x*255/dummy->w)>>3;
+        pixel[x+y*dummy->w] = (r<<11)+(g<<5);
+      }
     }
   SDL_UnlockSurface(dummy);
   timeSurface = SDL_DisplayFormat(dummy);

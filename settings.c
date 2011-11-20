@@ -34,6 +34,7 @@ int highscore_choice;
 
 spFontPointer settings_font;
 spFontPointer settings_small_font;
+spFontPointer settings_middle_font;
 
 int highscore[2][6][10][6];
 char highscore_name[2][6][10][6][3];
@@ -275,4 +276,14 @@ spFontPointer settings_get_small_font()
 void settings_set_small_font(spFontPointer small_font)
 {
   settings_small_font = small_font;
+}
+
+spFontPointer settings_get_middle_font()
+{
+  return settings_middle_font;
+}
+
+void settings_set_middle_font(spFontPointer middle_font)
+{
+  settings_middle_font = middle_font;
 }

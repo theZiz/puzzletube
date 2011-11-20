@@ -55,5 +55,7 @@ spFontPointer settings_get_font();
 void settings_set_font(spFontPointer font);
 spFontPointer settings_get_small_font();
 void settings_set_small_font(spFontPointer small_font);
+spFontPointer settings_get_middle_font();
+void settings_set_middle_font(spFontPointer middle_font);
 
 #endif

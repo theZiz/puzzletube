@@ -20,8 +20,7 @@
 #ifndef _GAME_H
 #define _GAME_H
 
-#include "../sparrow3d/3dengine.h"
-#include "../sparrow3d/meshloader.h"
+#include "../sparrow3d/sparrow3d.h"
 #include "particle.h"
 #include "stars.h"
 
@@ -75,7 +74,7 @@ typedef struct sparticle {
 } tparticle;
 
 
-int run_game(int playernumber_,GameMode mode_,int difficult_ /*0..9*/,int starAdd);
+int run_game(int playernumber_,GameMode mode_,int difficult_ /*0..9*/,int starAdd,void (*resize)(Uint16 w,Uint16 h));
 void prepare_game_objects(char complete,int colornumber_);
 void delete_game_objects();
 

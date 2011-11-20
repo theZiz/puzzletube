@@ -37,13 +37,10 @@ INCLUDE = -I/opt/pandora/arm-2011.03/usr/include
 LIB = -L/opt/pandora/arm-2011.03/usr/lib -Wl,-rpath=/opt/pandora/arm-2011.03/usr/lib -lpnd
 endif
 
-all: puzzletube_new
+all: puzzletube
 
 targets:
 	@echo "gp2x (=wiz), caanoo, dingoo, pandora"
-
-puzzletube_new: puzzletube.c music.o menu.o stars.o settings.o particle.o splashscreen.o
-	$(CPP) $(CFLAGS) puzzletube.c music.o menu.o stars.o settings.o particle.o splashscreen.o $(SDL) $(INCLUDE) $(LIB) -L. -lSDL_ttf -lSDL_mixer -lSDL_image -lSDL -lm  -lsparrow3d $(ORIGINALFW) -o puzzletube
 
 puzzletube: puzzletube.c particle.o game.o music.o menu.o stars.o settings.o lettering.o splashscreen.o
 	$(CPP) $(CFLAGS) puzzletube.c particle.o game.o music.o menu.o stars.o settings.o lettering.o splashscreen.o $(SDL) $(INCLUDE) $(LIB) -L. -lSDL_ttf -lSDL_mixer -lSDL_image -lSDL -lm  -lsparrow3d $(ORIGINALFW) -o puzzletube

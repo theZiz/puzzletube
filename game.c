@@ -7,7 +7,7 @@
  Software distributed under the License is distributed on an "AS IS"        
  basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the    
  License for the specific language governing rights and limitations         
- under the License.                                                         
+ under the License.                                                       
                                                                             
  Alternatively, the contents of this file may be used under the terms       
  of the GNU Lesser General Public license (the  "LGPL License"), in which case the  
@@ -19,6 +19,9 @@
 */
 #include "game.h"
 #include "lettering.h"
+#include "settings.h"
+#include <stdlib.h>
+#include <string.h>
 
 int playernumber;
 GameMode mode;
@@ -29,12 +32,14 @@ int game_counter;
 
 int star_add;
 
-pmesh stone_mesh;
+/*pmesh stone_mesh;
 pmesh stone_special_mesh;
 pmesh stone_mesh_gp2x;
-pmesh stone_special_mesh_gp2x;
+pmesh stone_special_mesh_gp2x;*/
 //pmesh border_mesh;
 //pmesh border_thin_mesh;
+typedef SDL_Surface *PSDL_Surface;
+PSDL_Surface stone_texture[9];
 Sint32 w=0;
 
 Sint32 posx[4],posy[4];
@@ -153,11 +158,11 @@ void test_and_set_chain()
 Sint32 get_type_color_h(int type)
 {
   if (type<6)
-    return type*MY_PI/3;
+    return type*SP_PI/3;
   switch (type) //special stone
   {
     case 6: return w*10;
-    case 7: return (mysin(w*13)+(1<<ACCURACY)>>HALF_ACCURACY)*(MY_PI/12>>HALF_ACCURACY);
+    case 7: return (spSin(w*13)+(1<<SP_ACCURACY)>>SP_HALF_ACCURACY)*(SP_PI/12>>SP_HALF_ACCURACY);
     case 8: return 0;
   }
 }
@@ -177,11 +182,11 @@ Uint8 get_type_color_s(int type)
 Uint8 get_type_color_v(int type)
 {
   if (type<6)
-    return 200;
+    return 255;
   switch (type) //special stone
   {
     case 6: return 255;
-    case 7: return ((mysin(w*64)*63)>>ACCURACY)+96;
+    case 7: return ((spSin(w*64)*63)>>SP_ACCURACY)+96;
     case 8: return 127;
   }
 }
@@ -411,10 +416,10 @@ void remove_win_situations()
 
 void init_light()
 {
-  plight light=engineGetLightPointer();  
+  /*plight light=engineGetLightPointer();  
   light[0].r=255;
   light[0].g=255;
-  light[0].b=255;
+  light[0].b=255;*/
 }
 
 
@@ -437,18 +442,18 @@ void prepare_game_objects(char complete,int colornumber_)
       stone[y][a].new=0;
     }
   posx[0]=0;
-  posy[0]=-2<<ACCURACY;
+  posy[0]=-2<<SP_ACCURACY;
   posx[3]=posx[0];
   posy[3]=posy[0];
   posx[1]=0;
   posy[1]=0;
   posx[2]=0;
-  posy[2]=2<<ACCURACY;
+  posy[2]=2<<SP_ACCURACY;
   int i;
   for (i=0;i<2*TIMEOUT;i++)
   {
     pointposx[i]=0; 
-    pointposy[i]=(i-TIMEOUT<<ACCURACY)/(TIMEOUT/2); 
+    pointposy[i]=(i-TIMEOUT<<SP_ACCURACY)/(TIMEOUT/2); 
   }
   is_change=0;
   pointstart=0;
@@ -459,13 +464,22 @@ void prepare_game_objects(char complete,int colornumber_)
   remove_win_situations();
   if (complete)
   {
-    stone_mesh_gp2x=loadMesh("./data/stone_gp2x.obj");
+    stone_texture[0] = spLoadSurface("./images/stone1.png");
+    stone_texture[1] = spLoadSurface("./images/stone2.png");
+    stone_texture[2] = spLoadSurface("./images/stone3.png");
+    stone_texture[3] = spLoadSurface("./images/stone4.png");
+    stone_texture[4] = spLoadSurface("./images/stone5.png");
+    stone_texture[5] = spLoadSurface("./images/stone6.png");
+    stone_texture[6] = spLoadSurface("./images/stone7.png");
+    stone_texture[7] = spLoadSurface("./images/stone8.png");
+    stone_texture[8] = spLoadSurface("./images/stone9.png");
+    /*stone_mesh_gp2x=loadMesh("./data/stone_gp2x.obj");
     stone_special_mesh_gp2x=loadMesh("./data/stone_special_gp2x.obj");
     stone_mesh=loadMesh("./data/stone.obj");
-    stone_special_mesh=loadMesh("./data/stone_special.obj");
+    stone_special_mesh=loadMesh("./data/stone_special.obj");*/
     //border_mesh=loadMesh("./data/border.obj");  
     //border_thin_mesh=loadMesh("./data/border_thin.obj");  
-    resize_particle(engineGetWindowX(),engineGetWindowY());
+    resize_particle(spGetWindowSurface()->w,spGetWindowSurface()->h);
     init_stars();
   }
   init_light();
@@ -473,8 +487,11 @@ void prepare_game_objects(char complete,int colornumber_)
 
 void delete_game_objects()
 {
-  freeMesh(stone_mesh);
-  freeMesh(stone_special_mesh);
+  int i;
+  for (i = 0;i<9;i++)
+    SDL_FreeSurface(stone_texture[i]);
+  //freeMesh(stone_mesh);
+  //freeMesh(stone_special_mesh);
   //freeMesh(border_mesh);
   //freeMesh(border_thin_mesh);  
 }
@@ -491,9 +508,9 @@ void new_particle(Sint32 x,Sint32 y,Sint32 z,Sint32 h,Uint8 s,Uint8 v,Sint32 rot
   particle->rotx=rotx;
   particle->roty=roty;
   particle->rotz=rotz;
-  particle->dx=rand()%(1<<ACCURACY-7)-(1<<ACCURACY-8);
-  particle->dy=rand()%(1<<ACCURACY-7)-(1<<ACCURACY-8);
-  particle->dz=rand()%(1<<ACCURACY-7)-(1<<ACCURACY-8);
+  particle->dx=rand()%(1<<SP_ACCURACY-7)-(1<<SP_ACCURACY-8);
+  particle->dy=rand()%(1<<SP_ACCURACY-7)-(1<<SP_ACCURACY-8);
+  particle->dz=rand()%(1<<SP_ACCURACY-7)-(1<<SP_ACCURACY-8);
   particle->age=PARTICLE_AGE;
   particle->next=firstparticle;
   firstparticle=particle;
@@ -505,7 +522,7 @@ void step_particles()
   pparticle particle=firstparticle;
   while (particle)
   {
-    particle->dy-=1<<ACCURACY-15;
+    particle->dy-=1<<SP_ACCURACY-15;
     particle->x+=particle->dx;
     particle->y+=particle->dy;
     particle->z+=particle->dz;
@@ -603,18 +620,18 @@ void make_win_situations_invalid()
       play_explosion();
       if (settings_get_particles())
       {
-        new_particle(mycos((temp->x*MY_PI>>3)-MY_PI/32)*5,((temp->y-3)*2<<ACCURACY)-(1<<ACCURACY-1),mysin((temp->x*MY_PI>>3)-MY_PI/32)*5,
+        new_particle(spCos((temp->x*SP_PI>>3)-SP_PI/32)*5,((temp->y-3)*2<<SP_ACCURACY)-(1<<SP_ACCURACY-1),spSin((temp->x*SP_PI>>3)-SP_PI/32)*5,
                      stone[temp->y][temp->x].h,stone[temp->y][temp->x].s,stone[temp->y][temp->x].v,
-                     0,2*MY_PI+MY_PI/2-(temp->x*MY_PI>>3),0);
-        new_particle(mycos((temp->x*MY_PI>>3)+MY_PI/32)*5,((temp->y-3)*2<<ACCURACY)-(1<<ACCURACY-1),mysin((temp->x*MY_PI>>3)+MY_PI/32)*5,
+                     0,2*SP_PI+SP_PI/2-(temp->x*SP_PI>>3),0);
+        new_particle(spCos((temp->x*SP_PI>>3)+SP_PI/32)*5,((temp->y-3)*2<<SP_ACCURACY)-(1<<SP_ACCURACY-1),spSin((temp->x*SP_PI>>3)+SP_PI/32)*5,
                      stone[temp->y][temp->x].h,stone[temp->y][temp->x].s,stone[temp->y][temp->x].v,
-                     0,2*MY_PI+MY_PI/2-(temp->x*MY_PI>>3),0);
-        new_particle(mycos((temp->x*MY_PI>>3)-MY_PI/32)*5,((temp->y-3)*2<<ACCURACY)+(1<<ACCURACY-1),mysin((temp->x*MY_PI>>3)-MY_PI/32)*5,
+                     0,2*SP_PI+SP_PI/2-(temp->x*SP_PI>>3),0);
+        new_particle(spCos((temp->x*SP_PI>>3)-SP_PI/32)*5,((temp->y-3)*2<<SP_ACCURACY)+(1<<SP_ACCURACY-1),spSin((temp->x*SP_PI>>3)-SP_PI/32)*5,
                      stone[temp->y][temp->x].h,stone[temp->y][temp->x].s,stone[temp->y][temp->x].v,
-                     0,2*MY_PI+MY_PI/2-(temp->x*MY_PI>>3),0);
-        new_particle(mycos((temp->x*MY_PI>>3)+MY_PI/32)*5,((temp->y-3)*2<<ACCURACY)+(1<<ACCURACY-1),mysin((temp->x*MY_PI>>3)+MY_PI/32)*5,
+                     0,2*SP_PI+SP_PI/2-(temp->x*SP_PI>>3),0);
+        new_particle(spCos((temp->x*SP_PI>>3)+SP_PI/32)*5,((temp->y-3)*2<<SP_ACCURACY)+(1<<SP_ACCURACY-1),spSin((temp->x*SP_PI>>3)+SP_PI/32)*5,
                      stone[temp->y][temp->x].h,stone[temp->y][temp->x].s,stone[temp->y][temp->x].v,
-                     0,2*MY_PI+MY_PI/2-(temp->x*MY_PI>>3),0);
+                     0,2*SP_PI+SP_PI/2-(temp->x*SP_PI>>3),0);
       }
       i++;
       printf("%i:%i\n",temp->x,temp->y);
@@ -679,21 +696,21 @@ void make_win_situations_invalid()
 
 void draw_particle(int posx,int posy,Sint32 r,int time,SDL_Surface* particle)
 {
-  Sint32* modellViewMatrix=engineGetModellViewMatrix();
+  Sint32* modellViewMatrix=spGetMatrix();
   Sint32 matrix[16];
   memcpy(matrix,modellViewMatrix,sizeof(Sint32)*16);
-    engineTranslate(mycos(-(posx>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,posy,mysin((posx>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2);
-    engineRotate(0,1<<ACCURACY,0,(posx>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1));
+    spTranslate(spCos(-(posx>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)+SP_PI/2)*22>>2,posy,spSin((posx>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)+SP_PI/2)*22>>2);
+    spRotate(0,1<<SP_ACCURACY,0,(posx>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1));
     if (time<PARTICLE_SPEED/4)
-      engineDrawSurface(r*time/(PARTICLE_SPEED/8)-r,r,0,particle);
+      spBlit3D(r*time/(PARTICLE_SPEED/8)-r,r,0,particle);
     else
     if (time<PARTICLE_SPEED/2)
-      engineDrawSurface(r,r-r*(time-PARTICLE_SPEED/4)/(PARTICLE_SPEED/8),0,particle);
+      spBlit3D(r,r-r*(time-PARTICLE_SPEED/4)/(PARTICLE_SPEED/8),0,particle);
     else
     if (time<3*PARTICLE_SPEED/4)
-      engineDrawSurface(r-r*(time-PARTICLE_SPEED/2)/(PARTICLE_SPEED/8),-r,0,particle);
+      spBlit3D(r-r*(time-PARTICLE_SPEED/2)/(PARTICLE_SPEED/8),-r,0,particle);
     else
-      engineDrawSurface(-r,r-r*(PARTICLE_SPEED-time)/(PARTICLE_SPEED/8),0,particle);
+      spBlit3D(-r,r-r*(PARTICLE_SPEED-time)/(PARTICLE_SPEED/8),0,particle);
     
   memcpy(modellViewMatrix,matrix,sizeof(Sint32)*16);
 }
@@ -702,21 +719,21 @@ void draw_particle(int posx,int posy,Sint32 r,int time,SDL_Surface* particle)
 
 void draw_particle2(int posx,int posy,Sint32 r,int time,SDL_Surface* particle)
 {
-  Sint32* modellViewMatrix=engineGetModellViewMatrix();
+  Sint32* modellViewMatrix=spGetMatrix();
   Sint32 matrix[16];
   memcpy(matrix,modellViewMatrix,sizeof(Sint32)*16);
-    engineTranslate(mycos(-(posx>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,posy,mysin((posx>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2);
-    engineRotate(0,1<<ACCURACY,0,(posx>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1));
+    spTranslate(spCos(-(posx>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)+SP_PI/2)*22>>2,posy,spSin((posx>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)+SP_PI/2)*22>>2);
+    spRotate(0,1<<SP_ACCURACY,0,(posx>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1));
     if (time<PARTICLE_SPEED2/4)
-      engineDrawSurface(r-r*time/(PARTICLE_SPEED2/8),r,0,particle);
+      spBlit3D(r-r*time/(PARTICLE_SPEED2/8),r,0,particle);
     else
     if (time<PARTICLE_SPEED2/2)
-      engineDrawSurface(r,r*(time-PARTICLE_SPEED2/4)/(PARTICLE_SPEED2/8)-r,0,particle);
+      spBlit3D(r,r*(time-PARTICLE_SPEED2/4)/(PARTICLE_SPEED2/8)-r,0,particle);
     else
     if (time<3*PARTICLE_SPEED2/4)
-      engineDrawSurface(r*(time-PARTICLE_SPEED2/2)/(PARTICLE_SPEED2/8)-r,-r,0,particle);
+      spBlit3D(r*(time-PARTICLE_SPEED2/2)/(PARTICLE_SPEED2/8)-r,-r,0,particle);
     else
-      engineDrawSurface(-r,r*(PARTICLE_SPEED2-time)/(PARTICLE_SPEED2/8)-r,0,particle);
+      spBlit3D(-r,r*(PARTICLE_SPEED2-time)/(PARTICLE_SPEED2/8)-r,0,particle);
     
   memcpy(modellViewMatrix,matrix,sizeof(Sint32)*16);
 }
@@ -725,43 +742,48 @@ int last_rotate = 0;
 
 void draw_game(void)
 {
-  Sint32* modellViewMatrix=engineGetModellViewMatrix();
-  plight light=engineGetLightPointer();
-  int engineWindowX=engineGetWindowX();
-  int engineWindowY=engineGetWindowY();
+  spFontPointer font = settings_get_font();
+  spFontPointer small_font = settings_get_small_font();
+  spFontPointer middle_font = settings_get_middle_font();
+  Sint32* modellViewMatrix=spGetMatrix();
+  //plight light=engineGetLightPointer();
+  int engineWindowX=spGetWindowSurface()->w;
+  int engineWindowY=spGetWindowSurface()->h;
 
-  //engineClearScreen(getHSV(w,32,255));
-  engineClearScreen(0);
-  setModellViewMatrixIdentity();
+  spClearTarget(0);
+  spResetZBuffer();
+  spIdentity();
+  spSetZSet(1);
+  spSetZTest(1);
     
   Sint32 matrix[16];
   
-  engineTranslate(0,0,-20<<ACCURACY);
+  spTranslate(0,0,-20<<SP_ACCURACY);
 
   if (settings_get_stars_rotating()==1)
   {
-    engineRotate(0,1<<ACCURACY,0,star_add);
+    spRotate(0,1<<SP_ACCURACY,0,star_add);
     draw_stars();
-    engineRotate(0,-1<<ACCURACY,0,star_add);
+    spRotate(0,-1<<SP_ACCURACY,0,star_add);
   }
 
-  engineRotate(0,1<<ACCURACY,0,(-posx[0]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1));
-  last_rotate = (-posx[0]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1);
+  spRotate(0,1<<SP_ACCURACY,0,(-posx[0]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1));
+  last_rotate = (-posx[0]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1);
  
   int add=1;
   if (is_change>0)
   {
     if (is_change<2)
       add++;
-    engineRotate(0,-1<<ACCURACY,0,((timeout<<HALF_ACCURACY-1)/TIMEOUT)*(MY_PI>>HALF_ACCURACY+add));
-    last_rotate += ((timeout<<HALF_ACCURACY-1)/TIMEOUT)*(MY_PI>>HALF_ACCURACY+add);
+    spRotate(0,-1<<SP_ACCURACY,0,((timeout<<SP_HALF_ACCURACY-1)/TIMEOUT)*(SP_PI>>SP_HALF_ACCURACY+add));
+    last_rotate += ((timeout<<SP_HALF_ACCURACY-1)/TIMEOUT)*(SP_PI>>SP_HALF_ACCURACY+add);
   }
   if (is_change<0)
   {
     if (is_change>-2)
       add++;
-    engineRotate(0, 1<<ACCURACY,0,((timeout<<HALF_ACCURACY-1)/TIMEOUT)*(MY_PI>>HALF_ACCURACY+add));
-    last_rotate += ((timeout<<HALF_ACCURACY-1)/TIMEOUT)*(MY_PI>>HALF_ACCURACY+add);
+    spRotate(0, 1<<SP_ACCURACY,0,((timeout<<SP_HALF_ACCURACY-1)/TIMEOUT)*(SP_PI>>SP_HALF_ACCURACY+add));
+    last_rotate += ((timeout<<SP_HALF_ACCURACY-1)/TIMEOUT)*(SP_PI>>SP_HALF_ACCURACY+add);
   }
   
 
@@ -770,14 +792,14 @@ void draw_game(void)
 
   if (settings_get_stars_rotating()==2)
   {
-    engineRotate(0,1<<ACCURACY,0,star_add);
+    spRotate(0,1<<SP_ACCURACY,0,star_add);
     draw_stars();
-    engineRotate(0,-1<<ACCURACY,0,star_add);
+    spRotate(0,-1<<SP_ACCURACY,0,star_add);
   }
-  //engineTranslate(0,mysin(w<<3)>>2,0);
+  //spTranslate(0,spSin(w<<3)>>2,0);
 
-  engineRotate(1<<ACCURACY,0,0,(mysin(w<<3)>>HALF_ACCURACY)*(MY_PI>>HALF_ACCURACY)>>5);
-  engineRotate(0,1<<ACCURACY,0,(mycos(w<<3)>>HALF_ACCURACY)*(MY_PI>>HALF_ACCURACY)>>5);
+  spRotate(1<<SP_ACCURACY,0,0,(spSin(w<<3)>>SP_HALF_ACCURACY)*(SP_PI>>SP_HALF_ACCURACY)>>5);
+  spRotate(0,1<<SP_ACCURACY,0,(spCos(w<<3)>>SP_HALF_ACCURACY)*(SP_PI>>SP_HALF_ACCURACY)>>5);
   
   for (a=0;a<16;a++)
     for (y=-6;y<=6;y+=2)
@@ -789,104 +811,59 @@ void draw_game(void)
       stone[(y>>1)+3][a].v = get_type_color_v(stone[(y>>1)+3][a].type);
       memcpy(matrix,modellViewMatrix,sizeof(Sint32)*16);
       pchange change=is_in_change(a,3+y/2);
-      Sint32 px=mycos(a*MY_PI>>3)*5;
-      Sint32 py=y<<ACCURACY;
-      Sint32 pz=mysin(a*MY_PI>>3)*5;
+      Sint32 px=spCos(a*SP_PI>>3)*5;
+      Sint32 py=y<<SP_ACCURACY;
+      Sint32 pz=spSin(a*SP_PI>>3)*5;
       if (change)
       {
         int sign=1;
-        Sint32 new_a=a<<ACCURACY;
-        Sint32 new_y=y<<ACCURACY;
+        Sint32 new_a=a<<SP_ACCURACY;
+        Sint32 new_y=y<<SP_ACCURACY;
         if (change->bx==a && change->by==3+y/2)
           sign=-1;
         switch (change->ax-change->bx)
         {
           case  14: 
-          case - 2: new_a+=sign*2*((CHANGE_TIME-change->progress)<<ACCURACY)/CHANGE_TIME; break;
+          case - 2: new_a+=sign*2*((CHANGE_TIME-change->progress)<<SP_ACCURACY)/CHANGE_TIME; break;
           case  15:
-          case - 1: new_a+=sign*  ((CHANGE_TIME-change->progress)<<ACCURACY)/CHANGE_TIME; break;
+          case - 1: new_a+=sign*  ((CHANGE_TIME-change->progress)<<SP_ACCURACY)/CHANGE_TIME; break;
           case -15: 
-          case   1: new_a-=sign*  ((CHANGE_TIME-change->progress)<<ACCURACY)/CHANGE_TIME; break;
+          case   1: new_a-=sign*  ((CHANGE_TIME-change->progress)<<SP_ACCURACY)/CHANGE_TIME; break;
           case -14:
-          case   2: new_a-=sign*2*((CHANGE_TIME-change->progress)<<ACCURACY)/CHANGE_TIME; break;
+          case   2: new_a-=sign*2*((CHANGE_TIME-change->progress)<<SP_ACCURACY)/CHANGE_TIME; break;
         }
         switch (change->ay-change->by)
         {
-          case -2: new_y+=sign*4*((CHANGE_TIME-change->progress)<<ACCURACY)/CHANGE_TIME; break;
-          case -1: new_y+=sign*2*((CHANGE_TIME-change->progress)<<ACCURACY)/CHANGE_TIME; break;
-          case  1: new_y-=sign*2*((CHANGE_TIME-change->progress)<<ACCURACY)/CHANGE_TIME; break;
-          case  2: new_y-=sign*4*((CHANGE_TIME-change->progress)<<ACCURACY)/CHANGE_TIME; break;
+          case -2: new_y+=sign*4*((CHANGE_TIME-change->progress)<<SP_ACCURACY)/CHANGE_TIME; break;
+          case -1: new_y+=sign*2*((CHANGE_TIME-change->progress)<<SP_ACCURACY)/CHANGE_TIME; break;
+          case  1: new_y-=sign*2*((CHANGE_TIME-change->progress)<<SP_ACCURACY)/CHANGE_TIME; break;
+          case  2: new_y-=sign*4*((CHANGE_TIME-change->progress)<<SP_ACCURACY)/CHANGE_TIME; break;
         }
-        px=(mycos((new_a>>HALF_ACCURACY+1)*(MY_PI>>HALF_ACCURACY+2))>>HALF_ACCURACY)*((1<<ACCURACY)-sign*(mysin(change->progress*MY_PI/CHANGE_TIME)/5)>>HALF_ACCURACY)*5;
+        px=(spCos((new_a>>SP_HALF_ACCURACY+1)*(SP_PI>>SP_HALF_ACCURACY+2))>>SP_HALF_ACCURACY)*((1<<SP_ACCURACY)-sign*(spSin(change->progress*SP_PI/CHANGE_TIME)/5)>>SP_HALF_ACCURACY)*5;
         py=new_y;
-        pz=(mysin((new_a>>HALF_ACCURACY+1)*(MY_PI>>HALF_ACCURACY+2))>>HALF_ACCURACY)*((1<<ACCURACY)-sign*(mysin(change->progress*MY_PI/CHANGE_TIME)/5)>>HALF_ACCURACY)*5;
+        pz=(spSin((new_a>>SP_HALF_ACCURACY+1)*(SP_PI>>SP_HALF_ACCURACY+2))>>SP_HALF_ACCURACY)*((1<<SP_ACCURACY)-sign*(spSin(change->progress*SP_PI/CHANGE_TIME)/5)>>SP_HALF_ACCURACY)*5;
       }
       if (stone[(y>>1)+3][a].falling)
       {
-        py-=(2*(FALL_TIME-stone[(y>>1)+3][a].falling)<<ACCURACY)/FALL_TIME;
+        py-=(2*(FALL_TIME-stone[(y>>1)+3][a].falling)<<SP_ACCURACY)/FALL_TIME;
       }
       
-      engineTranslate(px,py,pz);
-      engineRotate(0,1<<ACCURACY,0,2*MY_PI+MY_PI/2-(a*MY_PI>>3));
+      spTranslate(px,py,pz);
+      spRotate(0,1<<SP_ACCURACY,0,2*SP_PI+SP_PI/2-(a*SP_PI>>3));
       int s=stone[(y>>1)+3][a].s;
 
-      //if (stone[(y>>1)+3][a].type==stone[(y>>1)+3][(a+8)%16].type)
-      //  engineRotate(1<<ACCURACY,0,0,mysin(w*32)/2);
+      if (stone[(y>>1)+3][a].type==stone[(y>>1)+3][(a+8)%16].type)
+        spRotate(0,0,1<<SP_ACCURACY,spSin(w*64)/2);
+        //spRotate(0,0,1<<SP_ACCURACY,SP_PI/4);
 
-      int v=stone[(y>>1)+3][a].v-64+(2*mysin((-posx[0]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)-((a+8)*MY_PI>>3))>>(ACCURACY-5));
-
+      int v=stone[(y>>1)+3][a].v-64+(2*spSin((-posx[0]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)-((a+8)*SP_PI>>3))>>(SP_ACCURACY-5));
+      
       if (stone[(y>>1)+3][a].new)
       {
-        engineScale((NEW_TIME-stone[(y>>1)+3][a].new<<ACCURACY)/NEW_TIME,(NEW_TIME-stone[(y>>1)+3][a].new<<ACCURACY)/NEW_TIME,(NEW_TIME-stone[(y>>1)+3][a].new<<ACCURACY)/NEW_TIME);
+        spScale((NEW_TIME-stone[(y>>1)+3][a].new<<SP_ACCURACY)/NEW_TIME,(NEW_TIME-stone[(y>>1)+3][a].new<<SP_ACCURACY)/NEW_TIME,(NEW_TIME-stone[(y>>1)+3][a].new<<SP_ACCURACY)/NEW_TIME);
         
       }
 
-      /*if ((y+1>>1)==((posy[0]>>ACCURACY)+1>>1) && a==(20-((posx[0]+(1<<ACCURACY-1))>>ACCURACY))%16)
-      {
-        if (timeout>TIMEOUT/2)
-        {
-          engineRotate(0,0,1<<ACCURACY,mysin(w*32)/8);
-          engineScale(((TIMEOUT/2+timeout)<<ACCURACY)/TIMEOUT,
-                      ((TIMEOUT/2+timeout)<<ACCURACY)/TIMEOUT,
-                      ((TIMEOUT/2+timeout)<<ACCURACY)/TIMEOUT);
-          v=v/2;
-        }
-        else
-        {
-          engineScale(((TIMEOUT+TIMEOUT/2-timeout)<<ACCURACY)/TIMEOUT,
-                      ((TIMEOUT+TIMEOUT/2-timeout)<<ACCURACY)/TIMEOUT,
-                      ((TIMEOUT+TIMEOUT/2-timeout)<<ACCURACY)/TIMEOUT);
-          engineRotate(0,0,1<<ACCURACY,(TIMEOUT/2-timeout)*mysin(w*32)/8/(TIMEOUT/2));
-          v=((TIMEOUT/2)+timeout)*v/TIMEOUT;
-        }
-        //s=s*6/8;
-      }
-      if ((y+1>>1)==((posy[1]>>ACCURACY)+1>>1) && a==(20-((posx[1]+(1<<ACCURACY-1))>>ACCURACY))%16)
-      {
-        v=v/2;
-        engineRotate(0,0,1<<ACCURACY,mysin(w*32)/8);
-        //s=s*6/8;
-      }
-      if ((y+1>>1)==((posy[2]>>ACCURACY)+1>>1) && a==(20-((posx[2]+(1<<ACCURACY-1))>>ACCURACY))%16)
-      {
-        if (timeout>TIMEOUT/2)
-        {
-          engineRotate(0,0,1<<ACCURACY,(timeout-TIMEOUT/2)*mysin(w*32)/8/(TIMEOUT/2));
-          engineScale(((TIMEOUT/2+timeout)<<ACCURACY)/TIMEOUT,
-                      ((TIMEOUT/2+timeout)<<ACCURACY)/TIMEOUT,
-                      ((TIMEOUT/2+timeout)<<ACCURACY)/TIMEOUT);
-          v=(TIMEOUT+(TIMEOUT/2)-timeout)*v/TIMEOUT;
-        }
-        else
-        {
-          engineRotate(0,0,1<<ACCURACY,mysin(w*32)/8);
-          engineScale(((TIMEOUT+TIMEOUT/2-timeout)<<ACCURACY)/TIMEOUT,
-                      ((TIMEOUT+TIMEOUT/2-timeout)<<ACCURACY)/TIMEOUT,
-                      ((TIMEOUT+TIMEOUT/2-timeout)<<ACCURACY)/TIMEOUT);
-          v=v/2;            
-        }        
-        //s=s*6/8;
-      }*/
       if (v<0)
         v=0;
       if (v>255)
@@ -897,48 +874,48 @@ void draw_game(void)
         s=255;
       if (settings_get_stone_quality() == 2)
       {
-        if (stone[(y>>1)+3][a].type==stone[(y>>1)+3][(a+8)%16].type)
-          drawMesh(stone_special_mesh,getHSV(stone[(y>>1)+3][a].h,s,v));
-        else
-          drawMesh(stone_mesh,getHSV(stone[(y>>1)+3][a].h,s,v));
+        spSetCulling(0);
+        spBindTexture(stone_texture[stone[(y>>1)+3][a].type]);
+        spQuadTex3D(-7<<SP_ACCURACY-3,-7<<SP_ACCURACY-3,0,0,stone_texture[0]->h-SP_FONT_EXTRASPACE-1,
+                     7<<SP_ACCURACY-3,-7<<SP_ACCURACY-3,0,stone_texture[0]->w-SP_FONT_EXTRASPACE-1,stone_texture[0]->h-SP_FONT_EXTRASPACE-1,
+                     7<<SP_ACCURACY-3, 7<<SP_ACCURACY-3,0,stone_texture[0]->w-SP_FONT_EXTRASPACE-1,0,
+                    -7<<SP_ACCURACY-3, 7<<SP_ACCURACY-3,0,0,0,spGetHSV(0,0,255-64+(2*spSin((-posx[0]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)-((a+8)*SP_PI>>3))>>(SP_ACCURACY-5))));
+        spSetCulling(1);
       }
       else
       if (settings_get_stone_quality() == 1)
       {
-        if (stone[(y>>1)+3][a].type==stone[(y>>1)+3][(a+8)%16].type)
-          drawMesh(stone_special_mesh_gp2x,getHSV(stone[(y>>1)+3][a].h,s,v));
-        else
-          drawMesh(stone_mesh_gp2x,getHSV(stone[(y>>1)+3][a].h,s,v));
+        spSetCulling(0);
+        spQuad3D(-5<<SP_ACCURACY-3,-5<<SP_ACCURACY-3,0,
+                  5<<SP_ACCURACY-3,-5<<SP_ACCURACY-3,0,
+                  5<<SP_ACCURACY-3, 5<<SP_ACCURACY-3,0,
+                 -5<<SP_ACCURACY-3, 5<<SP_ACCURACY-3,0,spGetHSV(stone[(y>>1)+3][a].h,s,v));
+        spQuad3D(-7<<SP_ACCURACY-3,-5<<SP_ACCURACY-3,0,
+                 -5<<SP_ACCURACY-3,-5<<SP_ACCURACY-3,0,
+                 -5<<SP_ACCURACY-3, 5<<SP_ACCURACY-3,0,
+                 -7<<SP_ACCURACY-3, 5<<SP_ACCURACY-3,0,0);
+        spQuad3D( 7<<SP_ACCURACY-3,-5<<SP_ACCURACY-3,0,
+                  5<<SP_ACCURACY-3,-5<<SP_ACCURACY-3,0,
+                  5<<SP_ACCURACY-3, 5<<SP_ACCURACY-3,0,
+                  7<<SP_ACCURACY-3, 5<<SP_ACCURACY-3,0,0);
+        spQuad3D(-5<<SP_ACCURACY-3,-7<<SP_ACCURACY-3,0,
+                  5<<SP_ACCURACY-3,-7<<SP_ACCURACY-3,0,
+                  5<<SP_ACCURACY-3,-5<<SP_ACCURACY-3,0,
+                 -5<<SP_ACCURACY-3,-5<<SP_ACCURACY-3,0,0);
+        spQuad3D(-5<<SP_ACCURACY-3, 7<<SP_ACCURACY-3,0,
+                  5<<SP_ACCURACY-3, 7<<SP_ACCURACY-3,0,
+                  5<<SP_ACCURACY-3, 5<<SP_ACCURACY-3,0,
+                 -5<<SP_ACCURACY-3, 5<<SP_ACCURACY-3,0,0);
+        spSetCulling(1);
       }
       else
       {
-        Sint32 frontback =
-          mysin(-(-posx[0]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+(a*MY_PI>>3));
-        if (stone[(y>>1)+3][a].type==stone[(y>>1)+3][(a+8)%16].type)
-        { 
-          if (frontback > 0) //Front
-          engineTriangle( 3<<ACCURACY-2, 3<<ACCURACY-2,0,
-                         -3<<ACCURACY-2, 3<<ACCURACY-2,0,
-                          0<<ACCURACY-2,-3<<ACCURACY-2,0,getHSV(stone[(y>>1)+3][a].h,s,v));
-          if (frontback < 0) //Back
-          engineQuad(-3<<ACCURACY-2,-3<<ACCURACY-2,0,
-                     -3<<ACCURACY-2, 3<<ACCURACY-2,0,
-                      3<<ACCURACY-2, 3<<ACCURACY-2,0,
-                      3<<ACCURACY-2,-3<<ACCURACY-2,0,getHSV(stone[(y>>1)+3][a].h,s,v));
-        }
-        else
-        {
-          if (frontback > 0) //Front
-            engineQuad(-3<<ACCURACY-2,-3<<ACCURACY-2,0,
-                        3<<ACCURACY-2,-3<<ACCURACY-2,0,
-                        3<<ACCURACY-2, 3<<ACCURACY-2,0,
-                       -3<<ACCURACY-2, 3<<ACCURACY-2,0,getHSV(stone[(y>>1)+3][a].h,s,v));
-          if (frontback < 0) //Back
-            engineQuad(-3<<ACCURACY-2,-3<<ACCURACY-2,0,
-                       -3<<ACCURACY-2, 3<<ACCURACY-2,0,
-                        3<<ACCURACY-2, 3<<ACCURACY-2,0,
-                        3<<ACCURACY-2,-3<<ACCURACY-2,0,getHSV(stone[(y>>1)+3][a].h,s,v));
-        }      
+        spSetCulling(0);
+        spQuad3D(-3<<SP_ACCURACY-2,-3<<SP_ACCURACY-2,0,
+                    3<<SP_ACCURACY-2,-3<<SP_ACCURACY-2,0,
+                    3<<SP_ACCURACY-2, 3<<SP_ACCURACY-2,0,
+                   -3<<SP_ACCURACY-2, 3<<SP_ACCURACY-2,0,spGetHSV(stone[(y>>1)+3][a].h,s,v));
+        spSetCulling(1);
       }
       memcpy(modellViewMatrix,matrix,sizeof(Sint32)*16);
     }
@@ -947,45 +924,26 @@ void draw_game(void)
   while (particle)
   {
     memcpy(matrix,modellViewMatrix,sizeof(Sint32)*16);
-    engineTranslate(particle->x,particle->y,particle->z);
-    engineRotate(1<<ACCURACY,0,0,particle->rotx);
-    engineRotate(0,1<<ACCURACY,0,particle->roty);
-    engineRotate(0,0,1<<ACCURACY,particle->rotz);
-    //the gp2x becomes old :-/
-    if (settings_get_stone_quality() == 0)
-      engineQuad(-(particle->age<<ACCURACY)/PARTICLE_AGE/4,
-                 -(particle->age<<ACCURACY)/PARTICLE_AGE/4,0,
-                  (particle->age<<ACCURACY)/PARTICLE_AGE/4,
-                 -(particle->age<<ACCURACY)/PARTICLE_AGE/4,0,
-                  (particle->age<<ACCURACY)/PARTICLE_AGE/4,
-                  (particle->age<<ACCURACY)/PARTICLE_AGE/4,0,
-                 -(particle->age<<ACCURACY)/PARTICLE_AGE/4,
-                  (particle->age<<ACCURACY)/PARTICLE_AGE/4,0,
-                  getHSV(particle->h,particle->s,particle->v));
-    else
-    {
-      engineScale((particle->age<<ACCURACY)/PARTICLE_AGE/2,
-                  (particle->age<<ACCURACY)/PARTICLE_AGE/2,
-                  (particle->age<<ACCURACY)/PARTICLE_AGE/2);
-      if (settings_get_stone_quality() == 2)
-        drawMesh(stone_mesh,getHSV(particle->h,particle->s,particle->v));
-      else
-        drawMesh(stone_mesh_gp2x,getHSV(particle->h,particle->s,particle->v));
-    }
+    spTranslate(particle->x,particle->y,particle->z);
+    spRotate(1<<SP_ACCURACY,0,0,particle->rotx);
+    spRotate(0,1<<SP_ACCURACY,0,particle->roty);
+    spRotate(0,0,1<<SP_ACCURACY,particle->rotz);
+    spQuad3D(-(particle->age<<SP_ACCURACY)/PARTICLE_AGE/4,
+             -(particle->age<<SP_ACCURACY)/PARTICLE_AGE/4,0,
+              (particle->age<<SP_ACCURACY)/PARTICLE_AGE/4,
+             -(particle->age<<SP_ACCURACY)/PARTICLE_AGE/4,0,
+              (particle->age<<SP_ACCURACY)/PARTICLE_AGE/4,
+              (particle->age<<SP_ACCURACY)/PARTICLE_AGE/4,0,
+             -(particle->age<<SP_ACCURACY)/PARTICLE_AGE/4,
+              (particle->age<<SP_ACCURACY)/PARTICLE_AGE/4,0,
+              spGetHSV(particle->h,particle->s,particle->v));
     memcpy(modellViewMatrix,matrix,sizeof(Sint32)*16);
     particle=particle->next;
   }
     
-  Sint32 r = 28<< ACCURACY-5;
+  Sint32 r = 28<< SP_ACCURACY-5;
   
-    
-  //engineEllipse(mycos(-(posx[0]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,posy[0],mysin((posx[0]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,4<<ACCURACY-3,4<<ACCURACY-3,getHSV((w*16)%(2*MY_PI),64,255));
-  /*memcpy(matrix,modellViewMatrix,sizeof(Sint32)*16);
-    engineTranslate(mycos(-(posx[0]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,posy[0],mysin((posx[0]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2);
-    engineRotate(0,1<<ACCURACY,0,(posx[0]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1));
-    engineRotate(0,0,1<<ACCURACY,mysin(w*32)/8);
-    drawMesh(border_mesh,getHSV((w*16)%(2*MY_PI),64,255));
-  memcpy(modellViewMatrix,matrix,sizeof(Sint32)*16);*/
+  //selection
   draw_particle(posx[0],posy[0],r,(game_counter)%PARTICLE_SPEED,getSmallParticle());
   draw_particle(posx[0],posy[0],r,(game_counter+PARTICLE_SPEED/24)%PARTICLE_SPEED,getMiddleParticle());
   draw_particle(posx[0],posy[0],r,(game_counter+PARTICLE_SPEED/10)%PARTICLE_SPEED,getBigParticle());
@@ -1001,16 +959,11 @@ void draw_game(void)
   draw_particle(posx[0],posy[0],r,(game_counter+3*PARTICLE_SPEED/4)%PARTICLE_SPEED,getSmallParticle());
   draw_particle(posx[0],posy[0],r,(game_counter+3*PARTICLE_SPEED/4+PARTICLE_SPEED/24)%PARTICLE_SPEED,getMiddleParticle());
   draw_particle(posx[0],posy[0],r,(game_counter+3*PARTICLE_SPEED/4+PARTICLE_SPEED/10)%PARTICLE_SPEED,getBigParticle());
-  //engineEllipse(mycos(-(pointposx[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,pointposy[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)],mysin((pointposx[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,3<<ACCURACY-3,3<<ACCURACY-3,getHSV((w*16)%(2*MY_PI),64,255));
-  engineDrawSurface(mycos(-(pointposx[(  TIMEOUT-1+pointstart+2*TIMEOUT-TIMEOUT/4)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,pointposy[(  TIMEOUT-1+pointstart+2*TIMEOUT-TIMEOUT/4)%(2*TIMEOUT)],mysin((pointposx[(  TIMEOUT-1+pointstart+2*TIMEOUT-TIMEOUT/4)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,getMiddleParticle());
-  engineDrawSurface(mycos(-(pointposx[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,pointposy[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)],mysin((pointposx[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,getMiddleParticle());
-  engineDrawSurface(mycos(-(pointposx[(  TIMEOUT-1+pointstart+TIMEOUT/4)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,pointposy[(  TIMEOUT-1+pointstart+TIMEOUT/4)%(2*TIMEOUT)],mysin((pointposx[(  TIMEOUT-1+pointstart+TIMEOUT/4)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,getMiddleParticle());
-  //engineEllipse(mycos(-(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],mysin((pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,2<<ACCURACY-3,2<<ACCURACY-3,getHSV((w*16)%(2*MY_PI),64,255));
-  /*memcpy(matrix,modellViewMatrix,sizeof(Sint32)*16);
-    engineTranslate(mycos(-(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2,pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],mysin((pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1)+MY_PI/2)*22>>2);
-    engineRotate(0,1<<ACCURACY,0,(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>HALF_ACCURACY+2)*(MY_PI>>HALF_ACCURACY+1));
-    drawMesh(border_thin_mesh,getHSV((w*16)%(2*MY_PI),64,255));
-  memcpy(modellViewMatrix,matrix,sizeof(Sint32)*16);*/
+
+  spBlit3D(spCos(-(pointposx[(  TIMEOUT-1+pointstart+2*TIMEOUT-TIMEOUT/4)%(2*TIMEOUT)]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)+SP_PI/2)*22>>2,pointposy[(  TIMEOUT-1+pointstart+2*TIMEOUT-TIMEOUT/4)%(2*TIMEOUT)],spSin((pointposx[(  TIMEOUT-1+pointstart+2*TIMEOUT-TIMEOUT/4)%(2*TIMEOUT)]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)+SP_PI/2)*22>>2,getMiddleParticle());
+  spBlit3D(spCos(-(pointposx[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)+SP_PI/2)*22>>2,pointposy[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)],spSin((pointposx[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)+SP_PI/2)*22>>2,getMiddleParticle());
+  spBlit3D(spCos(-(pointposx[(  TIMEOUT-1+pointstart+TIMEOUT/4)%(2*TIMEOUT)]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)+SP_PI/2)*22>>2,pointposy[(  TIMEOUT-1+pointstart+TIMEOUT/4)%(2*TIMEOUT)],spSin((pointposx[(  TIMEOUT-1+pointstart+TIMEOUT/4)%(2*TIMEOUT)]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)+SP_PI/2)*22>>2,getMiddleParticle());
+
   draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
   draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
 
@@ -1024,10 +977,11 @@ void draw_game(void)
   draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+3*PARTICLE_SPEED2/4+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
 
   
-  engineDrawList();
   char buffer[256];
-  SDL_Rect dstrect;
-  SDL_Rect srcrect;
+  
+  spSetZSet(0);
+  spSetZTest(0);
+  
   //HUD on the left side
   SDL_Surface* shown = NULL;
 
@@ -1051,25 +1005,14 @@ void draw_game(void)
   //Name
   if (insert_name)
   {
-    drawtextMX(engineGetSurface(SURFACE_SURFACE),engineWindowX/7, 9*engineWindowY/20,"Name:",engineGetSurface(SURFACE_KEYMAP));
-    drawtextMX(engineGetSurface(SURFACE_SURFACE),engineWindowX/7,11*engineWindowY/20,name,engineGetSurface(SURFACE_KEYMAP));    
+    //drawtextMX(engineGetSurface(SURFACE_SURFACE),engineWindowX/7, 9*engineWindowY/20,"Name:",engineGetSurface(SURFACE_KEYMAP));
+    //drawtextMX(engineGetSurface(SURFACE_SURFACE),engineWindowX/7,11*engineWindowY/20,name,engineGetSurface(SURFACE_KEYMAP));    
     shown = NULL;
   }
 
   
   if (shown != NULL)
-  {
-      dstrect.x=1*engineWindowX/7-shown->w/2;
-      dstrect.y=engineWindowY/2-shown->h/2;
-      dstrect.w=shown->w;
-      dstrect.h=shown->h;
-      srcrect.x=0;
-      srcrect.y=0;
-      srcrect.w=dstrect.w;
-      srcrect.h=dstrect.h;
-
-      SDL_BlitSurface(shown, &srcrect,engineGetSurface(SURFACE_SURFACE), &dstrect);
-  }
+      spBlitSurface(1*engineWindowX/7,engineWindowY/2,-1,shown);
   
   //pointVis
   
@@ -1079,92 +1022,78 @@ void draw_game(void)
     int y = mom->age*engineWindowY / (POINTAGE-50);
     char buffer[32];
     sprintf(buffer,"+%i",mom->points);
-    drawtextMX(engineGetSurface(SURFACE_SURFACE),engineWindowX/2,engineWindowY/2-y,buffer,engineGetSurface(SURFACE_KEYMAP));
+    spFontDrawMiddle(engineWindowX/2,engineWindowY/2-y,-1,buffer,font);
     mom = mom->next;
   }
   
   //HUD on the right side
-  drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,1*engineWindowY/16,"Game Mode:",engineGetSurface(SURFACE_KEYMAP));
+  spFontDrawMiddle(6*engineWindowX/7,1*engineWindowY/16,-1,"Game Mode:",middle_font);
   if (mode & timeMode)
     sprintf(buffer,"Time Stole");
   else
     sprintf(buffer,"Points");
-  drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,2*engineWindowY/16,buffer,engineGetSurface(SURFACE_KEYMAP));
+  spFontDrawMiddle(6*engineWindowX/7,2*engineWindowY/16,-1,buffer,middle_font);
   if (mode & timeMode)
   {
-    drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,4*engineWindowY/16,"Time Past:",engineGetSurface(SURFACE_KEYMAP));
+    spFontDrawMiddle(6*engineWindowX/7,4*engineWindowY/16,-1,"Time Past:",middle_font);
     sprintf(buffer,"%i Seconds",realTime/1000);
-    drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,5*engineWindowY/16,buffer,engineGetSurface(SURFACE_KEYMAP));
+    spFontDrawMiddle(6*engineWindowX/7,5*engineWindowY/16,-1,buffer,middle_font);
   }
   else
   {
-    drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,4*engineWindowY/16,"Points:",engineGetSurface(SURFACE_KEYMAP));
+    spFontDrawMiddle(6*engineWindowX/7,4*engineWindowY/16,-1,"Points:",middle_font);
     sprintf(buffer,"%i",points);
-    drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,5*engineWindowY/16,buffer,engineGetSurface(SURFACE_KEYMAP));
+    spFontDrawMiddle(6*engineWindowX/7,5*engineWindowY/16,-1,buffer,middle_font);
   }
 
-  dstrect.x=6*engineWindowX/7-getTimeSurface()->w/2;
-  dstrect.y=13*engineWindowY/32;
-  dstrect.w=gameTime*getTimeSurface()->w/START_TIME;
-  dstrect.h=getTimeSurface()->h;
-  srcrect.x=0;
-  srcrect.y=0;
-  srcrect.w=dstrect.w;
-  srcrect.h=dstrect.h;
+  spBlitSurfacePart(6*engineWindowX/7,13*engineWindowY/32,-1,getTimeSurface(),0,0,gameTime*getTimeSurface()->w/START_TIME,getTimeSurface()->h);
 
-  SDL_BlitSurface(getTimeSurface(), &srcrect,engineGetSurface(SURFACE_SURFACE), &dstrect);
-
-  drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,20*engineWindowY/32,"Select:",engineGetSurface(SURFACE_KEYMAP));
-  drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,22*engineWindowY/32,"Pause",engineGetSurface(SURFACE_KEYMAP));
-  drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,25*engineWindowY/32,"Slart:",engineGetSurface(SURFACE_KEYMAP));
-  drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,27*engineWindowY/32,"Back to Menu",engineGetSurface(SURFACE_KEYMAP));
+  spFontDrawMiddle(6*engineWindowX/7,20*engineWindowY/32,-1,"Select:",small_font);
+  spFontDrawMiddle(6*engineWindowX/7,22*engineWindowY/32,-1,"Pause",small_font);
+  spFontDrawMiddle(6*engineWindowX/7,25*engineWindowY/32,-1,"Slart:",small_font);
+  spFontDrawMiddle(6*engineWindowX/7,27*engineWindowY/32,-1,"Back to Menu",small_font);
 
 
-  sprintf(buffer,"FPS: %i",engineGetFps());
-  drawtextMX(engineGetSurface(SURFACE_SURFACE),6*engineWindowX/7,15*engineWindowY/16,buffer,engineGetSurface(SURFACE_KEYMAP));
+  sprintf(buffer,"fps: %i",spGetFPS());
+  spFontDrawRight(engineWindowX,engineWindowY-small_font->maxheight,-1,buffer,small_font);
 
   draw_music();
-  engineFlip();
+  spFlip();
 }
 
 int calc_game(Uint32 steps)
 {
-  if (wasResize())
-  {
-    resize_particle(engineGetWindowX(),engineGetWindowY());
-    refresh_lettering(engineGetWindowX(),engineGetWindowY());
-  }
-  pEngineInput engineInput = engineGetInput();
-  if (engineInput->button[BUTTON_SELECT])
+  PspInput engineInput = spGetInput();
+  if (engineInput->button[SP_BUTTON_SELECT])
   {
     pause=!pause;
-    engineInput->button[BUTTON_SELECT]=0;
+    engineInput->button[SP_BUTTON_SELECT]=0;
   }
   
   if (insert_name)
   {
-    if (engineGetAxis(0)>0)
+    if (engineInput->axis[0]>0)
     {
       selected_letter = (selected_letter+1)%3;
-      engineSetAxis(0,0);
+      engineInput->axis[0] = 0;
     }
-    if (engineGetAxis(0)<0)
+    if (engineInput->axis[0]<0)
     {
       selected_letter = (selected_letter+2)%3;
-      engineSetAxis(0,0);
+      engineInput->axis[0] = 0;
     }
-    if (engineGetAxis(1)>0)
+    if (engineInput->axis[1]>0)
     {
       name[selected_letter] = (name[selected_letter]-'A' +25)%26+'A';
-      engineSetAxis(1,0);
+      engineInput->axis[1] = 0;
     }
-    if (engineGetAxis(1)<0)
+    if (engineInput->axis[1]<0)
     {
       name[selected_letter] = (name[selected_letter]-'A' +1)%26+'A';
-      engineSetAxis(1,0);
+      engineInput->axis[1] = 0;
     }
     
-    if (engineInput->button[BUTTON_START])
+    if (engineInput->button[SP_BUTTON_START])
     {
       if (mode & timeMode)
         insert_highscore(mode,colornumber-4,difficult,name,realTime);
@@ -1204,10 +1133,10 @@ int calc_game(Uint32 steps)
     {
       move_sound_off();
       rotating_sound_off();
-      if (((mode & timeMode) && realTime > get_highscore(mode,colornumber-4,difficult,5)) ||
+      /*if (((mode & timeMode) && realTime > get_highscore(mode,colornumber-4,difficult,5)) ||
           (((mode & timeMode)==0) && points > get_highscore(mode,colornumber-4,difficult,5)))
         insert_name = 1;      
-      else
+      else*/
         return 1;
     }
 
@@ -1268,24 +1197,24 @@ int calc_game(Uint32 steps)
       switch (direction)
       {
         case 0:
-          posx[0]-=(1<<ACCURACY)/TIMEOUT;
+          posx[0]-=(1<<SP_ACCURACY)/TIMEOUT;
           if (posx[0]<0)
-            posx[0]+=16<<ACCURACY;
+            posx[0]+=16<<SP_ACCURACY;
           break;
         case 1:
-          posx[0]+=(1<<ACCURACY)/TIMEOUT;
-          if (posx[0]>=(16<<ACCURACY))
-            posx[0]-=16<<ACCURACY;
+          posx[0]+=(1<<SP_ACCURACY)/TIMEOUT;
+          if (posx[0]>=(16<<SP_ACCURACY))
+            posx[0]-=16<<SP_ACCURACY;
           break;
         case 2:
-          posy[0]-=(1<<ACCURACY)/(TIMEOUT/2);
-          if (posy[0]<(-6<<ACCURACY))
-            posy[0]=(-6<<ACCURACY);
+          posy[0]-=(1<<SP_ACCURACY)/(TIMEOUT/2);
+          if (posy[0]<(-6<<SP_ACCURACY))
+            posy[0]=(-6<<SP_ACCURACY);
           break;
         case 3:
-          posy[0]+=(1<<ACCURACY)/(TIMEOUT/2);
-          if (posy[0]>(6<<ACCURACY))
-            posy[0]=(6<<ACCURACY);
+          posy[0]+=(1<<SP_ACCURACY)/(TIMEOUT/2);
+          if (posy[0]>(6<<SP_ACCURACY))
+            posy[0]=(6<<SP_ACCURACY);
           break;
       }
       timeout--;
@@ -1303,8 +1232,8 @@ int calc_game(Uint32 steps)
       }
       if (timeout<=0)
       {
-        posx[0]=(posx[0]>>ACCURACY)<<ACCURACY;
-        posy[0]=(posy[0]>>ACCURACY)<<ACCURACY;
+        posx[0]=(posx[0]>>SP_ACCURACY)<<SP_ACCURACY;
+        posy[0]=(posy[0]>>SP_ACCURACY)<<SP_ACCURACY;
         posx[3]=posx[0];
         posy[3]=posy[0];
         is_change=0;
@@ -1312,7 +1241,7 @@ int calc_game(Uint32 steps)
     }
     else
     {
-      if (engineGetAxis(0)<0)
+      if (engineInput->axis[0]<0)
       {
         if (direction==1)
         {
@@ -1334,7 +1263,7 @@ int calc_game(Uint32 steps)
             pointposy[(pointstart+i)%(2*TIMEOUT)]=pointposy[(pointstart+2*TIMEOUT-1-i)%(2*TIMEOUT)];
             pointposy[(pointstart+2*TIMEOUT-1-i)%(2*TIMEOUT)]=temp;
           }
-          is_change=posx[2]-posx[3]>>ACCURACY;
+          is_change=posx[2]-posx[3]>>SP_ACCURACY;
           if (is_change>=14)
             is_change-=16;
           if (is_change<=-14)
@@ -1345,7 +1274,7 @@ int calc_game(Uint32 steps)
         rotating_sound_on();
       }
       else
-      if (engineGetAxis(0)>0)
+      if (engineInput->axis[0]>0)
       {
         if (direction==0)
         {
@@ -1367,7 +1296,7 @@ int calc_game(Uint32 steps)
             pointposy[(pointstart+i)%(2*TIMEOUT)]=pointposy[(pointstart+2*TIMEOUT-1-i)%(2*TIMEOUT)];
             pointposy[(pointstart+2*TIMEOUT-1-i)%(2*TIMEOUT)]=temp;
           }
-          is_change=posx[2]-posx[3]>>ACCURACY;
+          is_change=posx[2]-posx[3]>>SP_ACCURACY;
           if (is_change>=14)
             is_change-=16;
           if (is_change<=-14)
@@ -1379,9 +1308,9 @@ int calc_game(Uint32 steps)
       }
       else
         rotating_sound_off();
-      if (engineGetAxis(1)<0 && (((posy[0]>>ACCURACY)>-6 && direction!=3) || (direction==3 && (posy[2]>>ACCURACY)>-6)))
+      if (engineInput->axis[1]<0 && (((posy[0]>>SP_ACCURACY)>-6 && direction!=3) || (direction==3 && (posy[2]>>SP_ACCURACY)>-6)))
       {
-        if (direction==3 && (posy[2]>>ACCURACY)>-6)
+        if (direction==3 && (posy[2]>>SP_ACCURACY)>-6)
         {
           Sint32 temp=posx[0];
           posx[0]=posx[2];
@@ -1401,7 +1330,7 @@ int calc_game(Uint32 steps)
             pointposy[(pointstart+i)%(2*TIMEOUT)]=pointposy[(pointstart+2*TIMEOUT-1-i)%(2*TIMEOUT)];
             pointposy[(pointstart+2*TIMEOUT-1-i)%(2*TIMEOUT)]=temp;
           }
-          is_change=posx[2]-posx[3]>>ACCURACY;
+          is_change=posx[2]-posx[3]>>SP_ACCURACY;
           if (is_change>=14)
             is_change-=16;
           if (is_change<=-14)
@@ -1412,9 +1341,9 @@ int calc_game(Uint32 steps)
         move_sound_on();
       }
       else
-      if (engineGetAxis(1)>0 && (((posy[0]>>ACCURACY)< 6 && direction!=2) || (direction==2 && (posy[2]>>ACCURACY)< 6)))
+      if (engineInput->axis[1]>0 && (((posy[0]>>SP_ACCURACY)< 6 && direction!=2) || (direction==2 && (posy[2]>>SP_ACCURACY)< 6)))
       {
-        if (direction==2 && (posy[2]>>ACCURACY)< 6)
+        if (direction==2 && (posy[2]>>SP_ACCURACY)< 6)
         {
           Sint32 temp=posx[0];
           posx[0]=posx[2];
@@ -1434,7 +1363,7 @@ int calc_game(Uint32 steps)
             pointposy[(pointstart+i)%(2*TIMEOUT)]=pointposy[(pointstart+2*TIMEOUT-1-i)%(2*TIMEOUT)];
             pointposy[(pointstart+2*TIMEOUT-1-i)%(2*TIMEOUT)]=temp;
           }
-          is_change=posx[2]-posx[3]>>ACCURACY;
+          is_change=posx[2]-posx[3]>>SP_ACCURACY;
           if (is_change>=14)
             is_change-=16;
           if (is_change<=-14)
@@ -1446,38 +1375,38 @@ int calc_game(Uint32 steps)
       }
       else
         move_sound_off();
-      if (engineGetInput()->button[BUTTON_B] || engineGetInput()->button[BUTTON_A] ||
-          engineGetInput()->button[BUTTON_X] || engineGetInput()->button[BUTTON_Y])
+      if (engineInput->button[SP_BUTTON_B] || engineInput->button[SP_BUTTON_A] ||
+          engineInput->button[SP_BUTTON_X] || engineInput->button[SP_BUTTON_Y])
       {
-        if (is_in_change((20-(posx[0]>>ACCURACY))%16,3+(posy[0]>>ACCURACY+1))==NULL &&
-            is_in_change((20-(posx[2]>>ACCURACY))%16,3+(posy[2]>>ACCURACY+1))==NULL &&
-            stone[3+(posy[0]>>ACCURACY+1)][(20-(posx[0]>>ACCURACY))%16].new==0 &&
-            stone[3+(posy[2]>>ACCURACY+1)][(20-(posx[2]>>ACCURACY))%16].new==0 &&
-            stone[3+(posy[0]>>ACCURACY+1)][(20-(posx[0]>>ACCURACY))%16].falling==0 &&
-            stone[3+(posy[2]>>ACCURACY+1)][(20-(posx[2]>>ACCURACY))%16].falling==0 &&
-            stone[3+(posy[0]>>ACCURACY+1)][(20-(posx[0]>>ACCURACY))%16].type>=0 &&
-            stone[3+(posy[2]>>ACCURACY+1)][(20-(posx[2]>>ACCURACY))%16].type>=0)
+        if (is_in_change((20-(posx[0]>>SP_ACCURACY))%16,3+(posy[0]>>SP_ACCURACY+1))==NULL &&
+            is_in_change((20-(posx[2]>>SP_ACCURACY))%16,3+(posy[2]>>SP_ACCURACY+1))==NULL &&
+            stone[3+(posy[0]>>SP_ACCURACY+1)][(20-(posx[0]>>SP_ACCURACY))%16].new==0 &&
+            stone[3+(posy[2]>>SP_ACCURACY+1)][(20-(posx[2]>>SP_ACCURACY))%16].new==0 &&
+            stone[3+(posy[0]>>SP_ACCURACY+1)][(20-(posx[0]>>SP_ACCURACY))%16].falling==0 &&
+            stone[3+(posy[2]>>SP_ACCURACY+1)][(20-(posx[2]>>SP_ACCURACY))%16].falling==0 &&
+            stone[3+(posy[0]>>SP_ACCURACY+1)][(20-(posx[0]>>SP_ACCURACY))%16].type>=0 &&
+            stone[3+(posy[2]>>SP_ACCURACY+1)][(20-(posx[2]>>SP_ACCURACY))%16].type>=0)
         {
           play_switch();
-          initate_change((20-(posx[0]>>ACCURACY))%16,3+(posy[0]>>ACCURACY+1),(20-(posx[2]>>ACCURACY))%16,3+(posy[2]>>ACCURACY+1));
+          initate_change((20-(posx[0]>>SP_ACCURACY))%16,3+(posy[0]>>SP_ACCURACY+1),(20-(posx[2]>>SP_ACCURACY))%16,3+(posy[2]>>SP_ACCURACY+1));
         }
       }
     }
   }
     
-  if (engineGetInput()->button[BUTTON_X])
+  if (engineInput->button[SP_BUTTON_X])
   {
-    engineGetInput()->button[BUTTON_X] = 0;
+    engineInput->button[SP_BUTTON_X] = 0;
     change_music("Cosmic Conundrum","Nick May","CC BY-NC-ND");
   }
   
-  w+=(steps*16)%(2*MY_PI);
-  if (engineInput->button[BUTTON_START])
+  w+=(steps*16)%(2*SP_PI);
+  if (engineInput->button[SP_BUTTON_START])
     return 1;
   return 0; 
 }
 
-int run_game(int playernumber_,GameMode mode_,int difficult_ /*0..9*/,int starAdd)
+int run_game(int playernumber_,GameMode mode_,int difficult_ /*0..9*/,int starAdd,void (*resize)(Uint16 w,Uint16 h))
 {
   countdown = 4000;
   playernumber = playernumber_;
@@ -1497,7 +1426,7 @@ int run_game(int playernumber_,GameMode mode_,int difficult_ /*0..9*/,int starAd
     case 3: change_music("Impossible Paradox","Nick May"); break;
   }
   
-  engineLoop(draw_game,calc_game,10);
+  spLoop(draw_game,calc_game,10,resize);
   
   delete_pointVis();
   game_counter = 0;

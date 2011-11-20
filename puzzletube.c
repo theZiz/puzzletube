@@ -23,12 +23,13 @@
 #include "menu.h"
 #include "settings.h"
 #include "particle.h"
-//#include "game.h"
+#include "game.h"
 #include "splashscreen.h"
 
 SDL_Surface* screen;
 spFontPointer font = NULL;
 spFontPointer small_font = NULL;
+spFontPointer middle_font = NULL;
 
 void resize(Uint16 w,Uint16 h)
 {
@@ -50,12 +51,21 @@ void resize(Uint16 w,Uint16 h)
   spFontAddRange(small_font,' ','~',14823);//whole ASCII
   spFontAddBorder(small_font,48631);
   settings_set_small_font(small_font);
+
+  if (middle_font)
+    spFontDelete(middle_font);
+  middle_font = spFontLoad("./font/StayPuft.ttf",16*spGetSizeFactor()>>SP_ACCURACY);
+  spFontAddRange(middle_font,' ','~',0);//whole ASCII
+  spFontAddBorder(middle_font,65535);
+  settings_set_middle_font(middle_font);
   //Particles
   resize_particle(w,h);
+  refresh_lettering(w,h);
 }
 
 int main(int argc, char **argv)
 {
+  printf("%i\n",spGetHSV(0,255,255));
   //puzzletube setup
   srand(time(NULL));
   settings_load();
@@ -72,15 +82,15 @@ int main(int argc, char **argv)
   
   run_splashscreen(resize);
   init_music();
-  init_stars(); //<- Löschen, wenn prepare_game ausauskommentiert.
-  //prepare_game_objects(1,9);
+  prepare_game_objects(1,9);
   change_music("Midnight Mediation","Nick May");
   highscore_save();
   run_menu(resize);
-  //delete_game_objects();
+  delete_game_objects();
   quit_music();
   spFontDelete(font);
   spFontDelete(small_font);
+  spFontDelete(middle_font);
   spQuitCore();
   return 0;
 }

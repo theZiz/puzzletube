@@ -25,6 +25,8 @@
 
 #define MENUSIZE 1200
 
+void (*menu_resize)(Uint16 w,Uint16 h);
+
 int menu_counter = 0;
 int state = 0;
 int nextstate = 0;
@@ -32,6 +34,7 @@ Sint32 menu_choice;
 int menu_move = 0;
 int menu_fade;
 int menu_wait = 0;
+int menu_block = 0;
 
 void draw_menu(void)
 {
@@ -81,9 +84,9 @@ void draw_menu(void)
       spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),1*engineWindowY/7+(spSin(menu_counter*300+7*SP_PI/4)>>SP_ACCURACY-2),-1,"SETTINGS",font);
       switch (settings_get_stone_quality())
       {
-        case 0: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/7+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,"Stone Quality: Color",font); break;
-        case 1: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/7+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,"Stone Quality: Texture",font); break;
-        case 2: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/7+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,"Stone Quality: Modells",font); break;
+        case 0: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/7+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,"Stone Quality: Flat",font); break;
+        case 1: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/7+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,"Stone Quality: Border",font); break;
+        case 2: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/7+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,"Stone Quality: Texture",font); break;
       }
       switch (settings_get_stars_rotating())
       {
@@ -177,10 +180,10 @@ int calc_menu(Uint32 steps)
       switch (nextstate)
       {
         case -2: //Free Game
-          //prepare_game_objects(0,settings_get_color());
+          prepare_game_objects(0,settings_get_color());
           rotating_sound_off();
           settings_save();
-          //menu_counter = run_game(1,settings_get_mode(),settings_get_difficult(),menu_counter*10)/10;
+          menu_counter = run_game(1,settings_get_mode(),settings_get_difficult(),menu_counter*10,menu_resize)/10;
           engineInput->button[SP_BUTTON_START] = 0;
           engineInput->button[SP_BUTTON_A] = 0;
           engineInput->button[SP_BUTTON_B] = 0;
@@ -192,8 +195,8 @@ int calc_menu(Uint32 steps)
           rotating_sound_off();
           return 1;
       }
-      return 0;
     }
+    return 0;
   }
 
   int i;
@@ -286,26 +289,28 @@ int calc_menu(Uint32 steps)
         menu_wait = 25;
       }
     }
-    if (menu_move == 0 && (menu_choice>>SP_ACCURACY) == 0 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_stone_quality()>0)
+    if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 0 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_stone_quality()>0)
     {
       settings_set_stone_quality(settings_get_stone_quality()-1);
-      engineInput->axis[0] = 0;
+      menu_block = 1;
     }
-    if (menu_move == 0 && (menu_choice>>SP_ACCURACY) == 0 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_stone_quality()<2)
+    if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 0 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_stone_quality()<2)
     {
       settings_set_stone_quality(settings_get_stone_quality()+1);
-      engineInput->axis[0] = 0;
+      menu_block = 1;
     }
-    if (menu_move == 0 && (menu_choice>>SP_ACCURACY) == 1 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_stars_rotating()>0)
+    if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 1 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_stars_rotating()>0)
     {
       settings_set_stars_rotating(settings_get_stars_rotating()-1);
-      engineInput->axis[0] = 0;
+      menu_block = 1;
     }
-    if (menu_move == 0 && (menu_choice>>SP_ACCURACY) == 1 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_stars_rotating()<2)
+    if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 1 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_stars_rotating()<2)
     {
       settings_set_stars_rotating(settings_get_stars_rotating()+1);
-      engineInput->axis[0] = 0;
+      menu_block = 1;
     }
+    if (engineInput->axis[0] == 0)
+      menu_block = 0;
     if (menu_move == 0 && (engineInput->button[SP_BUTTON_START] ||
         engineInput->button[SP_BUTTON_A] || engineInput->button[SP_BUTTON_B] ||
         engineInput->button[SP_BUTTON_X] || engineInput->button[SP_BUTTON_Y]))
@@ -353,26 +358,28 @@ int calc_menu(Uint32 steps)
     }
     else
       move_sound_off();
-    if (menu_move == 0 && (menu_choice>>SP_ACCURACY) == 2 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_color()>4)
+    if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 2 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_color()>4)
     {
       settings_set_color(settings_get_color()-1);
-      engineInput->axis[0] = 0;
+      menu_block = 1;
     }
-    if (menu_move == 0 && (menu_choice>>SP_ACCURACY) == 2 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_color()<9)
+    if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 2 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_color()<9)
     {
       settings_set_color(settings_get_color()+1);
-      engineInput->axis[0] = 0;
+      menu_block = 1;
     }
-    if (menu_move == 0 && (menu_choice>>SP_ACCURACY) == 3 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_difficult()>0)
+    if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 3 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_difficult()>0)
     {
       settings_set_difficult(settings_get_difficult()-1);
-      engineInput->axis[0] = 0;
+      menu_block = 1;
     }
-    if (menu_move == 0 && (menu_choice>>SP_ACCURACY) == 3 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_difficult()<9)
+    if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 3 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_difficult()<9)
     {
       settings_set_difficult(settings_get_difficult()+1);
-      engineInput->axis[0] = 0;
+      menu_block = 1;
     }
+    if (engineInput->axis[0] == 0)
+      menu_block = 0;
     if (menu_move == 0 && (engineInput->button[SP_BUTTON_START] ||
         engineInput->button[SP_BUTTON_A] || engineInput->button[SP_BUTTON_B] ||
         engineInput->button[SP_BUTTON_X] || engineInput->button[SP_BUTTON_Y]))
@@ -446,6 +453,7 @@ void run_menu(void (*resize)(Uint16 w,Uint16 h))
   menu_fade = MENUSIZE;
   menu_choice = 0;
   rotating_sound_on();
+  menu_resize = resize;
   spLoop(draw_menu,calc_menu,10,resize);
 }
 
