@@ -87,7 +87,7 @@ void settings_load()
     settings_stone_quality = 0;
     settings_stars_rotating = 0;
   #else
-    settings_stone_quality = 2;  
+    settings_stone_quality = 2;
     settings_stars_rotating = 2;
   #endif
   settings_particles = 1;

@@ -65,7 +65,6 @@ void resize(Uint16 w,Uint16 h)
 
 int main(int argc, char **argv)
 {
-  printf("%i\n",spGetHSV(0,255,255));
   //puzzletube setup
   srand(time(NULL));
   settings_load();
