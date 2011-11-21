@@ -753,8 +753,8 @@ void draw_game(void)
   spClearTarget(0);
   spResetZBuffer();
   spIdentity();
-  spSetZSet(1);
-  spSetZTest(1);
+  spSetZSet(0);
+  spSetZTest(0);
     
   Sint32 matrix[16];
   
@@ -766,6 +766,9 @@ void draw_game(void)
     draw_stars();
     spRotate(0,-1<<SP_ACCURACY,0,star_add);
   }
+
+  spSetZSet(1);
+  spSetZTest(1);
 
   spRotate(0,1<<SP_ACCURACY,0,(-posx[0]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1));
   last_rotate = (-posx[0]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1);
@@ -785,10 +788,6 @@ void draw_game(void)
     spRotate(0, 1<<SP_ACCURACY,0,((timeout<<SP_HALF_ACCURACY-1)/TIMEOUT)*(SP_PI>>SP_HALF_ACCURACY+add));
     last_rotate += ((timeout<<SP_HALF_ACCURACY-1)/TIMEOUT)*(SP_PI>>SP_HALF_ACCURACY+add);
   }
-  
-
-  int a,y;
-
 
   if (settings_get_stars_rotating()==2)
   {
@@ -801,7 +800,11 @@ void draw_game(void)
   spRotate(1<<SP_ACCURACY,0,0,(spSin(w<<3)>>SP_HALF_ACCURACY)*(SP_PI>>SP_HALF_ACCURACY)>>5);
   spRotate(0,1<<SP_ACCURACY,0,(spCos(w<<3)>>SP_HALF_ACCURACY)*(SP_PI>>SP_HALF_ACCURACY)>>5);
   
-  for (a=0;a<16;a++)
+  int meta_a,a,y;
+  //if ((posx[0]>>SP_ACCURACY) == (24-a)%16)
+  for (meta_a=16-(posx[0]>>SP_ACCURACY);meta_a<16-(posx[0]>>SP_ACCURACY)+16;meta_a++)
+  {
+    a = meta_a & 15;
     for (y=-6;y<=6;y+=2)
     {
       if (stone[(y>>1)+3][a].type<0)
@@ -919,6 +922,7 @@ void draw_game(void)
       }
       memcpy(modellViewMatrix,matrix,sizeof(Sint32)*16);
     }
+  }
   //particles
   pparticle particle=firstparticle;
   while (particle)
@@ -1394,12 +1398,6 @@ int calc_game(Uint32 steps)
     }
   }
     
-  if (engineInput->button[SP_BUTTON_X])
-  {
-    engineInput->button[SP_BUTTON_X] = 0;
-    change_music("Cosmic Conundrum","Nick May","CC BY-NC-ND");
-  }
-  
   w+=(steps*16)%(2*SP_PI);
   if (engineInput->button[SP_BUTTON_START])
     return 1;
