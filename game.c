@@ -1050,7 +1050,7 @@ void draw_game(void)
 
   spFontDrawMiddle(6*engineWindowX/7,20*engineWindowY/32,-1,"Select:",small_font);
   spFontDrawMiddle(6*engineWindowX/7,22*engineWindowY/32,-1,"Pause",small_font);
-  spFontDrawMiddle(6*engineWindowX/7,25*engineWindowY/32,-1,"Slart:",small_font);
+  spFontDrawMiddle(6*engineWindowX/7,25*engineWindowY/32,-1,"Start:",small_font);
   spFontDrawMiddle(6*engineWindowX/7,27*engineWindowY/32,-1,"Back to Menu",small_font);
 
 
