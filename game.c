@@ -801,7 +801,7 @@ void draw_game(void)
   spRotate(0,1<<SP_ACCURACY,0,(spCos(w<<3)>>SP_HALF_ACCURACY)*(SP_PI>>SP_HALF_ACCURACY)>>5);
   
   int meta_a,a,y;
-  //if ((posx[0]>>SP_ACCURACY) == (24-a)%16)
+  //Drawing from the front to the back. (~15% more performance because of z Test)
   for (meta_a=16-(posx[0]>>SP_ACCURACY);meta_a<16-(posx[0]>>SP_ACCURACY)+16;meta_a++)
   {
     a = meta_a & 15;

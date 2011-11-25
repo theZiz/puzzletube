@@ -38,6 +38,9 @@ int menu_block = 0;
 
 void draw_menu(void)
 {
+  #ifdef MENU_DEBUG
+    printf("%i:   Start drawing menu\n",SDL_GetTicks());
+  #endif
   Sint32* modellViewMatrix=spGetMatrix();
   int engineWindowX=spGetWindowSurface()->w;
   int engineWindowY=spGetWindowSurface()->h;
@@ -54,9 +57,15 @@ void draw_menu(void)
   spTranslate(0,0,-20<<SP_ACCURACY);
   spRotate(0,1<<SP_ACCURACY,0,menu_counter*10);
   draw_stars();
+  #ifdef MENU_DEBUG
+    printf("%i:   Drew stars\n",SDL_GetTicks());
+  #endif
   
   spIdentity();
   draw_music();
+  #ifdef MENU_DEBUG
+    printf("%i:   Drew music\n",SDL_GetTicks());
+  #endif
   spTranslate(0,0,-20<<SP_ACCURACY);
   spTranslate(menu_fade<<SP_ACCURACY-6,0,0);  
   int mode;
@@ -78,7 +87,7 @@ void draw_menu(void)
       draw_particle_circle(-1,menu_counter);
       spTranslate(10<<SP_ACCURACY,0,0);
       draw_particle_circle(+1,menu_counter);
- 
+
       break;
     case 1: //options
       spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),1*engineWindowY/7+(spSin(menu_counter*300+7*SP_PI/4)>>SP_ACCURACY-2),-1,"SETTINGS",font);
@@ -144,10 +153,16 @@ void draw_menu(void)
       spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),8*engineWindowY/9+(spSin(menu_counter*300+-1*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Etronixmart",font);
       break;
   }
+  #ifdef MENU_DEBUG
+    printf("%i:   Drew menu\n",SDL_GetTicks());
+  #endif
 
   char buffer[16];
   sprintf(buffer,"fps: %i",spGetFPS());
   spFontDrawRight(engineWindowX,engineWindowY-small_font->maxheight,-1,buffer,small_font);
+  #ifdef MENU_DEBUG
+    printf("%i:   Drew fps\n",SDL_GetTicks());
+  #endif
   spFlip();
 }
 
