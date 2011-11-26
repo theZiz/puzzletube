@@ -770,7 +770,7 @@ void draw_game(void)
   spSetZTest(0);
   if (countdown>0)
   {
-    int factor = (countdown % 1000)+200;
+    int factor = (countdown % 1000)+500;
     SDL_Surface* surface = NULL;
     switch (countdown / 1000)
     {
@@ -780,10 +780,10 @@ void draw_game(void)
       default: surface = spFontGetLetter(countdown_font,'0')->surface; break;
     }
     spBindTexture(surface);
-    spQuad_tex(screen->w/2-factor*screen->w/2000,screen->h/2-factor*screen->w/2000,-1,0,0,
-               screen->w/2+factor*screen->w/2000,screen->h/2-factor*screen->w/2000,-1,surface->w-SP_FONT_EXTRASPACE-1,0,
-               screen->w/2+factor*screen->w/2000,screen->h/2+factor*screen->w/2000,-1,surface->w-SP_FONT_EXTRASPACE-1,surface->h-SP_FONT_EXTRASPACE-1,
-               screen->w/2-factor*screen->w/2000,screen->h/2+factor*screen->w/2000,-1,0,surface->h-SP_FONT_EXTRASPACE-1,65535);
+    spQuad_tex(screen->w/2-factor*screen->w/4000,screen->h/2-factor*screen->w/4000,-1,0,0,
+               screen->w/2+factor*screen->w/4000,screen->h/2-factor*screen->w/4000,-1,surface->w-SP_FONT_EXTRASPACE-1,0,
+               screen->w/2+factor*screen->w/4000,screen->h/2+factor*screen->w/4000,-1,surface->w-SP_FONT_EXTRASPACE-1,surface->h-SP_FONT_EXTRASPACE-1,
+               screen->w/2-factor*screen->w/4000,screen->h/2+factor*screen->w/4000,-1,0,surface->h-SP_FONT_EXTRASPACE-1,65535);
   }
 
   spSetZSet(1);
