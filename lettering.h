@@ -25,16 +25,21 @@
 #include <SDL_image.h>
 #include "../sparrow3d/sparrow3d.h"
 
+#define LETTERING_TIMEOUT 10000
+
 typedef struct slettering *plettering;
 typedef struct slettering {
-  char* name;
-  SDL_Surface *surface;
+  char* text;
+  spFontPointer font;
+  int age;
+  int y;
   plettering next;
 } tlettering;
 
-plettering add_lettering(char* name,int windowx,int windowy);
-void refresh_lettering(int windowx,int windowy);
-void delete_lettering();
-SDL_Surface* get_lettering(char* name);
+void add_lettering(char* text,spFontPointer font);
+void add_line();
+void calc_lettering(int steps);
+void delete_all_lettering();
+plettering get_first_lettering();
 
 #endif

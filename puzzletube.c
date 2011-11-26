@@ -30,6 +30,7 @@ SDL_Surface* screen;
 spFontPointer font = NULL;
 spFontPointer small_font = NULL;
 spFontPointer middle_font = NULL;
+spFontPointer countdown_font = NULL;
 
 void resize(Uint16 w,Uint16 h)
 {
@@ -54,13 +55,20 @@ void resize(Uint16 w,Uint16 h)
 
   if (middle_font)
     spFontDelete(middle_font);
-  middle_font = spFontLoad("./font/StayPuft.ttf",16*spGetSizeFactor()>>SP_ACCURACY);
+  middle_font = spFontLoad("./font/StayPuft.ttf",14*spGetSizeFactor()>>SP_ACCURACY);
   spFontAddRange(middle_font,' ','~',0);//whole ASCII
   spFontAddBorder(middle_font,65535);
   settings_set_middle_font(middle_font);
+
+  if (countdown_font)
+    spFontDelete(countdown_font);
+  countdown_font = spFontLoad("./font/StayPuft.ttf",128*spGetSizeFactor()>>SP_ACCURACY);
+  spFontAddRange(countdown_font,' ','~',0);//whole ASCII
+  spFontAddBorder(countdown_font,65535);
+  settings_set_countdown_font(countdown_font);
+
   //Particles
   resize_particle(w,h);
-  refresh_lettering(w,h);
 }
 
 int main(int argc, char **argv)

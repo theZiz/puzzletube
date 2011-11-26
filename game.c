@@ -57,10 +57,6 @@ int gameTime;
 int timeStep;
 int realTime;
 
-#define MAX_LETTERING 2000
-SDL_Surface* momLettering;
-int letteringTimeOut;
-
 #define START_TIME 180000
 
 pchange firstchange;
@@ -91,10 +87,6 @@ void add_pointVis(int p)
 }
 
 #define POINTAGE 4000
-
-char name[4]="AAA";
-char insert_name;
-int selected_letter;
 
 void calc_pointVis(int steps)
 {
@@ -127,12 +119,6 @@ void delete_pointVis()
     free(first_pointVis);
     first_pointVis = next;
   }
-}
-
-void show_lettering(char* name)
-{
-  momLettering = get_lettering(name);
-  letteringTimeOut = MAX_LETTERING;
 }
 
 void test_and_set_chain()
@@ -483,6 +469,7 @@ void prepare_game_objects(char complete,int colornumber_)
     init_stars();
   }
   init_light();
+  delete_all_lettering();
 }
 
 void delete_game_objects()
@@ -595,6 +582,9 @@ pchange is_in_change(int x,int y)
 
 void make_win_situations_invalid()
 {
+  spFontPointer font = settings_get_font();
+  spFontPointer small_font = settings_get_small_font();
+  spFontPointer middle_font = settings_get_middle_font();
   int new_points = 0;
   pwinsituation situation;
   char found = 0;
@@ -637,28 +627,34 @@ void make_win_situations_invalid()
       printf("%i:%i\n",temp->x,temp->y);
       temp=temp->next; 
     }
+      if (i>0)
+      {
+        new_points = (int)(pow((float)(i),1.5)*100.0);
+        char buffer[32];
+        //sprintf(buffer,"%i Stones",i);
+        //add_lettering(buffer,middle_font);
+        sprintf(buffer,"+%i (%i)",new_points,i);
+        add_line();
+        add_lettering(buffer,small_font);
+      }
       if (i<7)
         {}
       else
-      if (i<9)
-        show_lettering("well");
+      if (i<10)
+        add_lettering("Well!",middle_font);
       else
-      if (i<12)
-        show_lettering("great");
+      if (i<14)
+        add_lettering("Great!",middle_font);
       else
-      if (i<16)
-        show_lettering("fantastic");
+      if (i<19)
+        add_lettering("Fantastic!",middle_font);
       else
-      if (i<20)
-        show_lettering("incredible");
-      else
-        show_lettering("supercalifragilisticexpialidocious");
-      if (i>0)
-        new_points = (int)(pow((float)(i),1.5)*100.0);
+      if (i<25)
+        add_lettering("Incredible",middle_font);
       delete_win_situation(situation);
       if (count>1)
       {
-        show_lettering("combo");
+        add_lettering("Combo!",middle_font);
         new_points*=3;
       }
   }
@@ -670,12 +666,12 @@ void make_win_situations_invalid()
     {
       switch (chain)
       {
-        case 2: show_lettering("chain");break;
-        case 3: show_lettering("chain_2x"); break;
-        case 4: show_lettering("chain_3x"); break;
-        case 5: show_lettering("chain_4x"); break;
-        case 6: show_lettering("chain_5x"); break;
-        default: show_lettering("hyper_chain"); break;
+        case 2: add_lettering("Chain!",middle_font);break;
+        case 3: add_lettering("2x Chain!",middle_font); break;
+        case 4: add_lettering("3x Chain!",middle_font); break;
+        case 5: add_lettering("4x Chain!",middle_font); break;
+        case 6: add_lettering("5x Chain!",middle_font); break;
+        default: add_lettering("Mega Chain!",middle_font); break;
       }
       new_points = new_points * 3 / 2;
     }
@@ -745,6 +741,8 @@ void draw_game(void)
   spFontPointer font = settings_get_font();
   spFontPointer small_font = settings_get_small_font();
   spFontPointer middle_font = settings_get_middle_font();
+  spFontPointer countdown_font = settings_get_countdown_font();
+  SDL_Surface* screen = spGetWindowSurface();
   Sint32* modellViewMatrix=spGetMatrix();
   //plight light=engineGetLightPointer();
   int engineWindowX=spGetWindowSurface()->w;
@@ -765,6 +763,27 @@ void draw_game(void)
     spRotate(0,1<<SP_ACCURACY,0,star_add);
     draw_stars();
     spRotate(0,-1<<SP_ACCURACY,0,star_add);
+  }
+  
+  //Countdown
+  spSetZSet(1);
+  spSetZTest(0);
+  if (countdown>0)
+  {
+    int factor = (countdown % 1000)+200;
+    SDL_Surface* surface = NULL;
+    switch (countdown / 1000)
+    {
+      case 3: surface = spFontGetLetter(countdown_font,'3')->surface; break;
+      case 2: surface = spFontGetLetter(countdown_font,'2')->surface; break;
+      case 1: surface = spFontGetLetter(countdown_font,'1')->surface; break;
+      default: surface = spFontGetLetter(countdown_font,'0')->surface; break;
+    }
+    spBindTexture(surface);
+    spQuad_tex(screen->w/2-factor*screen->w/2000,screen->h/2-factor*screen->w/2000,-1,0,0,
+               screen->w/2+factor*screen->w/2000,screen->h/2-factor*screen->w/2000,-1,surface->w-SP_FONT_EXTRASPACE-1,0,
+               screen->w/2+factor*screen->w/2000,screen->h/2+factor*screen->w/2000,-1,surface->w-SP_FONT_EXTRASPACE-1,surface->h-SP_FONT_EXTRASPACE-1,
+               screen->w/2-factor*screen->w/2000,screen->h/2+factor*screen->w/2000,-1,0,surface->h-SP_FONT_EXTRASPACE-1,65535);
   }
 
   spSetZSet(1);
@@ -986,37 +1005,16 @@ void draw_game(void)
   spSetZSet(0);
   spSetZTest(0);
   
-  //HUD on the left side
-  SDL_Surface* shown = NULL;
-
-  //setting "shown"
-  if (countdown>0)
-    switch ((countdown)/1000)
-    {
-      case  3: shown = get_lettering("3"); break;
-      case  2: shown = get_lettering("2"); break;
-      case  1: shown = get_lettering("1"); break;
-      case  0: shown = get_lettering("go"); break;
-    }
-  else
-  {
-    if ((mode & timeMode) && gameTime<START_TIME/5 && momLettering == NULL)
-      shown = get_lettering("hurry_up");
-    else
-      shown = momLettering;
-  }
-
-  //Name
-  if (insert_name)
-  {
-    //drawtextMX(engineGetSurface(SURFACE_SURFACE),engineWindowX/7, 9*engineWindowY/20,"Name:",engineGetSurface(SURFACE_KEYMAP));
-    //drawtextMX(engineGetSurface(SURFACE_SURFACE),engineWindowX/7,11*engineWindowY/20,name,engineGetSurface(SURFACE_KEYMAP));    
-    shown = NULL;
-  }
-
   
-  if (shown != NULL)
-      spBlitSurface(1*engineWindowX/7,engineWindowY/2,-1,shown);
+  //HUD on the left side
+
+  plettering lettering = get_first_lettering();
+  while (lettering)
+  {
+    if (lettering->text)
+      spFontDrawMiddle(engineWindowX/7,lettering->y,-1,lettering->text,lettering->font);
+    lettering = lettering->next;
+  }
   
   //pointVis
   
@@ -1031,30 +1029,30 @@ void draw_game(void)
   }
   
   //HUD on the right side
-  spFontDrawMiddle(6*engineWindowX/7,1*engineWindowY/16,-1,"Game Mode:",middle_font);
+  spFontDrawMiddle(6*engineWindowX/7,1*engineWindowY/16,-1,"Game Mode:",small_font);
   if (mode & timeMode)
     sprintf(buffer,"Time Stole");
   else
     sprintf(buffer,"Points");
-  spFontDrawMiddle(6*engineWindowX/7,2*engineWindowY/16,-1,buffer,middle_font);
+  spFontDrawMiddle(6*engineWindowX/7,2*engineWindowY/16,-1,buffer,font);
   if (mode & timeMode)
   {
-    spFontDrawMiddle(6*engineWindowX/7,4*engineWindowY/16,-1,"Time Past:",middle_font);
+    spFontDrawMiddle(6*engineWindowX/7,4*engineWindowY/16,-1,"Time Past:",small_font);
     sprintf(buffer,"%i Seconds",realTime/1000);
-    spFontDrawMiddle(6*engineWindowX/7,5*engineWindowY/16,-1,buffer,middle_font);
+    spFontDrawMiddle(6*engineWindowX/7,5*engineWindowY/16,-1,buffer,font);
   }
   else
   {
-    spFontDrawMiddle(6*engineWindowX/7,4*engineWindowY/16,-1,"Points:",middle_font);
+    spFontDrawMiddle(6*engineWindowX/7,4*engineWindowY/16,-1,"Points:",small_font);
     sprintf(buffer,"%i",points);
-    spFontDrawMiddle(6*engineWindowX/7,5*engineWindowY/16,-1,buffer,middle_font);
+    spFontDrawMiddle(6*engineWindowX/7,5*engineWindowY/16,-1,buffer,font);
   }
 
   spBlitSurfacePart(6*engineWindowX/7,13*engineWindowY/32,-1,getTimeSurface(),0,0,gameTime*getTimeSurface()->w/START_TIME,getTimeSurface()->h);
 
-  spFontDrawMiddle(6*engineWindowX/7,20*engineWindowY/32,-1,"Select:",small_font);
+  spFontDrawMiddle(6*engineWindowX/7,20*engineWindowY/32,-1,"Start:",small_font);
   spFontDrawMiddle(6*engineWindowX/7,22*engineWindowY/32,-1,"Pause",small_font);
-  spFontDrawMiddle(6*engineWindowX/7,25*engineWindowY/32,-1,"Start:",small_font);
+  spFontDrawMiddle(6*engineWindowX/7,25*engineWindowY/32,-1,"Select:",small_font);
   spFontDrawMiddle(6*engineWindowX/7,27*engineWindowY/32,-1,"Back to Menu",small_font);
 
 
@@ -1068,45 +1066,10 @@ void draw_game(void)
 int calc_game(Uint32 steps)
 {
   PspInput engineInput = spGetInput();
-  if (engineInput->button[SP_BUTTON_SELECT])
+  if (engineInput->button[SP_BUTTON_START])
   {
     pause=!pause;
-    engineInput->button[SP_BUTTON_SELECT]=0;
-  }
-  
-  if (insert_name)
-  {
-    if (engineInput->axis[0]>0)
-    {
-      selected_letter = (selected_letter+1)%3;
-      engineInput->axis[0] = 0;
-    }
-    if (engineInput->axis[0]<0)
-    {
-      selected_letter = (selected_letter+2)%3;
-      engineInput->axis[0] = 0;
-    }
-    if (engineInput->axis[1]>0)
-    {
-      name[selected_letter] = (name[selected_letter]-'A' +25)%26+'A';
-      engineInput->axis[1] = 0;
-    }
-    if (engineInput->axis[1]<0)
-    {
-      name[selected_letter] = (name[selected_letter]-'A' +1)%26+'A';
-      engineInput->axis[1] = 0;
-    }
-    
-    if (engineInput->button[SP_BUTTON_START])
-    {
-      if (mode & timeMode)
-        insert_highscore(mode,colornumber-4,difficult,name,realTime);
-      else
-        insert_highscore(mode,colornumber-4,difficult,name,points);
-      highscore_save();
-      return 1;
-    }
-    return 0;
+    engineInput->button[SP_BUTTON_START]=0;
   }
   
   if (pause)
@@ -1117,10 +1080,6 @@ int calc_game(Uint32 steps)
     countdown-=steps;
     return 0;
   }
-  if (letteringTimeOut>0)
-    letteringTimeOut -= steps;
-  else
-    momLettering = NULL;
   calc_pointVis(steps);
   game_counter+=steps;
   int i;
@@ -1397,9 +1356,11 @@ int calc_game(Uint32 steps)
       }
     }
   }
+  
+  calc_lettering(steps);
     
   w+=(steps*16)%(2*SP_PI);
-  if (engineInput->button[SP_BUTTON_START])
+  if (engineInput->button[SP_BUTTON_SELECT])
     return 1;
   return 0; 
 }
@@ -1413,8 +1374,6 @@ int run_game(int playernumber_,GameMode mode_,int difficult_ /*0..9*/,int starAd
   timeStep = difficult/2+2;
   star_add = starAdd;
   first_pointVis = NULL;
-  insert_name = 0;
-  selected_letter = 0;
   
   switch (rand()%4)
   {

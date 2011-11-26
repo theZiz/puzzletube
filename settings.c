@@ -35,6 +35,7 @@ int highscore_choice;
 spFontPointer settings_font;
 spFontPointer settings_small_font;
 spFontPointer settings_middle_font;
+spFontPointer settings_countdown_font;
 
 int highscore[2][6][10][6];
 char highscore_name[2][6][10][6][3];
@@ -286,4 +287,14 @@ spFontPointer settings_get_middle_font()
 void settings_set_middle_font(spFontPointer middle_font)
 {
   settings_middle_font = middle_font;
+}
+
+spFontPointer settings_get_countdown_font()
+{
+  return settings_countdown_font;
+}
+
+void settings_set_countdown_font(spFontPointer countdown_font)
+{
+  settings_countdown_font = countdown_font;
 }

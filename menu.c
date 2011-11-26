@@ -324,6 +324,16 @@ int calc_menu(Uint32 steps)
       settings_set_stars_rotating(settings_get_stars_rotating()+1);
       menu_block = 1;
     }
+    if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 2 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_particles()>0)
+    {
+      settings_set_particles(settings_get_particles()-1);
+      menu_block = 1;
+    }
+    if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 2 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_particles()<1)
+    {
+      settings_set_particles(settings_get_particles()+1);
+      menu_block = 1;
+    }
     if (engineInput->axis[0] == 0)
       menu_block = 0;
     if (menu_move == 0 && (engineInput->button[SP_BUTTON_START] ||
@@ -373,6 +383,11 @@ int calc_menu(Uint32 steps)
     }
     else
       move_sound_off();
+    if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 1 && engineInput->axis[0]!=0 && menu_wait <= 0)
+    {
+      settings_set_mode((settings_get_mode()+1)%2);
+      menu_block = 1;
+    }
     if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 2 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_color()>4)
     {
       settings_set_color(settings_get_color()-1);

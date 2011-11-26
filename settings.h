@@ -57,5 +57,7 @@ spFontPointer settings_get_small_font();
 void settings_set_small_font(spFontPointer small_font);
 spFontPointer settings_get_middle_font();
 void settings_set_middle_font(spFontPointer middle_font);
+spFontPointer settings_get_countdown_font();
+void settings_set_countdown_font(spFontPointer countdown_font);
 
 #endif
