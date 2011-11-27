@@ -130,6 +130,9 @@ void resize_particle(int winX,int winY)
       if ((x == 0) ^ (y == 0) ^ (x == dummy->w-1) ^ (y == dummy->h-1))
         pixel[x+y*dummy->w] = 65535;
       else
+      if ((x == 0) || (y == 0) || (x == dummy->w-1) || (y == dummy->h-1))
+        pixel[x+y*dummy->w] = SP_ALPHA_COLOR;
+      else
       {
         int g = (x*255/dummy->w)>>2;
         int r = (255-x*255/dummy->w)>>3;
