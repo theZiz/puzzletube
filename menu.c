@@ -36,6 +36,57 @@ int menu_fade;
 int menu_wait = 0;
 int menu_block = 0;
 
+void draw_border(int x1,int y1,int x2,int y2,Uint16 color)
+{
+  SDL_LockSurface(spGetWindowSurface());
+  Uint16* pixel = (Uint16*)spGetWindowSurface()->pixels;
+  int x,y;
+  for (x = x1; x<=x2; x++)
+    for (y = y1; y<=y2; y++)
+    if (x >= 0 && y >= 0 && x<spGetWindowSurface()->w && y<spGetWindowSurface()->h)
+    {
+      int r = 6 * spGetSizeFactor() >> SP_ACCURACY;
+      //left, top edge
+      if (x-x1 < r && y-y1 < r)
+      {
+        int value = (r-x+x1)*(r-x+x1)+(r-y+y1)*(r-y+y1);
+        if ( value > (r-1)*(r-1) && value < r*r)
+          pixel[x+y*spGetWindowSurface()->w] = color;
+      }
+      else
+      //right, top edge
+      if (x2-x < r && y-y1 < r)
+      {
+        int value = (r-x2+x)*(r-x2+x)+(r-y+y1)*(r-y+y1);
+        if ( value > (r-1)*(r-1) && value < r*r)
+          pixel[x+y*spGetWindowSurface()->w] = color;
+      }
+      else
+      //left, bottom edge
+      if (x-x1 < r && y2-y < r)
+      {
+        int value = (r-x+x1)*(r-x+x1)+(r-y2+y)*(r-y2+y);
+        if ( value > (r-1)*(r-1) && value < r*r)
+          pixel[x+y*spGetWindowSurface()->w] = color;
+      }
+      else
+      //right, bottom edge
+      if (x2-x < r && y2-y < r)
+      {
+        int value = (r-x2+x)*(r-x2+x)+(r-y2+y)*(r-y2+y);
+        if ( value > (r-1)*(r-1) && value < r*r)
+          pixel[x+y*spGetWindowSurface()->w] = color;
+      }
+      else
+      if (x == x1 | y == y1 | x == x2 | y == y2)
+        pixel[x+y*spGetWindowSurface()->w] = color;
+      
+    }
+    
+  
+  SDL_UnlockSurface(spGetWindowSurface());
+}
+
 void draw_menu(void)
 {
   #ifdef MENU_DEBUG
@@ -46,6 +97,7 @@ void draw_menu(void)
   int engineWindowY=spGetWindowSurface()->h;
   spFontPointer font = settings_get_font();
   spFontPointer small_font = settings_get_small_font();
+  spFontPointer middle_font = settings_get_middle_font();
   
   spSetAlphaTest(1);
   spSetZSet(0);
@@ -144,7 +196,59 @@ void draw_menu(void)
       draw_particle_circle(+1,menu_counter);
       break;
     case 3: //High Score
-      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),engineWindowY/2+(spSin(menu_counter*300+6*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Under Construction",font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),engineWindowY/16+(spSin(menu_counter*300+6*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Highscore - Time Mode",font);
+      spTranslate(-11<<SP_ACCURACY,(33<<ACCURACY-2),0);
+      draw_particle_circle(-1,menu_counter);
+      spBlit3D(0,0,0,spFontGetLetter(font,'L')->surface);
+      spTranslate(22<<SP_ACCURACY,0,0);
+      draw_particle_circle(+1,menu_counter);
+      spBlit3D(0,0,0,spFontGetLetter(font,'R')->surface);
+      
+      //easy, no special stones
+      spFontDrawMiddle(17*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),7*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Normal",font);
+      spFontDraw     (4*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),10*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,"1. ZIZ",middle_font);
+      spFontDrawRight(29*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),10*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,"1234567",middle_font);
+      spFontDraw     (4*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),12*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,"2. FXB",small_font);
+      spFontDrawRight(29*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),12*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,"1234566",small_font);
+      spFontDraw     (4*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),14*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,"3. EDX",small_font);
+      spFontDrawRight(29*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),14*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,"123456",small_font);
+      draw_border( 2*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),12*engineWindowY/64+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),
+                  30*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),33*engineWindowY/64+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),65535);
+
+      //hard, no special stones
+      spFontDrawMiddle(48*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),7*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Hard",font);
+      spFontDraw     (35*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),10*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,"1. ZIZ",middle_font);
+      spFontDrawRight(61*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),10*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,"1234567",middle_font);
+      spFontDraw     (35*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),12*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,"2. FXB",small_font);
+      spFontDrawRight(61*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),12*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,"1234566",small_font);
+      spFontDraw     (35*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),14*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,"3. EDX",small_font);
+      spFontDrawRight(61*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),14*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,"123456",small_font);
+      draw_border(33*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),12*engineWindowY/64+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),
+                  62*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),33*engineWindowY/64+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),65535);
+      
+      //easy, special stones
+      spFontDrawMiddle(17*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),19*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Normal, Special",font);
+      spFontDraw     (4*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),22*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,"1. ZIZ",middle_font);
+      spFontDrawRight(29*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),22*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,"1234567",middle_font);
+      spFontDraw     (4*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),24*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,"2. FXB",small_font);
+      spFontDrawRight(29*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),24*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,"1234566",small_font);
+      spFontDraw     (4*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),26*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,"3. EDX",small_font);
+      spFontDrawRight(29*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),26*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,"123456",small_font);
+      draw_border( 2*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),36*engineWindowY/64+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),
+                  30*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),57*engineWindowY/64+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),65535);
+
+      //hard, special stones
+      spFontDrawMiddle(48*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),19*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Hard, Special",font);
+      spFontDraw     (35*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),22*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,"1. ZIZ",middle_font);
+      spFontDrawRight(61*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),22*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,"1234567",middle_font);
+      spFontDraw     (35*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),24*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,"2. FXB",small_font);
+      spFontDrawRight(61*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),24*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,"1234566",small_font);
+      spFontDraw     (35*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),26*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,"3. EDX",small_font);
+      spFontDrawRight(61*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),26*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,"123456",small_font);
+      draw_border(33*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),36*engineWindowY/64+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),
+                  62*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),57*engineWindowY/64+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),65535);
+      
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),30*engineWindowY/32+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Any other button: back",small_font);
       break;
 
     case 4: //About
