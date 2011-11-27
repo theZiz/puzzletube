@@ -474,7 +474,6 @@ void prepare_game_objects(char complete,int colornumber_)
     //border_mesh=loadMesh("./data/border.obj");  
     //border_thin_mesh=loadMesh("./data/border_thin.obj");  
     resize_particle(spGetWindowSurface()->w,spGetWindowSurface()->h);
-    init_stars();
   }
   init_light();
   delete_all_lettering();
@@ -757,22 +756,25 @@ void draw_game(void)
   int engineWindowX=spGetWindowSurface()->w;
   int engineWindowY=spGetWindowSurface()->h;
 
-  spClearTarget(0);
   spResetZBuffer();
   spIdentity();
-  spSetZSet(0);
-  spSetZTest(0);
     
   Sint32 matrix[16];
   
   spTranslate(0,0,-20<<SP_ACCURACY);
 
+  if (settings_get_stars_rotating()==0)
+    spClearTarget(BACKGROUND_COLOR);
+
+  //Stars
+  spSetZSet(0);
+  spSetZTest(0);
   if (settings_get_stars_rotating()==1)
-  {
-    spRotate(0,1<<SP_ACCURACY,0,star_add);
-    draw_stars();
-    spRotate(0,-1<<SP_ACCURACY,0,star_add);
-  }
+    draw_stars(star_add);
+  else
+  if (settings_get_stars_rotating()==2)
+    draw_stars((-posx[0]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)+star_add);
+  
   
   //Countdown
   spSetZSet(1);
@@ -817,12 +819,6 @@ void draw_game(void)
     last_rotate += ((timeout<<SP_HALF_ACCURACY-1)/TIMEOUT)*(SP_PI>>SP_HALF_ACCURACY+add);
   }
 
-  if (settings_get_stars_rotating()==2)
-  {
-    spRotate(0,1<<SP_ACCURACY,0,star_add);
-    draw_stars();
-    spRotate(0,-1<<SP_ACCURACY,0,star_add);
-  }
   //spTranslate(0,spSin(w<<3)>>2,0);
 
   spRotate(1<<SP_ACCURACY,0,0,(spSin(w<<3)>>SP_HALF_ACCURACY)*(SP_PI>>SP_HALF_ACCURACY)>>5);
@@ -1153,6 +1149,7 @@ void draw_game(void)
   spFontDrawRight(engineWindowX,engineWindowY-small_font->maxheight,-1,buffer,small_font);
 
   draw_music();
+    
   spFlip();
 }
 
@@ -1586,6 +1583,7 @@ int calc_game(Uint32 steps)
 
 int run_game(int playernumber_,GameMode mode_,int difficult_ /*0..9*/,int starAdd,void (*resize)(Uint16 w,Uint16 h))
 {
+  choose_one = 0;
   countdown = 4000;
   playernumber = playernumber_;
   mode = mode_;

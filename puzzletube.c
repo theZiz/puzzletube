@@ -70,6 +70,7 @@ void resize(Uint16 w,Uint16 h)
 
   //Particles
   resize_particle(w,h);
+  init_stars();  
 }
 
 int main(int argc, char **argv)

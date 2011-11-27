@@ -51,12 +51,12 @@ void draw_menu(void)
   spSetZSet(0);
   spSetZTest(0);
   spResetZBuffer();
-  spClearTarget(0);
+  //spClearTarget(BACKGROUND_COLOR);
   
   spIdentity();
   spTranslate(0,0,-20<<SP_ACCURACY);
+  draw_stars(menu_counter*10);
   spRotate(0,1<<SP_ACCURACY,0,menu_counter*10);
-  draw_stars();
   #ifdef MENU_DEBUG
     printf("%i:   Drew stars\n",SDL_GetTicks());
   #endif

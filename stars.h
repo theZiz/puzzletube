@@ -21,8 +21,9 @@
 #define _STARS_H
 
 #define STAR_COUNT 200
+#define BACKGROUND_COLOR 3
 
 void init_stars();
-void draw_stars();
+void draw_stars(Sint32 rotation);
 
 #endif
