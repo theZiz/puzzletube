@@ -50,6 +50,7 @@ void resize(Uint16 w,Uint16 h)
     spFontDelete(small_font);
   small_font = spFontLoad("./font/StayPuft.ttf",14*spGetSizeFactor()>>SP_ACCURACY);
   spFontAddRange(small_font,' ','~',14823);//whole ASCII
+  spFontChangeLetter(small_font,spFontGetLetter(small_font,'0'),'o',14823);
   spFontAddBorder(small_font,48631);
   settings_set_small_font(small_font);
 

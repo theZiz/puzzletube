@@ -90,33 +90,38 @@ void draw_menu(void)
 
       break;
     case 1: //options
-      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),1*engineWindowY/7+(spSin(menu_counter*300+7*SP_PI/4)>>SP_ACCURACY-2),-1,"SETTINGS",font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),1*engineWindowY/8+(spSin(menu_counter*300+6*SP_PI/4)>>SP_ACCURACY-2),-1,"SETTINGS",font);
       switch (settings_get_stone_quality())
       {
-        case 0: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/7+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,"Stone Quality: Flat",font); break;
-        case 1: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/7+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,"Stone Quality: Border",font); break;
-        case 2: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/7+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,"Stone Quality: Texture",font); break;
+        case 0: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/8+(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2),-1,"Stone Quality: Flat",font); break;
+        case 1: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/8+(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2),-1,"Stone Quality: Border",font); break;
+        case 2: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/8+(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2),-1,"Stone Quality: Texture",font); break;
       }
       switch (settings_get_stars_rotating())
       {
-        case 0: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/7+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,"Stars: Off",font); break;
-        case 1: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/7+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,"Stars: Still",font); break;
-        case 2: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/7+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,"Stars: Rotating",font); break;
+        case 0: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/8+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,"Stars: Off",font); break;
+        case 1: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/8+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,"Stars: Still",font); break;
+        case 2: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/8+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,"Stars: Rotating",font); break;
       }
       if (settings_get_particles())
-        spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/7+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,"Particles: On",font);
+        spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/8+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,"Particles: On",font);
       else
-        spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/7+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,"Particles: Off",font);
+        spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/8+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,"Particles: Off",font);
+
+      if (settings_get_control())
+        spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/8+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,"Control: Snake",font);
+      else
+        spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/8+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,"Control: Normal",font);
 
       char buffer[256];
       sprintf(buffer,"Volume %i%%",settings_get_volume());
-      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/7+(spSin(menu_counter*300+1*SP_PI/4)>>SP_ACCURACY-2),-1,buffer,font);
-      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/7+(spSin(menu_counter*300+0*SP_PI/4)>>SP_ACCURACY-2),-1,"Back to Menu",font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/8+(spSin(menu_counter*300+1*SP_PI/4)>>SP_ACCURACY-2),-1,buffer,font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),7*engineWindowY/8+(spSin(menu_counter*300+0*SP_PI/4)>>SP_ACCURACY-2),-1,"Back to Menu",font);
 
-      spTranslate(0,1<<SP_ACCURACY-2,3<<SP_ACCURACY-1);
-      spTranslate(-9<<SP_ACCURACY,(3<<ACCURACY)-menu_choice*5/2,0);
+      spTranslate(0,1<<SP_ACCURACY-2,-1<<SP_ACCURACY-1);
+      spTranslate(-10<<SP_ACCURACY,(4<<ACCURACY)-menu_choice*5/2,0);
       draw_particle_circle(-1,menu_counter);
-      spTranslate(18<<SP_ACCURACY,0,0);
+      spTranslate(20<<SP_ACCURACY,0,0);
       draw_particle_circle(+1,menu_counter);
       break;
     case 2: //Free Game
@@ -271,7 +276,7 @@ int calc_menu(Uint32 steps)
     }
     break;
   case 1: //options
-    if (engineInput->axis[1]<0 && menu_move==0 && (menu_choice>>SP_ACCURACY)<4)
+    if (engineInput->axis[1]<0 && menu_move==0 && (menu_choice>>SP_ACCURACY)<5)
       menu_move = 1;
     if (engineInput->axis[1]>0 && menu_move==0 && (menu_choice>>SP_ACCURACY)>0)
       menu_move = -1;
@@ -291,13 +296,13 @@ int calc_menu(Uint32 steps)
     for (i = 0;i < steps;i++)
     {
       menu_wait--;
-      if (menu_move == 0 && (menu_choice>>SP_ACCURACY) == 3 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_volume()>0)
+      if (menu_move == 0 && (menu_choice>>SP_ACCURACY) == 4 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_volume()>0)
       {
         settings_set_volume(settings_get_volume()-1);
         set_volume(settings_get_volume());
         menu_wait = 25;
       }
-      if (menu_move == 0 && (menu_choice>>SP_ACCURACY) == 3 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_volume()<100)
+      if (menu_move == 0 && (menu_choice>>SP_ACCURACY) == 4 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_volume()<100)
       {
         settings_set_volume(settings_get_volume()+1);
         set_volume(settings_get_volume());
@@ -334,6 +339,16 @@ int calc_menu(Uint32 steps)
       settings_set_particles(settings_get_particles()+1);
       menu_block = 1;
     }
+    if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 3 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_control()>0)
+    {
+      settings_set_control(settings_get_control()-1);
+      menu_block = 1;
+    }
+    if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 3 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_control()<1)
+    {
+      settings_set_control(settings_get_control()+1);
+      menu_block = 1;
+    }
     if (engineInput->axis[0] == 0)
       menu_block = 0;
     if (menu_move == 0 && (engineInput->button[SP_BUTTON_START] ||
@@ -356,7 +371,10 @@ int calc_menu(Uint32 steps)
         case 2: //Particles
           settings_set_particles((settings_get_particles()+1)%2);
           break;
-        case 4: //Back
+        case 3: //Control
+          settings_set_control((settings_get_control()+1)%2);
+          break;
+        case 5: //Back
           settings_save();
           nextstate = 0;
           menu_fade = -1;

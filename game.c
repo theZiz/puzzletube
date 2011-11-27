@@ -427,14 +427,22 @@ void prepare_game_objects(char complete,int colornumber_)
       stone[y][a].falling=0;
       stone[y][a].new=0;
     }
-  posx[0]=0;
-  posy[0]=-2<<SP_ACCURACY;
-  posx[3]=posx[0];
-  posy[3]=posy[0];
-  posx[1]=0;
-  posy[1]=0;
-  posx[2]=0;
-  posy[2]=2<<SP_ACCURACY;
+  if (settings_get_control() == 1)
+  {
+    posx[0]=0;
+    posy[0]=-2<<SP_ACCURACY;
+    posx[3]=posx[0];
+    posy[3]=posy[0];
+    posx[1]=0;
+    posy[1]=0;
+    posx[2]=0;
+    posy[2]=2<<SP_ACCURACY;
+  }
+  else
+  {
+    posx[0]=0;
+    posy[0]=0;
+  }
   int i;
   for (i=0;i<2*TIMEOUT;i++)
   {
@@ -735,6 +743,7 @@ void draw_particle2(int posx,int posy,Sint32 r,int time,SDL_Surface* particle)
 }
 
 int last_rotate = 0;
+int choose_one = 0; //1 A, 2 B, 3 X, 4 Y
 
 void draw_game(void)
 {
@@ -983,22 +992,106 @@ void draw_game(void)
   draw_particle(posx[0],posy[0],r,(game_counter+3*PARTICLE_SPEED/4+PARTICLE_SPEED/24)%PARTICLE_SPEED,getMiddleParticle());
   draw_particle(posx[0],posy[0],r,(game_counter+3*PARTICLE_SPEED/4+PARTICLE_SPEED/10)%PARTICLE_SPEED,getBigParticle());
 
-  spBlit3D(spCos(-(pointposx[(  TIMEOUT-1+pointstart+2*TIMEOUT-TIMEOUT/4)%(2*TIMEOUT)]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)+SP_PI/2)*22>>2,pointposy[(  TIMEOUT-1+pointstart+2*TIMEOUT-TIMEOUT/4)%(2*TIMEOUT)],spSin((pointposx[(  TIMEOUT-1+pointstart+2*TIMEOUT-TIMEOUT/4)%(2*TIMEOUT)]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)+SP_PI/2)*22>>2,getMiddleParticle());
-  spBlit3D(spCos(-(pointposx[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)+SP_PI/2)*22>>2,pointposy[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)],spSin((pointposx[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)+SP_PI/2)*22>>2,getMiddleParticle());
-  spBlit3D(spCos(-(pointposx[(  TIMEOUT-1+pointstart+TIMEOUT/4)%(2*TIMEOUT)]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)+SP_PI/2)*22>>2,pointposy[(  TIMEOUT-1+pointstart+TIMEOUT/4)%(2*TIMEOUT)],spSin((pointposx[(  TIMEOUT-1+pointstart+TIMEOUT/4)%(2*TIMEOUT)]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)+SP_PI/2)*22>>2,getMiddleParticle());
+  if (settings_get_control() == 1)
+  {
+    spBlit3D(spCos(-(pointposx[(  TIMEOUT-1+pointstart+2*TIMEOUT-TIMEOUT/4)%(2*TIMEOUT)]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)+SP_PI/2)*22>>2,pointposy[(  TIMEOUT-1+pointstart+2*TIMEOUT-TIMEOUT/4)%(2*TIMEOUT)],spSin((pointposx[(  TIMEOUT-1+pointstart+2*TIMEOUT-TIMEOUT/4)%(2*TIMEOUT)]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)+SP_PI/2)*22>>2,getMiddleParticle());
+    spBlit3D(spCos(-(pointposx[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)+SP_PI/2)*22>>2,pointposy[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)],spSin((pointposx[(  TIMEOUT-1+pointstart)%(2*TIMEOUT)]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)+SP_PI/2)*22>>2,getMiddleParticle());
+    spBlit3D(spCos(-(pointposx[(  TIMEOUT-1+pointstart+TIMEOUT/4)%(2*TIMEOUT)]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)+SP_PI/2)*22>>2,pointposy[(  TIMEOUT-1+pointstart+TIMEOUT/4)%(2*TIMEOUT)],spSin((pointposx[(  TIMEOUT-1+pointstart+TIMEOUT/4)%(2*TIMEOUT)]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)+SP_PI/2)*22>>2,getMiddleParticle());
 
-  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
-  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+    draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+    draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
 
-  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+PARTICLE_SPEED2/4+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
-  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+PARTICLE_SPEED2/4+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+    draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+PARTICLE_SPEED2/4+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+    draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+PARTICLE_SPEED2/4+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
 
-  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+PARTICLE_SPEED2/2+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
-  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+PARTICLE_SPEED2/2+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+    draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+PARTICLE_SPEED2/2+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+    draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+PARTICLE_SPEED2/2+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
 
-  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+3*PARTICLE_SPEED2/4+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
-  draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+3*PARTICLE_SPEED2/4+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+    draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+3*PARTICLE_SPEED2/4+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+    draw_particle2(pointposx[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],pointposy[(2*TIMEOUT-1+pointstart)%(2*TIMEOUT)],r,(game_counter+3*PARTICLE_SPEED2/4+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+  }
+  else
+  {
+    /*spRotate(0,+1<<SP_ACCURACY,0, (posx[0]>>SP_HALF_ACCURACY+1)*(SP_PI>>SP_HALF_ACCURACY+2)-SP_PI/8);
+    spTranslate(0,posy[0],23<<SP_ACCURACY-2);
+    SDL_Surface* surface = spFontGetLetter(font,'A')->surface;
+    spBindTexture(surface);
+    spQuadTex3D(-6<<SP_ACCURACY-3,-6<<SP_ACCURACY-3,0,0,surface->h-SP_FONT_EXTRASPACE-1,
+                +6<<SP_ACCURACY-3,-6<<SP_ACCURACY-3,0,surface->w-SP_FONT_EXTRASPACE-1,surface->h-SP_FONT_EXTRASPACE-1,
+                +6<<SP_ACCURACY-3,+6<<SP_ACCURACY-3,0,surface->w-SP_FONT_EXTRASPACE-1,0,
+                -6<<SP_ACCURACY-3,+6<<SP_ACCURACY-3,0,0,0,65535);
+    spTranslate(0,-posy[0],-23<<SP_ACCURACY-2);
+    spRotate(0,-1<<SP_ACCURACY,0, (posx[0]>>SP_HALF_ACCURACY+1)*(SP_PI>>SP_HALF_ACCURACY+2)-SP_PI/8);*/
+    
+    int x = (20-(posx[0]>>SP_ACCURACY)) & 15;
+    int y = 3+(posy[0]>>SP_ACCURACY+1);    
+    spRotate(0,+1<<SP_ACCURACY,0, (posx[0]>>SP_HALF_ACCURACY+1)*(SP_PI>>SP_HALF_ACCURACY+2));
+    if (choose_one!=1 && stone[y][(x+1) & 15].new == 0 && stone[y][(x+1) & 15].falling == 0 && stone[y][(x+1) & 15].type >= 0)
+      spBlit3D(-7<<SP_ACCURACY-2,posy[0],23<<SP_ACCURACY-2,spFontGetLetter(small_font,'A')->surface);
+    if (choose_one!=2 && stone[y][(x+15) & 15].new == 0 && stone[y][(x+15) & 15].falling == 0 && stone[y][(x+15) & 15].type >= 0)
+      spBlit3D(+7<<SP_ACCURACY-2,posy[0],23<<SP_ACCURACY-2,spFontGetLetter(small_font,'B')->surface);
+    if (choose_one!=3 && y>0 && stone[y-1][x].new == 0 && stone[y-1][x].falling == 0 && stone[y-1][x].type >= 0)
+      spBlit3D(0,posy[0]-(7<<SP_ACCURACY-2),23<<SP_ACCURACY-2,spFontGetLetter(small_font,'X')->surface);
+    if (choose_one!=4 && y<6 && stone[y+1][x].new == 0 && stone[y+1][x].falling == 0 && stone[y+1][x].type >= 0)
+      spBlit3D(0,posy[0]+(7<<SP_ACCURACY-2),23<<SP_ACCURACY-2,spFontGetLetter(small_font,'Y')->surface);
+    spRotate(0,-1<<SP_ACCURACY,0, (posx[0]>>SP_HALF_ACCURACY+1)*(SP_PI>>SP_HALF_ACCURACY+2));
+    
+    switch (choose_one)
+    {
+      case 1: 
+        draw_particle2(posx[0]-(1<<SP_ACCURACY),posy[0],r,(game_counter+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+        draw_particle2(posx[0]-(1<<SP_ACCURACY),posy[0],r,(game_counter+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
 
+        draw_particle2(posx[0]-(1<<SP_ACCURACY),posy[0],r,(game_counter+PARTICLE_SPEED2/4+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+        draw_particle2(posx[0]-(1<<SP_ACCURACY),posy[0],r,(game_counter+PARTICLE_SPEED2/4+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+
+        draw_particle2(posx[0]-(1<<SP_ACCURACY),posy[0],r,(game_counter+PARTICLE_SPEED2/2+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+        draw_particle2(posx[0]-(1<<SP_ACCURACY),posy[0],r,(game_counter+PARTICLE_SPEED2/2+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+
+        draw_particle2(posx[0]-(1<<SP_ACCURACY),posy[0],r,(game_counter+3*PARTICLE_SPEED2/4+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+        draw_particle2(posx[0]-(1<<SP_ACCURACY),posy[0],r,(game_counter+3*PARTICLE_SPEED2/4+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+        break;
+      case 2: 
+        draw_particle2(posx[0]+(1<<SP_ACCURACY),posy[0],r,(game_counter+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+        draw_particle2(posx[0]+(1<<SP_ACCURACY),posy[0],r,(game_counter+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+
+        draw_particle2(posx[0]+(1<<SP_ACCURACY),posy[0],r,(game_counter+PARTICLE_SPEED2/4+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+        draw_particle2(posx[0]+(1<<SP_ACCURACY),posy[0],r,(game_counter+PARTICLE_SPEED2/4+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+
+        draw_particle2(posx[0]+(1<<SP_ACCURACY),posy[0],r,(game_counter+PARTICLE_SPEED2/2+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+        draw_particle2(posx[0]+(1<<SP_ACCURACY),posy[0],r,(game_counter+PARTICLE_SPEED2/2+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+
+        draw_particle2(posx[0]+(1<<SP_ACCURACY),posy[0],r,(game_counter+3*PARTICLE_SPEED2/4+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+        draw_particle2(posx[0]+(1<<SP_ACCURACY),posy[0],r,(game_counter+3*PARTICLE_SPEED2/4+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+        break;
+      case 3: 
+        draw_particle2(posx[0],posy[0]-(2<<SP_ACCURACY),r,(game_counter+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+        draw_particle2(posx[0],posy[0]-(2<<SP_ACCURACY),r,(game_counter+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+
+        draw_particle2(posx[0],posy[0]-(2<<SP_ACCURACY),r,(game_counter+PARTICLE_SPEED2/4+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+        draw_particle2(posx[0],posy[0]-(2<<SP_ACCURACY),r,(game_counter+PARTICLE_SPEED2/4+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+
+        draw_particle2(posx[0],posy[0]-(2<<SP_ACCURACY),r,(game_counter+PARTICLE_SPEED2/2+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+        draw_particle2(posx[0],posy[0]-(2<<SP_ACCURACY),r,(game_counter+PARTICLE_SPEED2/2+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+
+        draw_particle2(posx[0],posy[0]-(2<<SP_ACCURACY),r,(game_counter+3*PARTICLE_SPEED2/4+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+        draw_particle2(posx[0],posy[0]-(2<<SP_ACCURACY),r,(game_counter+3*PARTICLE_SPEED2/4+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+        break;
+      case 4: 
+        draw_particle2(posx[0],posy[0]+(2<<SP_ACCURACY),r,(game_counter+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+        draw_particle2(posx[0],posy[0]+(2<<SP_ACCURACY),r,(game_counter+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+
+        draw_particle2(posx[0],posy[0]+(2<<SP_ACCURACY),r,(game_counter+PARTICLE_SPEED2/4+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+        draw_particle2(posx[0],posy[0]+(2<<SP_ACCURACY),r,(game_counter+PARTICLE_SPEED2/4+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+
+        draw_particle2(posx[0],posy[0]+(2<<SP_ACCURACY),r,(game_counter+PARTICLE_SPEED2/2+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+        draw_particle2(posx[0],posy[0]+(2<<SP_ACCURACY),r,(game_counter+PARTICLE_SPEED2/2+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+
+        draw_particle2(posx[0],posy[0]+(2<<SP_ACCURACY),r,(game_counter+3*PARTICLE_SPEED2/4+PARTICLE_SPEED2/24)%PARTICLE_SPEED2,getSmallParticle());
+        draw_particle2(posx[0],posy[0]+(2<<SP_ACCURACY),r,(game_counter+3*PARTICLE_SPEED2/4+PARTICLE_SPEED2/10)%PARTICLE_SPEED2,getMiddleParticle());
+        break;
+    }
+  }
   
   char buffer[256];
   
@@ -1203,6 +1296,7 @@ int calc_game(Uint32 steps)
       }
     }
     else
+    if (settings_get_control()==1)
     {
       if (engineInput->axis[0]<0)
       {
@@ -1354,6 +1448,131 @@ int calc_game(Uint32 steps)
           initate_change((20-(posx[0]>>SP_ACCURACY))%16,3+(posy[0]>>SP_ACCURACY+1),(20-(posx[2]>>SP_ACCURACY))%16,3+(posy[2]>>SP_ACCURACY+1));
         }
       }
+    }
+    else //new, better control
+    {
+      if (!choose_one && engineInput->axis[0]<0)
+      {
+        direction=0;
+        timeout=TIMEOUT;
+        rotating_sound_on();
+      }
+      else
+      if (!choose_one && engineInput->axis[0]>0)
+      {
+        direction=1;
+        timeout=TIMEOUT+1;
+        rotating_sound_on();
+      }
+      else
+        rotating_sound_off();
+      if (!choose_one && engineInput->axis[1]<0 && (((posy[0]>>SP_ACCURACY)>-6 && direction!=3) || (direction==3 && (posy[2]>>SP_ACCURACY)>-6)))
+      {
+        direction=2;
+        timeout=TIMEOUT;
+        move_sound_on();
+      }
+      else
+      if (!choose_one && engineInput->axis[1]>0 && (((posy[0]>>SP_ACCURACY)< 6 && direction!=2) || (direction==2 && (posy[2]>>SP_ACCURACY)< 6)))
+      {
+        direction=3;
+        timeout=TIMEOUT+1;
+        move_sound_on();
+      }
+      else
+        move_sound_off();
+      if (engineInput->button[SP_BUTTON_A])
+      {
+        engineInput->button[SP_BUTTON_A] = 0;
+        int x = (20-(posx[0]>>SP_ACCURACY)) & 15;
+        int y = 3+(posy[0]>>SP_ACCURACY+1);
+        if (!choose_one && stone[y][(x+1) & 15].new == 0 && stone[y][(x+1) & 15].falling == 0 && stone[y][(x+1) & 15].type >= 0)
+          choose_one = 1;
+        else
+        if (choose_one == 1)
+          choose_one = 0;
+        else
+        if (stone[y][(x+15) & 1].new == 0 && stone[y][(x+1) & 15].falling == 0 && stone[y][(x+1) & 15].type >= 0)
+        {
+          play_switch();
+          switch (choose_one)
+          {
+            case 2: initate_change((x+1) & 15,y,(x+15) & 15,y); break;
+            case 3: initate_change((x+1) & 15,y,x,y-1); break;
+            case 4: initate_change((x+1) & 15,y,x,y+1); break;
+          }
+          choose_one = 0;
+        }
+      }
+      if (engineInput->button[SP_BUTTON_B])
+      {
+        engineInput->button[SP_BUTTON_B] = 0;
+        int x = (20-(posx[0]>>SP_ACCURACY)) & 15;
+        int y = 3+(posy[0]>>SP_ACCURACY+1);
+        if (!choose_one && stone[y][(x+15) & 15].new == 0 && stone[y][(x+15) & 15].falling == 0 && stone[y][(x+15) & 15].type >= 0)
+          choose_one = 2;
+        else
+        if (choose_one == 2)
+          choose_one = 0;
+        else
+        if (stone[y][(x+15) & 15].new == 0 && stone[y][(x+15) & 15].falling == 0 && stone[y][(x+15) & 15].type >= 0)
+        {
+          play_switch();
+          switch (choose_one)
+          {
+            case 1: initate_change((x+15) & 15,y,(x+1) & 15,y); break;
+            case 3: initate_change((x+15) & 15,y,x,y-1); break;
+            case 4: initate_change((x+15) & 15,y,x,y+1); break;
+          }
+          choose_one = 0;
+        }
+      }
+      if (engineInput->button[SP_BUTTON_X])
+      {
+        engineInput->button[SP_BUTTON_X] = 0;
+        int x = (20-(posx[0]>>SP_ACCURACY)) & 15;
+        int y = 3+(posy[0]>>SP_ACCURACY+1);
+        if (y>0 && !choose_one && stone[y-1][x].new == 0 && stone[y-1][x].falling == 0 && stone[y-1][x].type >= 0)
+          choose_one = 3;
+        else
+        if (choose_one == 3)
+          choose_one = 0;
+        else
+        if (y>0 && stone[y-1][x].new == 0 && stone[y-1][x].falling == 0 && stone[y-1][x].type >= 0)
+        {
+          play_switch();
+          switch (choose_one)
+          {
+            case 1: initate_change(x,y-1,(x+1) & 15,y); break;
+            case 2: initate_change(x,y-1,(x+15) & 15,y); break;
+            case 4: initate_change(x,y-1,x,y+1); break;
+          }
+          choose_one = 0;
+        }
+      }      
+      if (engineInput->button[SP_BUTTON_Y])
+      {
+        engineInput->button[SP_BUTTON_Y] = 0;
+        int x = (20-(posx[0]>>SP_ACCURACY)) & 15;
+        int y = 3+(posy[0]>>SP_ACCURACY+1);
+        if (y<7 && !choose_one && stone[y+1][x].new == 0 && stone[y+1][x].falling == 0 && stone[y+1][x].type >= 0)
+          choose_one = 4;
+        else
+        if (choose_one == 4)
+          choose_one = 0;
+        else
+        if (y<7 && stone[y+1][x].new == 0 && stone[y+1][x].falling == 0 && stone[y+1][x].type >= 0)
+        {
+          play_switch();
+          switch (choose_one)
+          {
+            case 1: initate_change(x,y+1,(x+1) & 15,y); break;
+            case 2: initate_change(x,y+1,(x+15) & 15,y); break;
+            case 3: initate_change(x,y+1,x,y-1); break;
+          }
+          choose_one = 0;
+        }
+      }      
     }
   }
   

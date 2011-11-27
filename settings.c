@@ -24,12 +24,12 @@
 int settings_stone_quality; //2 perfect, 1 okay, 0 gp2x
 int settings_stars_rotating;
 int settings_particles;
-int settings_alpha_blending;
 int settings_font_quality;
 int settings_volume;
 int settings_color;
 int settings_difficult;
 int settings_mode;
+int settings_control;
 int highscore_choice;
 
 spFontPointer settings_font;
@@ -92,24 +92,26 @@ void settings_load()
     settings_stars_rotating = 2;
   #endif
   settings_particles = 1;
-  settings_font_quality = 1;
-  settings_alpha_blending = 1;
   settings_volume = 100;
   settings_color = 4;
   settings_difficult = 0;
-  settings_mode = 0; //highscore
+  settings_control = 0; //simple control
+  settings_mode = 0;
+  settings_font = NULL;
+  settings_middle_font = NULL;
+  settings_small_font = NULL;
+  settings_countdown_font = NULL;
   highscore_choice = 0;
-  SDL_RWops *file=SDL_RWFromFile("./settings.dat","rb");
+  SDL_RWops *file=SDL_RWFromFile("./settings2.dat","rb");
   if (file == NULL)
     return;
   SDL_RWread(file,&settings_stone_quality,sizeof(int),1);
   SDL_RWread(file,&settings_stars_rotating,sizeof(int),1);
   SDL_RWread(file,&settings_particles,sizeof(int),1);
-  SDL_RWread(file,&settings_alpha_blending,sizeof(int),1);
-  SDL_RWread(file,&settings_font_quality,sizeof(int),1);
   SDL_RWread(file,&settings_volume,sizeof(int),1);
   SDL_RWread(file,&settings_color,sizeof(int),1);
   SDL_RWread(file,&settings_difficult,sizeof(int),1);
+  SDL_RWread(file,&settings_control,sizeof(int),1);
   SDL_RWread(file,&settings_mode,sizeof(int),1);
   SDL_RWread(file,&highscore_choice,sizeof(int),1);
   SDL_RWclose(file);
@@ -138,15 +140,15 @@ void highscore_load()
 
 void settings_save()
 {
-  SDL_RWops *file=SDL_RWFromFile("./settings.dat","wb");
+  SDL_RWops *file=SDL_RWFromFile("./settings2.dat","wb");
   SDL_RWwrite(file,&settings_stone_quality,sizeof(int),1);
   SDL_RWwrite(file,&settings_stars_rotating,sizeof(int),1);
   SDL_RWwrite(file,&settings_particles,sizeof(int),1);
-  SDL_RWwrite(file,&settings_alpha_blending,sizeof(int),1);
-  SDL_RWwrite(file,&settings_font_quality,sizeof(int),1);
   SDL_RWwrite(file,&settings_volume,sizeof(int),1);
   SDL_RWwrite(file,&settings_color,sizeof(int),1);
   SDL_RWwrite(file,&settings_difficult,sizeof(int),1);
+  SDL_RWwrite(file,&settings_control,sizeof(int),1);
+  SDL_RWwrite(file,&settings_mode,sizeof(int),1);
   SDL_RWwrite(file,&highscore_choice,sizeof(int),1);
   SDL_RWclose(file);
 }
@@ -174,16 +176,6 @@ int settings_get_particles()
   return settings_particles;
 }
 
-int settings_get_alpha_blending()
-{
-  return settings_alpha_blending;
-}
-
-int settings_get_font_quality()
-{
-  return settings_font_quality;
-}
-
 int settings_get_volume()
 {
   return settings_volume;
@@ -202,16 +194,6 @@ void settings_set_stars_rotating(int value)
 void settings_set_particles(int value)
 {
   settings_particles = value;
-}
-
-void settings_set_alpha_blending(int value)
-{
-  settings_alpha_blending = value;
-}
-
-void settings_set_font_quality(int value)
-{
-  settings_font_quality = value;
 }
 
 void settings_set_volume(int value)
@@ -234,6 +216,11 @@ int settings_get_mode()
   return settings_mode;
 }
 
+int settings_get_control()
+{
+  return settings_control;
+}
+
 void settings_set_color(int value)
 {
   settings_color = value;
@@ -247,6 +234,11 @@ void settings_set_difficult(int value)
 void settings_set_mode(int value)
 {
   settings_mode = value;
+}
+
+void settings_set_control(int value)
+{
+  settings_control = value;
 }
 
 void settings_set_highscore_choice(int value)
