@@ -160,10 +160,12 @@ void draw_menu(void)
       else
         spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/8+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,"Particles: Off",font);
 
-      if (settings_get_control())
-        spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/8+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,"Control: Snake",font);
-      else
-        spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/8+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,"Control: Normal",font);
+      switch (settings_get_control())
+      {
+        case 0: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/8+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,"Control: Normal",font); break;
+        case 1: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/8+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,"Control: Snake",font); break;
+        case 2: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/8+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,"Control: Fast",font); break;
+      }
 
       char buffer[256];
       sprintf(buffer,"Volume %i%%",settings_get_volume());
@@ -448,7 +450,7 @@ int calc_menu(Uint32 steps)
       settings_set_control(settings_get_control()-1);
       menu_block = 1;
     }
-    if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 3 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_control()<1)
+    if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 3 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_control()<2)
     {
       settings_set_control(settings_get_control()+1);
       menu_block = 1;
@@ -476,7 +478,7 @@ int calc_menu(Uint32 steps)
           settings_set_particles((settings_get_particles()+1)%2);
           break;
         case 3: //Control
-          settings_set_control((settings_get_control()+1)%2);
+          settings_set_control((settings_get_control()+1)%3);
           break;
         case 5: //Back
           settings_save();
