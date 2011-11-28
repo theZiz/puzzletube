@@ -43,6 +43,7 @@ void resize(Uint16 w,Uint16 h)
     spFontDelete(font);
   font = spFontLoad("./font/StayPuft.ttf",18*spGetSizeFactor()>>SP_ACCURACY);
   spFontAddRange(font,' ','~',0);//whole ASCII
+  spFontChangeLetter(font,spFontGetLetter(font,'0'),'o',0);
   spFontAddBorder(font,65535);
   settings_set_font(font);
 
@@ -58,6 +59,7 @@ void resize(Uint16 w,Uint16 h)
     spFontDelete(middle_font);
   middle_font = spFontLoad("./font/StayPuft.ttf",14*spGetSizeFactor()>>SP_ACCURACY);
   spFontAddRange(middle_font,' ','~',0);//whole ASCII
+  spFontChangeLetter(middle_font,spFontGetLetter(middle_font,'0'),'o',0);
   spFontAddBorder(middle_font,65535);
   settings_set_middle_font(middle_font);
 
@@ -91,7 +93,7 @@ int main(int argc, char **argv)
   
   run_splashscreen(resize);
   init_music();
-  prepare_game_objects(1,9);
+  prepare_game_objects(1);
   change_music("Midnight Mediation","Nick May");
   highscore_save();
   run_menu(resize);

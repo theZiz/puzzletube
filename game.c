@@ -24,11 +24,11 @@
 #include <string.h>
 
 int playernumber;
-GameMode mode;
-int difficult;
-int colornumber;
 int countdown;
 int game_counter;
+int insert_name;
+int choosen_letter;
+char myhighscore_name[3];
 
 int star_add;
 
@@ -57,7 +57,9 @@ int gameTime;
 int timeStep;
 int realTime;
 
-#define START_TIME 180000
+#define START_TIME 120000
+#define POINTS_GOAL 100000
+#define LIKELYHOOD 8
 
 pchange firstchange;
 pparticle firstparticle;
@@ -159,7 +161,7 @@ Uint8 get_type_color_s(int type)
     return 255;
   switch (type) //special stone
   {
-    case 6: return 64;
+    case 6: return 0;
     case 7: return 255;
     case 8: return 0;
   }
@@ -173,7 +175,7 @@ Uint8 get_type_color_v(int type)
   {
     case 6: return 255;
     case 7: return ((spSin(w*64)*63)>>SP_ACCURACY)+96;
-    case 8: return 127;
+    case 8: return 64;
   }
 }
 
@@ -390,7 +392,25 @@ void remove_win_situations()
     pwinsituation temp=situation;
     while (temp!=NULL)
     {
-      stone[temp->y][temp->x].type=rand()%colornumber;
+      if (settings_get_color() && settings_get_difficult())
+      {
+        if (rand()%LIKELYHOOD < LIKELYHOOD-1)
+          stone[temp->y][temp->x].type=rand()%6;
+        else
+          stone[temp->y][temp->x].type=rand()%3+6;
+      }
+      if (settings_get_color() && !settings_get_difficult())
+        stone[temp->y][temp->x].type=rand()%6;
+      if (!settings_get_color() && !settings_get_difficult())
+        stone[temp->y][temp->x].type=rand()%4;
+      if (!settings_get_color() && settings_get_difficult())
+      {
+        if (rand()%LIKELYHOOD < LIKELYHOOD-1)
+          stone[temp->y][temp->x].type=rand()%4;
+        else
+          stone[temp->y][temp->x].type=rand()%3+6;
+      }
+      
       stone[temp->y][temp->x].h=get_type_color_h(stone[temp->y][temp->x].type);
       stone[temp->y][temp->x].s=get_type_color_s(stone[temp->y][temp->x].type);
       stone[temp->y][temp->x].v=get_type_color_v(stone[temp->y][temp->x].type);
@@ -409,54 +429,75 @@ void init_light()
 }
 
 
-void prepare_game_objects(char complete,int colornumber_)
+void prepare_game_objects(char complete)
 {
-  points = 0;
-  gameTime = START_TIME;
-  realTime = 0;
-  colornumber = colornumber_; 
-  chain = 0;
-  int a,y;
-  for (y=0;y<7;y++)
-    for (a=0;a<16;a++)
-    {
-      stone[y][a].type=rand()%colornumber;
-      stone[y][a].h=get_type_color_h(stone[y][a].type);
-      stone[y][a].s=get_type_color_s(stone[y][a].type);
-      stone[y][a].v=get_type_color_v(stone[y][a].type);
-      stone[y][a].falling=0;
-      stone[y][a].new=0;
-    }
-  if (settings_get_control() == 1)
+  if (!complete)
   {
-    posx[0]=0;
-    posy[0]=-2<<SP_ACCURACY;
-    posx[3]=posx[0];
-    posy[3]=posy[0];
-    posx[1]=0;
-    posy[1]=0;
-    posx[2]=0;
-    posy[2]=2<<SP_ACCURACY;
+    points = 0;
+    gameTime = START_TIME;
+    realTime = 0;
+    chain = 0;
+    int a,y;
+    for (y=0;y<7;y++)
+      for (a=0;a<16;a++)
+      {
+        if (settings_get_color() && settings_get_difficult())
+        {
+          if (rand()%LIKELYHOOD < LIKELYHOOD-1)
+            stone[y][a].type=rand()%6;
+          else
+            stone[y][a].type=rand()%3+6;
+        }
+        if (settings_get_color() && !settings_get_difficult())
+          stone[y][a].type=rand()%6;
+        if (!settings_get_color() && !settings_get_difficult())
+          stone[y][a].type=rand()%4;
+        if (!settings_get_color() && settings_get_difficult())
+        {
+          if (rand()%LIKELYHOOD < LIKELYHOOD-1)
+            stone[y][a].type=rand()%4;
+          else
+            stone[y][a].type=rand()%3+6;
+        }
+        stone[y][a].h=get_type_color_h(stone[y][a].type);
+        stone[y][a].s=get_type_color_s(stone[y][a].type);
+        stone[y][a].v=get_type_color_v(stone[y][a].type);
+        stone[y][a].falling=0;
+        stone[y][a].new=0;
+      }
+    if (settings_get_control() == 1)
+    {
+      posx[0]=0;
+      posy[0]=-2<<SP_ACCURACY;
+      posx[3]=posx[0];
+      posy[3]=posy[0];
+      posx[1]=0;
+      posy[1]=0;
+      posx[2]=0;
+      posy[2]=2<<SP_ACCURACY;
+    }
+    else
+    {
+      posx[0]=0;
+      posy[0]=0;
+    }
+    int i;
+    for (i=0;i<2*TIMEOUT;i++)
+    {
+      pointposx[i]=0; 
+      pointposy[i]=(i-TIMEOUT<<SP_ACCURACY)/(TIMEOUT/2); 
+    }
+    is_change=0;
+    pointstart=0;
+    timeout=0;
+    direction=2;
+    firstchange=NULL;
+    firstparticle=NULL;
+    remove_win_situations();
+    init_light();
+    delete_all_lettering();
   }
   else
-  {
-    posx[0]=0;
-    posy[0]=0;
-  }
-  int i;
-  for (i=0;i<2*TIMEOUT;i++)
-  {
-    pointposx[i]=0; 
-    pointposy[i]=(i-TIMEOUT<<SP_ACCURACY)/(TIMEOUT/2); 
-  }
-  is_change=0;
-  pointstart=0;
-  timeout=0;
-  direction=2;
-  firstchange=NULL;
-  firstparticle=NULL;
-  remove_win_situations();
-  if (complete)
   {
     stone_texture[0] = spLoadSurface("./images/stone1.png");
     stone_texture[1] = spLoadSurface("./images/stone2.png");
@@ -475,8 +516,6 @@ void prepare_game_objects(char complete,int colornumber_)
     //border_thin_mesh=loadMesh("./data/border_thin.obj");  
     resize_particle(spGetWindowSurface()->w,spGetWindowSurface()->h);
   }
-  init_light();
-  delete_all_lettering();
 }
 
 void delete_game_objects()
@@ -661,8 +700,9 @@ void make_win_situations_invalid()
       delete_win_situation(situation);
       if (count>1)
       {
+        add_lettering("+15 %%",small_font);
         add_lettering("Combo!",middle_font);
-        new_points*=3;
+        new_points = new_points * 115/100;
       }
   }
   if (found)
@@ -671,6 +711,9 @@ void make_win_situations_invalid()
     chain_break=100;
     if (chain>1)
     {
+      char buffer[256];
+      sprintf(buffer,"+%i %%",(chain-1)*10);
+      add_lettering(buffer,small_font);
       switch (chain)
       {
         case 2: add_lettering("Chain!",middle_font);break;
@@ -680,18 +723,21 @@ void make_win_situations_invalid()
         case 6: add_lettering("5x Chain!",middle_font); break;
         default: add_lettering("Mega Chain!",middle_font); break;
       }
-      new_points = new_points * 3 / 2;
+      new_points = new_points * (9+chain) / 10;
     }
     if (new_points>0)
       add_pointVis(new_points);
-    if (mode & timeMode)
+    if (settings_get_mode() == 1)
     {
-      gameTime += new_points;
+      gameTime += new_points*5;
       if (gameTime > START_TIME)
         gameTime = START_TIME;
     }
     else
+    {
       points += new_points;
+      printf("===%i===\n",points);
+    }
   }
 }
 
@@ -779,7 +825,7 @@ void draw_game(void)
   //Countdown
   spSetZSet(1);
   spSetZTest(0);
-  if (countdown>0)
+  if (countdown>0 && countdown<4000)
   {
     int factor = (countdown % 1000)+500;
     SDL_Surface* surface = NULL;
@@ -883,7 +929,7 @@ void draw_game(void)
         spRotate(0,0,1<<SP_ACCURACY,spSin(w*64)/2);
         //spRotate(0,0,1<<SP_ACCURACY,SP_PI/4);
 
-      int v=stone[(y>>1)+3][a].v-64+(2*spSin((-posx[0]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)-((a+8)*SP_PI>>3))>>(SP_ACCURACY-5));
+      int v=stone[(y>>1)+3][a].v;//-64+(2*spSin((-posx[0]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)-((a+8)*SP_PI>>3))>>(SP_ACCURACY-5));
       
       if (stone[(y>>1)+3][a].new)
       {
@@ -938,10 +984,16 @@ void draw_game(void)
       else
       {
         spSetCulling(0);
+        Uint16 input = spGetHSV(stone[(y>>1)+3][a].h,s,v);
+        Uint16 color = spGetHSV(0,0,255-64+(2*spSin((-posx[0]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)-((a+8)*SP_PI>>3))>>(SP_ACCURACY-5)));
+        Uint16 output = ((input * color >> 16) & 63488)
+                      + (((input & 2047) * (color & 2047) >> 11) & 2016)
+                      + ((input & 31) * (color & 31) >> 5);
+        
         spQuad3D(-3<<SP_ACCURACY-2,-3<<SP_ACCURACY-2,0,
                     3<<SP_ACCURACY-2,-3<<SP_ACCURACY-2,0,
                     3<<SP_ACCURACY-2, 3<<SP_ACCURACY-2,0,
-                   -3<<SP_ACCURACY-2, 3<<SP_ACCURACY-2,0,spGetHSV(stone[(y>>1)+3][a].h,s,v));
+                   -3<<SP_ACCURACY-2, 3<<SP_ACCURACY-2,0,output);
         spSetCulling(1);
       }
       memcpy(modellViewMatrix,matrix,sizeof(Sint32)*16);
@@ -1220,25 +1272,35 @@ void draw_game(void)
   
   //HUD on the right side
   spFontDrawMiddle(6*engineWindowX/7,1*engineWindowY/16,-1,"Game Mode:",small_font);
-  if (mode & timeMode)
-    sprintf(buffer,"Time Stole");
+  if (settings_get_mode() == 1)
+    sprintf(buffer,"Survival");
   else
+  if (settings_get_mode() == 0)
     sprintf(buffer,"Points");
+  else
+    sprintf(buffer,"Race");
   spFontDrawMiddle(6*engineWindowX/7,2*engineWindowY/16,-1,buffer,font);
-  if (mode & timeMode)
+  if (settings_get_mode() == 1)
   {
-    spFontDrawMiddle(6*engineWindowX/7,4*engineWindowY/16,-1,"Time Past:",small_font);
-    sprintf(buffer,"%i Seconds",realTime/1000);
+    spFontDrawMiddle(6*engineWindowX/7,4*engineWindowY/16,-1,"Time Past",small_font);
+    sprintf(buffer,"%i.%i Sec",realTime/1000,(realTime/100)%10);
     spFontDrawMiddle(6*engineWindowX/7,5*engineWindowY/16,-1,buffer,font);
   }
   else
   {
-    spFontDrawMiddle(6*engineWindowX/7,4*engineWindowY/16,-1,"Points:",small_font);
+    spFontDrawMiddle(6*engineWindowX/7,4*engineWindowY/16,-1,"Points",small_font);
     sprintf(buffer,"%i",points);
     spFontDrawMiddle(6*engineWindowX/7,5*engineWindowY/16,-1,buffer,font);
   }
 
-  spBlitSurfacePart(6*engineWindowX/7,13*engineWindowY/32,-1,getTimeSurface(),0,0,gameTime*getTimeSurface()->w/START_TIME,getTimeSurface()->h);
+  if (settings_get_mode() == 2)
+  {
+    spFontDrawMiddle(6*engineWindowX/7,7*engineWindowY/16,-1,"Elapsed Time",small_font);
+    sprintf(buffer,"%i.%i Sec",realTime/1000,(realTime/100)%10);
+    spFontDrawMiddle(6*engineWindowX/7,8*engineWindowY/16,-1,buffer,font);
+  }
+  else
+    spBlitSurfacePart(6*engineWindowX/7,14*engineWindowY/32,-1,getTimeSurface(),0,0,gameTime*getTimeSurface()->w/START_TIME,getTimeSurface()->h);
 
   spFontDrawMiddle(6*engineWindowX/7,20*engineWindowY/32,-1,"Start:",small_font);
   spFontDrawMiddle(6*engineWindowX/7,22*engineWindowY/32,-1,"Pause",small_font);
@@ -1248,6 +1310,83 @@ void draw_game(void)
 
   sprintf(buffer,"fps: %i",spGetFPS());
   spFontDrawRight(engineWindowX,engineWindowY-small_font->maxheight,-1,buffer,small_font);
+
+  //help text
+  if (countdown == 4000)
+  {
+    draw_filled_border(5*engineWindowX/20,1*engineWindowY/20,15*engineWindowX/20,19*engineWindowY/20,BACKGROUND_COLOR);
+    draw_border       (5*engineWindowX/20,1*engineWindowY/20,15*engineWindowX/20,19*engineWindowY/20,65535);
+    
+    spFontDrawMiddle(engineWindowX/2,1*engineWindowY/12,-1,"How to play the",font);
+    switch (settings_get_mode())
+    {
+      case 0:
+        spFontDrawMiddle(engineWindowX/2, 2*engineWindowY/12,-1,"\"Points Mode\":",font);
+        spFontDrawMiddle(engineWindowX/2, 4*engineWindowY/12,-1,"Get as much",font);
+        spFontDrawMiddle(engineWindowX/2, 5*engineWindowY/12,-1,"points as ,",font);
+        spFontDrawMiddle(engineWindowX/2, 6*engineWindowY/12,-1,"possible in",font);
+        spFontDrawMiddle(engineWindowX/2, 7*engineWindowY/12,-1,"120 Seconds",font);
+        break;
+      case 1:
+        spFontDrawMiddle(engineWindowX/2, 2*engineWindowY/12,-1,"\"Survival Mode\":",font);
+        spFontDrawMiddle(engineWindowX/2, 4*engineWindowY/12,-1,"You loose time",font);
+        spFontDrawMiddle(engineWindowX/2, 5*engineWindowY/12,-1,"(every 20s a bit",font);
+        spFontDrawMiddle(engineWindowX/2, 6*engineWindowY/12,-1,"faster), but",font);
+        spFontDrawMiddle(engineWindowX/2, 7*engineWindowY/12,-1,"you get time for",font);
+        spFontDrawMiddle(engineWindowX/2, 8*engineWindowY/12,-1,"smashed blocks",font);
+        break;
+      case 2:
+        spFontDrawMiddle(engineWindowX/2, 2*engineWindowY/12,-1,"\"Race Mode\":",font);
+        spFontDrawMiddle(engineWindowX/2, 4*engineWindowY/12,-1,"Get as fast",font);
+        spFontDrawMiddle(engineWindowX/2, 5*engineWindowY/12,-1,"as possible",font);
+        spFontDrawMiddle(engineWindowX/2, 6*engineWindowY/12,-1,"100,000",font);
+        spFontDrawMiddle(engineWindowX/2, 7*engineWindowY/12,-1,"points",font);
+        break;
+    }
+    spFontDrawMiddle(engineWindowX/2,10*engineWindowY/12,-1,"Press A,B,X or Y",small_font);
+  }
+  
+  //insert name
+  if (insert_name)
+  {
+    draw_filled_border(5*engineWindowX/20,1*engineWindowY/20,15*engineWindowX/20,19*engineWindowY/20,BACKGROUND_COLOR);
+    draw_border       (5*engineWindowX/20,1*engineWindowY/20,15*engineWindowX/20,19*engineWindowY/20,65535);
+    
+    spFontDrawMiddle(engineWindowX/2, 1*engineWindowY/12,-1,"You got",font);
+    switch (settings_get_mode())
+    {
+      case 0: sprintf(buffer,"%i points",points); break;
+      //case 1: sprintf(buffer,"%i Sec",realTime); break;
+      case 1: case 2: sprintf(buffer,"%i.%i Sec",realTime/1000,(realTime/100)%10); break;
+    }
+    spFontDrawMiddle(engineWindowX/2, 2*engineWindowY/12,-1,buffer,font);
+    spFontDrawMiddle(engineWindowX/2, 4*engineWindowY/12,-1,"Enter your name",font);
+    spFontDrawMiddle(engineWindowX/2, 5*engineWindowY/12,-1,"with the D-pad",font);
+    
+    int i;
+    for (i = 0; i < 3; i++)
+    {
+      SDL_Surface* surface = spFontGetLetter(font,myhighscore_name[i])->surface;
+      spBindTexture(surface);
+      int addx  = (i-1)*2*spGetSizeFactor()*24>>SP_ACCURACY;
+      int sizex = spGetSizeFactor()*24>>SP_ACCURACY;
+      int sizey = spGetSizeFactor()*32>>SP_ACCURACY;
+      if (i!=choosen_letter)
+      {
+        sizex = sizex*3/4;
+        sizey = sizey*3/4;
+      }
+      spQuad_tex(addx+engineWindowX/2-sizex,7*engineWindowY/10-sizey,-1,0,0,
+                 addx+engineWindowX/2+sizex,7*engineWindowY/10-sizey,-1,surface->w-SP_FONT_EXTRASPACE-1,0,
+                 addx+engineWindowX/2+sizex,7*engineWindowY/10+sizey,-1,surface->w-SP_FONT_EXTRASPACE-1,surface->h-SP_FONT_EXTRASPACE-1,
+                 addx+engineWindowX/2-sizex,7*engineWindowY/10+sizey,-1,0,surface->h-SP_FONT_EXTRASPACE-1,65535);
+    }
+       
+    spFontDrawMiddle(engineWindowX/2, 10*engineWindowY/12,-1,"and press Start",font);    
+  }
+  
+
+  
 
   draw_music();
     
@@ -1259,6 +1398,54 @@ int control_timeout;
 int calc_game(Uint32 steps)
 {
   PspInput engineInput = spGetInput();
+  if (insert_name)
+  {
+    int i;
+    for (i = 0; i < steps; i++)
+    {
+      if (control_timeout)
+        control_timeout--;
+      if (engineInput->axis[0] < 0 && (control_timeout<=0))
+      {
+        choosen_letter = (choosen_letter+2)%3;
+        control_timeout = 300;
+      }
+      if (engineInput->axis[0] > 0 && (control_timeout<=0))
+      {
+        choosen_letter = (choosen_letter+1)%3;
+        control_timeout = 300;
+      }
+      if (engineInput->axis[1] < 0 && (control_timeout<=0))
+      {
+        myhighscore_name[choosen_letter]--;
+        if (myhighscore_name[choosen_letter] < 'A')
+          myhighscore_name[choosen_letter] = 'Z';
+        control_timeout = 200;
+      }
+      if (engineInput->axis[1] > 0 && (control_timeout<=0))
+      {
+        myhighscore_name[choosen_letter]++;
+        if (myhighscore_name[choosen_letter] > 'Z')
+          myhighscore_name[choosen_letter] = 'A';
+        control_timeout = 200;
+      }
+      if (engineInput->button[SP_BUTTON_START])
+      {
+        settings_set_highscore_name(myhighscore_name);
+        settings_save();
+        switch (settings_get_mode())
+        {
+          case 0: insert_highscore(settings_get_mode(),settings_get_color(),settings_get_difficult(),myhighscore_name,points); break;
+          case 1: insert_highscore(settings_get_mode(),settings_get_color(),settings_get_difficult(),myhighscore_name,realTime/100); break;
+          case 2: insert_highscore(settings_get_mode(),settings_get_color(),settings_get_difficult(),myhighscore_name,realTime/100); break;
+        }
+        highscore_save();
+        engineInput->button[SP_BUTTON_START]=0;
+        return 1;
+      }
+    }
+    return 0;
+  }
   if (engineInput->button[SP_BUTTON_START])
   {
     pause=!pause;
@@ -1268,6 +1455,19 @@ int calc_game(Uint32 steps)
   if (pause)
     return 0;
   calc_music(steps);
+  if (countdown == 4000)
+  {
+    if (engineInput->button[SP_BUTTON_B] || engineInput->button[SP_BUTTON_A] ||
+        engineInput->button[SP_BUTTON_X] || engineInput->button[SP_BUTTON_Y])
+    {
+      engineInput->button[SP_BUTTON_A] = 0;
+      engineInput->button[SP_BUTTON_B] = 0;
+      engineInput->button[SP_BUTTON_X] = 0;
+      engineInput->button[SP_BUTTON_Y] = 0;
+      countdown = 3999;
+    }
+    return 0;
+  }
   if (countdown>0)
   {
     countdown-=steps;
@@ -1279,20 +1479,24 @@ int calc_game(Uint32 steps)
   for (i=0;i<steps;i++)
   {
     realTime++;
-    if (mode & timeMode)
+    if (settings_get_mode() == 1)
     {
-      if (realTime%((11-difficult)*6000) == 0)
-        timeStep = 2*timeStep-timeStep/2; 
+      if (realTime%20000 == 0)
+      {
+        timeStep++; //= 2*timeStep-timeStep/2;
+        add_lettering("Faster!",settings_get_font());
+      }
     }
-    gameTime -= timeStep;
-    if (gameTime<=0)
+    gameTime-=timeStep;
+    if ((settings_get_mode()!=2 && gameTime<=0) || (settings_get_mode()==2 && points>=POINTS_GOAL))
     {
       move_sound_off();
       rotating_sound_off();
-      /*if (((mode & timeMode) && realTime > get_highscore(mode,colornumber-4,difficult,5)) ||
-          (((mode & timeMode)==0) && points > get_highscore(mode,colornumber-4,difficult,5)))
-        insert_name = 1;      
-      else*/
+      if ((settings_get_mode() == 0 && points   > get_highscore(settings_get_mode(),settings_get_color(),settings_get_difficult(),2)) ||
+          (settings_get_mode() == 1 && realTime > get_highscore(settings_get_mode(),settings_get_color(),settings_get_difficult(),2)) ||
+          (settings_get_mode() == 2 && realTime/100 < get_highscore(settings_get_mode(),settings_get_color(),settings_get_difficult(),2)) )
+        insert_name = 1;
+      else
         return 1;
     }
 
@@ -1318,7 +1522,24 @@ int calc_game(Uint32 steps)
               stone[y2][a].falling=FALL_TIME;
           if (y==6)
           {
-            stone[y][a].type=rand()%colornumber;
+            if (settings_get_color() && settings_get_difficult())
+            {
+              if (rand()%LIKELYHOOD < LIKELYHOOD-1)
+                stone[y][a].type=rand()%6;
+              else
+                stone[y][a].type=rand()%3+6;
+            }
+            if (settings_get_color() && !settings_get_difficult())
+              stone[y][a].type=rand()%6;
+            if (!settings_get_color() && !settings_get_difficult())
+              stone[y][a].type=rand()%4;
+            if (!settings_get_color() && settings_get_difficult())
+            {
+              if (rand()%LIKELYHOOD < LIKELYHOOD-1)
+                stone[y][a].type=rand()%4;
+              else
+                stone[y][a].type=rand()%3+6;
+            }
             stone[y][a].h=get_type_color_h(stone[y][a].type);
             stone[y][a].s=get_type_color_s(stone[y][a].type);
             stone[y][a].v=get_type_color_v(stone[y][a].type);
@@ -1337,7 +1558,24 @@ int calc_game(Uint32 steps)
           stone[y-1][a].falling=0;
           if (y==6)
           {
-            stone[y][a].type=rand()%colornumber;
+            if (settings_get_color() && settings_get_difficult())
+            {
+              if (rand()%LIKELYHOOD < LIKELYHOOD-1)
+                stone[y][a].type=rand()%6;
+              else
+                stone[y][a].type=rand()%3+6;
+            }
+            if (settings_get_color() && !settings_get_difficult())
+              stone[y][a].type=rand()%6;
+            if (!settings_get_color() && !settings_get_difficult())
+              stone[y][a].type=rand()%4;
+            if (!settings_get_color() && settings_get_difficult())
+            {
+              if (rand()%LIKELYHOOD < LIKELYHOOD-1)
+                stone[y][a].type=rand()%4;
+              else
+                stone[y][a].type=rand()%3+6;
+            }
             stone[y][a].h=get_type_color_h(stone[y][a].type);
             stone[y][a].s=get_type_color_s(stone[y][a].type);
             stone[y][a].v=get_type_color_v(stone[y][a].type);
@@ -1776,18 +2014,19 @@ int calc_game(Uint32 steps)
   return 0; 
 }
 
-int run_game(int playernumber_,GameMode mode_,int difficult_ /*0..9*/,int starAdd,void (*resize)(Uint16 w,Uint16 h))
+int run_game(int playernumber_,int starAdd,void (*resize)(Uint16 w,Uint16 h))
 {
   if (settings_get_control()==2)
     choose_one = -1;
   else
     choose_one = 0;
+  insert_name = 0;
   control_timeout = 0;
+  choosen_letter = 0;
+  settings_reset_highscore_name(myhighscore_name);
   countdown = 4000;
   playernumber = playernumber_;
-  mode = mode_;
-  difficult = difficult_;
-  timeStep = difficult/2+2;
+  timeStep = 1; //TODO: Häh?
   star_add = starAdd;
   first_pointVis = NULL;
   

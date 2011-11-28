@@ -30,6 +30,7 @@ int settings_color;
 int settings_difficult;
 int settings_mode;
 int settings_control;
+char settings_name[3];
 int highscore_choice;
 
 spFontPointer settings_font;
@@ -37,46 +38,49 @@ spFontPointer settings_small_font;
 spFontPointer settings_middle_font;
 spFontPointer settings_countdown_font;
 
-int highscore[2][6][10][6];
-char highscore_name[2][6][10][6][3];
+int highscore[3][2][2][3];
+char highscore_name[3][2][2][3][3]; //game mode, normal/hard, (no) special, top3
 
-char get_highscore_name(int i,int j,int k,int l,int m)
+char* get_highscore_name(int game_mode,int difficult,int special,int rank)
 {
-  return highscore_name[i][j][k][l][m];
+  return highscore_name[game_mode][difficult][special][rank];
 }
 
-int get_highscore(int i,int j,int k,int l)
+int get_highscore(int game_mode,int difficult,int special,int rank)
 {
-  return highscore[i][j][k][l];
+  return highscore[game_mode][difficult][special][rank];
 }
 
-void insert_highscore(int i,int j,int k,char* name,int points)
+void insert_highscore(int game_mode,int difficult,int special,char* name,int points)
 {
-  if (highscore[i][j][k][5] >= points)
+  if (game_mode!=2 && highscore[game_mode][difficult][special][2] > points)
     return;
-  highscore_name[i][j][k][5][0]=name[0];
-  highscore_name[i][j][k][5][1]=name[1];
-  highscore_name[i][j][k][5][2]=name[2];
-  highscore[i][j][k][5]=points;
+  if (game_mode==2 && highscore[game_mode][difficult][special][2] < points)
+    return;
+  highscore_name[game_mode][difficult][special][2][0]=name[0];
+  highscore_name[game_mode][difficult][special][2][1]=name[1];
+  highscore_name[game_mode][difficult][special][2][2]=name[2];
+  highscore[game_mode][difficult][special][2]=points;
   //sort
   int l;
-  for (l = 5 ; l > 0; l--)
-    if (highscore[i][j][k][l] > highscore[i][j][k][l-1])
+  for (l = 2 ; l > 0; l--)
+    if ((game_mode!=2 && highscore[game_mode][difficult][special][l] > highscore[game_mode][difficult][special][l-1]) ||
+        (game_mode==2 && highscore[game_mode][difficult][special][l] < highscore[game_mode][difficult][special][l-1]))
     {
-      int points = highscore[i][j][k][l];
-      char c1 = highscore_name[i][j][k][l][0];
-      char c2 = highscore_name[i][j][k][l][1];
-      char c3 = highscore_name[i][j][k][l][2];
+      int points = highscore[game_mode][difficult][special][l];
+      char c1 = highscore_name[game_mode][difficult][special][l][0];
+      char c2 = highscore_name[game_mode][difficult][special][l][1];
+      char c3 = highscore_name[game_mode][difficult][special][l][2];
       
-      highscore[i][j][k][l] = highscore[i][j][k][l-1];
-      highscore_name[i][j][k][l][0] = highscore_name[i][j][k][l-1][0];
-      highscore_name[i][j][k][l][1] = highscore_name[i][j][k][l-1][1];
-      highscore_name[i][j][k][l][2] = highscore_name[i][j][k][l-1][2];
+      highscore[game_mode][difficult][special][l] = highscore[game_mode][difficult][special][l-1];
+      highscore_name[game_mode][difficult][special][l][0] = highscore_name[game_mode][difficult][special][l-1][0];
+      highscore_name[game_mode][difficult][special][l][1] = highscore_name[game_mode][difficult][special][l-1][1];
+      highscore_name[game_mode][difficult][special][l][2] = highscore_name[game_mode][difficult][special][l-1][2];
       
-      highscore[i][j][k][l-1] = points;
-      highscore_name[i][j][k][l-1][0] = c1;
-      highscore_name[i][j][k][l-1][1] = c2;
-      highscore_name[i][j][k][l-1][2] = c3;
+      highscore[game_mode][difficult][special][l-1] = points;
+      highscore_name[game_mode][difficult][special][l-1][0] = c1;
+      highscore_name[game_mode][difficult][special][l-1][1] = c2;
+      highscore_name[game_mode][difficult][special][l-1][2] = c3;
     }
     else
       break;
@@ -93,14 +97,17 @@ void settings_load()
   #endif
   settings_particles = 1;
   settings_volume = 100;
-  settings_color = 4;
+  settings_color = 0;
   settings_difficult = 0;
   settings_control = 0; //simple control
-  settings_mode = 0;
+  settings_mode = 2;
   settings_font = NULL;
   settings_middle_font = NULL;
   settings_small_font = NULL;
   settings_countdown_font = NULL;
+  settings_name[0]='A';
+  settings_name[1]='A';
+  settings_name[2]='A';
   highscore_choice = 0;
   SDL_RWops *file=SDL_RWFromFile("./settings2.dat","rb");
   if (file == NULL)
@@ -114,27 +121,31 @@ void settings_load()
   SDL_RWread(file,&settings_control,sizeof(int),1);
   SDL_RWread(file,&settings_mode,sizeof(int),1);
   SDL_RWread(file,&highscore_choice,sizeof(int),1);
+  SDL_RWread(file,settings_name,sizeof(char)*3,1);
   SDL_RWclose(file);
 }
 
 void highscore_load()
 {
-  memset(highscore,0,2*6*10*6*sizeof(int));
   int i,j,k,l;
-  for (i = 0; i < 2; i++)
-    for (j = 0; j < 6; j++)
-      for (k = 0; k < 10; k++)
-        for (l = 0; l < 6; l++)
+  for (i = 0; i < 3; i++)
+    for (j = 0; j < 2; j++)
+      for (k = 0; k < 2; k++)
+        for (l = 0; l < 3; l++)
         {
-          highscore_name[i][j][k][l][0]='Z';
-          highscore_name[i][j][k][l][1]='I';
-          highscore_name[i][j][k][l][2]='Z';
+          highscore_name[i][j][k][l][0]='N';
+          highscore_name[i][j][k][l][1]='U';
+          highscore_name[i][j][k][l][2]='B';
+          if (i == 2)
+            highscore[i][j][k][l] = 10000;
+          else
+            highscore[i][j][k][l] = 0;
         }
-  SDL_RWops *file=SDL_RWFromFile("./highscore.dat","rb");
+  SDL_RWops *file=SDL_RWFromFile("./highscore2.dat","rb");
   if (file == NULL)
     return;
-  SDL_RWread(file,highscore,2*6*10*6*sizeof(int),1);
-  SDL_RWread(file,highscore_name,2*6*10*6*3,1);
+  SDL_RWread(file,highscore,3*2*2*3*sizeof(int),1);
+  SDL_RWread(file,highscore_name,3*2*2*3*3,1);
   SDL_RWclose(file);
 }
 
@@ -150,14 +161,15 @@ void settings_save()
   SDL_RWwrite(file,&settings_control,sizeof(int),1);
   SDL_RWwrite(file,&settings_mode,sizeof(int),1);
   SDL_RWwrite(file,&highscore_choice,sizeof(int),1);
+  SDL_RWwrite(file,settings_name,sizeof(char)*3,1);
   SDL_RWclose(file);
 }
 
 void highscore_save()
 {
-  SDL_RWops *file=SDL_RWFromFile("./highscore.dat","wb");
-  SDL_RWwrite(file,highscore,2*6*10*6*sizeof(int),1);
-  SDL_RWwrite(file,highscore_name,2*6*10*6*3,1);
+  SDL_RWops *file=SDL_RWFromFile("./highscore2.dat","wb");
+  SDL_RWwrite(file,highscore,3*2*2*3*sizeof(int),1);
+  SDL_RWwrite(file,highscore_name,3*2*2*3*3,1);
   SDL_RWclose(file);
 }
 
@@ -289,4 +301,18 @@ spFontPointer settings_get_countdown_font()
 void settings_set_countdown_font(spFontPointer countdown_font)
 {
   settings_countdown_font = countdown_font;
+}
+
+void settings_reset_highscore_name(char* name)
+{
+  name[0]=settings_name[0];
+  name[1]=settings_name[1];
+  name[2]=settings_name[2];
+}
+
+void settings_set_highscore_name(char* name)
+{
+  settings_name[0]=name[0];
+  settings_name[1]=name[1];
+  settings_name[2]=name[2];
 }

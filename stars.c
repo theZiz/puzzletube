@@ -39,7 +39,7 @@ void init_stars()
   
   int i;
   //star1
-  for (i = 0; i < (dummy->w*dummy->h)/20000; i++)
+  for (i = 0; i < sqrt((float)(dummy->w*dummy->h)/20000.0f); i++)
   {
     int x = rand()%dummy->w;
     int y = rand()%dummy->h;
@@ -59,7 +59,7 @@ void init_stars()
     }
   }
   //star2
-  for (i = 0; i < (dummy->w*dummy->h)/12000; i++)
+  for (i = 0; i < sqrt((float)(dummy->w*dummy->h)/12000.0f); i++)
   {
     int x = rand()%dummy->w;
     int y = rand()%dummy->h;

@@ -45,9 +45,9 @@ void settings_set_mode(int value);
 void settings_set_control(int value);
 void settings_set_highscore_choice(int value);
 
-char get_highscore_name(int i,int j,int k,int l,int m);
-int get_highscore(int i,int j,int k,int l);
-void insert_highscore(int i,int j,int k,char* name,int points);
+char* get_highscore_name(int game_mode,int difficult,int special,int rank);
+int get_highscore(int game_mode,int difficult,int special,int rank);
+void insert_highscore(int game_mode,int difficult,int special,char* name,int points);
 
 spFontPointer settings_get_font();
 void settings_set_font(spFontPointer font);
@@ -58,4 +58,6 @@ void settings_set_middle_font(spFontPointer middle_font);
 spFontPointer settings_get_countdown_font();
 void settings_set_countdown_font(spFontPointer countdown_font);
 
+void settings_reset_highscore_name(char* name);
+void settings_set_highscore_name(char* name);
 #endif

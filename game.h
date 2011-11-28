@@ -31,14 +31,6 @@
 #define MAX_TYPES 6
 #define PARTICLE_AGE 1000
 
-typedef enum GameMode
-{
-  timeMode = 1, //opposite is pointMode
-  removedBlackMode = 2,
-  randomQuestMode = 4,
-  colorRemoveMode = 8,
-} GameMode;
-
 typedef struct sstone *pstone;
 typedef struct sstone {
   Sint32 h;
@@ -74,8 +66,8 @@ typedef struct sparticle {
 } tparticle;
 
 
-int run_game(int playernumber_,GameMode mode_,int difficult_ /*0..9*/,int starAdd,void (*resize)(Uint16 w,Uint16 h));
-void prepare_game_objects(char complete,int colornumber_);
+int run_game(int playernumber_,int starAdd,void (*resize)(Uint16 w,Uint16 h));
+void prepare_game_objects(char complete);
 void delete_game_objects();
 
 #endif

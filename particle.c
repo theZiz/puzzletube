@@ -197,3 +197,105 @@ void draw_particle_circle(int direction,int counter)
     spBlit3D(-spCos(counter*700+10*SP_PI/10),spSin(counter*700+10*SP_PI/10),0,getSmallParticle());
   }
 }  
+
+void draw_border(int x1,int y1,int x2,int y2,Uint16 color)
+{
+  SDL_LockSurface(spGetWindowSurface());
+  Uint16* pixel = (Uint16*)spGetWindowSurface()->pixels;
+  int x,y;
+  for (x = x1; x<=x2; x++)
+    for (y = y1; y<=y2; y++)
+    if (x >= 0 && y >= 0 && x<spGetWindowSurface()->w && y<spGetWindowSurface()->h)
+    {
+      int r = 6 * spGetSizeFactor() >> SP_ACCURACY;
+      //left, top edge
+      if (x-x1 < r && y-y1 < r)
+      {
+        int value = (r-x+x1)*(r-x+x1)+(r-y+y1)*(r-y+y1);
+        if ( value > (r-1)*(r-1) && value < r*r)
+          pixel[x+y*spGetWindowSurface()->w] = color;
+      }
+      else
+      //right, top edge
+      if (x2-x < r && y-y1 < r)
+      {
+        int value = (r-x2+x)*(r-x2+x)+(r-y+y1)*(r-y+y1);
+        if ( value > (r-1)*(r-1) && value < r*r)
+          pixel[x+y*spGetWindowSurface()->w] = color;
+      }
+      else
+      //left, bottom edge
+      if (x-x1 < r && y2-y < r)
+      {
+        int value = (r-x+x1)*(r-x+x1)+(r-y2+y)*(r-y2+y);
+        if ( value > (r-1)*(r-1) && value < r*r)
+          pixel[x+y*spGetWindowSurface()->w] = color;
+      }
+      else
+      //right, bottom edge
+      if (x2-x < r && y2-y < r)
+      {
+        int value = (r-x2+x)*(r-x2+x)+(r-y2+y)*(r-y2+y);
+        if ( value > (r-1)*(r-1) && value < r*r)
+          pixel[x+y*spGetWindowSurface()->w] = color;
+      }
+      else
+      if (x == x1 | y == y1 | x == x2 | y == y2)
+        pixel[x+y*spGetWindowSurface()->w] = color;
+      
+    }
+    
+  
+  SDL_UnlockSurface(spGetWindowSurface());
+}
+
+void draw_filled_border(int x1,int y1,int x2,int y2,Uint16 color)
+{
+  SDL_LockSurface(spGetWindowSurface());
+  Uint16* pixel = (Uint16*)spGetWindowSurface()->pixels;
+  int x,y;
+  for (x = x1; x<=x2; x++)
+    for (y = y1; y<=y2; y++)
+    if (x >= 0 && y >= 0 && x<spGetWindowSurface()->w && y<spGetWindowSurface()->h)
+    {
+      int r = 6 * spGetSizeFactor() >> SP_ACCURACY;
+      //left, top edge
+      if (x-x1 < r && y-y1 < r)
+      {
+        int value = (r-x+x1)*(r-x+x1)+(r-y+y1)*(r-y+y1);
+        if (value < r*r && ((x+(y&3))&3))
+          pixel[x+y*spGetWindowSurface()->w] = color;
+      }
+      else
+      //right, top edge
+      if (x2-x < r && y-y1 < r)
+      {
+        int value = (r-x2+x)*(r-x2+x)+(r-y+y1)*(r-y+y1);
+        if (value < r*r && ((x+(y&3))&3))
+          pixel[x+y*spGetWindowSurface()->w] = color;
+      }
+      else
+      //left, bottom edge
+      if (x-x1 < r && y2-y < r)
+      {
+        int value = (r-x+x1)*(r-x+x1)+(r-y2+y)*(r-y2+y);
+        if (value < r*r && ((x+(y&3))&3))
+          pixel[x+y*spGetWindowSurface()->w] = color;
+      }
+      else
+      //right, bottom edge
+      if (x2-x < r && y2-y < r)
+      {
+        int value = (r-x2+x)*(r-x2+x)+(r-y2+y)*(r-y2+y);
+        if (value < r*r && ((x+(y&3))&3))
+          pixel[x+y*spGetWindowSurface()->w] = color;
+      }
+      else
+      if ((x+(y&3))&3)
+        pixel[x+y*spGetWindowSurface()->w] = color;
+      
+    }
+    
+  
+  SDL_UnlockSurface(spGetWindowSurface());
+}
