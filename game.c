@@ -1282,7 +1282,7 @@ void draw_game(void)
   spFontDrawMiddle(6*engineWindowX/7,2*engineWindowY/16,-1,buffer,font);
   if (settings_get_mode() == 1)
   {
-    spFontDrawMiddle(6*engineWindowX/7,4*engineWindowY/16,-1,"Time Past",small_font);
+    spFontDrawMiddle(6*engineWindowX/7,4*engineWindowY/16,-1,"Time survived",small_font);
     sprintf(buffer,"%i.%i Sec",realTime/1000,(realTime/100)%10);
     spFontDrawMiddle(6*engineWindowX/7,5*engineWindowY/16,-1,buffer,font);
   }
@@ -1295,7 +1295,7 @@ void draw_game(void)
 
   if (settings_get_mode() == 2)
   {
-    spFontDrawMiddle(6*engineWindowX/7,7*engineWindowY/16,-1,"Elapsed Time",small_font);
+    spFontDrawMiddle(6*engineWindowX/7,7*engineWindowY/16,-1,"Time elapsed",small_font);
     sprintf(buffer,"%i.%i Sec",realTime/1000,(realTime/100)%10);
     spFontDrawMiddle(6*engineWindowX/7,8*engineWindowY/16,-1,buffer,font);
   }
@@ -1314,8 +1314,8 @@ void draw_game(void)
   //help text
   if (countdown == 4000)
   {
-    draw_filled_border(5*engineWindowX/20,1*engineWindowY/20,15*engineWindowX/20,19*engineWindowY/20,BACKGROUND_COLOR);
-    draw_border       (5*engineWindowX/20,1*engineWindowY/20,15*engineWindowX/20,19*engineWindowY/20,65535);
+    draw_filled_border(7*engineWindowX/32,1*engineWindowY/20,24*engineWindowX/32,19*engineWindowY/20,BACKGROUND_COLOR);
+    draw_border       (7*engineWindowX/32,1*engineWindowY/20,24*engineWindowX/32,19*engineWindowY/20,65535);
     
     spFontDrawMiddle(engineWindowX/2,1*engineWindowY/12,-1,"How to play the",font);
     switch (settings_get_mode())
@@ -1323,24 +1323,24 @@ void draw_game(void)
       case 0:
         spFontDrawMiddle(engineWindowX/2, 2*engineWindowY/12,-1,"\"Points Mode\":",font);
         spFontDrawMiddle(engineWindowX/2, 4*engineWindowY/12,-1,"Get as much",font);
-        spFontDrawMiddle(engineWindowX/2, 5*engineWindowY/12,-1,"points as ,",font);
+        spFontDrawMiddle(engineWindowX/2, 5*engineWindowY/12,-1,"points as",font);
         spFontDrawMiddle(engineWindowX/2, 6*engineWindowY/12,-1,"possible in",font);
         spFontDrawMiddle(engineWindowX/2, 7*engineWindowY/12,-1,"120 Seconds",font);
         break;
       case 1:
         spFontDrawMiddle(engineWindowX/2, 2*engineWindowY/12,-1,"\"Survival Mode\":",font);
-        spFontDrawMiddle(engineWindowX/2, 4*engineWindowY/12,-1,"You lose time",font);
-        spFontDrawMiddle(engineWindowX/2, 5*engineWindowY/12,-1,"(every 20s a bit",font);
-        spFontDrawMiddle(engineWindowX/2, 6*engineWindowY/12,-1,"faster), but",font);
-        spFontDrawMiddle(engineWindowX/2, 7*engineWindowY/12,-1,"you get time for",font);
-        spFontDrawMiddle(engineWindowX/2, 8*engineWindowY/12,-1,"smashed blocks",font);
+        spFontDrawMiddle(engineWindowX/2, 4*engineWindowY/12,-1,"You have a",font);
+        spFontDrawMiddle(engineWindowX/2, 5*engineWindowY/12,-1,"limited life-span",font);
+        spFontDrawMiddle(engineWindowX/2, 6*engineWindowY/12,-1,"decreasing faster",font);
+        spFontDrawMiddle(engineWindowX/2, 7*engineWindowY/12,-1,"every 20s, fill it",font);
+        spFontDrawMiddle(engineWindowX/2, 8*engineWindowY/12,-1,"by smashing blocks",font);
         break;
       case 2:
         spFontDrawMiddle(engineWindowX/2, 2*engineWindowY/12,-1,"\"Race Mode\":",font);
-        spFontDrawMiddle(engineWindowX/2, 4*engineWindowY/12,-1,"Get as fast",font);
-        spFontDrawMiddle(engineWindowX/2, 5*engineWindowY/12,-1,"as possible",font);
-        spFontDrawMiddle(engineWindowX/2, 6*engineWindowY/12,-1,"100,000",font);
-        spFontDrawMiddle(engineWindowX/2, 7*engineWindowY/12,-1,"points",font);
+        spFontDrawMiddle(engineWindowX/2, 4*engineWindowY/12,-1,"Get 100.000",font);
+        spFontDrawMiddle(engineWindowX/2, 5*engineWindowY/12,-1,"points as",font);
+        spFontDrawMiddle(engineWindowX/2, 6*engineWindowY/12,-1,"fast as",font);
+        spFontDrawMiddle(engineWindowX/2, 7*engineWindowY/12,-1,"possible",font);
         break;
     }
     spFontDrawMiddle(engineWindowX/2,10*engineWindowY/12,-1,"Press A,B,X or Y",small_font);
@@ -1953,7 +1953,8 @@ int calc_game(Uint32 steps)
         else
           move_sound_off();
       }
-      if (engineInput->button[SP_BUTTON_A])
+      if (engineInput->button[SP_BUTTON_A] || engineInput->button[SP_BUTTON_B] ||
+          engineInput->button[SP_BUTTON_X] || engineInput->button[SP_BUTTON_Y])
       {
         if (engineInput->axis[0]==0 && engineInput->axis[1]>0 && (posy[0]>>SP_ACCURACY)<4)
           choose_one = 1;

@@ -1,24 +1,18 @@
 ToDo til release:
-- Help screen slows down
-- "Get 100.000 points as fast as possible" oder "Get as fast as possible to 100.000 points" ich würde ersteres bevorzugen
-- Sterne kleiner
-- Bug: wenn man im Fast Modus A zum Auswählen drückt und dabei eine Richtungstaste noch gedrückt hat wird konstant der "Move" sound abgespielt
-- "Elapsed Time" könnte man "Time elapsed" schreiben, ich glaub das ist gebräuchlicher
--  was doof an dem "Fast" Modus ist, ist, dass man 1) die Diagonalen nicht so gut trifft (nicht deine Schuld) und 2) das Timing recht schwer ist, ne Idee wäre vllt den ausgewählten Stein (den 2. mit dem D-pad) ne kurze Zeit (<0.5s) zu locken bevor man zurück ins Zentrum springt, denn wenn man das schon drückt will man in mehr als 50% der Fälle was Tauschen
-- (23:26:51) foxblock: hmmm, ich kann manchmal den cursor nicht nach unten bewegen und mein D-Pad ist eigentlich iO
-  (23:28:28) foxblock: ist nur bei den unteren drei Reihen und sobald man darüber hinaus geht (und es dann wieder geht) gehts auch solange bis man die Spalte wechselt
-  (23:30:12) foxblock: scheint nur bei "Fast" zu sein
-- finds gut, dass du die Menü-Steuerung vereinheitlicht hast, aber ich fänd nen Button für "zurück" recht nett, dann muss man nicht immer bis unten Navigeiren
-- bei der Pandora hatten wir ja nun die Diskussion mit B - Bestätigen, X - Abbrechen, vllt magst du das übernehmen, ansonsten würde ich zumindest Select vorschlagen
-- (23:38:18) foxblock: hatte grad nen Sound-Hänger bei den Highscores, da Ratterte es ununterbrochen
-  (23:38:29) foxblock: die haben auch nur 18fps (Rest ja 50)
-- (23:40:07) foxblock: ich würd "With/-out special stones" in "Special Stones: On/Off" umändern, passt besser zum Rest und macht klar, dass es einstellbar ist
-- (23:46:35) foxblock: Musik: nett wäre wenn das Musikstück sich während des Spiels ändert, also dass wenn eins abgelaufen ist, ein neues per random kommt
 - new font
-- "Time past" müsste "Time passed" heißen oder dann direkt "Time survived"
-  "You have a limited life-span (decreasing faster every 20s), fill it up by smashing blocks" ist vllt etwas zu lang
-  (00:09:03) foxblock: das "up" könnte man weglassen
-  (00:09:43) foxblock: Grammatik: Im Hilfetxt vom Points Modus ist ein Leerzeichen zu viel vorm Komma
+- Help screen slows down
+- Bug: wenn man im Fast Modus A zum Auswählen drückt und dabei eine Richtungstaste noch gedrückt hat
+  wird konstant der "Move" sound abgespielt
+- was doof an dem "Fast" Modus ist, ist, dass man 1) die Diagonalen nicht so gut trifft (nicht deine
+  Schuld) und 2) das Timing recht schwer ist, ne Idee wäre vllt den ausgewählten Stein (den 2. mit
+  dem D-pad) ne kurze Zeit (<0.5s) zu locken bevor man zurück ins Zentrum springt, denn wenn man
+  das schon drückt will man in mehr als 50% der Fälle was Tauschen
+- (23:26:51) foxblock: hmmm, ich kann manchmal den cursor nicht nach unten bewegen und mein D-Pad ist
+  eigentlich iO. Ist nur bei den unteren drei Reihen und sobald man darüber hinaus geht (und es dann
+  wieder geht) gehts auch solange bis man die Spalte wechselt. scheint nur bei "Fast" zu sein.
+- hatte grad nen Sound-Hänger bei den Highscores, da Ratterte es ununterbrochen
+- Musik: nett wäre wenn das Musikstück sich während des Spiels ändert, also dass wenn eins abgelaufen
+  ist, ein neues per random kommt
 
 Spiel ist nach wie vor spaßig, gar süchtig machend, eben ein typisches, gut-gemachtes Puzzlespiel
 der neue Spielmodi und die Veränderungen bei den Alten bzw Vereinfachungen generell tun dem Spiel sehr gut imo und lockern es etwas auf

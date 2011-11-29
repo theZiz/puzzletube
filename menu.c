@@ -121,6 +121,9 @@ void draw_menu(void)
       spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/8+(spSin(menu_counter*300+1*SP_PI/4)>>SP_ACCURACY-2),-1,buffer,font);
       spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),7*engineWindowY/8+(spSin(menu_counter*300+0*SP_PI/4)>>SP_ACCURACY-2),-1,"Back to Menu",font);
 
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),30*engineWindowY/32+(spSin(menu_counter*300+-1*SP_PI/4)>>SP_ACCURACY-2),-1,"Select or Start: back",small_font);
+
+
       spTranslate(0,1<<SP_ACCURACY-2,-1<<SP_ACCURACY-1);
       spTranslate(-10<<SP_ACCURACY,(4<<ACCURACY)-menu_choice*5/2,0);
       draw_particle_circle(-1,menu_counter);
@@ -142,9 +145,9 @@ void draw_menu(void)
         spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/7+(spSin(menu_counter*300+3*SP_PI/3)>>SP_ACCURACY-2),-1,"Difficulty: Normal",font);
       
       if (settings_get_difficult())
-        spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/7+(spSin(menu_counter*300+2*SP_PI/3)>>SP_ACCURACY-2),-1,"With special stones",font);
+        spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/7+(spSin(menu_counter*300+2*SP_PI/3)>>SP_ACCURACY-2),-1,"Special Stones: On",font);
       else
-        spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/7+(spSin(menu_counter*300+2*SP_PI/3)>>SP_ACCURACY-2),-1,"Without special stones",font);
+        spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/7+(spSin(menu_counter*300+2*SP_PI/3)>>SP_ACCURACY-2),-1,"Special Stones: Off",font);
       spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/7+(spSin(menu_counter*300+0*SP_PI/3)>>SP_ACCURACY-2),-1,"Back to Menu",font);
 
       spTranslate(0,1<<SP_ACCURACY-2,3<<SP_ACCURACY-1);
@@ -509,11 +512,20 @@ int calc_menu(Uint32 steps)
     }
     if (engineInput->axis[0] == 0)
       menu_block = 0;
-    if (menu_move == 0 && (engineInput->button[SP_BUTTON_START] ||
-        engineInput->button[SP_BUTTON_A] || engineInput->button[SP_BUTTON_B] ||
-        engineInput->button[SP_BUTTON_X] || engineInput->button[SP_BUTTON_Y]))
+    if (engineInput->button[SP_BUTTON_START] || engineInput->button[SP_BUTTON_SELECT])
     {
       engineInput->button[SP_BUTTON_START] = 0;
+      engineInput->button[SP_BUTTON_SELECT] = 0;
+      //Back:
+      settings_save();
+      nextstate = 0;
+      menu_fade = -1;
+      rotating_sound_on();      
+    }
+    if (menu_move == 0 &&
+       (engineInput->button[SP_BUTTON_A] || engineInput->button[SP_BUTTON_B] ||
+        engineInput->button[SP_BUTTON_X] || engineInput->button[SP_BUTTON_Y]))
+    {
       engineInput->button[SP_BUTTON_A] = 0;
       engineInput->button[SP_BUTTON_B] = 0;
       engineInput->button[SP_BUTTON_X] = 0;

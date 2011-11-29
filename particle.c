@@ -203,11 +203,17 @@ void draw_border(int x1,int y1,int x2,int y2,Uint16 color)
   SDL_LockSurface(spGetWindowSurface());
   Uint16* pixel = (Uint16*)spGetWindowSurface()->pixels;
   int x,y;
+  int r = 6 * spGetSizeFactor() >> SP_ACCURACY;
+  spHorizentalLine(pixel,x1+r,y1,x2-x1-2*r,color,1,spGetWindowSurface()->w,spGetWindowSurface()->h);
+  spHorizentalLine(pixel,x1+r,y2,x2-x1-2*r,color,1,spGetWindowSurface()->w,spGetWindowSurface()->h);
   for (x = x1; x<=x2; x++)
+  {
+    //Jumping over emptiness:
+    if (x-x1 == r)
+      x = (x2-r);
     for (y = y1; y<=y2; y++)
     if (x >= 0 && y >= 0 && x<spGetWindowSurface()->w && y<spGetWindowSurface()->h)
     {
-      int r = 6 * spGetSizeFactor() >> SP_ACCURACY;
       //left, top edge
       if (x-x1 < r && y-y1 < r)
       {
@@ -244,7 +250,7 @@ void draw_border(int x1,int y1,int x2,int y2,Uint16 color)
         pixel[x+y*spGetWindowSurface()->w] = color;
       
     }
-    
+  } 
   
   SDL_UnlockSurface(spGetWindowSurface());
 }
