@@ -1329,7 +1329,7 @@ void draw_game(void)
         break;
       case 1:
         spFontDrawMiddle(engineWindowX/2, 2*engineWindowY/12,-1,"\"Survival Mode\":",font);
-        spFontDrawMiddle(engineWindowX/2, 4*engineWindowY/12,-1,"You loose time",font);
+        spFontDrawMiddle(engineWindowX/2, 4*engineWindowY/12,-1,"You lose time",font);
         spFontDrawMiddle(engineWindowX/2, 5*engineWindowY/12,-1,"(every 20s a bit",font);
         spFontDrawMiddle(engineWindowX/2, 6*engineWindowY/12,-1,"faster), but",font);
         spFontDrawMiddle(engineWindowX/2, 7*engineWindowY/12,-1,"you get time for",font);
