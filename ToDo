@@ -13,14 +13,5 @@ ToDo til release:
 - hatte grad nen Sound-Hänger bei den Highscores, da Ratterte es ununterbrochen
 - Musik: nett wäre wenn das Musikstück sich während des Spiels ändert, also dass wenn eins abgelaufen
   ist, ein neues per random kommt
-
-Spiel ist nach wie vor spaßig, gar süchtig machend, eben ein typisches, gut-gemachtes Puzzlespiel
-der neue Spielmodi und die Veränderungen bei den Alten bzw Vereinfachungen generell tun dem Spiel sehr gut imo und lockern es etwas auf
-die Grundidee mit der Röhre ist gut, auch wenn ich das nicht wirklich strategisch einsetze, bin aber generell nicht so gut bei dieser Art von Spiel, es hat aber sicherlich Potential von gewissen Leuten sehr strategisch und mit sehr hohen Punktzahlen gespielt zu werden
-denn was man beim Spielen merkt ist, dass es seine eigenen Muster hat, also Kombinationen die immer wieder auftreten, die man leicht lösen kann, also kriegt man nach ner Zeit ein Auge dafür, ein sehr gutes Zeichen für eine Lernkurve und eine gewisse Tiefe
-das Hauptproblem ist imemr noch die Steuerung, keine der Möglichkeiten ist wirklich optimal:
-Die Schlange ist einfach nur sperrig und zeitraubend
-"Normal" ist gut, aber verwirrend bei den Diagonalen, da man dort keinen der zu tauschenden Steine auswählen muss, sondern einen daneben, das ist wenig intuitiv
-"Fast" ist imo sogar die Beste Alternative (sorry), krankt aber an gewissen, bereits erläuterten, Problemen, vllt hilft es da den Vorschlag den ich gemacht hatte einzubringen
-
-Fazit: Echt nettes Spiel für zwischendurch, durch den Arbeitsaufwand und den doch schon recht eigenen Stil, die gute Musik und Umsetzung vllt sogar mit Kultpotential in der GP2X (und Co) Szene (wobei die ja generell von Puzzlern dominiert wird/wurde, vllt fällt es da am Ende unter den Tisch, das wäre allerdings nicht gerechtfertigt)
+- good default values for the options
+- In normal mode other controls for Dingoo
