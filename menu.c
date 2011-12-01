@@ -114,7 +114,7 @@ void draw_menu(void)
       {
         case 0: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/8+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,"Control: Normal",font); break;
         case 1: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/8+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,"Control: Snake",font); break;
-        case 2: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/8+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,"Control: Fast",font); break;
+        case 2: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/8+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,"Control: Experimental",font); break;
       }
 
       sprintf(buffer,"Volume %i%%",settings_get_volume());
@@ -406,6 +406,7 @@ int calc_menu(Uint32 steps)
         engineInput->button[SP_BUTTON_A] || engineInput->button[SP_BUTTON_B] ||
         engineInput->button[SP_BUTTON_X] || engineInput->button[SP_BUTTON_Y]))
     {
+      move_sound_off();
       switch (menu_choice>>SP_ACCURACY)
       {
         case 0: // Free Game

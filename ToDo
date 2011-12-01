@@ -1,13 +1,1 @@
 ToDo til release:
-- Bug: wenn man im Fast Modus A zum Auswählen drückt und dabei eine Richtungstaste noch gedrückt hat
-  wird konstant der "Move" sound abgespielt
-- was doof an dem "Fast" Modus ist, ist, dass man 1) die Diagonalen nicht so gut trifft (nicht deine
-  Schuld) und 2) das Timing recht schwer ist, ne Idee wäre vllt den ausgewählten Stein (den 2. mit
-  dem D-pad) ne kurze Zeit (<0.5s) zu locken bevor man zurück ins Zentrum springt, denn wenn man
-  das schon drückt will man in mehr als 50% der Fälle was Tauschen
-- (23:26:51) foxblock: hmmm, ich kann manchmal den cursor nicht nach unten bewegen und mein D-Pad ist
-  eigentlich iO. Ist nur bei den unteren drei Reihen und sobald man darüber hinaus geht (und es dann
-  wieder geht) gehts auch solange bis man die Spalte wechselt. scheint nur bei "Fast" zu sein.
-- hatte grad nen Sound-Hänger bei den Highscores, da Ratterte es ununterbrochen
-- Musik: nett wäre wenn das Musikstück sich während des Spiels ändert, also dass wenn eins abgelaufen
-  ist, ein neues per random kommt

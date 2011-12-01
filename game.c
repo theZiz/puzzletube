@@ -1964,14 +1964,14 @@ int calc_game(Uint32 steps)
         }
         else
           rotating_sound_off();
-        if (engineInput->axis[1]<0 && (((posy[0]>>SP_ACCURACY)>-6 && direction!=3) || (direction==3 && (posy[2]>>SP_ACCURACY)>-6)) && control_timeout<=0)
+        if (engineInput->axis[1]<0 && (posy[0]>>SP_ACCURACY)>-6 && control_timeout<=0)
         {
           direction=2;
           timeout=TIMEOUT;
           move_sound_on();
         }
         else
-        if (engineInput->axis[1]>0 && (((posy[0]>>SP_ACCURACY)< 6 && direction!=2) || (direction==2 && (posy[2]>>SP_ACCURACY)< 6)) && control_timeout<=0)
+        if (engineInput->axis[1]>0 && (posy[0]>>SP_ACCURACY)< 6 && control_timeout<=0)
         {
           direction=3;
           timeout=TIMEOUT+1;
@@ -1983,6 +1983,8 @@ int calc_game(Uint32 steps)
       if (engineInput->button[SP_BUTTON_A] || engineInput->button[SP_BUTTON_B] ||
           engineInput->button[SP_BUTTON_X] || engineInput->button[SP_BUTTON_Y])
       {
+        rotating_sound_off();
+        move_sound_off();
         if (engineInput->axis[0]==0 && engineInput->axis[1]>0 && (posy[0]>>SP_ACCURACY)<4)
           choose_one = 1;
         else
