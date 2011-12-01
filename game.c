@@ -837,10 +837,10 @@ void draw_game(void)
       default: surface = spFontGetLetter(countdown_font,'0')->surface; break;
     }
     spBindTexture(surface);
-    spQuad_tex(screen->w/2-factor*screen->w/4000,screen->h/2-factor*screen->w/4000,-1,0,0,
-               screen->w/2+factor*screen->w/4000,screen->h/2-factor*screen->w/4000,-1,surface->w-SP_FONT_EXTRASPACE-1,0,
-               screen->w/2+factor*screen->w/4000,screen->h/2+factor*screen->w/4000,-1,surface->w-SP_FONT_EXTRASPACE-1,surface->h-SP_FONT_EXTRASPACE-1,
-               screen->w/2-factor*screen->w/4000,screen->h/2+factor*screen->w/4000,-1,0,surface->h-SP_FONT_EXTRASPACE-1,65535);
+    spQuad_tex(screen->w/2-factor*screen->w/5000,screen->h/2-factor*screen->w/3000,-1,0,0,
+               screen->w/2+factor*screen->w/5000,screen->h/2-factor*screen->w/3000,-1,surface->w-SP_FONT_EXTRASPACE-1,0,
+               screen->w/2+factor*screen->w/5000,screen->h/2+factor*screen->w/3000,-1,surface->w-SP_FONT_EXTRASPACE-1,surface->h-SP_FONT_EXTRASPACE-1,
+               screen->w/2-factor*screen->w/5000,screen->h/2+factor*screen->w/3000,-1,0,surface->h-SP_FONT_EXTRASPACE-1,65535);
   }
 
   spSetZSet(1);
@@ -1314,8 +1314,8 @@ void draw_game(void)
   //help text
   if (countdown == 4000)
   {
-    draw_filled_border(7*engineWindowX/32,1*engineWindowY/20,24*engineWindowX/32,19*engineWindowY/20,BACKGROUND_COLOR);
-    draw_border       (7*engineWindowX/32,1*engineWindowY/20,24*engineWindowX/32,19*engineWindowY/20,65535);
+    draw_filled_border(7*engineWindowX/32,1*engineWindowY/20,25*engineWindowX/32,19*engineWindowY/20,BACKGROUND_COLOR);
+    draw_border       (7*engineWindowX/32,1*engineWindowY/20,25*engineWindowX/32,19*engineWindowY/20,65535);
     
     spFontDrawMiddle(engineWindowX/2,1*engineWindowY/12,-1,"How to play the",font);
     switch (settings_get_mode())

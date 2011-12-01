@@ -260,12 +260,12 @@ void draw_filled_border(int x1,int y1,int x2,int y2,Uint16 color)
   SDL_LockSurface(spGetWindowSurface());
   Uint16* pixel = (Uint16*)spGetWindowSurface()->pixels;
   int x,y;
+  int r = 6 * spGetSizeFactor() >> SP_ACCURACY;
   for (x = x1; x<=x2; x++)
     for (y = y1; y<=y2; y++)
     if (x >= 0 && y >= 0 && x<spGetWindowSurface()->w && y<spGetWindowSurface()->h)
     {
-      int r = 6 * spGetSizeFactor() >> SP_ACCURACY;
-      //left, top edge
+      /*//left, top edge
       if (x-x1 < r && y-y1 < r)
       {
         int value = (r-x+x1)*(r-x+x1)+(r-y+y1)*(r-y+y1);
@@ -296,7 +296,7 @@ void draw_filled_border(int x1,int y1,int x2,int y2,Uint16 color)
         if (value < r*r && ((x+(y&3))&3))
           pixel[x+y*spGetWindowSurface()->w] = color;
       }
-      else
+      else*/
       if ((x+(y&3))&3)
         pixel[x+y*spGetWindowSurface()->w] = color;
       

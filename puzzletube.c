@@ -26,6 +26,12 @@
 #include "game.h"
 #include "splashscreen.h"
 
+#define FONT_LOCATION "./font/Vollkorn-Bold.ttf"
+#define FONT_SIZE 16
+#define FONT_MIDDLE_SIZE 12
+#define FONT_SMALL_SIZE 12
+#define FONT_COUNTDOWN_SIZE 128
+
 SDL_Surface* screen;
 spFontPointer font = NULL;
 spFontPointer small_font = NULL;
@@ -41,31 +47,34 @@ void resize(Uint16 w,Uint16 h)
   //Font Loading
   if (font)
     spFontDelete(font);
-  font = spFontLoad("./font/StayPuft.ttf",18*spGetSizeFactor()>>SP_ACCURACY);
+  font = spFontLoad(FONT_LOCATION,FONT_SIZE*spGetSizeFactor()>>SP_ACCURACY);
   spFontAddRange(font,' ','~',0);//whole ASCII
-  spFontChangeLetter(font,spFontGetLetter(font,'0'),'o',0);
+  //spFontChangeLetter(font,spFontGetLetter(font,'0'),'o',0);
   spFontAddBorder(font,65535);
+  spFontMulWidth(font,15<<SP_ACCURACY-4);
   settings_set_font(font);
 
   if (small_font)
     spFontDelete(small_font);
-  small_font = spFontLoad("./font/StayPuft.ttf",14*spGetSizeFactor()>>SP_ACCURACY);
+  small_font = spFontLoad(FONT_LOCATION,FONT_SMALL_SIZE*spGetSizeFactor()>>SP_ACCURACY);
   spFontAddRange(small_font,' ','~',14823);//whole ASCII
-  spFontChangeLetter(small_font,spFontGetLetter(small_font,'0'),'o',14823);
+  //spFontChangeLetter(small_font,spFontGetLetter(small_font,'0'),'o',14823);
   spFontAddBorder(small_font,48631);
+  spFontMulWidth(small_font,15<<SP_ACCURACY-4);
   settings_set_small_font(small_font);
 
   if (middle_font)
     spFontDelete(middle_font);
-  middle_font = spFontLoad("./font/StayPuft.ttf",14*spGetSizeFactor()>>SP_ACCURACY);
+  middle_font = spFontLoad(FONT_LOCATION,FONT_MIDDLE_SIZE*spGetSizeFactor()>>SP_ACCURACY);
   spFontAddRange(middle_font,' ','~',0);//whole ASCII
-  spFontChangeLetter(middle_font,spFontGetLetter(middle_font,'0'),'o',0);
+  //spFontChangeLetter(middle_font,spFontGetLetter(middle_font,'0'),'o',0);
   spFontAddBorder(middle_font,65535);
+  spFontMulWidth(middle_font,15<<SP_ACCURACY-4);
   settings_set_middle_font(middle_font);
 
   if (countdown_font)
     spFontDelete(countdown_font);
-  countdown_font = spFontLoad("./font/StayPuft.ttf",128*spGetSizeFactor()>>SP_ACCURACY);
+  countdown_font = spFontLoad(FONT_LOCATION,FONT_COUNTDOWN_SIZE*spGetSizeFactor()>>SP_ACCURACY);
   spFontAddRange(countdown_font,' ','~',0);//whole ASCII
   spFontAddBorder(countdown_font,65535);
   settings_set_countdown_font(countdown_font);
