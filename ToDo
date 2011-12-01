@@ -1,6 +1,4 @@
 ToDo til release:
-- new font
-- Help screen slows down
 - Bug: wenn man im Fast Modus A zum Auswählen drückt und dabei eine Richtungstaste noch gedrückt hat
   wird konstant der "Move" sound abgespielt
 - was doof an dem "Fast" Modus ist, ist, dass man 1) die Diagonalen nicht so gut trifft (nicht deine
@@ -13,5 +11,3 @@ ToDo til release:
 - hatte grad nen Sound-Hänger bei den Highscores, da Ratterte es ununterbrochen
 - Musik: nett wäre wenn das Musikstück sich während des Spiels ändert, also dass wenn eins abgelaufen
   ist, ein neues per random kommt
-- good default values for the options
-- In normal mode other controls for Dingoo

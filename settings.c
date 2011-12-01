@@ -90,11 +90,12 @@ void settings_load()
 {
   #ifdef REALGP2X
     settings_stone_quality = 0;
-    settings_stars_rotating = 0;
+  #elif PANDORA
+    settings_stone_quality = 0;
   #else
     settings_stone_quality = 2;
-    settings_stars_rotating = 2;
   #endif
+  settings_stars_rotating = 2;
   settings_particles = 1;
   settings_volume = 100;
   settings_color = 0;
