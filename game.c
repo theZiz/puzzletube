@@ -1313,9 +1313,9 @@ void draw_game(void)
   else
     spBlitSurfacePart(6*engineWindowX/7,14*engineWindowY/32,-1,getTimeSurface(),0,0,gameTime*getTimeSurface()->w/START_TIME,getTimeSurface()->h);
 
-  spFontDrawMiddle(6*engineWindowX/7,20*engineWindowY/32,-1,"Start:",small_font);
+  spFontDrawMiddle(6*engineWindowX/7,20*engineWindowY/32,-1,SP_BUTTON_START_NAME":",small_font);
   spFontDrawMiddle(6*engineWindowX/7,22*engineWindowY/32,-1,"Pause",small_font);
-  spFontDrawMiddle(6*engineWindowX/7,25*engineWindowY/32,-1,"Select:",small_font);
+  spFontDrawMiddle(6*engineWindowX/7,25*engineWindowY/32,-1,SP_BUTTON_SELECT_NAME":",small_font);
   spFontDrawMiddle(6*engineWindowX/7,27*engineWindowY/32,-1,"Back to Menu",small_font);
 
 
@@ -1393,7 +1393,7 @@ void draw_game(void)
                  addx+engineWindowX/2-sizex,7*engineWindowY/10+sizey,-1,0,surface->h-SP_FONT_EXTRASPACE-1,65535);
     }
        
-    spFontDrawMiddle(engineWindowX/2, 10*engineWindowY/12,-1,"and press Start",font);    
+    spFontDrawMiddle(engineWindowX/2, 10*engineWindowY/12,-1,"and press "SP_BUTTON_START_NAME,font);    
   }
   
 
