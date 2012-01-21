@@ -317,7 +317,7 @@ void draw_menu(void)
       spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/9+(spSin(menu_counter*300+2*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Pandora",font);
       spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/9+(spSin(menu_counter*300+1*SP_PI*2/7)>>SP_ACCURACY-2),-1,"GPH",font);
       spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),7*engineWindowY/9+(spSin(menu_counter*300+0*SP_PI*2/7)>>SP_ACCURACY-2),-1,"DINGOO DIGITAL USA",font);
-      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),8*engineWindowY/9+(spSin(menu_counter*300+-1*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Etronixmart",font);
+      //spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),8*engineWindowY/9+(spSin(menu_counter*300+-1*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Etronixmart",font);
       break;
   }
   #ifdef MENU_DEBUG
