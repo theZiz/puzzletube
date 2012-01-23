@@ -2059,7 +2059,7 @@ int run_game(int playernumber_,int starAdd,void (*resize)(Uint16 w,Uint16 h))
   timeStep = 1; //TODO: Häh?
   star_add = starAdd;
   first_pointVis = NULL;
-  
+
   switch (rand()%4)
   {
     case 0: change_music("Midnight Mediation","Nick May"); break;
@@ -2067,6 +2067,7 @@ int run_game(int playernumber_,int starAdd,void (*resize)(Uint16 w,Uint16 h))
     case 2: change_music("Energetic Enigma","Nick May"); break;
     case 3: change_music("Impossible Paradox","Nick May"); break;
   }
+  
   
   spLoop(draw_game,calc_game,10,resize);
   

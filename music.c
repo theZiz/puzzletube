@@ -169,6 +169,8 @@ void change_music(char* name,char* author)
   sprintf(buffer,"./sounds/%s.ogg",name);
   if (audio_failed)
     return;
+  if (music)
+    Mix_FreeMusic(music);
   music = Mix_LoadMUS(buffer);
   Mix_PlayMusic(music,-1);
   set_volume(settings_get_volume());
@@ -227,6 +229,8 @@ void calc_music(int steps)
 
 void quit_music()
 {
+  if (audio_failed)
+    return;
   Mix_FreeChunk(move_chunk);
   Mix_FreeChunk(rotating_chunk);
   Mix_FreeChunk(explosion_chunk[0]);
@@ -234,8 +238,8 @@ void quit_music()
   Mix_FreeChunk(explosion_chunk[2]);
   Mix_FreeChunk(explosion_chunk[3]);
   Mix_FreeChunk(switch_chunk);
-  if (audio_failed)
-    return;
+  if (music)
+    Mix_FreeMusic(music);
   Mix_CloseAudio();
 }
 
