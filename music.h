@@ -20,7 +20,7 @@
 #ifndef _MUSIC_H
 #define _MUSIC_H
 #include <SDL/SDL_mixer.h>
-#include "../sparrow3d/3dengine.h"
+#include "../sparrow3d/sparrow3d.h"
 void init_music();
 void change_music(char* name,char* author);
 void draw_music();

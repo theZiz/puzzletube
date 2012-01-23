@@ -17,7 +17,6 @@
  For feedback and questions about my Files and Projects please mail me,     
  Alexander Matthes (Ziz) , zizsdl_at_googlemail.com                         
 */
-#include "../sparrow3d/sparrow3d.h"
 #include "menu.h"
 #include "game.h"
 #include "settings.h"
@@ -85,7 +84,7 @@ void draw_menu(void)
       spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/7+(spSin(menu_counter*300+0*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Quit",font);
       
       spTranslate(0,1<<SP_ACCURACY-2,3<<SP_ACCURACY-1);
-      spTranslate(-5<<SP_ACCURACY,(3<<ACCURACY)-menu_choice*5/2,0);
+      spTranslate(-5<<SP_ACCURACY,(3<<SP_ACCURACY)-menu_choice*5/2,0);
       draw_particle_circle(-1,menu_counter);
       spTranslate(10<<SP_ACCURACY,0,0);
       draw_particle_circle(+1,menu_counter);
@@ -125,7 +124,7 @@ void draw_menu(void)
 
 
       spTranslate(0,1<<SP_ACCURACY-2,-1<<SP_ACCURACY-1);
-      spTranslate(-10<<SP_ACCURACY,(4<<ACCURACY)-menu_choice*5/2,0);
+      spTranslate(-10<<SP_ACCURACY,(4<<SP_ACCURACY)-menu_choice*5/2,0);
       draw_particle_circle(-1,menu_counter);
       spTranslate(20<<SP_ACCURACY,0,0);
       draw_particle_circle(+1,menu_counter);
@@ -151,7 +150,7 @@ void draw_menu(void)
       spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/7+(spSin(menu_counter*300+0*SP_PI/3)>>SP_ACCURACY-2),-1,"Back to Menu",font);
 
       spTranslate(0,1<<SP_ACCURACY-2,3<<SP_ACCURACY-1);
-      spTranslate(-10<<SP_ACCURACY,(3<<ACCURACY)-menu_choice*5/2,0);
+      spTranslate(-10<<SP_ACCURACY,(3<<SP_ACCURACY)-menu_choice*5/2,0);
       draw_particle_circle(-1,menu_counter);
       spTranslate(20<<SP_ACCURACY,0,0);
       draw_particle_circle(+1,menu_counter);
@@ -163,7 +162,7 @@ void draw_menu(void)
         case 1: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),engineWindowY/16+(spSin(menu_counter*300+6*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Highscore - Survival Mode",font); break;
         case 2: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),engineWindowY/16+(spSin(menu_counter*300+6*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Highscore - Race Mode",font); break;
       }
-      spTranslate(-11<<SP_ACCURACY,(33<<ACCURACY-2),0);
+      spTranslate(-11<<SP_ACCURACY,(33<<SP_ACCURACY-2),0);
       draw_particle_circle(-1,menu_counter);
       spBlit3D(0,0,0,spFontGetLetter(font,'L')->surface);
       spTranslate(22<<SP_ACCURACY,0,0);
