@@ -1,10 +1,63 @@
-Important: You need to get sparrow3d
-(git://github.com/theZiz/sparrow3d.git) to compile puzzletube!
-If you got sparrow3d, type "make" to get the files needed by
-puzzleztube. And it is necessary, that the puzzletube folder and the sparrow3d
-folder are in the root directory, e.g.:
-/home/username/stuff/sparrow3d
-/home/username/stuff/puzzletube
-especially the name "sparrow3d" is important, except you want to edit nearly
-every *.h file of puzzletube ;-) alternatvely you can use some symlinks.
+ _____               _      _         _          
+|  __ \             | |    | |       | |         
+| |__) |   _ _______| | ___| |_ _   _| |__   ___ 
+|  ___/ | | |_  /_  / |/ _ \ __| | | | '_ \ / _ \
+| |   | |_| |/ / / /| |  __/ |_| |_| | |_) |  __/
+|_|    \__,_/___/___|_|\___|\__|\__,_|_.__/ \___|
 
+1. About his game
+2. How to play?
+2. How to contact?
+
++-----------------+
+|1. About the game|
++-----------------+
+
+This game was made for the RIOT digital contest - a multi platform
+game developing contest for different handhelds like the Openpandora,
+Dingoo, Caanoo or Wiz.
+
+It is written by Ziz and licenced under the GPL and MPL. You can get
+the sourcode here: http://github.com/theZiz/puzzletube.
+
+At the moment it is avaible for GP2X, Wiz, Dingoo, Caanoo, Openpandora
+and the N900.
+
++---------------+
+|2. How to play?|
++---------------+
+
+This a a puzzle game like many others but this time on a tube. There are
+3 game modes explained at beginning. In every mode you have to crush
+stones. To crush a stone you have to move at least 4 stones of the same
+color to a 2x2 square. This square, every attached stone of the same
+color and stones on the other side of the tube with the same color will
+explode and you get points. If there is a stone of the same color on the
+other side the stone wobbles. If you got a chain reaction you get more
+points. How much points you get (and why) is shown on the left side of
+the screen.
+
+To get the 2x2 squares you have to change stones. You always switch two
+stones around a third one "in the middle". There are 3 modes to switch
+two stones, configurable in the settings. In the normal mode you just
+press the shown buttons to switch the stones under the buttons.
+E.g. on the GP2X A and X switches the stone left of your cursor with the
+stone above your cursor.
+In the second mode named "Snake" you move with 3 Cursors like a Snake
+and the Tail and the Head switch if you press A, B, X or D.
+The last and newest mode named "D-Pad" (or similar) is a bit
+experimental, but much people seem to like it. You have to press A, B,
+C or D, hold it down (!) and with the D-Pad choice a stone to switch.
+
++------------------+
+|3. How to contact?|
++------------------+
+
+Website: http://ziz.delphigl.com
+E-Mail: zizsdl@googlemail.com
+If you are English speaking feel free to write about Puzzletube in one
+of these boards:
+http://www.gp32x.com/board/index.php?/topic/59408-riot-puzzletube-searching-allies/page__pid__963687__st__15&#entry963687
+http://boards.openpandora.org/index.php?/topic/3326-riot-puzzletube-searching-allies/
+If you are German speaking this board could be interesting for you, too:
+http://forum.gp2x.de/viewtopic.php?f=7&t=12150
