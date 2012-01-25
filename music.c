@@ -36,7 +36,7 @@ void init_music()
   music = NULL; 
   printf("Try to open Audio...\n");
   if (!
-  #ifdef REALGP2X
+  #ifdef F100
     Mix_OpenAudio(44100,AUDIO_S16SYS,2,256)
   #else
     Mix_OpenAudio(44100,AUDIO_S16SYS,2,2048)
