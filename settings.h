@@ -60,4 +60,6 @@ void settings_set_countdown_font(spFontPointer countdown_font);
 
 void settings_reset_highscore_name(char* name);
 void settings_set_highscore_name(char* name);
+
+int settings_get_first_start();
 #endif

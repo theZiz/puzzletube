@@ -78,9 +78,9 @@ void draw_menu(void)
     case 0: //menu
       spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),1*engineWindowY/7+(spSin(menu_counter*300+6*SP_PI*2/7)>>SP_ACCURACY-2),-1,"PUZZLE TUBE",font);
       spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/7+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Free Game",font);
-      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/7+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Highscore",font);
-      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/7+(spSin(menu_counter*300+2*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Settings",font);
-      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/7+(spSin(menu_counter*300+1*SP_PI*2/7)>>SP_ACCURACY-2),-1,"About",font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/7+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),-1,"How to Play",font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/7+(spSin(menu_counter*300+2*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Highscore",font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/7+(spSin(menu_counter*300+1*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Settings",font);
       spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/7+(spSin(menu_counter*300+0*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Quit",font);
       
       spTranslate(0,1<<SP_ACCURACY-2,3<<SP_ACCURACY-1);
@@ -308,15 +308,31 @@ void draw_menu(void)
       spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),30*engineWindowY/32+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Any other button: back",small_font);
       break;
 
-    case 4: //About
-      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),1*engineWindowY/9+(spSin(menu_counter*300+6*SP_PI*2/7)>>SP_ACCURACY-2),-1,"ABOUT",font);
+    case 4: //Help
+      /*spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),1*engineWindowY/9+(spSin(menu_counter*300+6*SP_PI*2/7)>>SP_ACCURACY-2),-1,"ABOUT",font);
       spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/9+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Code Monkey: Ziz",font);
       spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/9+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Sound: Nick May",font);
       spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/9+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Backers of \"RIOTdigital\":",font);
       spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/9+(spSin(menu_counter*300+2*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Pandora",font);
       spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/9+(spSin(menu_counter*300+1*SP_PI*2/7)>>SP_ACCURACY-2),-1,"GPH",font);
       spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),7*engineWindowY/9+(spSin(menu_counter*300+0*SP_PI*2/7)>>SP_ACCURACY-2),-1,"DINGOO DIGITAL USA",font);
-      //spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),8*engineWindowY/9+(spSin(menu_counter*300+-1*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Etronixmart",font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),8*engineWindowY/9+(spSin(menu_counter*300+-1*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Etronixmart",font);*/
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 1*engineWindowY/18+(spSin(menu_counter*300+15*SP_PI*1/7)>>SP_ACCURACY-1),-1,"HOW TO PLAY",font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 3*engineWindowY/18+(spSin(menu_counter*300+14*SP_PI*1/7)>>SP_ACCURACY-1),-1,"Puzzletube  has  3  game  modes.  The  game  modes  are",middle_font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 4*engineWindowY/18+(spSin(menu_counter*300+13*SP_PI*1/7)>>SP_ACCURACY-1),-1,"explained  at  game  start.  In  every  mode  you  have",middle_font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 5*engineWindowY/18+(spSin(menu_counter*300+12*SP_PI*1/7)>>SP_ACCURACY-1),-1,"to  crush  stones  to  get  points  or  time.  A  square",middle_font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 6*engineWindowY/18+(spSin(menu_counter*300+11*SP_PI*1/7)>>SP_ACCURACY-1),-1,"of  stones  of  the  same  color  explodes.  If  a  stone",middle_font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 7*engineWindowY/18+(spSin(menu_counter*300+10*SP_PI*1/7)>>SP_ACCURACY-1),-1,"explodes  &  a  stone  beside  has  the  same  color,  it",middle_font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 8*engineWindowY/18+(spSin(menu_counter*300+ 9*SP_PI*1/7)>>SP_ACCURACY-1),-1,"explodes,  too.  The  more  stone  you  crush  the  more",middle_font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 9*engineWindowY/18+(spSin(menu_counter*300+ 8*SP_PI*1/7)>>SP_ACCURACY-1),-1,"Points  you  get.  If  a  stone  of  the  same  color  is",middle_font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),10*engineWindowY/18+(spSin(menu_counter*300+ 7*SP_PI*1/7)>>SP_ACCURACY-1),-1,"one  the  other  side  it  wiggles  and  will  explode,",middle_font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),11*engineWindowY/18+(spSin(menu_counter*300+ 6*SP_PI*1/7)>>SP_ACCURACY-1),-1,"too.  To  get  squares  of  the  same  color  you  have",middle_font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),12*engineWindowY/18+(spSin(menu_counter*300+ 5*SP_PI*1/7)>>SP_ACCURACY-1),-1,"3  controls  adjustable  in  the  settings  menu.  In",middle_font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),13*engineWindowY/18+(spSin(menu_counter*300+ 4*SP_PI*1/7)>>SP_ACCURACY-1),-1,"normal  control  you  move  a  selection  &  are  able",middle_font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),14*engineWindowY/18+(spSin(menu_counter*300+ 3*SP_PI*1/7)>>SP_ACCURACY-1),-1,"to  switch  2  stone  beside  with  pressing  the  named",middle_font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),15*engineWindowY/18+(spSin(menu_counter*300+ 2*SP_PI*1/7)>>SP_ACCURACY-1),-1,"buttons.  For  the  others  mode  read  the  README.",middle_font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),16*engineWindowY/18+(spSin(menu_counter*300+ 1*SP_PI*1/7)>>SP_ACCURACY-1),-1,"Made  by  Nick  May  (Music)  &  Ziz  (Code).",middle_font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),17*engineWindowY/18+(spSin(menu_counter*300+ 0*SP_PI*1/7)>>SP_ACCURACY-1),-1,"Any button: back",small_font);
       break;
   }
   #ifdef MENU_DEBUG
@@ -413,17 +429,17 @@ int calc_menu(Uint32 steps)
           menu_fade = -1;
           rotating_sound_on();
           break;
-        case 1: // Highscore
+        case 2: // Highscore
           nextstate = 3;
           menu_fade = -1;
           rotating_sound_on();
           break;
-        case 2: // Options
+        case 3: // Options
           nextstate = 1;
           menu_fade = -1;
           rotating_sound_on();
           break;
-        case 3: // About
+        case 1: // Help
           nextstate = 4;
           menu_fade = -1;
           rotating_sound_on();
@@ -686,7 +702,13 @@ int calc_menu(Uint32 steps)
 void run_menu(void (*resize)(Uint16 w,Uint16 h))
 {
   menu_fade = MENUSIZE;
-  menu_choice = 0;
+  if (settings_get_first_start())
+  {
+    menu_choice = 1<<SP_ACCURACY;
+    settings_save();
+  }
+  else
+    menu_choice = 0;
   rotating_sound_on();
   menu_resize = resize;
   spLoop(draw_menu,calc_menu,10,resize);

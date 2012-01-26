@@ -30,6 +30,7 @@ int settings_color;
 int settings_difficult;
 int settings_mode;
 int settings_control;
+int settings_first_start;
 char settings_name[3];
 int highscore_choice;
 
@@ -110,9 +111,15 @@ void settings_load()
   settings_name[1]='A';
   settings_name[2]='A';
   highscore_choice = 0;
-  SDL_RWops *file=SDL_RWFromFile("./settings2.dat","rb");
+  settings_first_start = 0;
+  SDL_RWops *file=SDL_RWFromFile("./settings3.dat","rb");
   if (file == NULL)
-    return;
+  {
+    settings_first_start = 1;
+    file=SDL_RWFromFile("./settings2.dat","rb");
+    if (file == NULL)
+      return;
+  }
   SDL_RWread(file,&settings_stone_quality,sizeof(int),1);
   SDL_RWread(file,&settings_stars_rotating,sizeof(int),1);
   SDL_RWread(file,&settings_particles,sizeof(int),1);
@@ -152,7 +159,7 @@ void highscore_load()
 
 void settings_save()
 {
-  SDL_RWops *file=SDL_RWFromFile("./settings2.dat","wb");
+  SDL_RWops *file=SDL_RWFromFile("./settings3.dat","wb");
   SDL_RWwrite(file,&settings_stone_quality,sizeof(int),1);
   SDL_RWwrite(file,&settings_stars_rotating,sizeof(int),1);
   SDL_RWwrite(file,&settings_particles,sizeof(int),1);
@@ -316,4 +323,9 @@ void settings_set_highscore_name(char* name)
   settings_name[0]=name[0];
   settings_name[1]=name[1];
   settings_name[2]=name[2];
+}
+
+int settings_get_first_start()
+{
+  return settings_first_start;
 }
