@@ -93,6 +93,7 @@ int main(int argc, char **argv)
 
   //sparrow3D Init
   spInitCore();
+  spSetAffineTextureHack(0); //We don't need it :)
   spInitMath();
   
   //Setup
