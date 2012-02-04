@@ -169,6 +169,8 @@ Uint8 get_type_color_s(int type)
 
 Uint8 get_type_color_v(int type)
 {
+  if (type==2) //color blindness optimization
+    return 210;
   if (type<6)
     return 255;
   switch (type) //special stone
@@ -985,11 +987,10 @@ void draw_game(void)
       {
         spSetCulling(0);
         Uint16 input = spGetHSV(stone[(y>>1)+3][a].h,s,v);
-        Uint16 color = spGetHSV(0,0,255-64+(2*spSin((-posx[0]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)-((a+8)*SP_PI>>3))>>(SP_ACCURACY-5)));
+        Uint16 color = spGetHSV(0,0,255-96+(3*spSin((-posx[0]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)-((a+8)*SP_PI>>3))>>(SP_ACCURACY-5)));
         Uint16 output = ((input * color >> 16) & 63488)
                       + (((input & 2047) * (color & 2047) >> 11) & 2016)
                       + ((input & 31) * (color & 31) >> 5);
-        
         spQuad3D(-3<<SP_ACCURACY-2,-3<<SP_ACCURACY-2,0,
                     3<<SP_ACCURACY-2,-3<<SP_ACCURACY-2,0,
                     3<<SP_ACCURACY-2, 3<<SP_ACCURACY-2,0,
@@ -1176,7 +1177,7 @@ void draw_game(void)
     int x = (20-(posx[0]>>SP_ACCURACY)) & 15;
     int y = 3+(posy[0]>>SP_ACCURACY+1);    
     spRotate(0,+1<<SP_ACCURACY,0, (posx[0]>>SP_HALF_ACCURACY+1)*(SP_PI>>SP_HALF_ACCURACY+2));
-    #ifdef DINGOO
+    #ifdef DINGUX
       if (choose_one!=1 && stone[y][(x+1) & 15].new == 0 && stone[y][(x+1) & 15].falling == 0 && stone[y][(x+1) & 15].type >= 0)
         spBlit3D(-7<<SP_ACCURACY-2,posy[0],23<<SP_ACCURACY-2,spFontGetLetter(small_font,'Y')->surface);
       if (choose_one!=2 && stone[y][(x+15) & 15].new == 0 && stone[y][(x+15) & 15].falling == 0 && stone[y][(x+15) & 15].type >= 0)
@@ -1831,13 +1832,17 @@ int calc_game(Uint32 steps)
       }
       else
         move_sound_off();
-      #ifndef DINGOO
+      #ifndef DINGUX
         if (engineInput->button[SP_BUTTON_A])
       #else
         if (engineInput->button[SP_BUTTON_Y])
       #endif
       {
-        engineInput->button[SP_BUTTON_A] = 0;
+        #ifndef DINGUX
+          engineInput->button[SP_BUTTON_A] = 0;
+        #else
+          engineInput->button[SP_BUTTON_Y] = 0;
+        #endif
         int x = (20-(posx[0]>>SP_ACCURACY)) & 15;
         int y = 3+(posy[0]>>SP_ACCURACY+1);
         if (!choose_one && stone[y][(x+1) & 15].new == 0 && stone[y][(x+1) & 15].falling == 0 && stone[y][(x+1) & 15].type >= 0)
@@ -1858,13 +1863,17 @@ int calc_game(Uint32 steps)
           choose_one = 0;
         }
       }
-      #ifndef DINGOO
+      #ifndef DINGUX
         if (engineInput->button[SP_BUTTON_B])
       #else
         if (engineInput->button[SP_BUTTON_A])
       #endif
       {
-        engineInput->button[SP_BUTTON_B] = 0;
+        #ifndef DINGUX
+          engineInput->button[SP_BUTTON_B] = 0;
+        #else
+          engineInput->button[SP_BUTTON_A] = 0;
+        #endif
         int x = (20-(posx[0]>>SP_ACCURACY)) & 15;
         int y = 3+(posy[0]>>SP_ACCURACY+1);
         if (!choose_one && stone[y][(x+15) & 15].new == 0 && stone[y][(x+15) & 15].falling == 0 && stone[y][(x+15) & 15].type >= 0)
@@ -1885,13 +1894,17 @@ int calc_game(Uint32 steps)
           choose_one = 0;
         }
       }
-      #ifndef DINGOO
+      #ifndef DINGUX
         if (engineInput->button[SP_BUTTON_X])
       #else
         if (engineInput->button[SP_BUTTON_B])
       #endif
       {
-        engineInput->button[SP_BUTTON_X] = 0;
+        #ifndef DINGUX
+          engineInput->button[SP_BUTTON_X] = 0;
+        #else
+          engineInput->button[SP_BUTTON_B] = 0;
+        #endif
         int x = (20-(posx[0]>>SP_ACCURACY)) & 15;
         int y = 3+(posy[0]>>SP_ACCURACY+1);
         if (y>0 && !choose_one && stone[y-1][x].new == 0 && stone[y-1][x].falling == 0 && stone[y-1][x].type >= 0)
@@ -1912,13 +1925,17 @@ int calc_game(Uint32 steps)
           choose_one = 0;
         }
       }      
-      #ifndef DINGOO
+      #ifndef DINGUX
         if (engineInput->button[SP_BUTTON_Y])
       #else
         if (engineInput->button[SP_BUTTON_X])
       #endif
       {
-        engineInput->button[SP_BUTTON_Y] = 0;
+        #ifndef DINGUX
+          engineInput->button[SP_BUTTON_Y] = 0;
+        #else
+          engineInput->button[SP_BUTTON_X] = 0;
+        #endif
         int x = (20-(posx[0]>>SP_ACCURACY)) & 15;
         int y = 3+(posy[0]>>SP_ACCURACY+1);
         if (y<7 && !choose_one && stone[y+1][x].new == 0 && stone[y+1][x].falling == 0 && stone[y+1][x].type >= 0)
