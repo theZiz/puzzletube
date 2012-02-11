@@ -1320,7 +1320,7 @@ void draw_game(void)
   spFontDrawMiddle(6*engineWindowX/7,27*engineWindowY/32,-1,"Back to Menu",small_font);
 
 
-  sprintf(buffer,"fps: %i",spGetFPS());
+  sprintf(buffer,"fps %i",spGetFPS());
   spFontDrawRight(engineWindowX,engineWindowY-small_font->maxheight,-1,buffer,small_font);
 
   //help text
