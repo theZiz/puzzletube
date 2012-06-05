@@ -97,7 +97,7 @@ int main(int argc, char **argv)
   spInitMath();
   
   //Setup
-  screen = spCreateWindow();
+  screen = spCreateDefaultWindow();
   //set_particle_mode(settings_get_alpha_blending());
   resize(screen->w,screen->h);
   

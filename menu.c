@@ -711,6 +711,6 @@ void run_menu(void (*resize)(Uint16 w,Uint16 h))
     menu_choice = 0;
   rotating_sound_on();
   menu_resize = resize;
-  spLoop(draw_menu,calc_menu,10,resize);
+  spLoop(draw_menu,calc_menu,10,resize,NULL);
 }
 

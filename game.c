@@ -839,10 +839,11 @@ void draw_game(void)
       default: surface = spFontGetLetter(countdown_font,'0')->surface; break;
     }
     spBindTexture(surface);
-    spQuad_tex(screen->w/2-factor*screen->w/5000,screen->h/2-factor*screen->w/3000,-1,0,0,
-               screen->w/2+factor*screen->w/5000,screen->h/2-factor*screen->w/3000,-1,surface->w-SP_FONT_EXTRASPACE-1,0,
+    printf("Binde %p\n",surface);
+    spQuad_tex(screen->w/2-factor*screen->w/5000,screen->h/2+factor*screen->w/3000,-1,0,surface->h-SP_FONT_EXTRASPACE-1,
                screen->w/2+factor*screen->w/5000,screen->h/2+factor*screen->w/3000,-1,surface->w-SP_FONT_EXTRASPACE-1,surface->h-SP_FONT_EXTRASPACE-1,
-               screen->w/2-factor*screen->w/5000,screen->h/2+factor*screen->w/3000,-1,0,surface->h-SP_FONT_EXTRASPACE-1,65535);
+               screen->w/2+factor*screen->w/5000,screen->h/2-factor*screen->w/3000,-1,surface->w-SP_FONT_EXTRASPACE-1,0,
+               screen->w/2-factor*screen->w/5000,screen->h/2-factor*screen->w/3000,-1,0,0,65535);
   }
 
   spSetZSet(1);
@@ -1388,10 +1389,10 @@ void draw_game(void)
         sizex = sizex*3/4;
         sizey = sizey*3/4;
       }
-      spQuad_tex(addx+engineWindowX/2-sizex,7*engineWindowY/10-sizey,-1,0,0,
-                 addx+engineWindowX/2+sizex,7*engineWindowY/10-sizey,-1,surface->w-SP_FONT_EXTRASPACE-1,0,
+      spQuad_tex(addx+engineWindowX/2-sizex,7*engineWindowY/10+sizey,-1,0,surface->h-SP_FONT_EXTRASPACE-1,
                  addx+engineWindowX/2+sizex,7*engineWindowY/10+sizey,-1,surface->w-SP_FONT_EXTRASPACE-1,surface->h-SP_FONT_EXTRASPACE-1,
-                 addx+engineWindowX/2-sizex,7*engineWindowY/10+sizey,-1,0,surface->h-SP_FONT_EXTRASPACE-1,65535);
+                 addx+engineWindowX/2+sizex,7*engineWindowY/10-sizey,-1,surface->w-SP_FONT_EXTRASPACE-1,0,
+                 addx+engineWindowX/2-sizex,7*engineWindowY/10-sizey,-1,0,0,65535);
     }
        
     spFontDrawMiddle(engineWindowX/2, 10*engineWindowY/12,-1,"and press "SP_BUTTON_START_NAME,font);    
@@ -2086,7 +2087,7 @@ int run_game(int playernumber_,int starAdd,void (*resize)(Uint16 w,Uint16 h))
   }
   
   
-  spLoop(draw_game,calc_game,10,resize);
+  spLoop(draw_game,calc_game,10,resize,NULL);
   
   delete_pointVis();
   game_counter = 0;

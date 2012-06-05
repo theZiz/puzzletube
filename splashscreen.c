@@ -132,7 +132,7 @@ void run_splashscreen(void (*resize)(Uint16 w,Uint16 h))
   sparrow[4] = spLoadSurface("./images/sparrow_5.png");
   sparrow[5] = spLoadSurface("./images/sparrow_6.png");*/
   splash_counter = SPLASH_WAIT*3;
-  spLoop(draw_splash,calc_splash,10,resize);
+  spLoop(draw_splash,calc_splash,10,resize,NULL);
   SDL_FreeSurface(splash1);
   SDL_FreeSurface(splash2);
   /*SDL_FreeSurface(sparrow[0]);
