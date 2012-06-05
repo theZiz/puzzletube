@@ -1,9 +1,9 @@
 #==stuff linked to
 DYNAMIC = -lSDL_ttf -lSDL_mixer -lSDL_image -lSDL -lm -lsparrow3d
 #==global Flags. Even on the gp2x with 16 kb Cache, -O3 is much better then -Os
-CFLAGS = -g -O3 -fsingle-precision-constant -fPIC
+CFLAGS = -O3 -fsingle-precision-constant -fPIC
 # Testtweaks: -fgcse-lm -fgcse-sm -fsched-spec-load -fmodulo-sched -funsafe-loop-optimizations -Wunsafe-loop-optimizations -fgcse-las -fgcse-after-reload -fvariable-expansion-in-unroller -ftracer -fbranch-target-load-optimize
-GENERAL_TWEAKS =  -ffast-math
+#GENERAL_TWEAKS =  -ffast-math
 #==PC==
 CPP = gcc -g -march=native -DX86CPU
 SDL = `sdl-config --cflags`
@@ -28,6 +28,8 @@ LIB = -L/opt/open2x/gcc-4.1.1-glibc-2.3.6/lib -Wl,-rpath=/opt/open2x/gcc-4.1.1-g
 endif
 ifeq ($(TARGET),wiz)
 CPP = /opt/open2x/gcc-4.1.1-glibc-2.3.6/bin/arm-open2x-linux-gcc -DMOBILE_DEVICE -DARMCPU -DGP2X -DWIZ $(GENERAL_TWEAKS) -DFAST_BUT_UGLY_2 
+STATIC = -Wl,-Bstatic -lpng -Wl,-Bdynamic
+DYNAMIC = -lSDL -lm  -lSDL_mixer -lSDL_image -lSDL_ttf -lfreetype  -lz -ljpeg -lsparrow3d 
 SDL = `/opt/open2x/gcc-4.1.1-glibc-2.3.6/bin/sdl-config --cflags`
 INCLUDE = -I/opt/open2x/gcc-4.1.1-glibc-2.3.6/include
 LIB = -L/opt/open2x/gcc-4.1.1-glibc-2.3.6/lib -Wl,-rpath=/opt/open2x/gcc-4.1.1-glibc-2.3.6/lib

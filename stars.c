@@ -32,10 +32,20 @@ void init_stars()
   SDL_FillRect(stars,NULL,BACKGROUND_COLOR);
   
   SDL_Surface* star1 = IMG_Load("./images/star1.png");
+  if(!star1)
+    printf("IMG_Load: %s\n", IMG_GetError());
   SDL_Surface* star2 = IMG_Load("./images/star2.png");
+  if(!star2)
+    printf("IMG_Load: %s\n", IMG_GetError());
   SDL_Surface* star3 = IMG_Load("./images/star3.png");
+  if(!star3)
+    printf("IMG_Load: %s\n", IMG_GetError());
   SDL_Surface* star4 = IMG_Load("./images/star4.png");
+  if(!star4)
+    printf("IMG_Load: %s\n", IMG_GetError());
   SDL_Surface* star5 = IMG_Load("./images/star5.png");
+  if(!star5)
+    printf("IMG_Load: %s\n", IMG_GetError());
   
   int i;
   //star1
