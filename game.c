@@ -839,7 +839,6 @@ void draw_game(void)
       default: surface = spFontGetLetter(countdown_font,'0')->surface; break;
     }
     spBindTexture(surface);
-    printf("Binde %p\n",surface);
     spQuad_tex(screen->w/2-factor*screen->w/5000,screen->h/2+factor*screen->w/3000,-1,0,surface->h-SP_FONT_EXTRASPACE-1,
                screen->w/2+factor*screen->w/5000,screen->h/2+factor*screen->w/3000,-1,surface->w-SP_FONT_EXTRASPACE-1,surface->h-SP_FONT_EXTRASPACE-1,
                screen->w/2+factor*screen->w/5000,screen->h/2-factor*screen->w/3000,-1,surface->w-SP_FONT_EXTRASPACE-1,0,
@@ -1315,14 +1314,14 @@ void draw_game(void)
   else
     spBlitSurfacePart(6*engineWindowX/7,14*engineWindowY/32,-1,getTimeSurface(),0,0,gameTime*getTimeSurface()->w/START_TIME,getTimeSurface()->h);
 
-  spFontDrawMiddle(6*engineWindowX/7,20*engineWindowY/32,-1,SP_BUTTON_START_NAME":",small_font);
-  spFontDrawMiddle(6*engineWindowX/7,22*engineWindowY/32,-1,"Pause",small_font);
-  spFontDrawMiddle(6*engineWindowX/7,25*engineWindowY/32,-1,SP_BUTTON_SELECT_NAME":",small_font);
-  spFontDrawMiddle(6*engineWindowX/7,27*engineWindowY/32,-1,"Back to Menu",small_font);
+  spFontDrawMiddle(6*engineWindowX/7,20*engineWindowY/32,-1,"[S]",small_font);
+  spFontDrawMiddle(6*engineWindowX/7,23*engineWindowY/32,-1,"Pause",small_font);
+  spFontDrawMiddle(6*engineWindowX/7,26*engineWindowY/32,-1,"[E]",small_font);
+  spFontDrawMiddle(6*engineWindowX/7,29*engineWindowY/32,-1,"Back to Menu",small_font);
 
 
   sprintf(buffer,"fps %i",spGetFPS());
-  spFontDrawRight(engineWindowX,engineWindowY-small_font->maxheight,-1,buffer,small_font);
+  spFontDraw(2,engineWindowY-small_font->maxheight,-1,buffer,small_font);
 
   //help text
   if (countdown == 4000)
@@ -1356,7 +1355,7 @@ void draw_game(void)
         spFontDrawMiddle(engineWindowX/2, 7*engineWindowY/12,-1,"possible",font);
         break;
     }
-    spFontDrawMiddle(engineWindowX/2,10*engineWindowY/12,-1,"Press A,B,X or Y",small_font);
+    spFontDrawMiddle(engineWindowX/2,10*engineWindowY/12,-1,"Press [A],[B],[X] or [Y]",small_font);
   }
   
   //insert name
@@ -1395,7 +1394,7 @@ void draw_game(void)
                  addx+engineWindowX/2-sizex,7*engineWindowY/10-sizey,-1,0,0,65535);
     }
        
-    spFontDrawMiddle(engineWindowX/2, 10*engineWindowY/12,-1,"and press "SP_BUTTON_START_NAME,font);    
+    spFontDrawMiddle(engineWindowX/2, 10*engineWindowY/12,-1,"and press [S]",font);    
   }
   
 

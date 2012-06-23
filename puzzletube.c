@@ -52,6 +52,14 @@ void resize(Uint16 w,Uint16 h)
   //spFontChangeLetter(font,spFontGetLetter(font,'0'),'o',0);
   spFontAddBorder(font,65535);
   spFontMulWidth(font,15<<SP_ACCURACY-4);
+  spFontAddButton( font, 'A', SP_BUTTON_A_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
+  spFontAddButton( font, 'B', SP_BUTTON_B_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
+  spFontAddButton( font, 'X', SP_BUTTON_X_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
+  spFontAddButton( font, 'Y', SP_BUTTON_Y_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
+  spFontAddButton( font, 'L', SP_BUTTON_L_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
+  spFontAddButton( font, 'R', SP_BUTTON_R_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
+  spFontAddButton( font, 'S', SP_BUTTON_START_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
+  spFontAddButton( font, 'E', SP_BUTTON_SELECT_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
   settings_set_font(font);
 
   if (small_font)
@@ -61,6 +69,14 @@ void resize(Uint16 w,Uint16 h)
   //spFontChangeLetter(small_font,spFontGetLetter(small_font,'0'),'o',14823);
   spFontAddBorder(small_font,48631);
   spFontMulWidth(small_font,15<<SP_ACCURACY-4);
+  spFontAddButton( small_font, 'A', SP_BUTTON_A_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
+  spFontAddButton( small_font, 'B', SP_BUTTON_B_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
+  spFontAddButton( small_font, 'X', SP_BUTTON_X_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
+  spFontAddButton( small_font, 'Y', SP_BUTTON_Y_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
+  spFontAddButton( small_font, 'L', SP_BUTTON_L_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
+  spFontAddButton( small_font, 'R', SP_BUTTON_R_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
+  spFontAddButton( small_font, 'S', SP_BUTTON_START_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
+  spFontAddButton( small_font, 'E', SP_BUTTON_SELECT_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
   settings_set_small_font(small_font);
 
   if (middle_font)
@@ -70,6 +86,14 @@ void resize(Uint16 w,Uint16 h)
   //spFontChangeLetter(middle_font,spFontGetLetter(middle_font,'0'),'o',0);
   spFontAddBorder(middle_font,65535);
   spFontMulWidth(middle_font,15<<SP_ACCURACY-4);
+  spFontAddButton( middle_font, 'A', SP_BUTTON_A_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
+  spFontAddButton( middle_font, 'B', SP_BUTTON_B_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
+  spFontAddButton( middle_font, 'X', SP_BUTTON_X_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
+  spFontAddButton( middle_font, 'Y', SP_BUTTON_Y_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
+  spFontAddButton( middle_font, 'L', SP_BUTTON_L_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
+  spFontAddButton( middle_font, 'R', SP_BUTTON_R_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
+  spFontAddButton( middle_font, 'S', SP_BUTTON_START_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
+  spFontAddButton( middle_font, 'E', SP_BUTTON_SELECT_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
   settings_set_middle_font(middle_font);
 
   if (countdown_font)

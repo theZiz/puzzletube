@@ -34,6 +34,7 @@ int settings_get_difficult();
 int settings_get_mode();
 int settings_get_control();
 int settings_get_highscore_choice();
+int settings_get_language();
 
 void settings_set_stone_quality(int value);
 void settings_set_stars_rotating(int value);
@@ -44,6 +45,7 @@ void settings_set_difficult(int value);
 void settings_set_mode(int value);
 void settings_set_control(int value);
 void settings_set_highscore_choice(int value);
+void settings_set_language(int language);
 
 char* get_highscore_name(int game_mode,int difficult,int special,int rank);
 int get_highscore(int game_mode,int difficult,int special,int rank);

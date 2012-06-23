@@ -34,6 +34,7 @@ int menu_move = 0;
 int menu_fade;
 int menu_wait = 0;
 int menu_block = 0;
+spBundlePointer menu_bundle;
 
 void draw_menu(void)
 {
@@ -77,11 +78,11 @@ void draw_menu(void)
   {
     case 0: //menu
       spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),1*engineWindowY/7+(spSin(menu_counter*300+6*SP_PI*2/7)>>SP_ACCURACY-2),-1,"PUZZLE TUBE",font);
-      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/7+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Free Game",font);
-      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/7+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),-1,"How to Play",font);
-      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/7+(spSin(menu_counter*300+2*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Highscore",font);
-      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/7+(spSin(menu_counter*300+1*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Settings",font);
-      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/7+(spSin(menu_counter*300+0*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Quit",font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/7+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Free Game"),font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/7+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"How to Play"),font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/7+(spSin(menu_counter*300+2*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Highscore"),font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/7+(spSin(menu_counter*300+1*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Settings"),font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/7+(spSin(menu_counter*300+0*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Quit"),font);
       
       spTranslate(0,1<<SP_ACCURACY-2,3<<SP_ACCURACY-1);
       spTranslate(-5<<SP_ACCURACY,(3<<SP_ACCURACY)-menu_choice*5/2,0);
@@ -91,40 +92,41 @@ void draw_menu(void)
 
       break;
     case 1: //options
-      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),1*engineWindowY/8+(spSin(menu_counter*300+6*SP_PI/4)>>SP_ACCURACY-2),-1,"SETTINGS",font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),1*engineWindowY/10+(spSin(menu_counter*300+6*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"SETTINGS"),font);
       switch (settings_get_stone_quality())
       {
-        case 0: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/8+(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2),-1,"Stone Quality: Flat",font); break;
-        case 1: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/8+(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2),-1,"Stone Quality: Border",font); break;
-        case 2: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/8+(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2),-1,"Stone Quality: Texture",font); break;
+        case 0: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/10+(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Stone Quality: Flat"),font); break;
+        case 1: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/10+(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Stone Quality: Border"),font); break;
+        case 2: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/10+(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Stone Quality: Texture"),font); break;
       }
       switch (settings_get_stars_rotating())
       {
-        case 0: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/8+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,"Stars: Off",font); break;
-        case 1: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/8+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,"Stars: Still",font); break;
-        case 2: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/8+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,"Stars: Rotating",font); break;
+        case 0: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/10+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Stars: Off"),font); break;
+        case 1: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/10+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Stars: Still"),font); break;
+        case 2: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/10+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Stars: Rotating"),font); break;
       }
       if (settings_get_particles())
-        spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/8+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,"Particles: On",font);
+        spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/10+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Particles: On"),font);
       else
-        spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/8+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,"Particles: Off",font);
+        spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/10+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Particles: Off"),font);
 
       switch (settings_get_control())
       {
-        case 0: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/8+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,"Control: Normal",font); break;
-        case 1: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/8+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,"Control: Snake",font); break;
-        case 2: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/8+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,"Control: "SP_PAD_NAME,font); break;
+        case 0: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/10+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Control: Normal"),font); break;
+        case 1: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/10+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Control: Snake"),font); break;
+        case 2: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/10+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Control: Padmode"),font); break;
       }
 
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/10+(spSin(menu_counter*300+1*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Language"),font);
       sprintf(buffer,"Volume %i%%",settings_get_volume());
-      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/8+(spSin(menu_counter*300+1*SP_PI/4)>>SP_ACCURACY-2),-1,buffer,font);
-      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),7*engineWindowY/8+(spSin(menu_counter*300+0*SP_PI/4)>>SP_ACCURACY-2),-1,"Back to Menu",font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),7*engineWindowY/10+(spSin(menu_counter*300+0*SP_PI/4)>>SP_ACCURACY-2),-1,buffer,font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),8*engineWindowY/10+(spSin(menu_counter*300-1*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Back to Menu"),font);
 
-      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),30*engineWindowY/32+(spSin(menu_counter*300+-1*SP_PI/4)>>SP_ACCURACY-2),-1,"Select or Start: back",small_font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),30*engineWindowY/32+(spSin(menu_counter*300+-1*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Select or Start: back"),small_font);
 
 
       spTranslate(0,1<<SP_ACCURACY-2,-1<<SP_ACCURACY-1);
-      spTranslate(-10<<SP_ACCURACY,(4<<SP_ACCURACY)-menu_choice*5/2,0);
+      spTranslate(-10<<SP_ACCURACY,(5<<SP_ACCURACY)-menu_choice*4/2,0);
       draw_particle_circle(-1,menu_counter);
       spTranslate(20<<SP_ACCURACY,0,0);
       draw_particle_circle(+1,menu_counter);
@@ -453,7 +455,7 @@ int calc_menu(Uint32 steps)
     }
     break;
   case 1: //options
-    if (engineInput->axis[1]<0 && menu_move==0 && (menu_choice>>SP_ACCURACY)<5)
+    if (engineInput->axis[1]<0 && menu_move==0 && (menu_choice>>SP_ACCURACY)<6)
       menu_move = 1;
     if (engineInput->axis[1]>0 && menu_move==0 && (menu_choice>>SP_ACCURACY)>0)
       menu_move = -1;
@@ -473,13 +475,13 @@ int calc_menu(Uint32 steps)
     for (i = 0;i < steps;i++)
     {
       menu_wait--;
-      if (menu_move == 0 && (menu_choice>>SP_ACCURACY) == 4 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_volume()>0)
+      if (menu_move == 0 && (menu_choice>>SP_ACCURACY) == 5 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_volume()>0)
       {
         settings_set_volume(settings_get_volume()-1);
         set_volume(settings_get_volume());
         menu_wait = 25;
       }
-      if (menu_move == 0 && (menu_choice>>SP_ACCURACY) == 4 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_volume()<100)
+      if (menu_move == 0 && (menu_choice>>SP_ACCURACY) == 5 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_volume()<100)
       {
         settings_set_volume(settings_get_volume()+1);
         set_volume(settings_get_volume());
@@ -526,6 +528,17 @@ int calc_menu(Uint32 steps)
       settings_set_control(settings_get_control()+1);
       menu_block = 1;
     }
+    if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 4 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_language()>0)
+    {
+      settings_set_language(settings_get_language()-1);
+      menu_block = 1;
+    }
+    if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 4 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_language()<1)
+    {
+      settings_set_language(settings_get_language()+1);
+      menu_block = 1;
+    }
+    
     if (engineInput->axis[0] == 0)
       menu_block = 0;
     if (engineInput->button[SP_BUTTON_START] || engineInput->button[SP_BUTTON_SELECT])
@@ -560,7 +573,10 @@ int calc_menu(Uint32 steps)
         case 3: //Control
           settings_set_control((settings_get_control()+1)%3);
           break;
-        case 5: //Back
+        case 4: //Language
+          settings_set_language((settings_get_language()+1)%2);
+          break;
+        case 6: //Back
           settings_save();
           nextstate = 0;
           menu_fade = -1;
@@ -701,6 +717,7 @@ int calc_menu(Uint32 steps)
 
 void run_menu(void (*resize)(Uint16 w,Uint16 h))
 {
+	menu_bundle = spLoadBundle("./translations/menu.txt",1);
   menu_fade = MENUSIZE;
   if (settings_get_first_start())
   {
@@ -712,5 +729,6 @@ void run_menu(void (*resize)(Uint16 w,Uint16 h))
   rotating_sound_on();
   menu_resize = resize;
   spLoop(draw_menu,calc_menu,10,resize,NULL);
+  spDeleteBundle(menu_bundle,0);
 }
 

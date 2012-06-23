@@ -21,6 +21,8 @@
 #include "../sparrow3d/sparrow3d.h"
 #include <SDL.h>
 
+#define SETTINGS_VERSION "4"
+
 int settings_stone_quality; //2 perfect, 1 okay, 0 gp2x
 int settings_stars_rotating;
 int settings_particles;
@@ -31,6 +33,7 @@ int settings_difficult;
 int settings_mode;
 int settings_control;
 int settings_first_start;
+int settings_language;
 char settings_name[3];
 int highscore_choice;
 
@@ -110,15 +113,20 @@ void settings_load()
   settings_name[0]='A';
   settings_name[1]='A';
   settings_name[2]='A';
+  settings_language = 0;
   highscore_choice = 0;
   settings_first_start = 0;
-  SDL_RWops *file=SDL_RWFromFile("./settings3.dat","rb");
+  SDL_RWops *file=SDL_RWFromFile("./settings"SETTINGS_VERSION".dat","rb");
   if (file == NULL)
   {
-    settings_first_start = 1;
-    file=SDL_RWFromFile("./settings2.dat","rb");
-    if (file == NULL)
-      return;
+    file=SDL_RWFromFile("./settings3.dat","rb");
+		if (file == NULL)
+		{
+			settings_first_start = 1;
+			file=SDL_RWFromFile("./settings2.dat","rb");
+			if (file == NULL)
+				return;
+		}
   }
   SDL_RWread(file,&settings_stone_quality,sizeof(int),1);
   SDL_RWread(file,&settings_stars_rotating,sizeof(int),1);
@@ -130,6 +138,7 @@ void settings_load()
   SDL_RWread(file,&settings_mode,sizeof(int),1);
   SDL_RWread(file,&highscore_choice,sizeof(int),1);
   SDL_RWread(file,settings_name,sizeof(char)*3,1);
+  SDL_RWread(file,&settings_language,sizeof(int),1);
   SDL_RWclose(file);
 }
 
@@ -159,7 +168,7 @@ void highscore_load()
 
 void settings_save()
 {
-  SDL_RWops *file=SDL_RWFromFile("./settings3.dat","wb");
+  SDL_RWops *file=SDL_RWFromFile("./settings"SETTINGS_VERSION".dat","wb");
   SDL_RWwrite(file,&settings_stone_quality,sizeof(int),1);
   SDL_RWwrite(file,&settings_stars_rotating,sizeof(int),1);
   SDL_RWwrite(file,&settings_particles,sizeof(int),1);
@@ -170,6 +179,7 @@ void settings_save()
   SDL_RWwrite(file,&settings_mode,sizeof(int),1);
   SDL_RWwrite(file,&highscore_choice,sizeof(int),1);
   SDL_RWwrite(file,settings_name,sizeof(char)*3,1);
+  SDL_RWwrite(file,&settings_language,sizeof(int),1);
   SDL_RWclose(file);
 }
 
@@ -328,4 +338,19 @@ void settings_set_highscore_name(char* name)
 int settings_get_first_start()
 {
   return settings_first_start;
+}
+
+void settings_set_language(int language)
+{
+	settings_language = language;
+	switch(settings_language)
+	{
+		case 0: spSetDefaultLanguage(SP_LANGUAGE_EN); break;
+		case 1: spSetDefaultLanguage(SP_LANGUAGE_DE); break;
+	}
+}
+
+int settings_get_language()
+{
+	return settings_language;
 }

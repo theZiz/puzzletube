@@ -1,0 +1,65 @@
+# sparrow3d translation file for the menu texts
+
+# Menu
+--:Free Game
+en:Free Game
+de:Freies Spiel
+--:How to Play
+en:How to Play
+de:Tutorial
+--:Highscore
+en:Highscore
+de:Die Besten
+--:Settings
+en:Settings
+de:Einstellungen
+--:Quit
+en:Quit
+de:Ende
+
+# Settings
+--:SETTINGS
+en:SETTINGS
+de:EINSTELLUNGEN
+--:Stone Quality: Flat
+en:Stone Quality: Flat
+de:Stein Qualität: Flach
+--:Stone Quality: Border
+en:Stone Quality: Border
+de:Stein Qualität: Rand
+--:Stone Quality: Texture
+en:Stone Quality: Texture
+de:Stein Qualität: Texturiert
+--:Stars: Off
+en:Stars: Off
+de:Sterne: Keine
+--:Stars: Still
+en:Stars: Still
+de:Sterne: Fest
+--:Stars: Rotating
+en:Stars: Rotating
+de:Sterne: Rotierend
+--:Particles: On
+en:Particles: On
+de:Partikel: An
+--:Particles: Off
+en:Particles: Off
+de:Partikel: Aus
+--:Control: Normal
+en:Control: Normal
+de:Steuerung: Normal
+--:Control: Snake
+en:Control: Snake
+de:Steuerung: Schlange
+--:Control: Padmode
+en:Control: Padmode
+de:Steuerung: Padmode
+--:Language
+en:Language: English
+de:Sprache: Deutsch
+--:Back to Menu
+en:Back to Menu
+de:Zurück ins Menü
+--:Select or Start: back
+en:[E] or [S]: back
+de:[E] oder [S]: zurück
