@@ -117,7 +117,7 @@ void draw_menu(void)
         case 2: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/10+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Control: Padmode"),font); break;
       }
 
-      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/10+(spSin(menu_counter*300+1*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Language"),font);
+      spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/10+(spSin(menu_counter*300+1*SP_PI/4)>>SP_ACCURACY-2),-1,spGetPossibleLanguageName(settings_get_language()),font);
       sprintf(buffer,"Volume %i%%",settings_get_volume());
       spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),7*engineWindowY/10+(spSin(menu_counter*300+0*SP_PI/4)>>SP_ACCURACY-2),-1,buffer,font);
       spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),8*engineWindowY/10+(spSin(menu_counter*300-1*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Back to Menu"),font);
@@ -533,7 +533,7 @@ int calc_menu(Uint32 steps)
       settings_set_language(settings_get_language()-1);
       menu_block = 1;
     }
-    if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 4 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_language()<1)
+    if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 4 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_language()<spGetPossibleLanguagesCount()-1)
     {
       settings_set_language(settings_get_language()+1);
       menu_block = 1;
@@ -574,7 +574,7 @@ int calc_menu(Uint32 steps)
           settings_set_control((settings_get_control()+1)%3);
           break;
         case 4: //Language
-          settings_set_language((settings_get_language()+1)%2);
+          settings_set_language((settings_get_language()+1)%spGetPossibleLanguagesCount());
           break;
         case 6: //Back
           settings_save();
@@ -717,6 +717,7 @@ int calc_menu(Uint32 steps)
 
 void run_menu(void (*resize)(Uint16 w,Uint16 h))
 {
+	spReadPossibleLanguages("./translations/languages.txt");
 	menu_bundle = spLoadBundle("./translations/menu.txt",1);
   menu_fade = MENUSIZE;
   if (settings_get_first_start())

@@ -343,11 +343,7 @@ int settings_get_first_start()
 void settings_set_language(int language)
 {
 	settings_language = language;
-	switch(settings_language)
-	{
-		case 0: spSetDefaultLanguage(SP_LANGUAGE_EN); break;
-		case 1: spSetDefaultLanguage(SP_LANGUAGE_DE); break;
-	}
+	spSetDefaultLanguage(spGetPossibleLanguage(language));
 }
 
 int settings_get_language()
