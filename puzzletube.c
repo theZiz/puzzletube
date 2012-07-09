@@ -49,7 +49,7 @@ void resize(Uint16 w,Uint16 h)
     spFontDelete(font);
   font = spFontLoad(FONT_LOCATION,FONT_SIZE*spGetSizeFactor()>>SP_ACCURACY);
   spFontAddRange(font,' ','~',0);//whole ASCII
-  //spFontChangeLetter(font,spFontGetLetter(font,'0'),'o',0);
+  spFontAddRange(font,spFontGetUnicodeFromUTF8("ä"),spFontGetUnicodeFromUTF8("ü"),14823);//some German letters
   spFontAddBorder(font,65535);
   spFontMulWidth(font,15<<SP_ACCURACY-4);
   spFontAddButton( font, 'A', SP_BUTTON_A_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
@@ -66,7 +66,7 @@ void resize(Uint16 w,Uint16 h)
     spFontDelete(small_font);
   small_font = spFontLoad(FONT_LOCATION,FONT_SMALL_SIZE*spGetSizeFactor()>>SP_ACCURACY);
   spFontAddRange(small_font,' ','~',14823);//whole ASCII
-  //spFontChangeLetter(small_font,spFontGetLetter(small_font,'0'),'o',14823);
+  spFontAddRange(small_font,spFontGetUnicodeFromUTF8("ä"),spFontGetUnicodeFromUTF8("ü"),14823);//some German letters
   spFontAddBorder(small_font,48631);
   spFontMulWidth(small_font,15<<SP_ACCURACY-4);
   spFontAddButton( small_font, 'A', SP_BUTTON_A_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
@@ -83,7 +83,7 @@ void resize(Uint16 w,Uint16 h)
     spFontDelete(middle_font);
   middle_font = spFontLoad(FONT_LOCATION,FONT_MIDDLE_SIZE*spGetSizeFactor()>>SP_ACCURACY);
   spFontAddRange(middle_font,' ','~',0);//whole ASCII
-  //spFontChangeLetter(middle_font,spFontGetLetter(middle_font,'0'),'o',0);
+  spFontAddRange(middle_font,spFontGetUnicodeFromUTF8("ä"),spFontGetUnicodeFromUTF8("ü"),14823);//some German letters
   spFontAddBorder(middle_font,65535);
   spFontMulWidth(middle_font,15<<SP_ACCURACY-4);
   spFontAddButton( middle_font, 'A', SP_BUTTON_A_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));

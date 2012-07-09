@@ -720,6 +720,7 @@ void run_menu(void (*resize)(Uint16 w,Uint16 h))
 	spReadPossibleLanguages("./translations/languages.txt");
 	menu_bundle = spLoadBundle("./translations/menu.txt",1);
   menu_fade = MENUSIZE;
+  spSetDefaultLanguage(spGetPossibleLanguage(settings_get_language()));  
   if (settings_get_first_start())
   {
     menu_choice = 1<<SP_ACCURACY;

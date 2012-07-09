@@ -23,13 +23,13 @@ en:SETTINGS
 de:EINSTELLUNGEN
 --:Stone Quality: Flat
 en:Stone Quality: Flat
-de:Stein Qualität: Flach
+de:Stein QualitÃ¤t: Flach
 --:Stone Quality: Border
 en:Stone Quality: Border
-de:Stein Qualität: Rand
+de:Stein QualitÃ¤t: Rand
 --:Stone Quality: Texture
 en:Stone Quality: Texture
-de:Stein Qualität: Texturiert
+de:Stein QualitÃ¤t: Texturiert
 --:Stars: Off
 en:Stars: Off
 de:Sterne: Keine
@@ -59,7 +59,7 @@ en:Language: English
 de:Sprache: Deutsch
 --:Back to Menu
 en:Back to Menu
-de:Zurück ins Menü
+de:ZurÃ¼ck ins MenÃ¼
 --:Select or Start: back
 en:[E] or [S]: back
-de:[E] oder [S]: zurück
+de:[E] oder [S]: zurÃ¼ck
