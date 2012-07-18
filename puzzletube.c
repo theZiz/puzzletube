@@ -48,8 +48,8 @@ void resize(Uint16 w,Uint16 h)
   if (font)
     spFontDelete(font);
   font = spFontLoad(FONT_LOCATION,FONT_SIZE*spGetSizeFactor()>>SP_ACCURACY);
-  spFontAddRange(font,' ','~',0);//whole ASCII
-  spFontAddRange(font,spFontGetUnicodeFromUTF8("ä"),spFontGetUnicodeFromUTF8("ü"),14823);//some German letters
+  spFontAdd(font,SP_FONT_RANGE_ASCII,0);//whole ASCII
+  spFontAdd(font,SP_FONT_RANGE_GERMAN,14823);//some German letters
   spFontAddBorder(font,65535);
   spFontMulWidth(font,15<<SP_ACCURACY-4);
   spFontAddButton( font, 'A', SP_BUTTON_A_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
@@ -65,8 +65,8 @@ void resize(Uint16 w,Uint16 h)
   if (small_font)
     spFontDelete(small_font);
   small_font = spFontLoad(FONT_LOCATION,FONT_SMALL_SIZE*spGetSizeFactor()>>SP_ACCURACY);
-  spFontAddRange(small_font,' ','~',14823);//whole ASCII
-  spFontAddRange(small_font,spFontGetUnicodeFromUTF8("ä"),spFontGetUnicodeFromUTF8("ü"),14823);//some German letters
+  spFontAdd(small_font,SP_FONT_RANGE_ASCII,0);//whole ASCII
+  spFontAdd(small_font,SP_FONT_RANGE_GERMAN,14823);//some German letters
   spFontAddBorder(small_font,48631);
   spFontMulWidth(small_font,15<<SP_ACCURACY-4);
   spFontAddButton( small_font, 'A', SP_BUTTON_A_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
@@ -82,8 +82,8 @@ void resize(Uint16 w,Uint16 h)
   if (middle_font)
     spFontDelete(middle_font);
   middle_font = spFontLoad(FONT_LOCATION,FONT_MIDDLE_SIZE*spGetSizeFactor()>>SP_ACCURACY);
-  spFontAddRange(middle_font,' ','~',0);//whole ASCII
-  spFontAddRange(middle_font,spFontGetUnicodeFromUTF8("ä"),spFontGetUnicodeFromUTF8("ü"),14823);//some German letters
+  spFontAdd(middle_font,SP_FONT_RANGE_ASCII,0);//whole ASCII
+  spFontAdd(middle_font,SP_FONT_RANGE_GERMAN,14823);//some German letters
   spFontAddBorder(middle_font,65535);
   spFontMulWidth(middle_font,15<<SP_ACCURACY-4);
   spFontAddButton( middle_font, 'A', SP_BUTTON_A_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
@@ -99,7 +99,7 @@ void resize(Uint16 w,Uint16 h)
   if (countdown_font)
     spFontDelete(countdown_font);
   countdown_font = spFontLoad(FONT_LOCATION,FONT_COUNTDOWN_SIZE*spGetSizeFactor()>>SP_ACCURACY);
-  spFontAddRange(countdown_font,' ','~',0);//whole ASCII
+  spFontAdd(countdown_font,SP_FONT_RANGE_ASCII,0);//whole ASCII
   spFontAddBorder(countdown_font,65535);
   settings_set_countdown_font(countdown_font);
 
