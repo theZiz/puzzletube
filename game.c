@@ -804,7 +804,7 @@ void draw_game(void)
   int engineWindowX=spGetWindowSurface()->w;
   int engineWindowY=spGetWindowSurface()->h;
 
-  spResetZBuffer();
+  //spResetZBuffer();
   spIdentity();
     
   Sint32 matrix[16];
@@ -824,30 +824,6 @@ void draw_game(void)
     draw_stars((-posx[0]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)+star_add);
   
   
-  //Countdown
-  spSetZSet(1);
-  spSetZTest(0);
-  if (countdown>0 && countdown<4000)
-  {
-    int factor = (countdown % 1000)+500;
-    SDL_Surface* surface = NULL;
-    switch (countdown / 1000)
-    {
-      case 3: surface = spFontGetLetter(countdown_font,'3')->surface; break;
-      case 2: surface = spFontGetLetter(countdown_font,'2')->surface; break;
-      case 1: surface = spFontGetLetter(countdown_font,'1')->surface; break;
-      default: surface = spFontGetLetter(countdown_font,'0')->surface; break;
-    }
-    spBindTexture(surface);
-    spQuad_tex(screen->w/2-factor*screen->w/5000,screen->h/2+factor*screen->w/3000,-1,0,surface->h-SP_FONT_EXTRASPACE-1,
-               screen->w/2+factor*screen->w/5000,screen->h/2+factor*screen->w/3000,-1,surface->w-SP_FONT_EXTRASPACE-1,surface->h-SP_FONT_EXTRASPACE-1,
-               screen->w/2+factor*screen->w/5000,screen->h/2-factor*screen->w/3000,-1,surface->w-SP_FONT_EXTRASPACE-1,0,
-               screen->w/2-factor*screen->w/5000,screen->h/2-factor*screen->w/3000,-1,0,0,65535);
-  }
-
-  spSetZSet(1);
-  spSetZTest(1);
-
   spRotate(0,1<<SP_ACCURACY,0,(-posx[0]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1));
   last_rotate = (-posx[0]>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1);
  
@@ -873,8 +849,16 @@ void draw_game(void)
   spRotate(0,1<<SP_ACCURACY,0,(spCos(w<<3)>>SP_HALF_ACCURACY)*(SP_PI>>SP_HALF_ACCURACY)>>5);
   
   int meta_a,a,y;
-  //Drawing from the front to the back. (~15% more performance because of z Test)
-  for (meta_a=16-(posx[0]>>SP_ACCURACY);meta_a<16-(posx[0]>>SP_ACCURACY)+16;meta_a++)
+  //Drawing from the back to the front
+  spSetZTest(0);
+  spSetZSet(0);
+  int left_side = 1;
+  //for (meta_a=16-(posx[0]>>SP_ACCURACY)+15;meta_a>=16-(posx[0]>>SP_ACCURACY);meta_a--)
+  meta_a=16-(posx[0]>>SP_ACCURACY)+12; //back
+  int left_a = meta_a;
+  int right_a = meta_a;
+  int i;
+  for (i = 0; i < 16; i++)
   {
     a = meta_a & 15;
     for (y=-6;y<=6;y+=2)
@@ -999,6 +983,17 @@ void draw_game(void)
       }
       memcpy(modellViewMatrix,matrix,sizeof(Sint32)*16);
     }
+		if (left_side)
+		{
+			left_a--;
+			meta_a = left_a;
+		}
+		else
+		{
+			right_a++;
+			meta_a = right_a;
+		}
+		left_side=1-left_side;
   }
   //particles
   pparticle particle=firstparticle;
@@ -1259,6 +1254,24 @@ void draw_game(void)
   spSetZSet(0);
   spSetZTest(0);
   
+  //Countdown
+  if (countdown>0 && countdown<4000)
+  {
+    int factor = (countdown % 1000)+500;
+    SDL_Surface* surface = NULL;
+    switch (countdown / 1000)
+    {
+      case 3: surface = spFontGetLetter(countdown_font,'3')->surface; break;
+      case 2: surface = spFontGetLetter(countdown_font,'2')->surface; break;
+      case 1: surface = spFontGetLetter(countdown_font,'1')->surface; break;
+      default: surface = spFontGetLetter(countdown_font,'0')->surface; break;
+    }
+    spBindTexture(surface);
+    spQuad_tex(screen->w/2-factor*screen->w/5000,screen->h/2+factor*screen->w/3000,-1,0,surface->h-SP_FONT_EXTRASPACE-1,
+               screen->w/2+factor*screen->w/5000,screen->h/2+factor*screen->w/3000,-1,surface->w-SP_FONT_EXTRASPACE-1,surface->h-SP_FONT_EXTRASPACE-1,
+               screen->w/2+factor*screen->w/5000,screen->h/2-factor*screen->w/3000,-1,surface->w-SP_FONT_EXTRASPACE-1,0,
+               screen->w/2-factor*screen->w/5000,screen->h/2-factor*screen->w/3000,-1,0,0,65535);
+  }
   
   //HUD on the left side
 
