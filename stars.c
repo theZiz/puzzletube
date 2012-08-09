@@ -169,11 +169,11 @@ void draw_stars(Sint32 rotation)
     to+=spGetWindowSurface()->w*2;
   //printf("From %i to %i\n",from,to);
   if (from < to)
-    spBlitSurfacePart(0,spGetWindowSurface()->h/2,SP_MAX_NEGATIVE+1,stars,from,0,spGetWindowSurface()->w,spGetWindowSurface()->h);
+    spBlitSurfacePart(0,spGetWindowSurface()->h/2,-spGetZFar()+1,stars,from,0,spGetWindowSurface()->w,spGetWindowSurface()->h);
   else
   {
-    spBlitSurfacePart(0,spGetWindowSurface()->h/2,SP_MAX_NEGATIVE+1,stars,from,0,stars->w-from,spGetWindowSurface()->h);
-    spBlitSurfacePart(stars->w-from,spGetWindowSurface()->h/2,SP_MAX_NEGATIVE+1,stars,0,0,to,spGetWindowSurface()->h);
+    spBlitSurfacePart(0,spGetWindowSurface()->h/2,-spGetZFar()+1,stars,from,0,stars->w-from,spGetWindowSurface()->h);
+    spBlitSurfacePart(stars->w-from,spGetWindowSurface()->h/2,-spGetZFar()+1,stars,0,0,to,spGetWindowSurface()->h);
   }
   spSetHorizontalOrigin(SP_CENTER);
 }
