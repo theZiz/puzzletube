@@ -1429,14 +1429,14 @@ int calc_game(Uint32 steps)
         choosen_letter = (choosen_letter+1)%3;
         control_timeout = 300;
       }
-      if (engineInput->axis[1] < 0 && (control_timeout<=0))
+      if (engineInput->axis[1] > 0 && (control_timeout<=0))
       {
         myhighscore_name[choosen_letter]--;
         if (myhighscore_name[choosen_letter] < 'A')
           myhighscore_name[choosen_letter] = 'Z';
         control_timeout = 200;
       }
-      if (engineInput->axis[1] > 0 && (control_timeout<=0))
+      if (engineInput->axis[1] < 0 && (control_timeout<=0))
       {
         myhighscore_name[choosen_letter]++;
         if (myhighscore_name[choosen_letter] > 'Z')
@@ -1717,7 +1717,7 @@ int calc_game(Uint32 steps)
       }
       else
         rotating_sound_off();
-      if (engineInput->axis[1]<0 && (((posy[0]>>SP_ACCURACY)>-6 && direction!=3) || (direction==3 && (posy[2]>>SP_ACCURACY)>-6)))
+      if (engineInput->axis[1]>0 && (((posy[0]>>SP_ACCURACY)>-6 && direction!=3) || (direction==3 && (posy[2]>>SP_ACCURACY)>-6)))
       {
         if (direction==3 && (posy[2]>>SP_ACCURACY)>-6)
         {
@@ -1750,7 +1750,7 @@ int calc_game(Uint32 steps)
         move_sound_on();
       }
       else
-      if (engineInput->axis[1]>0 && (((posy[0]>>SP_ACCURACY)< 6 && direction!=2) || (direction==2 && (posy[2]>>SP_ACCURACY)< 6)))
+      if (engineInput->axis[1]<0 && (((posy[0]>>SP_ACCURACY)< 6 && direction!=2) || (direction==2 && (posy[2]>>SP_ACCURACY)< 6)))
       {
         if (direction==2 && (posy[2]>>SP_ACCURACY)< 6)
         {
@@ -1819,14 +1819,14 @@ int calc_game(Uint32 steps)
       }
       else
         rotating_sound_off();
-      if (!choose_one && engineInput->axis[1]<0 && (posy[0]>>SP_ACCURACY)>-6)
+      if (!choose_one && engineInput->axis[1]>0 && (posy[0]>>SP_ACCURACY)>-6)
       {
         direction=2;
         timeout=TIMEOUT;
         move_sound_on();
       }
       else
-      if (!choose_one && engineInput->axis[1]>0 && (posy[0]>>SP_ACCURACY)< 6)
+      if (!choose_one && engineInput->axis[1]<0 && (posy[0]>>SP_ACCURACY)< 6)
       {
         direction=3;
         timeout=TIMEOUT+1;
@@ -1951,14 +1951,14 @@ int calc_game(Uint32 steps)
         }
         else
           rotating_sound_off();
-        if (engineInput->axis[1]<0 && (posy[0]>>SP_ACCURACY)>-6 && control_timeout<=0)
+        if (engineInput->axis[1]>0 && (posy[0]>>SP_ACCURACY)>-6 && control_timeout<=0)
         {
           direction=2;
           timeout=TIMEOUT;
           move_sound_on();
         }
         else
-        if (engineInput->axis[1]>0 && (posy[0]>>SP_ACCURACY)< 6 && control_timeout<=0)
+        if (engineInput->axis[1]<0 && (posy[0]>>SP_ACCURACY)< 6 && control_timeout<=0)
         {
           direction=3;
           timeout=TIMEOUT+1;
@@ -1972,28 +1972,28 @@ int calc_game(Uint32 steps)
       {
         rotating_sound_off();
         move_sound_off();
-        if (engineInput->axis[0]==0 && engineInput->axis[1]>0 && (posy[0]>>SP_ACCURACY)<4)
+        if (engineInput->axis[0]==0 && engineInput->axis[1]<0 && (posy[0]>>SP_ACCURACY)<4)
           choose_one = 1;
         else
-        if (engineInput->axis[0]>0 && engineInput->axis[1]>0 && (posy[0]>>SP_ACCURACY)<6)
+        if (engineInput->axis[0]>0 && engineInput->axis[1]<0 && (posy[0]>>SP_ACCURACY)<6)
           choose_one = 2;
         else
         if (engineInput->axis[0]>0 && engineInput->axis[1]==0)
           choose_one = 3;
         else
-        if (engineInput->axis[0]>0 && engineInput->axis[1]<0 && (posy[0]>>SP_ACCURACY)>-6)
+        if (engineInput->axis[0]>0 && engineInput->axis[1]>0 && (posy[0]>>SP_ACCURACY)>-6)
           choose_one = 4;
         else
-        if (engineInput->axis[0]==0 && engineInput->axis[1]<0 && (posy[0]>>SP_ACCURACY)>-4)
+        if (engineInput->axis[0]==0 && engineInput->axis[1]>0 && (posy[0]>>SP_ACCURACY)>-4)
           choose_one = 5;
         else
-        if (engineInput->axis[0]<0 && engineInput->axis[1]<0 && (posy[0]>>SP_ACCURACY)>-6)
+        if (engineInput->axis[0]<0 && engineInput->axis[1]>0 && (posy[0]>>SP_ACCURACY)>-6)
           choose_one = 6;
         else
         if (engineInput->axis[0]<0 && engineInput->axis[1]==0)
           choose_one = 7;
         else
-        if (engineInput->axis[0]<0 && engineInput->axis[1]>0 && (posy[0]>>SP_ACCURACY)<6)
+        if (engineInput->axis[0]<0 && engineInput->axis[1]<0 && (posy[0]>>SP_ACCURACY)<6)
           choose_one = 8;
         else
           choose_one = 0;

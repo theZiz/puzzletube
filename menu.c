@@ -402,9 +402,9 @@ int calc_menu(Uint32 steps)
   switch (state)
   {
   case 0: //menu
-    if (engineInput->axis[1]<0 && menu_move==0 && (menu_choice>>SP_ACCURACY)<4)
+    if (engineInput->axis[1]>0 && menu_move==0 && (menu_choice>>SP_ACCURACY)<4)
       menu_move = 1;
-    if (engineInput->axis[1]>0 && menu_move==0 && (menu_choice>>SP_ACCURACY)>0)
+    if (engineInput->axis[1]<0 && menu_move==0 && (menu_choice>>SP_ACCURACY)>0)
       menu_move = -1;
     
     if (menu_move != 0)
@@ -455,9 +455,9 @@ int calc_menu(Uint32 steps)
     }
     break;
   case 1: //options
-    if (engineInput->axis[1]<0 && menu_move==0 && (menu_choice>>SP_ACCURACY)<6)
+    if (engineInput->axis[1]>0 && menu_move==0 && (menu_choice>>SP_ACCURACY)<6)
       menu_move = 1;
-    if (engineInput->axis[1]>0 && menu_move==0 && (menu_choice>>SP_ACCURACY)>0)
+    if (engineInput->axis[1]<0 && menu_move==0 && (menu_choice>>SP_ACCURACY)>0)
       menu_move = -1;
     
     if (menu_move != 0)
@@ -586,9 +586,9 @@ int calc_menu(Uint32 steps)
     }
     break;
   case 2: //free game
-    if (engineInput->axis[1]<0 && menu_move==0 && (menu_choice>>SP_ACCURACY)<4)
+    if (engineInput->axis[1]>0 && menu_move==0 && (menu_choice>>SP_ACCURACY)<4)
       menu_move = 1;
-    if (engineInput->axis[1]>0 && menu_move==0 && (menu_choice>>SP_ACCURACY)>0)
+    if (engineInput->axis[1]<0 && menu_move==0 && (menu_choice>>SP_ACCURACY)>0)
       menu_move = -1;
     
     if (menu_move != 0)
