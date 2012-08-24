@@ -1,5 +1,5 @@
 #==stuff linked to
-DYNAMIC = -lSDL_ttf -lSDL_mixer -lSDL_image -lSDL -lm -lsparrow3d
+DYNAMIC = -lSDL_ttf -lSDL_mixer -lSDL_image -lSDL -lm -lsparrow3d -lsparrowSound
 #==global Flags. Even on the gp2x with 16 kb Cache, -O3 is much better then -Os
 CFLAGS = -O3 -fsingle-precision-constant -fPIC
 # Testtweaks: -fgcse-lm -fgcse-sm -fsched-spec-load -fmodulo-sched -funsafe-loop-optimizations -Wunsafe-loop-optimizations -fgcse-las -fgcse-after-reload -fvariable-expansion-in-unroller -ftracer -fbranch-target-load-optimize
