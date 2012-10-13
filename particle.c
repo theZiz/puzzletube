@@ -43,7 +43,7 @@ void resize_particle(int winX,int winY)
   int w = winY*2/100;
   if (w&1)
     w++;
-  SDL_Surface* dummy = SDL_CreateRGBSurface(SDL_SWSURFACE,w,w,16,0,0,0,0);
+  SDL_Surface* dummy = spCreateSurface(w,w);
   SDL_LockSurface(dummy);
   Uint16* pixel = dummy->pixels;
   int x,y;
@@ -59,15 +59,14 @@ void resize_particle(int winX,int winY)
         pixel[x+y*dummy->w] = SP_ALPHA_COLOR;
     }
   SDL_UnlockSurface(dummy);
-  smallParticle = SDL_DisplayFormat(dummy);
-  SDL_FreeSurface(dummy);
+  smallParticle = dummy;
   //middleParticle 3.5% of y
   if (middleParticle)
     SDL_FreeSurface(middleParticle);
   w = winY*7/200;
   if (w&1)
     w++;
-  dummy = SDL_CreateRGBSurface(SDL_SWSURFACE,w,w,16,0,0,0,0);
+  dummy = spCreateSurface(w,w);
   SDL_LockSurface(dummy);
   pixel = dummy->pixels;
   for (x = 0; x < dummy->w; x++)
@@ -82,15 +81,14 @@ void resize_particle(int winX,int winY)
         pixel[x+y*dummy->w] = SP_ALPHA_COLOR;
     }
   SDL_UnlockSurface(dummy);
-  middleParticle = SDL_DisplayFormat(dummy);
-  SDL_FreeSurface(dummy);
+  middleParticle = dummy;
   //bigParticle 5% of y
   if (bigParticle)
     SDL_FreeSurface(bigParticle);
   w = winY*5/100;
   if (w&1)
     w++;
-  dummy = SDL_CreateRGBSurface(SDL_SWSURFACE,w,w,16,0,0,0,0);
+  dummy = spCreateSurface(w,w);
   SDL_LockSurface(dummy);
   pixel = dummy->pixels;
   for (x = 0; x < dummy->w; x++)
@@ -105,15 +103,14 @@ void resize_particle(int winX,int winY)
         pixel[x+y*dummy->w] = SP_ALPHA_COLOR;
     }
   SDL_UnlockSurface(dummy);
-  bigParticle = SDL_DisplayFormat(dummy);
-  SDL_FreeSurface(dummy);
+  bigParticle = dummy;
   //timeSurface
   if (timeSurface)
     SDL_FreeSurface(timeSurface);
   w = winY*2/6;
   if (w&1)
     w++;
-  dummy = SDL_CreateRGBSurface(SDL_SWSURFACE,w,winY*5/100,16,0,0,0,0);
+  dummy = spCreateSurface(w,w);
   SDL_LockSurface(dummy);
   pixel = dummy->pixels;
   //memset(pixel,255,dummy->w*dummy->h*4);
@@ -140,8 +137,7 @@ void resize_particle(int winX,int winY)
       }
     }
   SDL_UnlockSurface(dummy);
-  timeSurface = SDL_DisplayFormat(dummy);
-  SDL_FreeSurface(dummy);
+  timeSurface = dummy;
 }
 
 SDL_Surface* getSmallParticle()
