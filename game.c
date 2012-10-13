@@ -1322,8 +1322,8 @@ void draw_game(void)
   spFontDrawMiddle(6*engineWindowX/7,29*engineWindowY/32,-1,"Back to Menu",small_font);
 
 
-  sprintf(buffer,"fps %i",spGetFPS());
-  spFontDraw(2,engineWindowY-small_font->maxheight,-1,buffer,small_font);
+  //sprintf(buffer,"fps %i",spGetFPS());
+  //spFontDraw(2,engineWindowY-small_font->maxheight,-1,buffer,small_font);
 
   //help text
   if (countdown == 4000)

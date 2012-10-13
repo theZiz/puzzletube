@@ -340,8 +340,9 @@ void draw_menu(void)
     printf("%i:   Drew menu\n",SDL_GetTicks());
   #endif
 
-  sprintf(buffer,"fps %i",spGetFPS());
-  spFontDrawRight(engineWindowX,engineWindowY-small_font->maxheight,-1,buffer,small_font);
+  //sprintf(buffer,"fps %i",spGetFPS());
+  //spFontDrawRight(engineWindowX,engineWindowY-small_font->maxheight,-1,buffer,small_font);
+  spFontDrawRight(engineWindowX-1,engineWindowY-small_font->maxheight,-1,"made by Ziz",small_font);
   #ifdef MENU_DEBUG
     printf("%i:   Drew fps\n",SDL_GetTicks());
   #endif
