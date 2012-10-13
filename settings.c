@@ -91,16 +91,22 @@ void insert_highscore(int game_mode,int difficult,int special,char* name,int poi
 }
 
 #ifdef GCW
-	#define FOLDER "$HOME/.puzzletube"
+char* get_path(char* buffer,char* file)
+{
+	sprintf(buffer,"%s/.puzzletube/%s",getenv("HOME"),file);
+	return buffer;
+}
 #else
-	#define FOLDER "."
+char* get_path(char* buffer,char* file)
+{
+	sprintf(buffer,".%s",file);
+	return buffer;
+}
 #endif
 
 void settings_load()
 {
   #ifdef REALGP2X
-    settings_stone_quality = 0;
-  #elif PANDORA
     settings_stone_quality = 0;
   #else
     settings_stone_quality = 2;
@@ -122,14 +128,15 @@ void settings_load()
   settings_language = 0;
   highscore_choice = 0;
   settings_first_start = 0;
-  SDL_RWops *file=SDL_RWFromFile(FOLDER"/settings"SETTINGS_VERSION".dat","rb");
+  char buffer[256];
+  SDL_RWops *file=SDL_RWFromFile(get_path(buffer,"settings"SETTINGS_VERSION".dat"),"rb");
   if (file == NULL)
   {
-    file=SDL_RWFromFile(FOLDER"/settings3.dat","rb");
+    file=SDL_RWFromFile(get_path(buffer,"settings3.dat"),"rb");
 		if (file == NULL)
 		{
 			settings_first_start = 1;
-			file=SDL_RWFromFile(FOLDER"/settings2.dat","rb");
+			file=SDL_RWFromFile(get_path(buffer,"settings2.dat"),"rb");
 			if (file == NULL)
 				return;
 		}
@@ -164,7 +171,8 @@ void highscore_load()
           else
             highscore[i][j][k][l] = 0;
         }
-	SDL_RWops *file=SDL_RWFromFile(FOLDER"/highscore2.dat","rb");
+  char buffer[256];
+	SDL_RWops *file=SDL_RWFromFile(get_path(buffer,"/highscore2.dat"),"rb");
   if (file == NULL)
     return;
   SDL_RWread(file,highscore,3*2*2*3*sizeof(int),1);
@@ -174,7 +182,9 @@ void highscore_load()
 
 void settings_save()
 {
-	SDL_RWops *file=SDL_RWFromFile(FOLDER"/settings"SETTINGS_VERSION".dat","wb");
+	char buffer[256];
+	spCreateDirectoryChain(get_path(buffer,""));
+	SDL_RWops *file=SDL_RWFromFile(get_path(buffer,"settings"SETTINGS_VERSION".dat"),"wb");
   SDL_RWwrite(file,&settings_stone_quality,sizeof(int),1);
   SDL_RWwrite(file,&settings_stars_rotating,sizeof(int),1);
   SDL_RWwrite(file,&settings_particles,sizeof(int),1);
@@ -191,7 +201,9 @@ void settings_save()
 
 void highscore_save()
 {
-	SDL_RWops *file=SDL_RWFromFile(FOLDER"/highscore2.dat","wb");
+	char buffer[256];
+	spCreateDirectoryChain(get_path(buffer,""));
+	SDL_RWops *file=SDL_RWFromFile(get_path(buffer,"highscore2.dat"),"wb");
   SDL_RWwrite(file,highscore,3*2*2*3*sizeof(int),1);
   SDL_RWwrite(file,highscore_name,3*2*2*3*3,1);
   SDL_RWclose(file);
