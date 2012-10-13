@@ -125,7 +125,7 @@ int main(int argc, char **argv)
   //set_particle_mode(settings_get_alpha_blending());
   resize(screen->w,screen->h);
   
-  run_splashscreen(resize);
+  //run_splashscreen(resize);
   init_music();
   prepare_game_objects(1);
   change_music("Midnight Mediation","Nick May");
