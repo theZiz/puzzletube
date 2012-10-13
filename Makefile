@@ -48,6 +48,13 @@ SDL = -I/opt/opendingux-toolchain/usr/mipsel-unknown-linux-uclibc/sys-include/SD
 INCLUDE = -I/opt/opendingux-toolchain/usr/mipsel-unknown-linux-uclibc/sys-include
 LIB = -L/opt/opendingux-toolchain/usr/lib -Wl,-rpath=/opt/opendingux-toolchain/usr/lib
 endif
+#==gcw==
+ifeq ($(TARGET),gcw)
+CPP = /opt/opendingux-toolchain/usr/bin/mipsel-linux-gcc -DMOBILE_DEVICE -DGCW $(GENERAL_TWEAKS)
+SDL = -I/opt/opendingux-toolchain/usr/mipsel-unknown-linux-uclibc/sys-include/SDL -D_GNU_SOURCE=1 -D_REENTRANT
+INCLUDE = -I/opt/opendingux-toolchain/usr/mipsel-unknown-linux-uclibc/sys-include
+LIB = -L/opt/opendingux-toolchain/usr/lib -Wl,-rpath=/opt/opendingux-toolchain/usr/lib
+endif
 #==Pandora==
 ifeq ($(TARGET),pandora)
 #CPP = /opt/pandora/bin/arm-angstrom-linux-gnueabi-gcc -DARMCPU -DPANDORA $(GENERAL_TWEAKS)
@@ -58,16 +65,6 @@ CPP = /opt/pandora/arm-2011.03/bin/arm-none-linux-gnueabi-gcc -DARMCPU -DPANDORA
 SDL = `/opt/pandora/arm-2011.03/usr/bin/sdl-config --cflags`
 INCLUDE = -I/opt/pandora/arm-2011.03/usr/include
 LIB = -L/opt/pandora/arm-2011.03/usr/lib -Wl,-rpath=/opt/pandora/arm-2011.03/usr/lib
-endif
-#==Maemo 5==
-ifeq ($(TARGET),maemo5)
-CPP = gcc -DARMCPU -DMAEMO -DMAEMO5 $(GENERAL_TWEAKS)
-SDL = `sdl-config --cflags`
-endif
-#==Maemo 6==
-ifeq ($(TARGET),maemo6)
-CPP = gcc -DARMCPU -DMAEMO -DMAEMO6 $(GENERAL_TWEAKS)
-SDL = `sdl-config --cflags`
 endif
 
 all: puzzletube
