@@ -45,6 +45,7 @@ void resize(Uint16 w,Uint16 h)
   spSetPerspective(50.0,(float)spGetWindowSurface()->w/(float)spGetWindowSurface()->h,0.1,100);
 
   //Font Loading
+  spFontSetShadeColor(65535);
   if (font)
     spFontDelete(font);
   font = spFontLoad(FONT_LOCATION,FONT_SIZE*spGetSizeFactor()>>SP_ACCURACY);
@@ -62,6 +63,7 @@ void resize(Uint16 w,Uint16 h)
   spFontAddButton( font, 'E', SP_BUTTON_SELECT_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
   settings_set_font(font);
 
+  spFontSetShadeColor(48631);
   if (small_font)
     spFontDelete(small_font);
   small_font = spFontLoad(FONT_LOCATION,FONT_SMALL_SIZE*spGetSizeFactor()>>SP_ACCURACY);
@@ -79,6 +81,7 @@ void resize(Uint16 w,Uint16 h)
   spFontAddButton( small_font, 'E', SP_BUTTON_SELECT_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
   settings_set_small_font(small_font);
 
+  spFontSetShadeColor(65535);
   if (middle_font)
     spFontDelete(middle_font);
   middle_font = spFontLoad(FONT_LOCATION,FONT_MIDDLE_SIZE*spGetSizeFactor()>>SP_ACCURACY);
@@ -96,6 +99,7 @@ void resize(Uint16 w,Uint16 h)
   spFontAddButton( middle_font, 'E', SP_BUTTON_SELECT_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
   settings_set_middle_font(middle_font);
 
+  spFontSetShadeColor(65535);
   if (countdown_font)
     spFontDelete(countdown_font);
   countdown_font = spFontLoad(FONT_LOCATION,FONT_COUNTDOWN_SIZE*spGetSizeFactor()>>SP_ACCURACY);
