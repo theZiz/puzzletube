@@ -23,8 +23,7 @@
 typedef SDL_Surface *PSDL_Surface;
 int splash_counter;
 Sint32 splash_rotation;
-SDL_Surface *splash1,*splash2;
-PSDL_Surface sparrow;//[6];
+PSDL_Surface sparrow;
 
 void draw_splash(void)
 {
@@ -34,59 +33,7 @@ void draw_splash(void)
   spSetZSet(0);
   spSetZTest(0);
   
-  SDL_Surface *mom = NULL;
-  if (splash_counter>SPLASH_WAIT*2)
-    mom = splash1;
-  else
-  if (splash_counter>SPLASH_WAIT && splash_counter<=SPLASH_WAIT*2)
-    mom = splash2;
-  else
-    mom = sparrow;
-  
-  if (mom!=NULL)
-    spBlitSurface(spGetWindowSurface()->w/2,spGetWindowSurface()->h/2,-1,mom);
-  /*else
-  {
-    spSetZSet(1);
-    spSetZTest(1);
-    spTranslate(0,0,(-13<<SP_ACCURACY-1));
-    spRotateX(splash_rotation);
-    spRotateY(splash_rotation);
-    spRotateZ(splash_rotation);
-    //Front / Back
-    spBindTexture(sparrow[0]);
-    spQuadTex3D(-3<<SP_ACCURACY-1, 3<<SP_ACCURACY-1, 3<<SP_ACCURACY-1,sparrow[0]->w-SP_FONT_EXTRASPACE-1,sparrow[0]->h-SP_FONT_EXTRASPACE-1,
-                -3<<SP_ACCURACY-1,-3<<SP_ACCURACY-1, 3<<SP_ACCURACY-1,sparrow[0]->w-SP_FONT_EXTRASPACE-1,SP_FONT_EXTRASPACE,
-                 3<<SP_ACCURACY-1,-3<<SP_ACCURACY-1, 3<<SP_ACCURACY-1,SP_FONT_EXTRASPACE,SP_FONT_EXTRASPACE,
-                 3<<SP_ACCURACY-1, 3<<SP_ACCURACY-1, 3<<SP_ACCURACY-1,SP_FONT_EXTRASPACE,sparrow[0]->h-SP_FONT_EXTRASPACE-1,65535);
-    spBindTexture(sparrow[3]);
-    spQuadTex3D( 3<<SP_ACCURACY-1, 3<<SP_ACCURACY-1,-3<<SP_ACCURACY-1,sparrow[0]->w-SP_FONT_EXTRASPACE-1,sparrow[0]->h-SP_FONT_EXTRASPACE-1,
-                 3<<SP_ACCURACY-1,-3<<SP_ACCURACY-1,-3<<SP_ACCURACY-1,sparrow[0]->w-SP_FONT_EXTRASPACE-1,SP_FONT_EXTRASPACE,
-                -3<<SP_ACCURACY-1,-3<<SP_ACCURACY-1,-3<<SP_ACCURACY-1,SP_FONT_EXTRASPACE,SP_FONT_EXTRASPACE,
-                -3<<SP_ACCURACY-1, 3<<SP_ACCURACY-1,-3<<SP_ACCURACY-1,SP_FONT_EXTRASPACE,sparrow[0]->h-SP_FONT_EXTRASPACE-1,65535);
-    //Left / Right
-    spBindTexture(sparrow[1]);
-    spQuadTex3D(-3<<SP_ACCURACY-1, 3<<SP_ACCURACY-1, 3<<SP_ACCURACY-1,sparrow[0]->w-SP_FONT_EXTRASPACE-1,sparrow[0]->h-SP_FONT_EXTRASPACE-1,
-                -3<<SP_ACCURACY-1, 3<<SP_ACCURACY-1,-3<<SP_ACCURACY-1,sparrow[0]->w-SP_FONT_EXTRASPACE-1,SP_FONT_EXTRASPACE,
-                -3<<SP_ACCURACY-1,-3<<SP_ACCURACY-1,-3<<SP_ACCURACY-1,SP_FONT_EXTRASPACE,SP_FONT_EXTRASPACE,
-                -3<<SP_ACCURACY-1,-3<<SP_ACCURACY-1, 3<<SP_ACCURACY-1,SP_FONT_EXTRASPACE,sparrow[0]->h-SP_FONT_EXTRASPACE-1,65535);
-    spBindTexture(sparrow[4]);
-    spQuadTex3D( 3<<SP_ACCURACY-1,-3<<SP_ACCURACY-1, 3<<SP_ACCURACY-1,sparrow[0]->w-SP_FONT_EXTRASPACE-1,sparrow[0]->h-SP_FONT_EXTRASPACE-1,
-                 3<<SP_ACCURACY-1,-3<<SP_ACCURACY-1,-3<<SP_ACCURACY-1,sparrow[0]->w-SP_FONT_EXTRASPACE-1,SP_FONT_EXTRASPACE,
-                 3<<SP_ACCURACY-1, 3<<SP_ACCURACY-1,-3<<SP_ACCURACY-1,SP_FONT_EXTRASPACE,SP_FONT_EXTRASPACE,
-                 3<<SP_ACCURACY-1, 3<<SP_ACCURACY-1, 3<<SP_ACCURACY-1,SP_FONT_EXTRASPACE,sparrow[0]->h-SP_FONT_EXTRASPACE-1,65535);
-    //Up / Down
-    spBindTexture(sparrow[2]);
-    spQuadTex3D( 3<<SP_ACCURACY-1, 3<<SP_ACCURACY-1, 3<<SP_ACCURACY-1,sparrow[0]->w-SP_FONT_EXTRASPACE-1,sparrow[0]->h-SP_FONT_EXTRASPACE-1,
-                 3<<SP_ACCURACY-1, 3<<SP_ACCURACY-1,-3<<SP_ACCURACY-1,sparrow[0]->w-SP_FONT_EXTRASPACE-1,SP_FONT_EXTRASPACE,
-                -3<<SP_ACCURACY-1, 3<<SP_ACCURACY-1,-3<<SP_ACCURACY-1,SP_FONT_EXTRASPACE,SP_FONT_EXTRASPACE,
-                -3<<SP_ACCURACY-1, 3<<SP_ACCURACY-1, 3<<SP_ACCURACY-1,SP_FONT_EXTRASPACE,sparrow[0]->h-SP_FONT_EXTRASPACE-1,65535);
-    spBindTexture(sparrow[5]);
-    spQuadTex3D(-3<<SP_ACCURACY-1,-3<<SP_ACCURACY-1, 3<<SP_ACCURACY-1,sparrow[0]->w-SP_FONT_EXTRASPACE-1,sparrow[0]->h-SP_FONT_EXTRASPACE-1,
-                -3<<SP_ACCURACY-1,-3<<SP_ACCURACY-1,-3<<SP_ACCURACY-1,sparrow[0]->w-SP_FONT_EXTRASPACE-1,SP_FONT_EXTRASPACE,
-                 3<<SP_ACCURACY-1,-3<<SP_ACCURACY-1,-3<<SP_ACCURACY-1,SP_FONT_EXTRASPACE,SP_FONT_EXTRASPACE,
-                 3<<SP_ACCURACY-1,-3<<SP_ACCURACY-1, 3<<SP_ACCURACY-1,SP_FONT_EXTRASPACE,sparrow[0]->h-SP_FONT_EXTRASPACE-1,65535);
-  }*/
+  spBlitSurface(spGetWindowSurface()->w/2,spGetWindowSurface()->h/2,-1,sparrow);
   spFlip();  
 }
 
@@ -106,7 +53,7 @@ int calc_splash(Uint32 steps)
     engineInput->button[SP_BUTTON_B] = 0;
     engineInput->button[SP_BUTTON_X] = 0;
     engineInput->button[SP_BUTTON_Y] = 0;
-    splash_counter = (splash_counter/SPLASH_WAIT)*SPLASH_WAIT;
+    return 1;
   }
   return 0;
 }
@@ -114,33 +61,9 @@ int calc_splash(Uint32 steps)
 void run_splashscreen(void (*resize)(Uint16 w,Uint16 h))
 {
   splash_rotation = 0;
-  if ((spGetSizeFactor()>>SP_ACCURACY) <= 1)
-  {
-    splash1 = spLoadSurface("./images/splash_320.png");
-    splash2 = spLoadSurface("./images/sponsor_320.png");
-  }
-  else
-  {
-    splash1 = spLoadSurface("./images/splash_800.png");
-    splash2 = spLoadSurface("./images/sponsor_800.png");
-  }
   sparrow = spLoadSurface("./images/sparrow.png");
-  /*sparrow[0] = spLoadSurface("./images/sparrow_1.png");
-  sparrow[1] = spLoadSurface("./images/sparrow_2.png");
-  sparrow[2] = spLoadSurface("./images/sparrow_3.png");
-  sparrow[3] = spLoadSurface("./images/sparrow_4.png");
-  sparrow[4] = spLoadSurface("./images/sparrow_5.png");
-  sparrow[5] = spLoadSurface("./images/sparrow_6.png");*/
-  splash_counter = SPLASH_WAIT*3;
+  splash_counter = SPLASH_WAIT;
   spLoop(draw_splash,calc_splash,10,resize,NULL);
-  SDL_FreeSurface(splash1);
-  SDL_FreeSurface(splash2);
-  /*SDL_FreeSurface(sparrow[0]);
-  SDL_FreeSurface(sparrow[1]);
-  SDL_FreeSurface(sparrow[2]);
-  SDL_FreeSurface(sparrow[3]);
-  SDL_FreeSurface(sparrow[4]);
-  SDL_FreeSurface(sparrow[5]);*/
   SDL_FreeSurface(sparrow);
 }
 
