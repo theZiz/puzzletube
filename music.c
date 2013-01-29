@@ -134,7 +134,7 @@ void calc_music(int steps)
   int i;
   for (i = 0;i<steps;i++)
   {
-    volume_wait--;
+    /*volume_wait--;
     if (spGetInput()->button[SP_BUTTON_VOLPLUS] && volume_wait<=0 && settings_get_volume()<100)
     {
       settings_set_volume(settings_get_volume()+1);
@@ -148,7 +148,7 @@ void calc_music(int steps)
       set_volume(settings_get_volume());
       settings_save();
       volume_wait = 25;
-    }
+    }*/
   }
   if (musicFade>5000)
     return;
