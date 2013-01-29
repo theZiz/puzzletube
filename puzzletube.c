@@ -42,7 +42,7 @@ void resize(Uint16 w,Uint16 h)
 {
   //Setup of the new/resized window
   spSelectRenderTarget(spGetWindowSurface());
-  spSetPerspective(50.0,(float)spGetWindowSurface()->w/(float)spGetWindowSurface()->h,0.1,100);
+  spSetPerspective(130.0,(float)spGetWindowSurface()->w/(float)spGetWindowSurface()->h,0.1,100);
 
   //Font Loading
   if (font)
