@@ -1,4 +1,4 @@
 # Possible Languages names
 --:languages
 en:Language: English
-# de:Sprache: Deutsch
+de:Sprache: Deutsch

@@ -65,6 +65,7 @@ typedef struct sparticle {
 } tparticle;
 
 
+void draw_stone(int type,int h,int s,int v,int a,Sint32 posx_zero);
 int run_game(int playernumber_,int starAdd,void (*resize)(Uint16 w,Uint16 h));
 void prepare_game_objects(char complete);
 void delete_game_objects();

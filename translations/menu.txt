@@ -1,5 +1,10 @@
 # sparrow3d translation file for the menu texts
 
+# filenames for the flags. ;)
+--:flag.png
+en:flag-en.png
+de:flag-de.png
+
 # Menu
 --:Free Game
 en:Free Game
@@ -21,15 +26,9 @@ de:Ende
 --:SETTINGS
 en:SETTINGS
 de:EINSTELLUNGEN
---:Stone Quality: Flat
-en:Stone Quality: Flat
-de:Stein Qualität: Flach
---:Stone Quality: Border
-en:Stone Quality: Border
-de:Stein Qualität: Rand
---:Stone Quality: Texture
-en:Stone Quality: Texture
-de:Stein Qualität: Texturiert
+--:Stone Quality:
+en:Stone Quality:
+de:Stein Qualität:
 --:Stars: Off
 en:Stars: Off
 de:Sterne: Keine
