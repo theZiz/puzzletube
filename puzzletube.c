@@ -122,6 +122,7 @@ int main(int argc, char **argv)
 	highscore_load();
 
 	//sparrow3D Init
+	spSetDefaultWindowSize( 800, 480 );
 	spInitCore();
 	spSetAffineTextureHack(0); //We don't need it :)
 	spInitMath();

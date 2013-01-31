@@ -110,7 +110,7 @@ void resize_particle(int winX,int winY)
   w = winY*2/6;
   if (w&1)
     w++;
-  dummy = spCreateSurface(w,w);
+  dummy = spCreateSurface(w,w/8);
   SDL_LockSurface(dummy);
   pixel = dummy->pixels;
   //memset(pixel,255,dummy->w*dummy->h*4);
