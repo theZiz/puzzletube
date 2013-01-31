@@ -1,10 +1,12 @@
 ToDo til final (1.1) release:
-- Settings menu better
-	- Showing game modi - somehow
-- Buttons instead of letters in normal mode?
 - Flags at first start
 - Multi Language support (German, English)
+	- Highscore
+	- Help
+	- Starting game
+	- ingame
 - (better) Help at start / in menu
 - Custom Music Option (with folder)
 - High Score Goals like in Trackmania (bronce, silver, gold and green)
+- Showing, which place in highscore you got
 - More channels for audio?

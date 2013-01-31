@@ -551,16 +551,16 @@ int calc_menu(Uint32 steps)
 			settings_set_control(settings_get_control()+1);
 			menu_block = 1;
 		}
-		if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 4 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_language()>0)
+		if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 4 && engineInput->axis[0]<0 && menu_wait <= 0)
 		{
-			settings_set_language(settings_get_language()-1);
+			settings_set_language((settings_get_language()+spGetPossibleLanguagesCount()-1)%spGetPossibleLanguagesCount());
 			spDeleteSurface(flag);
 			flag = spLoadSurface(spGetTranslationFromCaption(menu_bundle,"flag.png"));
 			menu_block = 1;
 		}
-		if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 4 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_language()<spGetPossibleLanguagesCount()-1)
+		if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 4 && engineInput->axis[0]>0 && menu_wait <= 0)
 		{
-			settings_set_language(settings_get_language()+1);
+			settings_set_language((settings_get_language()+1)%spGetPossibleLanguagesCount());
 			spDeleteSurface(flag);
 			flag = spLoadSurface(spGetTranslationFromCaption(menu_bundle,"flag.png"));
 			menu_block = 1;
