@@ -41,6 +41,7 @@ void init_music()
   explosion_chunk[2] = spSoundLoad("./sounds/Explosion3.ogg");
   explosion_chunk[3] = spSoundLoad("./sounds/Explosion4.ogg");
   switch_chunk = spSoundLoad("./sounds/Tile Switch.ogg");
+  set_volume(settings_get_volume());
 }
 
 void move_sound_on()

@@ -27,6 +27,7 @@
 void (*menu_resize)(Uint16 w,Uint16 h);
 
 int menu_counter = 0;
+int star_counter = 0;
 int state = 0;
 int nextstate = 0;
 Sint32 menu_choice;
@@ -52,12 +53,13 @@ void draw_menu(void)
 	spSetZSet(0);
 	spSetZTest(0);
 	spResetZBuffer();
-	//spClearTarget(BACKGROUND_COLOR);
 	
-	spIdentity();
-	spTranslate(0,0,-20<<SP_ACCURACY);
-	draw_stars(menu_counter*10);
-	spRotate(0,1<<SP_ACCURACY,0,menu_counter*10);
+	switch (settings_get_stars_rotating())
+	{
+		case 2: case 1:draw_stars(star_counter*10); break;
+		default:
+			spClearTarget(BACKGROUND_COLOR);
+	}
 	#ifdef MENU_DEBUG
 		printf("%i:	 Drew stars\n",SDL_GetTicks());
 	#endif
@@ -95,7 +97,7 @@ void draw_menu(void)
 		case 1: //options
 			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),1*engineWindowY/10+(spSin(menu_counter*300+6*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"SETTINGS"),font);
 			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/10+(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Stone Quality:"),font);
-			factor = 27 << SP_ACCURACY - 8;
+			factor = spDiv(27 << SP_ACCURACY - 8,spGetSizeFactor());
 			spTranslate(( (menu_fade*spGetSizeFactor()>>SP_ACCURACY+2)+spFontWidth(spGetTranslationFromCaption(menu_bundle,"Stone Quality:"),font)/2)*factor, (2*engineWindowY/10-(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2))*factor,-1<<SP_ACCURACY-2);
 			draw_stone(0,0,255,255,4,0);
 			spTranslate((-(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2)-spFontWidth(spGetTranslationFromCaption(menu_bundle,"Stone Quality:"),font)/2)*factor,-(2*engineWindowY/10-(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2))*factor, 1<<SP_ACCURACY-2);
@@ -353,6 +355,8 @@ void draw_menu(void)
 int calc_menu(Uint32 steps)
 {
 	menu_counter += steps;
+	if (settings_get_stars_rotating()==2)
+		star_counter += steps;
 	calc_music(steps);
 	PspInput engineInput = spGetInput();
 	if (menu_fade>0)
@@ -382,7 +386,7 @@ int calc_menu(Uint32 steps)
 					prepare_game_objects(0);
 					rotating_sound_off();
 					settings_save();
-					menu_counter = run_game(1,menu_counter*10,menu_resize)/10;
+					star_counter = run_game(1,star_counter*10,menu_resize)/10;
 					engineInput->button[SP_BUTTON_START] = 0;
 					engineInput->button[SP_BUTTON_A] = 0;
 					engineInput->button[SP_BUTTON_B] = 0;
