@@ -36,6 +36,7 @@ int menu_fade;
 int menu_wait = 0;
 int menu_block = 0;
 spBundlePointer menu_bundle;
+SDL_Surface* flag;
 
 void draw_menu(void)
 {
@@ -96,11 +97,13 @@ void draw_menu(void)
 			break;
 		case 1: //options
 			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),1*engineWindowY/10+(spSin(menu_counter*300+6*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"SETTINGS"),font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/10+(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Stone Quality:"),font);
+			spFontDrawMiddle(engineWindowX/2+((menu_fade-32)*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/10+(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Stone Quality:"),font);
 			factor = spDiv(27 << SP_ACCURACY - 8,spGetSizeFactor());
-			spTranslate(( (menu_fade*spGetSizeFactor()>>SP_ACCURACY+2)+spFontWidth(spGetTranslationFromCaption(menu_bundle,"Stone Quality:"),font)/2)*factor, (2*engineWindowY/10-(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2))*factor,-1<<SP_ACCURACY-2);
-			draw_stone(0,0,255,255,4,0);
-			spTranslate((-(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2)-spFontWidth(spGetTranslationFromCaption(menu_bundle,"Stone Quality:"),font)/2)*factor,-(2*engineWindowY/10-(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2))*factor, 1<<SP_ACCURACY-2);
+			spTranslate(( ((menu_fade-32)*spGetSizeFactor()>>SP_ACCURACY+2)+spFontWidth(spGetTranslationFromCaption(menu_bundle,"Stone Quality:"),font)/2)*factor, (2*engineWindowY/10-(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2))*factor,-1<<SP_ACCURACY-2);
+			spRotateZ(-spSin(menu_counter << 8) >> 2);
+			draw_stone(6,get_type_color_h(6,(menu_counter*16)%(2*SP_PI)),get_type_color_s(6,(menu_counter*16)%(2*SP_PI)),get_type_color_v(6,(menu_counter*16)%(2*SP_PI)),4,0,(menu_counter*16)%(2*SP_PI));
+			spRotateZ(spSin(menu_counter << 8) >> 2);
+			spTranslate((-((menu_fade-32)*spGetSizeFactor()>>SP_ACCURACY+2)-spFontWidth(spGetTranslationFromCaption(menu_bundle,"Stone Quality:"),font)/2)*factor,-(2*engineWindowY/10-(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2))*factor, 1<<SP_ACCURACY-2);
 			switch (settings_get_stars_rotating())
 			{
 				case 0: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/10+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Stars: Off"),font); break;
@@ -119,7 +122,9 @@ void draw_menu(void)
 				case 2: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/10+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Control: Padmode"),font); break;
 			}
 
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/10+(spSin(menu_counter*300+1*SP_PI/4)>>SP_ACCURACY-2),-1,spGetPossibleLanguageName(settings_get_language()),font);
+			spFontDrawMiddle(engineWindowX/2+((menu_fade-80)*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/10+(spSin(menu_counter*300+1*SP_PI/4)>>SP_ACCURACY-2),-1,spGetPossibleLanguageName(settings_get_language()),font);
+			spRotozoomSurface(spFontWidth(spGetPossibleLanguageName(settings_get_language()),font)/2+engineWindowX/2+((menu_fade+40)*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/10+(spSin(menu_counter*300+1*SP_PI/4)>>SP_ACCURACY-2)+font->maxheight/2,-1,flag,spGetSizeFactor() >> 3,spGetSizeFactor() >> 3,spSin(menu_counter << 8) >> 2);
+
 			sprintf(buffer,"Volume %i%%",settings_get_volume());
 			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),7*engineWindowY/10+(spSin(menu_counter*300+0*SP_PI/4)>>SP_ACCURACY-2),-1,buffer,font);
 			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),8*engineWindowY/10+(spSin(menu_counter*300-1*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Back to Menu"),font);
@@ -128,9 +133,9 @@ void draw_menu(void)
 
 
 			spTranslate(0,1<<SP_ACCURACY-2,-1<<SP_ACCURACY-1);
-			spTranslate(-9<<SP_ACCURACY,(5<<SP_ACCURACY)-menu_choice*4/2,0);
+			spTranslate(-10<<SP_ACCURACY,(5<<SP_ACCURACY)-menu_choice*4/2,0);
 			draw_particle_circle(-1,menu_counter);
-			spTranslate(18<<SP_ACCURACY,0,0);
+			spTranslate( 20<<SP_ACCURACY,0,0);
 			draw_particle_circle(+1,menu_counter);
 			break;
 		case 2: //Free Game
@@ -536,11 +541,15 @@ int calc_menu(Uint32 steps)
 		if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 4 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_language()>0)
 		{
 			settings_set_language(settings_get_language()-1);
+			spDeleteSurface(flag);
+			flag = spLoadSurface(spGetTranslationFromCaption(menu_bundle,"flag.png"));
 			menu_block = 1;
 		}
 		if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 4 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_language()<spGetPossibleLanguagesCount()-1)
 		{
 			settings_set_language(settings_get_language()+1);
+			spDeleteSurface(flag);
+			flag = spLoadSurface(spGetTranslationFromCaption(menu_bundle,"flag.png"));
 			menu_block = 1;
 		}
 		
@@ -580,6 +589,8 @@ int calc_menu(Uint32 steps)
 					break;
 				case 4: //Language
 					settings_set_language((settings_get_language()+1)%spGetPossibleLanguagesCount());
+					spDeleteSurface(flag);
+					flag = spLoadSurface(spGetTranslationFromCaption(menu_bundle,"flag.png"));
 					break;
 				case 6: //Back
 					settings_save();
@@ -726,6 +737,7 @@ void run_menu(void (*resize)(Uint16 w,Uint16 h))
 	menu_bundle = spLoadBundle("./translations/menu.txt",1);
 	menu_fade = MENUSIZE;
 	spSetDefaultLanguage(spGetPossibleLanguage(settings_get_language()));	
+	flag = spLoadSurface(spGetTranslationFromCaption(menu_bundle,"flag.png"));
 	if (settings_get_first_start())
 	{
 		menu_choice = 1<<SP_ACCURACY;
@@ -737,5 +749,6 @@ void run_menu(void (*resize)(Uint16 w,Uint16 h))
 	menu_resize = resize;
 	spLoop(draw_menu,calc_menu,10,resize,NULL);
 	spDeleteBundle(menu_bundle,0);
+	spDeleteSurface(flag);
 }
 

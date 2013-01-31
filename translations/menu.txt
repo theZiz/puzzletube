@@ -2,8 +2,8 @@
 
 # filenames for the flags. ;)
 --:flag.png
-en:flag-en.png
-de:flag-de.png
+en:./images/flag_en.png
+de:./images/flag_de.png
 
 # Menu
 --:Free Game
@@ -27,8 +27,8 @@ de:Ende
 en:SETTINGS
 de:EINSTELLUNGEN
 --:Stone Quality:
-en:Stone Quality:
-de:Stein Qualität:
+en:Stone Quality: 
+de:Stein Qualität: 
 --:Stars: Off
 en:Stars: Off
 de:Sterne: Keine

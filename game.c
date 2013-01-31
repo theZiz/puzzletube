@@ -144,7 +144,7 @@ void test_and_set_chain()
   }
 }
 
-Sint32 get_type_color_h(int type)
+Sint32 get_type_color_h(int type,int w)
 {
   if (type<6)
     return type*SP_PI/3;
@@ -156,7 +156,7 @@ Sint32 get_type_color_h(int type)
   return 0;
 }
 
-Uint8 get_type_color_s(int type)
+Uint8 get_type_color_s(int type,int w)
 {
   if (type<6)
     return 255;
@@ -168,7 +168,7 @@ Uint8 get_type_color_s(int type)
   return 0;
 }
 
-Uint8 get_type_color_v(int type)
+Uint8 get_type_color_v(int type,int w)
 {
   if (type==2) //color blindness optimization
     return 210;
@@ -414,9 +414,9 @@ void remove_win_situations()
           stone[temp->y][temp->x].type=rand()%3+6;
       }
       
-      stone[temp->y][temp->x].h=get_type_color_h(stone[temp->y][temp->x].type);
-      stone[temp->y][temp->x].s=get_type_color_s(stone[temp->y][temp->x].type);
-      stone[temp->y][temp->x].v=get_type_color_v(stone[temp->y][temp->x].type);
+      stone[temp->y][temp->x].h=get_type_color_h(stone[temp->y][temp->x].type,w);
+      stone[temp->y][temp->x].s=get_type_color_s(stone[temp->y][temp->x].type,w);
+      stone[temp->y][temp->x].v=get_type_color_v(stone[temp->y][temp->x].type,w);
       temp=temp->next; 
     }
   }
@@ -462,9 +462,9 @@ void prepare_game_objects(char complete)
           else
             stone[y][a].type=rand()%3+6;
         }
-        stone[y][a].h=get_type_color_h(stone[y][a].type);
-        stone[y][a].s=get_type_color_s(stone[y][a].type);
-        stone[y][a].v=get_type_color_v(stone[y][a].type);
+        stone[y][a].h=get_type_color_h(stone[y][a].type,w);
+        stone[y][a].s=get_type_color_s(stone[y][a].type,w);
+        stone[y][a].v=get_type_color_v(stone[y][a].type,w);
         stone[y][a].falling=0;
         stone[y][a].new=0;
       }
@@ -781,7 +781,7 @@ void draw_particle2(int posx,int posy,Sint32 r,int time,SDL_Surface* particle)
 int last_rotate = 0;
 int choose_one = 0; //1 A, 2 B, 3 X, 4 Y
 
-void draw_stone(int type,int h,int s,int v,int a,Sint32 posx_zero)
+void draw_stone(int type,int h,int s,int v,int a,Sint32 posx_zero,int w)
 {
 	if (settings_get_stone_quality() == 2)
 	{
@@ -925,9 +925,9 @@ void draw_game(void)
     {
       if (stone[(y>>1)+3][a].type<0)
         continue;
-      stone[(y>>1)+3][a].h = get_type_color_h(stone[(y>>1)+3][a].type);
-      stone[(y>>1)+3][a].s = get_type_color_s(stone[(y>>1)+3][a].type);
-      stone[(y>>1)+3][a].v = get_type_color_v(stone[(y>>1)+3][a].type);
+      stone[(y>>1)+3][a].h = get_type_color_h(stone[(y>>1)+3][a].type,w);
+      stone[(y>>1)+3][a].s = get_type_color_s(stone[(y>>1)+3][a].type,w);
+      stone[(y>>1)+3][a].v = get_type_color_v(stone[(y>>1)+3][a].type,w);
       memcpy(matrix,modellViewMatrix,sizeof(Sint32)*16);
       pchange change=is_in_change(a,3+y/2);
       Sint32 px=spCos(a*SP_PI>>3)*5;
@@ -991,7 +991,7 @@ void draw_game(void)
         s=0;
       if (s>255)
         s=255;
-      draw_stone(stone[(y>>1)+3][a].type,stone[(y>>1)+3][a].h,s,v,a,posx[0]);
+      draw_stone(stone[(y>>1)+3][a].type,stone[(y>>1)+3][a].h,s,v,a,posx[0],w);
       memcpy(modellViewMatrix,matrix,sizeof(Sint32)*16);
     }
 		if (left_side)
@@ -1565,9 +1565,9 @@ int calc_game(Uint32 steps)
               else
                 stone[y][a].type=rand()%3+6;
             }
-            stone[y][a].h=get_type_color_h(stone[y][a].type);
-            stone[y][a].s=get_type_color_s(stone[y][a].type);
-            stone[y][a].v=get_type_color_v(stone[y][a].type);
+            stone[y][a].h=get_type_color_h(stone[y][a].type,w);
+            stone[y][a].s=get_type_color_s(stone[y][a].type,w);
+            stone[y][a].v=get_type_color_v(stone[y][a].type,w);
             stone[y][a].falling=0;
             stone[y][a].new=NEW_TIME;
           }
@@ -1601,9 +1601,9 @@ int calc_game(Uint32 steps)
               else
                 stone[y][a].type=rand()%3+6;
             }
-            stone[y][a].h=get_type_color_h(stone[y][a].type);
-            stone[y][a].s=get_type_color_s(stone[y][a].type);
-            stone[y][a].v=get_type_color_v(stone[y][a].type);
+            stone[y][a].h=get_type_color_h(stone[y][a].type,w);
+            stone[y][a].s=get_type_color_s(stone[y][a].type,w);
+            stone[y][a].v=get_type_color_v(stone[y][a].type,w);
             stone[y][a].falling=0;
             stone[y][a].new=NEW_TIME;
           }
@@ -2036,7 +2036,7 @@ int calc_game(Uint32 steps)
   
   calc_lettering(steps);
     
-  w+=(steps*16)%(2*SP_PI);
+  w =(w+(steps*16))%(2*SP_PI);
   if (engineInput->button[SP_BUTTON_SELECT])
     return 1;
   return 0; 

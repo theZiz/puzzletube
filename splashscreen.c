@@ -18,6 +18,7 @@
  Alexander Matthes (Ziz) , zizsdl_at_googlemail.com                         
 */
 #include "splashscreen.h"
+#include "settings.h"
 
 #define SPLASH_WAIT 2000
 typedef SDL_Surface *PSDL_Surface;
@@ -32,9 +33,10 @@ void draw_splash(void)
   spIdentity();
   spSetZSet(0);
   spSetZTest(0);
-  
-  spBlitSurface(spGetWindowSurface()->w/2,spGetWindowSurface()->h/2,-1,sparrow);
-  spFlip();  
+  spFontPointer font = settings_get_small_font();
+  spBlitSurface(spGetWindowSurface()->w/2,spGetWindowSurface()->h/2-font->maxheight/2,-1,sparrow);
+  spFontDrawMiddle(spGetWindowSurface()->w/2,spGetWindowSurface()->h/2+sparrow->h/2,-1,"Made  with  the  Sparrow3d  Engine  by  Ziz",font);
+  spFlip();  	
 }
 
 int calc_splash(Uint32 steps)
