@@ -1184,13 +1184,13 @@ void draw_game(void)
     int y = 3+(posy[0]>>SP_ACCURACY+1);    
     spRotate(0,+1<<SP_ACCURACY,0, (posx[0]>>SP_HALF_ACCURACY+1)*(SP_PI>>SP_HALF_ACCURACY+2));
     if (choose_one!=1 && stone[y][(x+1) & 15].new == 0 && stone[y][(x+1) & 15].falling == 0 && stone[y][(x+1) & 15].type >= 0)
-      spBlit3D(-7<<SP_ACCURACY-2,posy[0],23<<SP_ACCURACY-2,spFontGetLetter(small_font,SP_BUTTON_LEFT_NAME[0])->surface);
+      spBlit3D(-7<<SP_ACCURACY-2,posy[0],23<<SP_ACCURACY-2,spFontGetButton(small_font,'A')->surface);
     if (choose_one!=2 && stone[y][(x+15) & 15].new == 0 && stone[y][(x+15) & 15].falling == 0 && stone[y][(x+15) & 15].type >= 0)
-      spBlit3D(+7<<SP_ACCURACY-2,posy[0],23<<SP_ACCURACY-2,spFontGetLetter(small_font,SP_BUTTON_RIGHT_NAME[0])->surface);
+      spBlit3D(+7<<SP_ACCURACY-2,posy[0],23<<SP_ACCURACY-2,spFontGetButton(small_font,'B')->surface);
     if (choose_one!=3 && y>0 && stone[y-1][x].new == 0 && stone[y-1][x].falling == 0 && stone[y-1][x].type >= 0)
-      spBlit3D(0,posy[0]-(7<<SP_ACCURACY-2),23<<SP_ACCURACY-2,spFontGetLetter(small_font,SP_BUTTON_DOWN_NAME[0])->surface);
+      spBlit3D(0,posy[0]-(7<<SP_ACCURACY-2),23<<SP_ACCURACY-2,spFontGetButton(small_font,'X')->surface);
     if (choose_one!=4 && y<6 && stone[y+1][x].new == 0 && stone[y+1][x].falling == 0 && stone[y+1][x].type >= 0)
-      spBlit3D(0,posy[0]+(7<<SP_ACCURACY-2),23<<SP_ACCURACY-2,spFontGetLetter(small_font,SP_BUTTON_UP_NAME[0])->surface);
+      spBlit3D(0,posy[0]+(7<<SP_ACCURACY-2),23<<SP_ACCURACY-2,spFontGetButton(small_font,'Y')->surface);
     spRotate(0,-1<<SP_ACCURACY,0, (posx[0]>>SP_HALF_ACCURACY+1)*(SP_PI>>SP_HALF_ACCURACY+2));
     
     switch (choose_one)

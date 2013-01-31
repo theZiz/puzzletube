@@ -47,12 +47,30 @@ de:Partikel: Aus
 --:Control: Normal
 en:Control: Normal
 de:Steuerung: Normal
+--:Description Normal 1
+en:Move  a  selection  with  the  D-Pad  and  switch
+de:Bewege  ein  Auswahlrechteck  mit  dem  D-Pad  und
+--:Description Normal 2
+en:the  direct  neighbours  with  [A],[B],[X] oder [Y]
+de:tausche  die  direkten  Nachbarn  mit  [A],[B],[X] und [Y]
 --:Control: Snake
 en:Control: Snake
 de:Steuerung: Schlange
+--:Description Snake 1
+en:Move  a  "snake"  with  the  D-Pad  and
+de:Bewege  eine  "Schlange"  mit  dem  D-Pad  und
+--:Description Snake 2
+en:flip  head  and  tail  with  [A],[B],[X] or [Y]
+de:tausche  Kopf  und  Schwanz  mit  [A],[B],[X] oder [Y]
 --:Control: Padmode
-en:Control: Padmode
-de:Steuerung: Padmode
+en:Control: Padmode (hard)
+de:Steuerung: Padmode (schwer)
+--:Description Padmode 1
+en:Move  a  selection  with  the  D-Pad,  hold  any
+de:Bewege  ein  Auswahlrechteck  mit  dem  D-Pad, halte
+--:Description Padmode 2
+en:button  pressed,  select  another  stone  and  release
+de:einen  Button  gedrückt,  wähle  2.  Stein  und  lass  los
 --:Language
 en:Language: English
 de:Sprache: Deutsch

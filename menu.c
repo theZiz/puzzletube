@@ -110,17 +110,30 @@ void draw_menu(void)
 				case 1: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/10+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Stars: Still"),font); break;
 				case 2: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/10+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Stars: Rotating"),font); break;
 			}
-			if (settings_get_particles())
+			/*if (settings_get_particles())
 				spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/10+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Particles: On"),font);
 			else
-				spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/10+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Particles: Off"),font);
+				spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/10+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Particles: Off"),font);*/
 
 			switch (settings_get_control())
 			{
-				case 0: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/10+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Control: Normal"),font); break;
-				case 1: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/10+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Control: Snake"),font); break;
-				case 2: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/10+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Control: Padmode"),font); break;
+				case 0:
+					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/10+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Control: Normal"),font);
+					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),19*engineWindowY/40+(spSin(menu_counter*300+9*SP_PI/12)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Description Normal 1"),small_font);
+					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),22*engineWindowY/40+(spSin(menu_counter*300+7*SP_PI/12)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Description Normal 2"),small_font);
+					break;
+				case 1:
+					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/10+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Control: Snake"),font);
+					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),19*engineWindowY/40+(spSin(menu_counter*300+9*SP_PI/12)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Description Snake 1"),small_font);
+					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),22*engineWindowY/40+(spSin(menu_counter*300+7*SP_PI/12)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Description Snake 2"),small_font);
+					break;
+				case 2:
+					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/10+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Control: Padmode"),font);
+					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),19*engineWindowY/40+(spSin(menu_counter*300+9*SP_PI/12)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Description Padmode 1"),small_font);
+					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),22*engineWindowY/40+(spSin(menu_counter*300+7*SP_PI/12)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Description Padmode 2"),small_font);
+					break;
 			}
+			
 
 			spFontDrawMiddle(engineWindowX/2+((menu_fade-80)*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/10+(spSin(menu_counter*300+1*SP_PI/4)>>SP_ACCURACY-2),-1,spGetPossibleLanguageName(settings_get_language()),font);
 			spRotozoomSurface(spFontWidth(spGetPossibleLanguageName(settings_get_language()),font)/2+engineWindowX/2+((menu_fade+40)*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/10+(spSin(menu_counter*300+1*SP_PI/4)>>SP_ACCURACY-2)+font->maxheight/2,-1,flag,spGetSizeFactor() >> 3,spGetSizeFactor() >> 3,spSin(menu_counter << 8) >> 2);
@@ -133,9 +146,9 @@ void draw_menu(void)
 
 
 			spTranslate(0,1<<SP_ACCURACY-2,-1<<SP_ACCURACY-1);
-			spTranslate(-10<<SP_ACCURACY,(5<<SP_ACCURACY)-menu_choice*4/2,0);
+			spTranslate(-12<<SP_ACCURACY,(5<<SP_ACCURACY)-menu_choice*4/2,0);
 			draw_particle_circle(-1,menu_counter);
-			spTranslate( 20<<SP_ACCURACY,0,0);
+			spTranslate( 24<<SP_ACCURACY,0,0);
 			draw_particle_circle(+1,menu_counter);
 			break;
 		case 2: //Free Game
@@ -469,7 +482,6 @@ int calc_menu(Uint32 steps)
 			menu_move = 1;
 		if (engineInput->axis[1]<0 && menu_move==0 && (menu_choice>>SP_ACCURACY)>0)
 			menu_move = -1;
-		
 		if (menu_move != 0)
 		{
 			move_sound_on();
@@ -477,6 +489,7 @@ int calc_menu(Uint32 steps)
 			{
 				menu_choice += menu_move*4 << SP_ACCURACY-10;
 				if (menu_choice == ((menu_choice >>SP_ACCURACY)<<SP_ACCURACY))
+				if ((menu_choice>>SP_ACCURACY) != 3)
 					menu_move = 0;
 			}
 		}
@@ -518,7 +531,7 @@ int calc_menu(Uint32 steps)
 			settings_set_stars_rotating(settings_get_stars_rotating()+1);
 			menu_block = 1;
 		}
-		if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 2 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_particles()>0)
+		/*if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 2 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_particles()>0)
 		{
 			settings_set_particles(settings_get_particles()-1);
 			menu_block = 1;
@@ -527,13 +540,13 @@ int calc_menu(Uint32 steps)
 		{
 			settings_set_particles(settings_get_particles()+1);
 			menu_block = 1;
-		}
-		if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 3 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_control()>0)
+		}*/
+		if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 2 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_control()>0)
 		{
 			settings_set_control(settings_get_control()-1);
 			menu_block = 1;
 		}
-		if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 3 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_control()<2)
+		if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 2 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_control()<2)
 		{
 			settings_set_control(settings_get_control()+1);
 			menu_block = 1;
@@ -581,10 +594,10 @@ int calc_menu(Uint32 steps)
 				case 1: //Stars Rotating
 					settings_set_stars_rotating((settings_get_stars_rotating()+1)%3);
 					break;
-				case 2: //Particles
+				/*case 2: //Particles
 					settings_set_particles((settings_get_particles()+1)%2);
-					break;
-				case 3: //Control
+					break;*/
+				case 2: //Control
 					settings_set_control((settings_get_control()+1)%3);
 					break;
 				case 4: //Language
