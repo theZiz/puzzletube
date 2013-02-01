@@ -27,6 +27,10 @@
 #include "splashscreen.h"
 
 #define FONT_LOCATION "./font/Vollkorn-Bold.ttf"
+//#define FONT_LOCATION "./font/Comfortaa-Bold.ttf"
+//#define FONT_LOCATION "./font/Play-Bold.ttf"
+//#define FONT_LOCATION "./font/RobotoCondensed-Bold.ttf"
+//#define FONT_LOCATION "./font/Junicode-Bold.ttf"
 #define FONT_SIZE 16
 #define FONT_MIDDLE_SIZE 12
 #define FONT_SMALL_SIZE 12
@@ -122,7 +126,7 @@ int main(int argc, char **argv)
 	highscore_load();
 
 	//sparrow3D Init
-	spSetDefaultWindowSize( 800, 480 );
+	//spSetDefaultWindowSize( 800, 480 );
 	spInitCore();
 	spSetAffineTextureHack(0); //We don't need it :)
 	spInitMath();
