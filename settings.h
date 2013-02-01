@@ -30,10 +30,8 @@ int settings_get_stars_rotating();
 int settings_get_particles();
 int settings_get_volume();
 int settings_get_color();
-int settings_get_difficult();
 int settings_get_mode();
 int settings_get_control();
-int settings_get_highscore_choice();
 int settings_get_language();
 
 void settings_set_stone_quality(int value);
@@ -41,15 +39,13 @@ void settings_set_stars_rotating(int value);
 void settings_set_particles(int value);
 void settings_set_volume(int value);
 void settings_set_color(int value);
-void settings_set_difficult(int value);
 void settings_set_mode(int value);
 void settings_set_control(int value);
-void settings_set_highscore_choice(int value);
 void settings_set_language(int language);
 
-char* get_highscore_name(int game_mode,int difficult,int special,int rank);
-int get_highscore(int game_mode,int difficult,int special,int rank);
-void insert_highscore(int game_mode,int difficult,int special,char* name,int points);
+char* get_highscore_name(int game_mode,int difficult,int rank);
+int get_highscore(int game_mode,int difficult,int rank);
+void insert_highscore(int game_mode,int difficult,char* name,int points);
 
 spFontPointer settings_get_font();
 void settings_set_font(spFontPointer font);

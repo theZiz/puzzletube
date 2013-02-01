@@ -26,14 +26,14 @@
 #include "game.h"
 #include "splashscreen.h"
 
-#define FONT_LOCATION "./font/Vollkorn-Bold.ttf"
+//#define FONT_LOCATION "./font/Vollkorn-Bold.ttf"
 //#define FONT_LOCATION "./font/Comfortaa-Bold.ttf"
-//#define FONT_LOCATION "./font/Play-Bold.ttf"
+#define FONT_LOCATION "./font/Play-Bold.ttf"
 //#define FONT_LOCATION "./font/RobotoCondensed-Bold.ttf"
 //#define FONT_LOCATION "./font/Junicode-Bold.ttf"
 #define FONT_SIZE 16
-#define FONT_MIDDLE_SIZE 12
-#define FONT_SMALL_SIZE 12
+#define FONT_MIDDLE_SIZE 11
+#define FONT_SMALL_SIZE 11
 #define FONT_COUNTDOWN_SIZE 128
 
 SDL_Surface* screen;

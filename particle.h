@@ -23,6 +23,8 @@
 #include <SDL/SDL.h>
 #include <math.h>
 
+#define PARTICLE_ALPHA 140
+
 SDL_Surface* getSmallParticle();
 SDL_Surface* getMiddleParticle();
 SDL_Surface* getBigParticle();

@@ -162,6 +162,7 @@ SDL_Surface* getTimeSurface()
 
 void draw_particle_circle(int direction,int counter)
 {
+	spSetAlphaPattern4x4(PARTICLE_ALPHA,0);
   if (direction == -1)
   {
     //Left Circle
@@ -192,6 +193,7 @@ void draw_particle_circle(int direction,int counter)
     spBlit3D(-spCos(counter*700+11*SP_PI/10),spSin(counter*700+11*SP_PI/10),0,getSmallParticle());
     spBlit3D(-spCos(counter*700+10*SP_PI/10),spSin(counter*700+10*SP_PI/10),0,getSmallParticle());
   }
+  spDeactivatePattern();
 }  
 
 void draw_border(int x1,int y1,int x2,int y2,Uint16 color)

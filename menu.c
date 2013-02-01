@@ -75,7 +75,7 @@ void draw_menu(void)
 	int mode;
 	int colors;
 	int difficult;
-	int i;
+	int i,j;
 	char buffer[256];
 	Sint32 factor;
 	switch (state)
@@ -134,7 +134,6 @@ void draw_menu(void)
 					break;
 			}
 			
-
 			spFontDrawMiddle(engineWindowX/2+((menu_fade-80)*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/10+(spSin(menu_counter*300+1*SP_PI/4)>>SP_ACCURACY-2),-1,spGetPossibleLanguageName(settings_get_language()),font);
 			spRotozoomSurface(spFontWidth(spGetPossibleLanguageName(settings_get_language()),font)/2+engineWindowX/2+((menu_fade+40)*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/10+(spSin(menu_counter*300+1*SP_PI/4)>>SP_ACCURACY-2)+font->maxheight/2,-1,flag,spGetSizeFactor() >> 3,spGetSizeFactor() >> 3,spSin(menu_counter << 8) >> 2);
 
@@ -146,9 +145,9 @@ void draw_menu(void)
 
 
 			spTranslate(0,1<<SP_ACCURACY-2,-1<<SP_ACCURACY-1);
-			spTranslate(-12<<SP_ACCURACY,(5<<SP_ACCURACY)-menu_choice*4/2,0);
+			spTranslate(-11<<SP_ACCURACY,(5<<SP_ACCURACY)-menu_choice*4/2,0);
 			draw_particle_circle(-1,menu_counter);
-			spTranslate( 24<<SP_ACCURACY,0,0);
+			spTranslate( 22<<SP_ACCURACY,0,0);
 			draw_particle_circle(+1,menu_counter);
 			break;
 		case 2: //Free Game
@@ -165,10 +164,6 @@ void draw_menu(void)
 			else
 				spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/7+(spSin(menu_counter*300+3*SP_PI/3)>>SP_ACCURACY-2),-1,"Difficulty: Normal",font);
 			
-			if (settings_get_difficult())
-				spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/7+(spSin(menu_counter*300+2*SP_PI/3)>>SP_ACCURACY-2),-1,"Special Stones: On",font);
-			else
-				spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/7+(spSin(menu_counter*300+2*SP_PI/3)>>SP_ACCURACY-2),-1,"Special Stones: Off",font);
 			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/7+(spSin(menu_counter*300+1*SP_PI/3)>>SP_ACCURACY-2),-1,"Back to Menu",font);
 
 			spTranslate(0,1<<SP_ACCURACY-2,3<<SP_ACCURACY-1);
@@ -178,156 +173,69 @@ void draw_menu(void)
 			draw_particle_circle(+1,menu_counter);
 			break;
 		case 3: //High Score
-			switch (settings_get_highscore_choice())
+			#define HIGHSCORE_GAP_X		(engineWindowX/32)
+			#define HIGHSCORE_GAP_IN	(engineWindowX/64)
+			#define HIGHSCORE_WIDTH		((engineWindowX-(4*HIGHSCORE_GAP_X))/3)
+			#define HIGHSCORE_GAP_ABOVE (engineWindowY/5)
+			#define HIGHSCORE_GAP_Y	 	(engineWindowX/64)
+			#define HIGHSCORE_HEIGHT 	((engineWindowY-HIGHSCORE_GAP_ABOVE-(4*HIGHSCORE_GAP_Y))/2)
+					
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),engineWindowY/48+(spSin(menu_counter*300+6*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Highscore"),font);
+			spFontDrawMiddle(1*HIGHSCORE_GAP_X + 1*HIGHSCORE_WIDTH/2 +(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/48+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Points"),font);
+			spFontDrawMiddle(2*HIGHSCORE_GAP_X + 3*HIGHSCORE_WIDTH/2 +(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/48+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Survival"),font);
+			spFontDrawMiddle(3*HIGHSCORE_GAP_X + 5*HIGHSCORE_WIDTH/2 +(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/48+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Race"),font);
+			
+			draw_border(1*HIGHSCORE_GAP_X+                  (menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),HIGHSCORE_GAP_ABOVE+                 (spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),
+						1*HIGHSCORE_GAP_X+  HIGHSCORE_WIDTH+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),HIGHSCORE_GAP_ABOVE+HIGHSCORE_HEIGHT+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),65535);
+			draw_border(2*HIGHSCORE_GAP_X+  HIGHSCORE_WIDTH+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),HIGHSCORE_GAP_ABOVE+                 (spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),
+						2*HIGHSCORE_GAP_X+2*HIGHSCORE_WIDTH+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),HIGHSCORE_GAP_ABOVE+HIGHSCORE_HEIGHT+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),65535);
+			draw_border(3*HIGHSCORE_GAP_X+2*HIGHSCORE_WIDTH+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),HIGHSCORE_GAP_ABOVE+                 (spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),
+						3*HIGHSCORE_GAP_X+3*HIGHSCORE_WIDTH+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),HIGHSCORE_GAP_ABOVE+HIGHSCORE_HEIGHT+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),65535);
+			
+			draw_border(1*HIGHSCORE_GAP_X+                  (menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),HIGHSCORE_GAP_ABOVE+HIGHSCORE_GAP_Y+1*HIGHSCORE_HEIGHT+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),
+						1*HIGHSCORE_GAP_X+  HIGHSCORE_WIDTH+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),HIGHSCORE_GAP_ABOVE+HIGHSCORE_GAP_Y+2*HIGHSCORE_HEIGHT+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),65535);
+			draw_border(2*HIGHSCORE_GAP_X+  HIGHSCORE_WIDTH+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),HIGHSCORE_GAP_ABOVE+HIGHSCORE_GAP_Y+1*HIGHSCORE_HEIGHT+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),
+						2*HIGHSCORE_GAP_X+2*HIGHSCORE_WIDTH+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),HIGHSCORE_GAP_ABOVE+HIGHSCORE_GAP_Y+2*HIGHSCORE_HEIGHT+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),65535);
+			draw_border(3*HIGHSCORE_GAP_X+2*HIGHSCORE_WIDTH+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),HIGHSCORE_GAP_ABOVE+HIGHSCORE_GAP_Y+1*HIGHSCORE_HEIGHT+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),
+						3*HIGHSCORE_GAP_X+3*HIGHSCORE_WIDTH+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),HIGHSCORE_GAP_ABOVE+HIGHSCORE_GAP_Y+2*HIGHSCORE_HEIGHT+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),65535);
+			
+			
+			for (j = 0; j < 3; j++)
 			{
-				case 0: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),engineWindowY/16+(spSin(menu_counter*300+6*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Highscore - Points Mode",font); break;
-				case 1: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),engineWindowY/16+(spSin(menu_counter*300+6*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Highscore - Survival Mode",font); break;
-				case 2: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),engineWindowY/16+(spSin(menu_counter*300+6*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Highscore - Race Mode",font); break;
+				spFontDrawMiddle((j+1)*HIGHSCORE_GAP_X + (2*j+1)*HIGHSCORE_WIDTH/2 +(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),0*HIGHSCORE_HEIGHT/4+HIGHSCORE_GAP_ABOVE+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Normal"),font);	
+				for (i = 0; i < 3; i++)
+				{
+					Uint16 color = 65535; //for trophies :)
+					char* name = get_highscore_name(j,0,i);
+					sprintf(buffer,"%i. %c%c%c",i+1,name[0],name[1],name[2]);
+					spFontDraw((j+1)*HIGHSCORE_GAP_X+j*HIGHSCORE_WIDTH+HIGHSCORE_GAP_IN+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),(i+1)*HIGHSCORE_HEIGHT/4+HIGHSCORE_GAP_ABOVE+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,middle_font);
+					if (j==0)
+						sprintf(buffer,"%i",get_highscore(j,0,i));
+					else
+						sprintf(buffer,"%i.%i",get_highscore(j,0,i)/10,get_highscore(j,0,i)%10);
+					spFontDrawRight((j+1)*(HIGHSCORE_GAP_X+HIGHSCORE_WIDTH)-HIGHSCORE_GAP_IN+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),(i+1)*HIGHSCORE_HEIGHT/4+HIGHSCORE_GAP_ABOVE+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,middle_font);
+					spRectangle((j+1)*HIGHSCORE_GAP_X+(2*j+1)*HIGHSCORE_WIDTH/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),
+								middle_font->maxheight+2+(i+1)*HIGHSCORE_HEIGHT/4+HIGHSCORE_GAP_ABOVE+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),0,
+								HIGHSCORE_WIDTH-2*HIGHSCORE_GAP_IN,engineWindowY/128,color);
+				}			
+				spFontDrawMiddle((j+1)*HIGHSCORE_GAP_X + (2*j+1)*HIGHSCORE_WIDTH/2 +(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*HIGHSCORE_HEIGHT/4+HIGHSCORE_GAP_ABOVE+HIGHSCORE_GAP_Y+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Hard"),font);	
+				for (i = 0; i < 3; i++)
+				{
+					Uint16 color = 65535; //for trophies :)
+					char* name = get_highscore_name(j,1,i);
+					sprintf(buffer,"%i. %c%c%c",i+1,name[0],name[1],name[2]);
+					spFontDraw((j+1)*HIGHSCORE_GAP_X+j*HIGHSCORE_WIDTH+HIGHSCORE_GAP_IN+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),(i+5)*HIGHSCORE_HEIGHT/4+HIGHSCORE_GAP_ABOVE+HIGHSCORE_GAP_Y+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,middle_font);
+					if (j==0)
+						sprintf(buffer,"%i",get_highscore(j,1,i));
+					else
+						sprintf(buffer,"%i.%i",get_highscore(j,1,i)/10,get_highscore(j,1,i)%10);
+					spFontDrawRight((j+1)*(HIGHSCORE_GAP_X+HIGHSCORE_WIDTH)-HIGHSCORE_GAP_IN+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),(i+5)*HIGHSCORE_HEIGHT/4+HIGHSCORE_GAP_Y+HIGHSCORE_GAP_ABOVE+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,middle_font);
+					spRectangle((j+1)*HIGHSCORE_GAP_X+(2*j+1)*HIGHSCORE_WIDTH/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),
+								middle_font->maxheight+2+(i+5)*HIGHSCORE_HEIGHT/4+HIGHSCORE_GAP_Y+HIGHSCORE_GAP_ABOVE+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),0,
+								HIGHSCORE_WIDTH-2*HIGHSCORE_GAP_IN,engineWindowY/128,color);
+				}			
+				spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),30*engineWindowY/32+(spSin(menu_counter*300+2*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Any button: back"),small_font);
 			}
-			spTranslate(-11<<SP_ACCURACY,(33<<SP_ACCURACY-2),0);
-			draw_particle_circle(-1,menu_counter);
-			spBlit3D(0,0,0,spFontGetLetter(font,'L')->surface);
-			spTranslate(22<<SP_ACCURACY,0,0);
-			draw_particle_circle(+1,menu_counter);
-			spBlit3D(0,0,0,spFontGetLetter(font,'R')->surface);
-			
-			char* name1_1 = get_highscore_name(settings_get_highscore_choice(),0,0,0);
-			char* name1_2 = get_highscore_name(settings_get_highscore_choice(),0,0,1);
-			char* name1_3 = get_highscore_name(settings_get_highscore_choice(),0,0,2);
-			
-			char* name2_1 = get_highscore_name(settings_get_highscore_choice(),1,0,0);
-			char* name2_2 = get_highscore_name(settings_get_highscore_choice(),1,0,1);
-			char* name2_3 = get_highscore_name(settings_get_highscore_choice(),1,0,2);
-			
-			char* name3_1 = get_highscore_name(settings_get_highscore_choice(),0,1,0);
-			char* name3_2 = get_highscore_name(settings_get_highscore_choice(),0,1,1);
-			char* name3_3 = get_highscore_name(settings_get_highscore_choice(),0,1,2);
-			
-			char* name4_1 = get_highscore_name(settings_get_highscore_choice(),1,1,0);
-			char* name4_2 = get_highscore_name(settings_get_highscore_choice(),1,1,1);
-			char* name4_3 = get_highscore_name(settings_get_highscore_choice(),1,1,2);
-
-			int points1_1 = get_highscore(settings_get_highscore_choice(),0,0,0);
-			int points1_2 = get_highscore(settings_get_highscore_choice(),0,0,1);
-			int points1_3 = get_highscore(settings_get_highscore_choice(),0,0,2);
-			
-			int points2_1 = get_highscore(settings_get_highscore_choice(),1,0,0);
-			int points2_2 = get_highscore(settings_get_highscore_choice(),1,0,1);
-			int points2_3 = get_highscore(settings_get_highscore_choice(),1,0,2);
-			
-			int points3_1 = get_highscore(settings_get_highscore_choice(),0,1,0);
-			int points3_2 = get_highscore(settings_get_highscore_choice(),0,1,1);
-			int points3_3 = get_highscore(settings_get_highscore_choice(),0,1,2);
-			
-			int points4_1 = get_highscore(settings_get_highscore_choice(),1,1,0);
-			int points4_2 = get_highscore(settings_get_highscore_choice(),1,1,1);
-			int points4_3 = get_highscore(settings_get_highscore_choice(),1,1,2);
-			
-			//easy, no special stones
-			spFontDrawMiddle(17*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),7*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Normal",font);
-			sprintf(buffer,"1. %c%c%c",name1_1[0],name1_1[1],name1_1[2]);
-			spFontDraw		 (4*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),10*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,middle_font);
-			if (settings_get_highscore_choice() != 0)
-				sprintf(buffer,"%i.%i",points1_1/10,points1_1%10);
-			else
-				sprintf(buffer,"%i",points1_1);
-			spFontDrawRight(29*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),10*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,middle_font);
-			sprintf(buffer,"2. %c%c%c",name1_2[0],name1_2[1],name1_2[2]);
-			spFontDraw		 (4*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),12*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,small_font);
-			if (settings_get_highscore_choice() != 0)
-				sprintf(buffer,"%i.%i",points1_2/10,points1_2%10);
-			else
-				sprintf(buffer,"%i",points1_2);
-			spFontDrawRight(29*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),12*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,small_font);
-			sprintf(buffer,"3. %c%c%c",name1_3[0],name1_3[1],name1_3[2]);
-			spFontDraw		 (4*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),14*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,small_font);
-			if (settings_get_highscore_choice() != 0)
-				sprintf(buffer,"%i.%i",points1_3/10,points1_3%10);
-			else
-				sprintf(buffer,"%i",points1_3);
-			spFontDrawRight(29*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),14*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,small_font);
-			draw_border( 2*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),12*engineWindowY/64+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),
-									30*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),33*engineWindowY/64+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),65535);
-
-			//hard, no special stones
-			spFontDrawMiddle(48*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),7*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Hard",font);
-			sprintf(buffer,"1. %c%c%c",name2_1[0],name2_1[1],name2_1[2]);
-			spFontDraw		 (35*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),10*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,middle_font);
-			if (settings_get_highscore_choice() != 0)
-				sprintf(buffer,"%i.%i",points2_1/10,points2_1%10);
-			else
-				sprintf(buffer,"%i",points2_1);
-			spFontDrawRight(61*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),10*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,middle_font);
-			sprintf(buffer,"2. %c%c%c",name2_2[0],name2_2[1],name2_2[2]);
-			spFontDraw		 (35*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),12*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,small_font);
-			if (settings_get_highscore_choice() != 0)
-				sprintf(buffer,"%i.%i",points2_2/10,points2_2%10);
-			else
-			sprintf(buffer,"%i",points2_2);
-			spFontDrawRight(61*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),12*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,small_font);
-			sprintf(buffer,"3. %c%c%c",name2_3[0],name2_3[1],name2_3[2]);
-			spFontDraw		 (35*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),14*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,small_font);
-			if (settings_get_highscore_choice() != 0)
-				sprintf(buffer,"%i.%i",points2_3/10,points2_3%10);
-			else
-				sprintf(buffer,"%i",points2_3);
-			spFontDrawRight(61*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),14*engineWindowY/32+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,small_font);
-			draw_border(33*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),12*engineWindowY/64+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),
-									62*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),33*engineWindowY/64+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),65535);
-			
-			//easy, special stones
-			spFontDrawMiddle(17*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),19*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Normal, Special",font);
-			sprintf(buffer,"1. %c%c%c",name3_1[0],name3_1[1],name3_1[2]);
-			spFontDraw		 (4*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),22*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,middle_font);
-			if (settings_get_highscore_choice() != 0)
-				sprintf(buffer,"%i.%i",points3_1/10,points3_1%10);
-			else
-				sprintf(buffer,"%i",points3_1);
-			spFontDrawRight(29*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),22*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,middle_font);
-			sprintf(buffer,"2. %c%c%c",name3_2[0],name3_2[1],name3_2[2]);
-			spFontDraw		 (4*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),24*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,small_font);
-			if (settings_get_highscore_choice() != 0)
-				sprintf(buffer,"%i.%i",points3_2/10,points3_2%10);
-			else
-				sprintf(buffer,"%i",points3_2);
-			spFontDrawRight(29*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),24*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,small_font);
-			sprintf(buffer,"3. %c%c%c",name3_3[0],name3_3[1],name3_3[2]);
-			spFontDraw		 (4*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),26*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,small_font);
-			if (settings_get_highscore_choice() != 0)
-				sprintf(buffer,"%i.%i",points3_3/10,points3_3%10);
-			else
-				sprintf(buffer,"%i",points3_3);
-			spFontDrawRight(29*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),26*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,small_font);
-			draw_border( 2*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),36*engineWindowY/64+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),
-									30*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),57*engineWindowY/64+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),65535);
-
-			//hard, special stones
-			spFontDrawMiddle(48*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),19*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Hard, Special",font);
-			sprintf(buffer,"1. %c%c%c",name4_1[0],name4_1[1],name4_1[2]);
-			spFontDraw		 (35*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),22*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,middle_font);
-			if (settings_get_highscore_choice() != 0)
-				sprintf(buffer,"%i.%i",points4_1/10,points4_1%10);
-			else
-				sprintf(buffer,"%i",points4_1);
-			spFontDrawRight(61*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),22*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,middle_font);
-			sprintf(buffer,"2. %c%c%c",name4_2[0],name4_2[1],name4_2[2]);
-			spFontDraw		 (35*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),24*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,small_font);
-			if (settings_get_highscore_choice() != 0)
-				sprintf(buffer,"%i.%i",points4_2/10,points4_2%10);
-			else
-				sprintf(buffer,"%i",points4_2);
-			spFontDrawRight(61*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),24*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,small_font);
-			sprintf(buffer,"3. %c%c%c",name4_3[0],name4_3[1],name4_3[2]);
-			spFontDraw		 (35*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),26*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,small_font);
-			if (settings_get_highscore_choice() != 0)
-				sprintf(buffer,"%i.%i",points4_3/10,points4_3%10);
-			else
-				sprintf(buffer,"%i",points4_3);
-			spFontDrawRight(61*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),26*engineWindowY/32+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,small_font);
-			draw_border(33*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),36*engineWindowY/64+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),
-									62*engineWindowX/64+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),57*engineWindowY/64+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),65535);
-			
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),30*engineWindowY/32+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Any other button: back",small_font);
 			break;
 
 		case 4: //Help
@@ -652,16 +560,6 @@ case 2: //free game
 			settings_set_color(settings_get_color()+1);
 			menu_block = 1;
 		}
-		if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 3 && engineInput->axis[0]<0 && menu_wait <= 0 && settings_get_difficult()>0)
-		{
-			settings_set_difficult(settings_get_difficult()-1);
-			menu_block = 1;
-		}
-		if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 3 && engineInput->axis[0]>0 && menu_wait <= 0 && settings_get_difficult()<1)
-		{
-			settings_set_difficult(settings_get_difficult()+1);
-			menu_block = 1;
-		}
 		if (engineInput->axis[0] == 0)
 			menu_block = 0;
 		if (menu_move == 0 && (engineInput->button[SP_BUTTON_START] ||
@@ -687,9 +585,6 @@ case 2: //free game
 				case 2: //colors
 					settings_set_color((settings_get_color()+1)%2);
 					break;
-				case 3: //difficulty
-					settings_set_difficult((settings_get_difficult()+1)%2);
-					break;
 				case 4: //Back
 					nextstate = 0;
 					menu_fade = -1;
@@ -699,17 +594,6 @@ case 2: //free game
 		}
 		break;
 	case 3: //high score
-		if (engineInput->button[SP_BUTTON_L])
-		{
-			engineInput->button[SP_BUTTON_L] = 0;
-			settings_set_highscore_choice((settings_get_highscore_choice()+2)%3);
-		}
-		if (engineInput->button[SP_BUTTON_R])
-		{
-			engineInput->button[SP_BUTTON_R] = 0;
-			settings_set_highscore_choice((settings_get_highscore_choice()+1)%3);
-		}
-
 		if (engineInput->button[SP_BUTTON_START] || engineInput->button[SP_BUTTON_SELECT] ||
 				engineInput->button[SP_BUTTON_A] || engineInput->button[SP_BUTTON_B] ||
 				engineInput->button[SP_BUTTON_X] || engineInput->button[SP_BUTTON_Y])
@@ -747,7 +631,7 @@ case 2: //free game
 void run_menu(void (*resize)(Uint16 w,Uint16 h))
 {
 	spReadPossibleLanguages("./translations/languages.txt");
-	menu_bundle = spLoadBundle("./translations/menu.txt",1);
+	menu_bundle = spLoadBundle("./translations/translations.txt",1);
 	menu_fade = MENUSIZE;
 	spSetDefaultLanguage(spGetPossibleLanguage(settings_get_language()));	
 	flag = spLoadSurface(spGetTranslationFromCaption(menu_bundle,"flag.png"));

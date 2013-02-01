@@ -32,6 +32,7 @@ void init_music()
 {
   musicName[0]=0;
   spSoundInit();
+  spSoundSetChannels(32);
   move_chunk = spSoundLoad("./sounds/Vertical Movement.ogg");
   move_channel = -1;
   rotating_chunk = spSoundLoad("./sounds/Rotating.ogg");
