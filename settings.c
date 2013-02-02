@@ -182,7 +182,7 @@ void highscore_load()
 		highscore[i][j][l] = 0;
 	}
 	char buffer[256];
-	SDL_RWops *file=SDL_RWFromFile(get_path(buffer,"/highscore"HIGHSCORE_VERSION".dat"),"rb");
+	SDL_RWops *file=SDL_RWFromFile(get_path(buffer,"highscore"HIGHSCORE_VERSION".dat"),"rb");
 	if (file == NULL)
 		return;
 	SDL_RWread(file,highscore,3*2*3*sizeof(int),1);
