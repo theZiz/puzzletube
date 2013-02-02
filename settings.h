@@ -62,4 +62,7 @@ void settings_reset_highscore_name(char* name);
 void settings_set_highscore_name(char* name);
 
 int settings_get_first_start();
+
+void settings_set_translation(spBundlePointer translation);
+spBundlePointer settings_get_translation();
 #endif

@@ -35,14 +35,15 @@ int menu_move = 0;
 int menu_fade;
 int menu_wait = 0;
 int menu_block = 0;
-spBundlePointer menu_bundle;
 SDL_Surface* flag;
+SDL_Surface* help;
 
 void draw_menu(void)
 {
 	#ifdef MENU_DEBUG
 		printf("%i:	 Start drawing menu\n",SDL_GetTicks());
 	#endif
+	spBundlePointer translation = settings_get_translation();
 	Sint32* modellViewMatrix=spGetMatrix();
 	int engineWindowX=spGetWindowSurface()->w;
 	int engineWindowY=spGetWindowSurface()->h;
@@ -82,11 +83,11 @@ void draw_menu(void)
 	{
 		case 0: //menu
 			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),1*engineWindowY/7+(spSin(menu_counter*300+6*SP_PI*2/7)>>SP_ACCURACY-2),-1,"PUZZLE TUBE",font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/7+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Free Game"),font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/7+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"How to Play"),font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/7+(spSin(menu_counter*300+2*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Highscore"),font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/7+(spSin(menu_counter*300+1*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Settings"),font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/7+(spSin(menu_counter*300+0*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Quit"),font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/7+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Play"),font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/7+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"How to Play"),font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/7+(spSin(menu_counter*300+2*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Highscore"),font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/7+(spSin(menu_counter*300+1*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Settings"),font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/7+(spSin(menu_counter*300+0*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Quit"),font);
 			
 			spTranslate(0,1<<SP_ACCURACY-2,3<<SP_ACCURACY-1);
 			spTranslate(-7<<SP_ACCURACY,(3<<SP_ACCURACY)-menu_choice*5/2,0);
@@ -96,52 +97,52 @@ void draw_menu(void)
 
 			break;
 		case 1: //options
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),1*engineWindowY/10+(spSin(menu_counter*300+6*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"SETTINGS"),font);
-			spFontDrawMiddle(engineWindowX/2+((menu_fade-32)*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/10+(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Stone Quality:"),font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),1*engineWindowY/10+(spSin(menu_counter*300+6*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"SETTINGS"),font);
+			spFontDrawMiddle(engineWindowX/2+((menu_fade-32)*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/10+(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Stone Quality:"),font);
 			factor = spDiv(27 << SP_ACCURACY - 8,spGetSizeFactor());
-			spTranslate(( ((menu_fade-32)*spGetSizeFactor()>>SP_ACCURACY+2)+spFontWidth(spGetTranslationFromCaption(menu_bundle,"Stone Quality:"),font)/2)*factor, (2*engineWindowY/10-(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2))*factor,-1<<SP_ACCURACY-2);
+			spTranslate(( ((menu_fade-32)*spGetSizeFactor()>>SP_ACCURACY+2)+spFontWidth(spGetTranslationFromCaption(translation,"Stone Quality:"),font)/2)*factor, (2*engineWindowY/10-(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2))*factor,-1<<SP_ACCURACY-2);
 			spRotateZ(-spSin(menu_counter << 8) >> 2);
 			draw_stone(6,get_type_color_h(6,(menu_counter*16)%(2*SP_PI)),get_type_color_s(6,(menu_counter*16)%(2*SP_PI)),get_type_color_v(6,(menu_counter*16)%(2*SP_PI)),4,0,(menu_counter*16)%(2*SP_PI));
 			spRotateZ(spSin(menu_counter << 8) >> 2);
-			spTranslate((-((menu_fade-32)*spGetSizeFactor()>>SP_ACCURACY+2)-spFontWidth(spGetTranslationFromCaption(menu_bundle,"Stone Quality:"),font)/2)*factor,-(2*engineWindowY/10-(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2))*factor, 1<<SP_ACCURACY-2);
+			spTranslate((-((menu_fade-32)*spGetSizeFactor()>>SP_ACCURACY+2)-spFontWidth(spGetTranslationFromCaption(translation,"Stone Quality:"),font)/2)*factor,-(2*engineWindowY/10-(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2))*factor, 1<<SP_ACCURACY-2);
 			switch (settings_get_stars_rotating())
 			{
-				case 0: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/10+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Stars: Off"),font); break;
-				case 1: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/10+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Stars: Still"),font); break;
-				case 2: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/10+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Stars: Rotating"),font); break;
+				case 0: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/10+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Stars: Off"),font); break;
+				case 1: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/10+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Stars: Still"),font); break;
+				case 2: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/10+(spSin(menu_counter*300+4*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Stars: Rotating"),font); break;
 			}
 			/*if (settings_get_particles())
-				spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/10+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Particles: On"),font);
+				spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/10+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Particles: On"),font);
 			else
-				spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/10+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Particles: Off"),font);*/
+				spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/10+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Particles: Off"),font);*/
 
 			switch (settings_get_control())
 			{
 				case 0:
-					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/10+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Control: Normal"),font);
-					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),19*engineWindowY/40+(spSin(menu_counter*300+9*SP_PI/12)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Description Normal 1"),small_font);
-					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),22*engineWindowY/40+(spSin(menu_counter*300+7*SP_PI/12)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Description Normal 2"),small_font);
+					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/10+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Control: Normal"),font);
+					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),38*engineWindowY/80+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Description Normal 1"),small_font);
+					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),43*engineWindowY/80+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Description Normal 2"),small_font);
 					break;
 				case 1:
-					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/10+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Control: Snake"),font);
-					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),19*engineWindowY/40+(spSin(menu_counter*300+9*SP_PI/12)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Description Snake 1"),small_font);
-					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),22*engineWindowY/40+(spSin(menu_counter*300+7*SP_PI/12)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Description Snake 2"),small_font);
+					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/10+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Control: Snake"),font);
+					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),38*engineWindowY/80+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Description Snake 1"),small_font);
+					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),43*engineWindowY/80+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Description Snake 2"),small_font);
 					break;
 				case 2:
-					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/10+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Control: Padmode"),font);
-					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),19*engineWindowY/40+(spSin(menu_counter*300+9*SP_PI/12)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Description Padmode 1"),small_font);
-					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),22*engineWindowY/40+(spSin(menu_counter*300+7*SP_PI/12)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Description Padmode 2"),small_font);
+					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/10+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Control: Padmode"),font);
+					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),38*engineWindowY/80+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Description Padmode 1"),small_font);
+					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),43*engineWindowY/80+(spSin(menu_counter*300+3*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Description Padmode 2"),small_font);
 					break;
 			}
 			
-			spFontDrawMiddle(engineWindowX/2+((menu_fade-80)*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/10+(spSin(menu_counter*300+1*SP_PI/4)>>SP_ACCURACY-2),-1,spGetPossibleLanguageName(settings_get_language()),font);
-			spRotozoomSurface(spFontWidth(spGetPossibleLanguageName(settings_get_language()),font)/2+engineWindowX/2+((menu_fade+40)*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/10+(spSin(menu_counter*300+1*SP_PI/4)>>SP_ACCURACY-2)+font->maxheight/2,-1,flag,spGetSizeFactor() >> 3,spGetSizeFactor() >> 3,spSin(menu_counter << 8) >> 2);
+			spFontDrawMiddle(engineWindowX/2+((menu_fade-80)*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/10+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,spGetPossibleLanguageName(settings_get_language()),font);
+			spRotozoomSurface(spFontWidth(spGetPossibleLanguageName(settings_get_language()),font)/2+engineWindowX/2+((menu_fade+40)*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/10+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2)+font->maxheight/2,-1,flag,spGetSizeFactor() >> 3,spGetSizeFactor() >> 3,spSin(menu_counter << 8) >> 2);
 
 			sprintf(buffer,"Volume %i%%",settings_get_volume());
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),7*engineWindowY/10+(spSin(menu_counter*300+0*SP_PI/4)>>SP_ACCURACY-2),-1,buffer,font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),8*engineWindowY/10+(spSin(menu_counter*300-1*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Back to Menu"),font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),7*engineWindowY/10+(spSin(menu_counter*300+1*SP_PI/4)>>SP_ACCURACY-2),-1,buffer,font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),8*engineWindowY/10+(spSin(menu_counter*300-0*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Back to Menu"),font);
 
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),30*engineWindowY/32+(spSin(menu_counter*300+-1*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Select or Start: back"),small_font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),30*engineWindowY/32+(spSin(menu_counter*300+-1*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Select or Start: back"),small_font);
 
 
 			spTranslate(0,1<<SP_ACCURACY-2,-1<<SP_ACCURACY-1);
@@ -150,24 +151,39 @@ void draw_menu(void)
 			spTranslate( 22<<SP_ACCURACY,0,0);
 			draw_particle_circle(+1,menu_counter);
 			break;
-		case 2: //Free Game
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),1*engineWindowY/7+(spSin(menu_counter*300+5*SP_PI/3)>>SP_ACCURACY-2),-1,"FREE GAME",font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/7+(spSin(menu_counter*300+1*SP_PI/3)>>SP_ACCURACY-2),-1,"<<< Play >>>",font);
+		case 2: //Play
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),1*engineWindowY/6+(spSin(menu_counter*300+5*SP_PI/3)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"PLAY"),font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/6+(spSin(menu_counter*300+4*SP_PI/3)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"<<< Play >>>"),font);
 			switch (settings_get_mode())
 			{
-				case 0: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/7+(spSin(menu_counter*300+4*SP_PI/3)>>SP_ACCURACY-2),-1,"Game Mode: Points",font); break;
-				case 1: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/7+(spSin(menu_counter*300+4*SP_PI/3)>>SP_ACCURACY-2),-1,"Game Mode: Survival",font); break;
-				case 2: spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/7+(spSin(menu_counter*300+4*SP_PI/3)>>SP_ACCURACY-2),-1,"Game Mode: Race",font); break;
+				case 0:
+					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/6+(spSin(menu_counter*300+3*SP_PI/3)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Game Mode: Points"),font);
+					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),73*engineWindowY/128+(spSin(menu_counter*300+3*SP_PI/3)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Points description"),small_font);
+					break;
+				case 1:
+					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/6+(spSin(menu_counter*300+3*SP_PI/3)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Game Mode: Survival"),font);
+					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),73*engineWindowY/128+(spSin(menu_counter*300+3*SP_PI/3)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Survival description"),small_font);
+					break;
+				case 2:
+					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/6+(spSin(menu_counter*300+3*SP_PI/3)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Game Mode: Race"),font);
+					spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),73*engineWindowY/128+(spSin(menu_counter*300+3*SP_PI/3)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Race description"),small_font);
+					break;
 			}
 			if (settings_get_color())
-				spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/7+(spSin(menu_counter*300+3*SP_PI/3)>>SP_ACCURACY-2),-1,"Difficulty: Hard",font);
+			{
+				spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/6+(spSin(menu_counter*300+2*SP_PI/3)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Difficulty: Hard"),font);
+				spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),95*engineWindowY/128+(spSin(menu_counter*300+2*SP_PI/3)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"6 Stones"),small_font);
+			}
 			else
-				spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/7+(spSin(menu_counter*300+3*SP_PI/3)>>SP_ACCURACY-2),-1,"Difficulty: Normal",font);
+			{
+				spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/6+(spSin(menu_counter*300+2*SP_PI/3)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Difficulty: Normal"),font);
+				spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),95*engineWindowY/128+(spSin(menu_counter*300+2*SP_PI/3)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"4 Stones"),small_font);
+			}
 			
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/7+(spSin(menu_counter*300+1*SP_PI/3)>>SP_ACCURACY-2),-1,"Back to Menu",font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/6+(spSin(menu_counter*300+1*SP_PI/3)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Back to Menu"),font);
 
 			spTranslate(0,1<<SP_ACCURACY-2,3<<SP_ACCURACY-1);
-			spTranslate(-10<<SP_ACCURACY,(3<<SP_ACCURACY)-menu_choice*5/2,0);
+			spTranslate(-10<<SP_ACCURACY,(3<<SP_ACCURACY)-menu_choice*10/3,0);
 			draw_particle_circle(-1,menu_counter);
 			spTranslate(20<<SP_ACCURACY,0,0);
 			draw_particle_circle(+1,menu_counter);
@@ -180,10 +196,10 @@ void draw_menu(void)
 			#define HIGHSCORE_GAP_Y	 	(engineWindowX/64)
 			#define HIGHSCORE_HEIGHT 	((engineWindowY-HIGHSCORE_GAP_ABOVE-(4*HIGHSCORE_GAP_Y))/2)
 					
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),engineWindowY/48+(spSin(menu_counter*300+6*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Highscore"),font);
-			spFontDrawMiddle(1*HIGHSCORE_GAP_X + 1*HIGHSCORE_WIDTH/2 +(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/48+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Points"),font);
-			spFontDrawMiddle(2*HIGHSCORE_GAP_X + 3*HIGHSCORE_WIDTH/2 +(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/48+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Survival"),font);
-			spFontDrawMiddle(3*HIGHSCORE_GAP_X + 5*HIGHSCORE_WIDTH/2 +(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/48+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Race"),font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),engineWindowY/48+(spSin(menu_counter*300+6*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Highscore"),font);
+			spFontDrawMiddle(1*HIGHSCORE_GAP_X + 1*HIGHSCORE_WIDTH/2 +(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/48+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Points"),font);
+			spFontDrawMiddle(2*HIGHSCORE_GAP_X + 3*HIGHSCORE_WIDTH/2 +(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/48+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Survival"),font);
+			spFontDrawMiddle(3*HIGHSCORE_GAP_X + 5*HIGHSCORE_WIDTH/2 +(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/48+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Race"),font);
 			
 			draw_border(1*HIGHSCORE_GAP_X+                  (menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),HIGHSCORE_GAP_ABOVE+                 (spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),
 						1*HIGHSCORE_GAP_X+  HIGHSCORE_WIDTH+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),HIGHSCORE_GAP_ABOVE+HIGHSCORE_HEIGHT+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),65535);
@@ -202,7 +218,7 @@ void draw_menu(void)
 			
 			for (j = 0; j < 3; j++)
 			{
-				spFontDrawMiddle((j+1)*HIGHSCORE_GAP_X + (2*j+1)*HIGHSCORE_WIDTH/2 +(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),0*HIGHSCORE_HEIGHT/4+HIGHSCORE_GAP_ABOVE+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Normal"),font);	
+				spFontDrawMiddle((j+1)*HIGHSCORE_GAP_X + (2*j+1)*HIGHSCORE_WIDTH/2 +(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),0*HIGHSCORE_HEIGHT/4+HIGHSCORE_GAP_ABOVE+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Normal"),font);	
 				for (i = 0; i < 3; i++)
 				{
 					Uint16 color = 65535; //for trophies :)
@@ -225,7 +241,7 @@ void draw_menu(void)
 								middle_font->maxheight+2+(i+1)*HIGHSCORE_HEIGHT/4+HIGHSCORE_GAP_ABOVE+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),0,
 								HIGHSCORE_WIDTH-2*HIGHSCORE_GAP_IN,engineWindowY/128,color);
 				}			
-				spFontDrawMiddle((j+1)*HIGHSCORE_GAP_X + (2*j+1)*HIGHSCORE_WIDTH/2 +(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*HIGHSCORE_HEIGHT/4+HIGHSCORE_GAP_ABOVE+HIGHSCORE_GAP_Y+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Hard"),font);	
+				spFontDrawMiddle((j+1)*HIGHSCORE_GAP_X + (2*j+1)*HIGHSCORE_WIDTH/2 +(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*HIGHSCORE_HEIGHT/4+HIGHSCORE_GAP_ABOVE+HIGHSCORE_GAP_Y+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Hard"),font);	
 				for (i = 0; i < 3; i++)
 				{
 					Uint16 color = 65535; //for trophies :)
@@ -241,21 +257,30 @@ void draw_menu(void)
 								middle_font->maxheight+2+(i+5)*HIGHSCORE_HEIGHT/4+HIGHSCORE_GAP_Y+HIGHSCORE_GAP_ABOVE+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),0,
 								HIGHSCORE_WIDTH-2*HIGHSCORE_GAP_IN,engineWindowY/128,color);
 				}			
-				spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),30*engineWindowY/32+(spSin(menu_counter*300+2*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(menu_bundle,"Any button: back"),small_font);
+				spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),30*engineWindowY/32+(spSin(menu_counter*300+2*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Any button: back"),small_font);
 			}
 			break;
 
 		case 4: //Help
-			/*spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),1*engineWindowY/9+(spSin(menu_counter*300+6*SP_PI*2/7)>>SP_ACCURACY-2),-1,"ABOUT",font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/9+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Code Monkey: Ziz",font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/9+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Sound: Nick May",font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*engineWindowY/9+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Backers of \"RIOTdigital\":",font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/9+(spSin(menu_counter*300+2*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Pandora",font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/9+(spSin(menu_counter*300+1*SP_PI*2/7)>>SP_ACCURACY-2),-1,"GPH",font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),7*engineWindowY/9+(spSin(menu_counter*300+0*SP_PI*2/7)>>SP_ACCURACY-2),-1,"DINGOO DIGITAL USA",font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),8*engineWindowY/9+(spSin(menu_counter*300+-1*SP_PI*2/7)>>SP_ACCURACY-2),-1,"Etronixmart",font);*/
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 1*engineWindowY/18+(spSin(menu_counter*300+15*SP_PI*1/7)>>SP_ACCURACY-1),-1,"HOW TO PLAY",font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 3*engineWindowY/18+(spSin(menu_counter*300+14*SP_PI*1/7)>>SP_ACCURACY-1),-1,"Puzzletube	has	3	game	modes.	The	game	modes	are",middle_font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 1*engineWindowY/16+(spSin(menu_counter*300+15*SP_PI*1/7)>>SP_ACCURACY-1),-1,"HOW TO PLAY",font);
+			int line_length = spFontWidth(spGetTranslationFromCaption(translation,"help goal head line"),middle_font) + spFontWidth(spGetTranslationFromCaption(translation,"help goal line 1"),small_font);
+			spFontDraw(engineWindowX/2-line_length/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 3*engineWindowY/16+(spSin(menu_counter*300+14*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help goal head line"),middle_font);
+			spFontDrawRight(engineWindowX/2+line_length/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 3*engineWindowY/16+(spSin(menu_counter*300+14*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help goal line 1"),small_font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 4*engineWindowY/16+(spSin(menu_counter*300+14*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help goal line 2"),small_font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 5*engineWindowY/16+(spSin(menu_counter*300+14*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help goal line 3"),small_font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 6*engineWindowY/16+(spSin(menu_counter*300+14*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help goal line 4"),small_font);
+			line_length = spFontWidth(spGetTranslationFromCaption(translation,"help control head line"),middle_font) + spFontWidth(spGetTranslationFromCaption(translation,"help control line 1"),small_font);
+			spFontDraw(engineWindowX/2-line_length/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 7*engineWindowY/16+(spSin(menu_counter*300+14*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help control head line"),middle_font);
+			spFontDrawRight(engineWindowX/2+line_length/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 7*engineWindowY/16+(spSin(menu_counter*300+14*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help control line 1"),small_font);
+			int line1,line2,line3,line4;
+			line1 = line_length;
+			line2 = 0;
+			line3 = 0;
+			line4 = 0;
+			int max_line = spMax(spMax(line1,line2),spMax(line3,line4));
+			int help_size = (help->w*spGetSizeFactor()>>SP_ACCURACY+3);
+			spRotozoomSurface(engineWindowX/2-(max_line+help_size)/2+max_line+4+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 9*engineWindowY/16+(spSin(menu_counter*300+14*SP_PI*1/7)>>SP_ACCURACY-1),-1,help,spGetSizeFactor()>>3,spGetSizeFactor()>>3,0);
+/*			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 3*engineWindowY/18+(spSin(menu_counter*300+14*SP_PI*1/7)>>SP_ACCURACY-1),-1,"Puzzletube	has	3	game	modes.	The	game	modes	are",middle_font);
 			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 4*engineWindowY/18+(spSin(menu_counter*300+13*SP_PI*1/7)>>SP_ACCURACY-1),-1,"explained	at	game	start.	In	every	mode	you	have",middle_font);
 			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 5*engineWindowY/18+(spSin(menu_counter*300+12*SP_PI*1/7)>>SP_ACCURACY-1),-1,"to	crush	stones	to	get	points	or	time.	A	square",middle_font);
 			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 6*engineWindowY/18+(spSin(menu_counter*300+11*SP_PI*1/7)>>SP_ACCURACY-1),-1,"of	stones	of	the	same	color	explodes.	If	a	stone",middle_font);
@@ -269,7 +294,7 @@ void draw_menu(void)
 			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),14*engineWindowY/18+(spSin(menu_counter*300+ 3*SP_PI*1/7)>>SP_ACCURACY-1),-1,"to	switch	2	stone	beside	with	pressing	the	named",middle_font);
 			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),15*engineWindowY/18+(spSin(menu_counter*300+ 2*SP_PI*1/7)>>SP_ACCURACY-1),-1,"buttons.	For	the	others	mode	read	the	README.",middle_font);
 			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),16*engineWindowY/18+(spSin(menu_counter*300+ 1*SP_PI*1/7)>>SP_ACCURACY-1),-1,"Made	by	Nick	May	(Music)	&	Ziz	(Code).",middle_font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),17*engineWindowY/18+(spSin(menu_counter*300+ 0*SP_PI*1/7)>>SP_ACCURACY-1),-1,"Any button: back",small_font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),17*engineWindowY/18+(spSin(menu_counter*300+ 0*SP_PI*1/7)>>SP_ACCURACY-1),-1,"Any button: back",small_font);*/
 			break;
 	}
 	#ifdef MENU_DEBUG
@@ -315,7 +340,7 @@ int calc_menu(Uint32 steps)
 			else
 			switch (nextstate)
 			{
-				case -2: //Free Game
+				case -2: //Play
 					prepare_game_objects(0);
 					rotating_sound_off();
 					settings_save();
@@ -364,7 +389,7 @@ int calc_menu(Uint32 steps)
 			move_sound_off();
 			switch (menu_choice>>SP_ACCURACY)
 			{
-				case 0: // Free Game
+				case 0: // Play
 					nextstate = 2;
 					menu_fade = -1;
 					rotating_sound_on();
@@ -470,14 +495,14 @@ int calc_menu(Uint32 steps)
 		{
 			settings_set_language((settings_get_language()+spGetPossibleLanguagesCount()-1)%spGetPossibleLanguagesCount());
 			spDeleteSurface(flag);
-			flag = spLoadSurface(spGetTranslationFromCaption(menu_bundle,"flag.png"));
+			flag = spLoadSurface(spGetTranslationFromCaption(settings_get_translation(),"flag.png"));
 			menu_block = 1;
 		}
 		if (!menu_block && menu_move == 0 && (menu_choice>>SP_ACCURACY) == 4 && engineInput->axis[0]>0 && menu_wait <= 0)
 		{
 			settings_set_language((settings_get_language()+1)%spGetPossibleLanguagesCount());
 			spDeleteSurface(flag);
-			flag = spLoadSurface(spGetTranslationFromCaption(menu_bundle,"flag.png"));
+			flag = spLoadSurface(spGetTranslationFromCaption(settings_get_translation(),"flag.png"));
 			menu_block = 1;
 		}
 		
@@ -518,7 +543,7 @@ int calc_menu(Uint32 steps)
 				case 4: //Language
 					settings_set_language((settings_get_language()+1)%spGetPossibleLanguagesCount());
 					spDeleteSurface(flag);
-					flag = spLoadSurface(spGetTranslationFromCaption(menu_bundle,"flag.png"));
+					flag = spLoadSurface(spGetTranslationFromCaption(settings_get_translation(),"flag.png"));
 					break;
 				case 6: //Back
 					settings_save();
@@ -529,8 +554,8 @@ int calc_menu(Uint32 steps)
 			}
 		}
 		break;
-case 2: //free game
-		if (engineInput->axis[1]>0 && menu_move==0 && (menu_choice>>SP_ACCURACY)<4)
+case 2: //Play
+		if (engineInput->axis[1]>0 && menu_move==0 && (menu_choice>>SP_ACCURACY)<3)
 			menu_move = 1;
 		if (engineInput->axis[1]<0 && menu_move==0 && (menu_choice>>SP_ACCURACY)>0)
 			menu_move = -1;
@@ -592,7 +617,7 @@ case 2: //free game
 				case 2: //colors
 					settings_set_color((settings_get_color()+1)%2);
 					break;
-				case 4: //Back
+				case 3: //Back
 					nextstate = 0;
 					menu_fade = -1;
 					rotating_sound_on();
@@ -637,11 +662,10 @@ case 2: //free game
 
 void run_menu(void (*resize)(Uint16 w,Uint16 h))
 {
-	spReadPossibleLanguages("./translations/languages.txt");
-	menu_bundle = spLoadBundle("./translations/translations.txt",1);
 	menu_fade = MENUSIZE;
 	spSetDefaultLanguage(spGetPossibleLanguage(settings_get_language()));	
-	flag = spLoadSurface(spGetTranslationFromCaption(menu_bundle,"flag.png"));
+	flag = spLoadSurface(spGetTranslationFromCaption(settings_get_translation(),"flag.png"));
+	help = spLoadSurface("./images/help.png");
 	if (settings_get_first_start())
 	{
 		menu_choice = 1<<SP_ACCURACY;
@@ -652,7 +676,7 @@ void run_menu(void (*resize)(Uint16 w,Uint16 h))
 	rotating_sound_on();
 	menu_resize = resize;
 	spLoop(draw_menu,calc_menu,10,resize,NULL);
-	spDeleteBundle(menu_bundle,0);
 	spDeleteSurface(flag);
+	spDeleteSurface(help);
 }
 

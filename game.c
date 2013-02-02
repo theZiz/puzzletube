@@ -32,13 +32,6 @@ char myhighscore_name[3];
 
 int star_add;
 
-
-/*pmesh stone_mesh;
-pmesh stone_special_mesh;
-pmesh stone_mesh_gp2x;
-pmesh stone_special_mesh_gp2x;*/
-//pmesh border_mesh;
-//pmesh border_thin_mesh;
 typedef SDL_Surface *PSDL_Surface;
 PSDL_Surface stone_texture[9];
 Sint32 w=0;
@@ -613,6 +606,7 @@ pchange is_in_change(int x,int y)
 
 void make_win_situations_invalid()
 {
+	spBundlePointer translation = settings_get_translation();
 	spFontPointer font = settings_get_font();
 	spFontPointer small_font = settings_get_small_font();
 	spFontPointer middle_font = settings_get_middle_font();
@@ -670,21 +664,21 @@ void make_win_situations_invalid()
 				{}
 			else
 			if (i<10)
-				add_lettering("Well!",middle_font);
+				add_lettering(spGetTranslationFromCaption(translation,"Well!"),middle_font);
 			else
 			if (i<14)
-				add_lettering("Great!",middle_font);
+				add_lettering(spGetTranslationFromCaption(translation,"Great!"),middle_font);
 			else
 			if (i<19)
-				add_lettering("Fantastic!",middle_font);
+				add_lettering(spGetTranslationFromCaption(translation,"Fantastic!"),middle_font);
 			else
 			if (i<25)
-				add_lettering("Incredible",middle_font);
+				add_lettering(spGetTranslationFromCaption(translation,"Incredible!"),middle_font);
 			delete_win_situation(situation);
 			if (count>1)
 			{
 				add_lettering("+15 %%",small_font);
-				add_lettering("Combo!",middle_font);
+				add_lettering(spGetTranslationFromCaption(translation,"Combo!"),middle_font);
 				new_points = new_points * 115/100;
 			}
 	}
@@ -699,12 +693,12 @@ void make_win_situations_invalid()
 			add_lettering(buffer,small_font);
 			switch (chain)
 			{
-				case 2: add_lettering("Chain!",middle_font);break;
-				case 3: add_lettering("2x Chain!",middle_font); break;
-				case 4: add_lettering("3x Chain!",middle_font); break;
-				case 5: add_lettering("4x Chain!",middle_font); break;
-				case 6: add_lettering("5x Chain!",middle_font); break;
-				default: add_lettering("Mega Chain!",middle_font); break;
+				case 2: add_lettering(spGetTranslationFromCaption(translation,"Chain!"),middle_font);break;
+				case 3: add_lettering(spGetTranslationFromCaption(translation,"2x Chain!"),middle_font); break;
+				case 4: add_lettering(spGetTranslationFromCaption(translation,"3x Chain!"),middle_font); break;
+				case 5: add_lettering(spGetTranslationFromCaption(translation,"4x Chain!"),middle_font); break;
+				case 6: add_lettering(spGetTranslationFromCaption(translation,"5x Chain!"),middle_font); break;
+				default: add_lettering(spGetTranslationFromCaption(translation,"Mega Chain!"),middle_font); break;
 			}
 			new_points = new_points * (9+chain) / 10;
 		}
@@ -850,6 +844,7 @@ void draw_stone(int type,int h,int s,int v,int a,Sint32 posx_zero,int w)
 
 void draw_game(void)
 {
+	spBundlePointer translation = settings_get_translation();
 	if (settings_get_stone_quality() != 2)
 			spSetAlphaTest(0);
 	spFontPointer font = settings_get_font();
@@ -1294,43 +1289,44 @@ void draw_game(void)
 		spFontDrawMiddle(engineWindowX/2,engineWindowY/2-y,-1,buffer,font);
 		mom = mom->next;
 	}
-	
 	//HUD on the right side
-	spFontDrawMiddle(6*engineWindowX/7,1*engineWindowY/16,-1,"Game Mode:",small_font);
+	spFontDrawMiddle(6*engineWindowX/7,1*engineWindowY/16,-1,spGetTranslationFromCaption(translation,"Game Mode:"),small_font);
 	if (settings_get_mode() == 1)
-		sprintf(buffer,"Survival");
+		sprintf(buffer,"%s",spGetTranslationFromCaption(translation,"Survival"));
 	else
 	if (settings_get_mode() == 0)
-		sprintf(buffer,"Points");
+		sprintf(buffer,"%s",spGetTranslationFromCaption(translation,"Points"));
 	else
-		sprintf(buffer,"Race");
+		sprintf(buffer,"%s",spGetTranslationFromCaption(translation,"Race"));
 	spFontDrawMiddle(6*engineWindowX/7,2*engineWindowY/16,-1,buffer,font);
 	if (settings_get_mode() == 1)
 	{
-		spFontDrawMiddle(6*engineWindowX/7,4*engineWindowY/16,-1,"Time survived",small_font);
-		sprintf(buffer,"%i.%i Sec",realTime/1000,(realTime/100)%10);
+		spFontDrawMiddle(6*engineWindowX/7,4*engineWindowY/16,-1,spGetTranslationFromCaption(translation,"Time survived"),small_font);
+		sprintf(buffer,"%i.%i %s",realTime/1000,(realTime/100)%10,spGetTranslationFromCaption(translation,"Sec"));
 		spFontDrawMiddle(6*engineWindowX/7,5*engineWindowY/16,-1,buffer,font);
 	}
 	else
 	{
-		spFontDrawMiddle(6*engineWindowX/7,4*engineWindowY/16,-1,"Points",small_font);
+		spFontDrawMiddle(6*engineWindowX/7,4*engineWindowY/16,-1,spGetTranslationFromCaption(translation,"Points"),small_font);
 		sprintf(buffer,"%i",points);
 		spFontDrawMiddle(6*engineWindowX/7,5*engineWindowY/16,-1,buffer,font);
+		sprintf(buffer,"%i.%i %s",(120000-realTime)/1000,((120000-realTime)/100)%10,spGetTranslationFromCaption(translation,"Sec"));
+		spFontDrawMiddle(6*engineWindowX/7,8*engineWindowY/16,-1,buffer,font);
 	}
 
 	if (settings_get_mode() == 2)
 	{
-		spFontDrawMiddle(6*engineWindowX/7,7*engineWindowY/16,-1,"Time elapsed",small_font);
-		sprintf(buffer,"%i.%i Sec",realTime/1000,(realTime/100)%10);
+		spFontDrawMiddle(6*engineWindowX/7,7*engineWindowY/16,-1,spGetTranslationFromCaption(translation,"Time elapsed"),small_font);
+		sprintf(buffer,"%i.%i %s",realTime/1000,(realTime/100)%10,spGetTranslationFromCaption(translation,"Sec"));
 		spFontDrawMiddle(6*engineWindowX/7,8*engineWindowY/16,-1,buffer,font);
 	}
 	else
 		spBlitSurfacePart(6*engineWindowX/7,14*engineWindowY/32,-1,getTimeSurface(),0,0,gameTime*getTimeSurface()->w/START_TIME,getTimeSurface()->h);
 
 	spFontDrawMiddle(6*engineWindowX/7,20*engineWindowY/32,-1,"[S]",small_font);
-	spFontDrawMiddle(6*engineWindowX/7,23*engineWindowY/32,-1,"Pause",small_font);
+	spFontDrawMiddle(6*engineWindowX/7,23*engineWindowY/32,-1,spGetTranslationFromCaption(translation,"Pause"),small_font);
 	spFontDrawMiddle(6*engineWindowX/7,26*engineWindowY/32,-1,"[E]",small_font);
-	spFontDrawMiddle(6*engineWindowX/7,29*engineWindowY/32,-1,"Back to Menu",small_font);
+	spFontDrawMiddle(6*engineWindowX/7,29*engineWindowY/32,-1,spGetTranslationFromCaption(translation,"Back to Menu"),small_font);
 
 
 	//sprintf(buffer,"fps %i",spGetFPS());
@@ -1377,17 +1373,17 @@ void draw_game(void)
 		draw_filled_border(5*engineWindowX/20,1*engineWindowY/20,15*engineWindowX/20,19*engineWindowY/20,BACKGROUND_COLOR);
 		draw_border			 (5*engineWindowX/20,1*engineWindowY/20,15*engineWindowX/20,19*engineWindowY/20,65535);
 		
-		spFontDrawMiddle(engineWindowX/2, 1*engineWindowY/12,-1,"You got",font);
+		spFontDrawMiddle(engineWindowX/2, 1*engineWindowY/12,-1,spGetTranslationFromCaption(translation,"You got"),font);
 		switch (settings_get_mode())
 		{
-			case 0: sprintf(buffer,"%i points",points); break;
-			case 1: case 2: sprintf(buffer,"%i.%i Sec",realTime/1000,(realTime/100)%10); break;
+			case 0: sprintf(buffer,"%i %s",points,spGetTranslationFromCaption(translation,"Points")); break;
+			case 1: case 2: sprintf(buffer,"%i.%i %s",realTime/1000,(realTime/100)%10,spGetTranslationFromCaption(translation,"Sec")); break;
 		}
 		spFontDrawMiddle(engineWindowX/2, 2*engineWindowY/12,-1,buffer,font);
-		sprintf(buffer,"(Rank %i)",insert_name);
+		sprintf(buffer,"(%s %i)",spGetTranslationFromCaption(translation,"Rank"),insert_name);
 		spFontDrawMiddle(engineWindowX/2, 3*engineWindowY/12,-1,buffer,middle_font);
-		spFontDrawMiddle(engineWindowX/2, 4*engineWindowY/12,-1,"Enter your name",font);
-		spFontDrawMiddle(engineWindowX/2, 5*engineWindowY/12,-1,"with the D-pad",font);
+		spFontDrawMiddle(engineWindowX/2, 4*engineWindowY/12,-1,spGetTranslationFromCaption(translation,"Enter your name"),font);
+		spFontDrawMiddle(engineWindowX/2, 5*engineWindowY/12,-1,spGetTranslationFromCaption(translation,"with the D-pad"),font);
 		
 		int i;
 		for (i = 0; i < 3; i++)
@@ -1408,7 +1404,7 @@ void draw_game(void)
 								 addx+engineWindowX/2-sizex,7*engineWindowY/10-sizey,-1,0,0,65535);
 		}
 			 
-		spFontDrawMiddle(engineWindowX/2, 10*engineWindowY/12,-1,"and press [S]",font);		
+		spFontDrawMiddle(engineWindowX/2, 10*engineWindowY/12,-1,spGetTranslationFromCaption(translation,"and press [S]"),font);		
 	}
 	
 
@@ -2069,7 +2065,7 @@ int run_game(int playernumber_,int starAdd,void (*resize)(Uint16 w,Uint16 h))
 	control_timeout = 0;
 	choosen_letter = 0;
 	settings_reset_highscore_name(myhighscore_name);
-	countdown = 4000;
+	countdown = 3999;
 	playernumber = playernumber_;
 	timeStep = 1;
 	star_add = starAdd;

@@ -35,6 +35,7 @@ int settings_control;
 int settings_first_start;
 int settings_language;
 char settings_name[3];
+spBundlePointer settings_translation;
 
 spFontPointer settings_font;
 spFontPointer settings_small_font;
@@ -355,4 +356,14 @@ void settings_set_language(int language)
 int settings_get_language()
 {
 	return settings_language;
+}
+
+void settings_set_translation(spBundlePointer translation)
+{
+	settings_translation = translation;
+}
+
+spBundlePointer settings_get_translation()
+{
+	return settings_translation;
 }

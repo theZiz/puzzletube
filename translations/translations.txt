@@ -6,9 +6,9 @@ en:./images/flag_en.png
 de:./images/flag_de.png
 
 # Menu
---:Free Game
-en:Free Game
-de:Freies Spiel
+--:Play
+en:Play
+de:Spielen
 --:How to Play
 en:How to Play
 de:Tutorial
@@ -103,3 +103,129 @@ de:Normal
 --:Any button: back
 en:Any button: back
 de:Irgendein Button: Zurück
+
+# Game Settings
+--:PLAY
+en:PLAY
+de:SPIELEN
+--:<<< Play >>>
+en:<<< Play >>>
+de:<<< Spielen >>>
+--:Game Mode: Points
+en:Game Mode: Points
+de:Spielmodus: Punkte sammeln
+--:Game Mode: Survival
+en:Game Mode: Survival
+de:Spielmodus: Überleben
+--:Game Mode: Race
+en:Game Mode: Race
+de:Spielmodus: Zeitrennen
+--:Points description
+en:Get as much points as possible in 120 seconds
+de:Sammle in 120 Sekunden so viele Punkte wie möglich
+--:Survival description
+en:Get points to keep the game going
+de:Sammle Punkte, um Zeit zu gewinnen
+--:Race description
+en:Get 100.000 points
+de:Sammle 100.000 Punkte
+--:Difficulty: Hard
+en:Difficulty: Hard
+de:Schwierigkeit: Schwer
+--:Difficulty: Normal
+en:Difficulty: Normal
+de:Schwierigkeit: Normal
+--:6 Stones
+en:6 Stones
+de:6 Steine
+--:4 Stones
+en:4 Stones
+de:4 Steine
+
+#Ingame:
+--:Game Mode:
+en:Game Mode:
+de:Spielmodus:
+--:Time survived
+en:Time survived
+de:Überlebte Zeit
+--:Sec
+en:Sec
+de:Sek
+--:Pause
+en:Pause
+de:Pause
+--:You got
+en:You got
+de:Deine Punktzahl:
+--:Rank
+en:Rank
+de:Platz
+--:Enter your name
+en:Enter your name
+de:Gibt deinen Namen
+--:with the D-pad
+en:with the D-pad
+de:mit dem D-Pad ein
+--:and press [S]
+en:and press [S]
+de:und drücke [S]
+--:Time elapsed
+en:Time elapsed
+de:Vergangene Zeit
+--:Well!
+en:Well!
+de:Gut!
+--:Great!
+en:Great!
+de:Großartig!
+--:Fantastic!
+en:Fantastic!
+de:Fantastisch!
+--:Incredible!
+en:Indredible!
+de:Unglaublich!
+--:Combo!
+en:Combo!
+de:Kombo!
+--:Chain!
+en:Chain!
+de:Kette!
+--:2x Chain!
+en:2x Chain!
+de:2x Kette!
+--:3x Chain!
+en:3x Chain!
+de:3x Kette!
+--:4x Chain!
+en:4x Chain!
+de:4x Kette!
+--:5x Chain!
+en:5x Chain!
+de:5x Kette!
+--:Mega Chain!
+en:Mega Chain!
+de:Mega Kette!
+
+#Help
+--:help goal head line
+en:Game idea: 
+de:Spielidee: 
+--:help goal line 1
+en:* Puzzle game on a cylinder
+de:* Puzzlespiel auf einem Zylinder
+--:help goal line 2
+en:* Quadrats of 2*2 stones of the same color explode
+de:* Quadrate von 2*2 gleichfarbigen Steinen explodieren
+--:help goal line 3
+en:* Adjacent stones of the same color explode, too
+de:* Benachbarte gleichfarbene Steine explodieren mit
+--:help goal line 4
+en:* More exploding stones => more points
+de:* Mehr explodierende Steine => mehr Punkte
+--:help control head line
+en:Controls: 
+de:Steuerung: 
+--:help control line 1
+en:* Adjustable in the settings menu
+de:* Im Einstellungsmenü einstellbar

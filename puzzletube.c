@@ -124,6 +124,11 @@ int main(int argc, char **argv)
 	srand(time(NULL));
 	settings_load();
 	highscore_load();
+	
+	//Language setup
+	spReadPossibleLanguages("./translations/languages.txt");
+	spBundlePointer translation = spLoadBundle("./translations/translations.txt",1);
+	settings_set_translation(translation);
 
 	//sparrow3D Init
 	//spSetDefaultWindowSize( 800, 480 );
@@ -143,6 +148,7 @@ int main(int argc, char **argv)
 	highscore_save();
 	run_menu(resize);
 	delete_game_objects();
+	spDeleteBundle(translation,0);
 	quit_music();
 	spFontDelete(font);
 	spFontDelete(small_font);
