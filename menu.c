@@ -206,6 +206,13 @@ void draw_menu(void)
 				for (i = 0; i < 3; i++)
 				{
 					Uint16 color = 65535; //for trophies :)
+					switch (get_highscore_trophy(j,0,get_highscore(j,0,i)))
+					{
+						case 0: color = spGetRGB(0,255,0); break;
+						case 1: color = spGetRGB(255,230,0); break;
+						case 2: color = spGetRGB(192,192,192); break;
+						case 3: color = spGetRGB(190,140,0); break;
+					}
 					char* name = get_highscore_name(j,0,i);
 					sprintf(buffer,"%i. %c%c%c",i+1,name[0],name[1],name[2]);
 					spFontDraw((j+1)*HIGHSCORE_GAP_X+j*HIGHSCORE_WIDTH+HIGHSCORE_GAP_IN+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),(i+1)*HIGHSCORE_HEIGHT/4+HIGHSCORE_GAP_ABOVE+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,middle_font);

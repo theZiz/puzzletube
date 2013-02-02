@@ -43,6 +43,31 @@ spFontPointer settings_countdown_font;
 
 int highscore[3][2][3];
 char highscore_name[3][2][3][3]; //game mode, normal/hard, top3
+const int highscore_goal[3][2][4] =
+//Points
+{{{100000,200000,300000,400000},
+  { 50000,100000,150000,200000}},
+//Survival
+ {{ 10000, 20000, 30000, 40000},
+  {  5000, 10000, 15000, 20000}},
+//Race
+ {{ 10000,  5000,  2500,  1000},
+  { 20000, 10000,  5000,  2500}}};
+  
+int get_highscore_trophy(int game_mode,int dificult,int points)
+{
+	int i;
+	for (i = 0; i < 4; i++)
+		if (game_mode == 2)
+		{
+			if (highscore_goal[game_mode][dificult][3-i] >= points)
+				return i;
+		}
+		else
+			if (highscore_goal[game_mode][dificult][3-i] <= points)
+				return i;
+	return 4;
+}
 
 char* get_highscore_name(int game_mode,int difficult,int rank)
 {

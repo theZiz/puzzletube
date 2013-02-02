@@ -22,6 +22,8 @@
 
 #include "../sparrow3d/sparrow3d.h"
 
+int get_highscore_trophy(int game_mode,int dificult,int points);
+
 void settings_load();
 void settings_save();
 

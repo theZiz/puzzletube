@@ -850,6 +850,8 @@ void draw_stone(int type,int h,int s,int v,int a,Sint32 posx_zero,int w)
 
 void draw_game(void)
 {
+	if (settings_get_stone_quality() != 2)
+			spSetAlphaTest(0);
 	spFontPointer font = settings_get_font();
 	spFontPointer small_font = settings_get_small_font();
 	spFontPointer middle_font = settings_get_middle_font();
@@ -1003,6 +1005,7 @@ void draw_game(void)
 		left_side=1-left_side;
 	}
 	//particles
+	spSetAlphaTest(0);
 	pparticle particle=firstparticle;
 	while (particle)
 	{
@@ -1023,6 +1026,7 @@ void draw_game(void)
 		memcpy(modellViewMatrix,matrix,sizeof(Sint32)*16);
 		particle=particle->next;
 	}
+	spSetAlphaTest(1);
 		
 	Sint32 r = 28<< SP_ACCURACY-5;
 	
