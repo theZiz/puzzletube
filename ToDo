@@ -1,15 +1,6 @@
 ToDo til final (1.1) release:
+- Highscore: Hint, that underlining is trophy!
+- At name entering, showing trophy
 - Flags at first start
-- Multi Language support (German, English)
-	- Help
-- (better) Help at start / in menu
-	- Controls
-	+ Goal
-	- Trophy
-	- Calculation of points
-		- Combo
-		- Chain
-		- pure points
-	- differnt kind of stones
 - Custom Music Option (with folder)
 - High Score Goals need values!

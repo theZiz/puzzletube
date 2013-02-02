@@ -36,7 +36,6 @@ int menu_fade;
 int menu_wait = 0;
 int menu_block = 0;
 SDL_Surface* flag;
-SDL_Surface* help;
 
 void draw_menu(void)
 {
@@ -262,41 +261,33 @@ void draw_menu(void)
 			break;
 
 		case 4: //Help
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 1*engineWindowY/16+(spSin(menu_counter*300+15*SP_PI*1/7)>>SP_ACCURACY-1),-1,"HOW TO PLAY",font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 1*engineWindowY/32+(spSin(menu_counter*300+15*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"HOW TO PLAY"),font);
+			//Game Idea
 			int line_length = spFontWidth(spGetTranslationFromCaption(translation,"help goal head line"),middle_font) + spFontWidth(spGetTranslationFromCaption(translation,"help goal line 1"),small_font);
-			spFontDraw(engineWindowX/2-line_length/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 3*engineWindowY/16+(spSin(menu_counter*300+14*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help goal head line"),middle_font);
-			spFontDrawRight(engineWindowX/2+line_length/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 3*engineWindowY/16+(spSin(menu_counter*300+14*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help goal line 1"),small_font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 4*engineWindowY/16+(spSin(menu_counter*300+14*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help goal line 2"),small_font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 5*engineWindowY/16+(spSin(menu_counter*300+14*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help goal line 3"),small_font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 6*engineWindowY/16+(spSin(menu_counter*300+14*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help goal line 4"),small_font);
+			spFontDraw(engineWindowX/2-line_length/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 2*engineWindowY/16+(spSin(menu_counter*300+14*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help goal head line"),middle_font);
+			spFontDrawRight(engineWindowX/2+line_length/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 2*engineWindowY/16+(spSin(menu_counter*300+14*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help goal line 1"),small_font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 3*engineWindowY/16+(spSin(menu_counter*300+13*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help goal line 2"),small_font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 4*engineWindowY/16+(spSin(menu_counter*300+12*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help goal line 3"),small_font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 5*engineWindowY/16+(spSin(menu_counter*300+11*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help goal line 4"),small_font);
+			//Controls
 			line_length = spFontWidth(spGetTranslationFromCaption(translation,"help control head line"),middle_font) + spFontWidth(spGetTranslationFromCaption(translation,"help control line 1"),small_font);
-			int line1,line2,line3,line4;
-			printf("%i\n",line1 = line_length);
-			line2 = 0;
-			line3 = 0;
-			line4 = 0;
-			int max_line = spMax(spMax(line1,line2),spMax(line3,line4));
-			int help_size = (help->w*spGetSizeFactor()>>SP_ACCURACY+3);
-			int new_left = engineWindowX/2 - (max_line + help_size)/2;
-			spRotozoomSurface(new_left+max_line+4+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 9*engineWindowY/16+(spSin(menu_counter*300+14*SP_PI*1/7)>>SP_ACCURACY-1),-1,help,spGetSizeFactor()>>3,spGetSizeFactor()>>3,0);
-			printf("%i\n",spFontDraw(new_left+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 7*engineWindowY/16+(spSin(menu_counter*300+14*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help control head line"),middle_font));
-			printf("%i\n",spFontDrawRight(new_left+max_line+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 7*engineWindowY/16+(spSin(menu_counter*300+14*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help control line 1"),small_font));
-			printf("%i %i\n",spFontWidth(spGetTranslationFromCaption(translation,"help control head line"),middle_font),spFontWidth(spGetTranslationFromCaption(translation,"help control line 1"),small_font));
-/*			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 3*engineWindowY/18+(spSin(menu_counter*300+14*SP_PI*1/7)>>SP_ACCURACY-1),-1,"Puzzletube	has	3	game	modes.	The	game	modes	are",middle_font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 4*engineWindowY/18+(spSin(menu_counter*300+13*SP_PI*1/7)>>SP_ACCURACY-1),-1,"explained	at	game	start.	In	every	mode	you	have",middle_font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 5*engineWindowY/18+(spSin(menu_counter*300+12*SP_PI*1/7)>>SP_ACCURACY-1),-1,"to	crush	stones	to	get	points	or	time.	A	square",middle_font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 6*engineWindowY/18+(spSin(menu_counter*300+11*SP_PI*1/7)>>SP_ACCURACY-1),-1,"of	stones	of	the	same	color	explodes.	If	a	stone",middle_font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 7*engineWindowY/18+(spSin(menu_counter*300+10*SP_PI*1/7)>>SP_ACCURACY-1),-1,"explodes	&	a	stone	beside	has	the	same	color,	it",middle_font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 8*engineWindowY/18+(spSin(menu_counter*300+ 9*SP_PI*1/7)>>SP_ACCURACY-1),-1,"explodes,	too.	The	more	stone	you	crush	the	more",middle_font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 9*engineWindowY/18+(spSin(menu_counter*300+ 8*SP_PI*1/7)>>SP_ACCURACY-1),-1,"Points	you	get.	If	a	stone	of	the	same	color	is",middle_font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),10*engineWindowY/18+(spSin(menu_counter*300+ 7*SP_PI*1/7)>>SP_ACCURACY-1),-1,"one	the	other	side	it	wiggles	and	will	explode,",middle_font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),11*engineWindowY/18+(spSin(menu_counter*300+ 6*SP_PI*1/7)>>SP_ACCURACY-1),-1,"too.	To	get	squares	of	the	same	color	you	have",middle_font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),12*engineWindowY/18+(spSin(menu_counter*300+ 5*SP_PI*1/7)>>SP_ACCURACY-1),-1,"3	controls	adjustable	in	the	settings	menu.	In",middle_font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),13*engineWindowY/18+(spSin(menu_counter*300+ 4*SP_PI*1/7)>>SP_ACCURACY-1),-1,"normal	control	you	move	a	selection	&	are	able",middle_font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),14*engineWindowY/18+(spSin(menu_counter*300+ 3*SP_PI*1/7)>>SP_ACCURACY-1),-1,"to	switch	2	stone	beside	with	pressing	the	named",middle_font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),15*engineWindowY/18+(spSin(menu_counter*300+ 2*SP_PI*1/7)>>SP_ACCURACY-1),-1,"buttons.	For	the	others	mode	read	the	README.",middle_font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),16*engineWindowY/18+(spSin(menu_counter*300+ 1*SP_PI*1/7)>>SP_ACCURACY-1),-1,"Made	by	Nick	May	(Music)	&	Ziz	(Code).",middle_font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),17*engineWindowY/18+(spSin(menu_counter*300+ 0*SP_PI*1/7)>>SP_ACCURACY-1),-1,"Any button: back",small_font);*/
+			spFontDraw(engineWindowX/2-line_length/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 6*engineWindowY/16+(spSin(menu_counter*300+10*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help control head line"),middle_font);
+			spFontDrawRight(engineWindowX/2+line_length/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 6*engineWindowY/16+(spSin(menu_counter*300+10*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help control line 1"),small_font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 7*engineWindowY/16+(spSin(menu_counter*300+ 9*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help control line 2"),small_font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 8*engineWindowY/16+(spSin(menu_counter*300+ 8*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help control line 3"),small_font);
+			//Stones
+			line_length = spFontWidth(spGetTranslationFromCaption(translation,"help stones head line"),middle_font) + spFontWidth(spGetTranslationFromCaption(translation,"help stones line 1"),small_font);
+			spFontDraw(engineWindowX/2-line_length/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 9*engineWindowY/16+(spSin(menu_counter*300+ 7*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help stones head line"),middle_font);
+			spFontDrawRight(engineWindowX/2+line_length/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2), 9*engineWindowY/16+(spSin(menu_counter*300+ 7*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help stones line 1"),small_font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),10*engineWindowY/16+(spSin(menu_counter*300+ 6*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help stones line 2"),small_font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),11*engineWindowY/16+(spSin(menu_counter*300+ 5*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help stones line 3"),small_font);
+			//Advices
+			line_length = spFontWidth(spGetTranslationFromCaption(translation,"help advices head line"),middle_font) + spFontWidth(spGetTranslationFromCaption(translation,"help advices line 1"),small_font);
+			spFontDraw(engineWindowX/2-line_length/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),12*engineWindowY/16+(spSin(menu_counter*300+ 4*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help advices head line"),middle_font);
+			spFontDrawRight(engineWindowX/2+line_length/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),12*engineWindowY/16+(spSin(menu_counter*300+ 4*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help advices line 1"),small_font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),13*engineWindowY/16+(spSin(menu_counter*300+ 3*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help advices line 2"),small_font);
+
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),29*engineWindowY/32+(spSin(menu_counter*300+ 2*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"Any button: back"),small_font);
 			break;
 	}
 	#ifdef MENU_DEBUG
@@ -667,7 +658,6 @@ void run_menu(void (*resize)(Uint16 w,Uint16 h))
 	menu_fade = MENUSIZE;
 	spSetDefaultLanguage(spGetPossibleLanguage(settings_get_language()));	
 	flag = spLoadSurface(spGetTranslationFromCaption(settings_get_translation(),"flag.png"));
-	help = spLoadSurface("./images/help.png");
 	if (settings_get_first_start())
 	{
 		menu_choice = 1<<SP_ACCURACY;
@@ -679,6 +669,5 @@ void run_menu(void (*resize)(Uint16 w,Uint16 h))
 	menu_resize = resize;
 	spLoop(draw_menu,calc_menu,10,resize,NULL);
 	spDeleteSurface(flag);
-	spDeleteSurface(help);
 }
 

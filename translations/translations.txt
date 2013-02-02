@@ -208,24 +208,54 @@ en:Mega Chain!
 de:Mega Kette!
 
 #Help
+--:HOW TO PLAY
+en:HOW TO PLAY
+de:TUTORIAL
 --:help goal head line
 en:Game idea: 
 de:Spielidee: 
 --:help goal line 1
-en:* Puzzle game on a cylinder
-de:* Puzzlespiel auf einem Zylinder
+en:- Puzzle game on a cylinder
+de:- Puzzlespiel auf einem Zylinder
 --:help goal line 2
-en:* Quadrats of 2*2 stones of the same color explode
-de:* Quadrate von 2*2 gleichfarbigen Steinen explodieren
+en:- Quadrats of 2*2 stones of the same color explode
+de:- Quadrate von 2*2 gleichfarbigen Steinen explodieren
 --:help goal line 3
-en:* Adjacent stones of the same color explode, too
-de:* Benachbarte gleichfarbene Steine explodieren mit
+en:- Adjacent stones of the same color explode, too
+de:- Benachbarte gleichfarbene Steine explodieren mit
 --:help goal line 4
-en:* More exploding stones => more points
-de:* Mehr explodierende Steine => mehr Punkte
+en:- More exploding stones => more points
+de:- Mehr explodierende Steine => mehr Punkte
 --:help control head line
 en:Controls: 
 de:Steuerung: 
 --:help control line 1
-en:* Adjustable in the settings menu
-de:* Im Einstellungsmenü einstellbar
+en:- Adjustable in the settings menu
+de:- Im Einstellungsmenü einstellbar
+--:help control line 2
+en:- Switch two stones around a third with the buttons
+de:- Tausch zwei Steine um einen Dritten mit den Buttons
+--:help control line 3
+en:- Use D-Pad for moving on cylinder
+de:- Nutz das D-Pad für die Navigation auf dem Zylinder
+--:help stones head line
+en:Special Stones: 
+de:Spezielle Steine: 
+--:help stones line 1
+en:- Bomb stone: Explodes
+de:- Bombenstein: Explodiert
+--:help stones line 2
+en:- Rainbow Stone: Compatible to every colour
+de:- Regenbogenstein: Kompatibel zu jeder Farbe
+--:help stones line 3
+en:- Stone stone: Doesn't explode except with bombs
+de:- Steinstein: Explodiert nicht, außer mit Bombe
+--:help advices head line
+en:Advices: 
+de:Tipps:
+--:help advices line 1
+en:- Use Combos for more points 
+de:- Nutze Kombos für mehr Punkte
+--:help advices line 2
+en:- Get even more points with chain reactions
+de:- Kettenreaktion bringen noch mehr Punkte
