@@ -5,5 +5,14 @@ ToDo til final (1.1) release:
 	- Starting game
 	- ingame
 - (better) Help at start / in menu
+	- Controls
+	- Goal
+	- Trophy
+	- Calculation of points
+		- Combo
+		- Chain
+		- pure points
+	- differnt kind of stones
 - Custom Music Option (with folder)
 - High Score Goals need values!
+- in points mode showing time
