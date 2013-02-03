@@ -141,6 +141,9 @@ de:6 Steine
 --:4 Stones
 en:4 Stones
 de:4 Steine
+--:The Underlining shows the achieved medal
+en:The Underlining shows the achieved medal
+de:Die Unterstreichung zeigt die erreichte Medaille
 
 #Ingame:
 --:Game Mode:

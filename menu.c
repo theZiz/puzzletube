@@ -191,9 +191,9 @@ void draw_menu(void)
 			#define HIGHSCORE_GAP_X		(engineWindowX/32)
 			#define HIGHSCORE_GAP_IN	(engineWindowX/64)
 			#define HIGHSCORE_WIDTH		((engineWindowX-(4*HIGHSCORE_GAP_X))/3)
-			#define HIGHSCORE_GAP_ABOVE (engineWindowY/5)
+			#define HIGHSCORE_GAP_ABOVE (2*engineWindowY/11)
 			#define HIGHSCORE_GAP_Y	 	(engineWindowX/64)
-			#define HIGHSCORE_HEIGHT 	((engineWindowY-HIGHSCORE_GAP_ABOVE-(4*HIGHSCORE_GAP_Y))/2)
+			#define HIGHSCORE_HEIGHT 	((engineWindowY-HIGHSCORE_GAP_ABOVE-(8*HIGHSCORE_GAP_Y))/2)
 					
 			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),engineWindowY/48+(spSin(menu_counter*300+6*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Highscore"),font);
 			spFontDrawMiddle(1*HIGHSCORE_GAP_X + 1*HIGHSCORE_WIDTH/2 +(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/48+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Points"),font);
@@ -237,7 +237,7 @@ void draw_menu(void)
 						sprintf(buffer,"%i.%i",get_highscore(j,0,i)/10,get_highscore(j,0,i)%10);
 					spFontDrawRight((j+1)*(HIGHSCORE_GAP_X+HIGHSCORE_WIDTH)-HIGHSCORE_GAP_IN+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),(i+1)*HIGHSCORE_HEIGHT/4+HIGHSCORE_GAP_ABOVE+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,middle_font);
 					spRectangle((j+1)*HIGHSCORE_GAP_X+(2*j+1)*HIGHSCORE_WIDTH/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),
-								middle_font->maxheight+2+(i+1)*HIGHSCORE_HEIGHT/4+HIGHSCORE_GAP_ABOVE+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),0,
+								middle_font->maxheight+1+(i+1)*HIGHSCORE_HEIGHT/4+HIGHSCORE_GAP_ABOVE+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),0,
 								HIGHSCORE_WIDTH-2*HIGHSCORE_GAP_IN,engineWindowY/128,color);
 				}			
 				spFontDrawMiddle((j+1)*HIGHSCORE_GAP_X + (2*j+1)*HIGHSCORE_WIDTH/2 +(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*HIGHSCORE_HEIGHT/4+HIGHSCORE_GAP_ABOVE+HIGHSCORE_GAP_Y+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Hard"),font);	
@@ -253,11 +253,12 @@ void draw_menu(void)
 						sprintf(buffer,"%i.%i",get_highscore(j,1,i)/10,get_highscore(j,1,i)%10);
 					spFontDrawRight((j+1)*(HIGHSCORE_GAP_X+HIGHSCORE_WIDTH)-HIGHSCORE_GAP_IN+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),(i+5)*HIGHSCORE_HEIGHT/4+HIGHSCORE_GAP_Y+HIGHSCORE_GAP_ABOVE+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,middle_font);
 					spRectangle((j+1)*HIGHSCORE_GAP_X+(2*j+1)*HIGHSCORE_WIDTH/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),
-								middle_font->maxheight+2+(i+5)*HIGHSCORE_HEIGHT/4+HIGHSCORE_GAP_Y+HIGHSCORE_GAP_ABOVE+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),0,
+								middle_font->maxheight+1+(i+5)*HIGHSCORE_HEIGHT/4+HIGHSCORE_GAP_Y+HIGHSCORE_GAP_ABOVE+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),0,
 								HIGHSCORE_WIDTH-2*HIGHSCORE_GAP_IN,engineWindowY/128,color);
 				}			
-				spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),30*engineWindowY/32+(spSin(menu_counter*300+2*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Any button: back"),small_font);
 			}
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),28*engineWindowY/32+(spSin(menu_counter*300+2*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"The Underlining shows the achieved medal"),small_font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),30*engineWindowY/32+(spSin(menu_counter*300+1*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Any button: back"),small_font);
 			break;
 
 		case 4: //Help
