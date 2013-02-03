@@ -43,7 +43,7 @@ void resize(Uint16 w,Uint16 h)
   //Setup of the new/resized window
   spSelectRenderTarget(spGetWindowSurface());
   spSetPerspective(135.0,(float)spGetWindowSurface()->w/(float)spGetWindowSurface()->h,0.1,100);
-
+	spBundlePointer translation = settings_get_translation();
 	spFontShadeButtons(1);
 
 	//Font Loading
@@ -52,7 +52,8 @@ void resize(Uint16 w,Uint16 h)
 		spFontDelete(font);
 	font = spFontLoad(FONT_LOCATION,FONT_SIZE*spGetSizeFactor()>>SP_ACCURACY);
 	spFontAdd(font,SP_FONT_GROUP_ASCII,0);//whole ASCII
-	spFontAdd(font,SP_FONT_GROUP_GERMAN,14823);//some German letters
+	//spFontAdd(font,SP_FONT_GROUP_GERMAN,0);//some German letters
+	spFontAddEveryLetterOfTextBundle(font,translation,0);
 	spFontAddBorder(font,65535);
 	spFontMulWidth(font,15<<SP_ACCURACY-4);
 	spFontAddButton( font, 'A', SP_BUTTON_A_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
@@ -70,7 +71,8 @@ void resize(Uint16 w,Uint16 h)
 		spFontDelete(small_font);
 	small_font = spFontLoad(FONT_LOCATION,FONT_SMALL_SIZE*spGetSizeFactor()>>SP_ACCURACY);
 	spFontAdd(small_font,SP_FONT_GROUP_ASCII,0);//whole ASCII
-	spFontAdd(small_font,SP_FONT_GROUP_GERMAN,14823);//some German letters
+	//spFontAdd(small_font,SP_FONT_GROUP_GERMAN,0);//some German letters
+	spFontAddEveryLetterOfTextBundle(small_font,translation,0);
 	spFontAddBorder(small_font,48631);
 	spFontMulWidth(small_font,15<<SP_ACCURACY-4);
 	spFontAddButton( small_font, 'A', SP_BUTTON_A_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
@@ -88,7 +90,8 @@ void resize(Uint16 w,Uint16 h)
 		spFontDelete(middle_font);
 	middle_font = spFontLoad(FONT_LOCATION,FONT_MIDDLE_SIZE*spGetSizeFactor()>>SP_ACCURACY);
 	spFontAdd(middle_font,SP_FONT_GROUP_ASCII,0);//whole ASCII
-	spFontAdd(middle_font,SP_FONT_GROUP_GERMAN,14823);//some German letters
+	//spFontAdd(middle_font,SP_FONT_GROUP_GERMAN,0);//some German letters
+	spFontAddEveryLetterOfTextBundle(middle_font,translation,0);
 	spFontAddBorder(middle_font,65535);
 	spFontMulWidth(middle_font,15<<SP_ACCURACY-4);
 	spFontAddButton( middle_font, 'A', SP_BUTTON_A_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
