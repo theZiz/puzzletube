@@ -26,11 +26,7 @@
 #include "game.h"
 #include "splashscreen.h"
 
-//#define FONT_LOCATION "./font/Vollkorn-Bold.ttf"
-//#define FONT_LOCATION "./font/Comfortaa-Bold.ttf"
 #define FONT_LOCATION "./font/Play-Bold.ttf"
-//#define FONT_LOCATION "./font/RobotoCondensed-Bold.ttf"
-//#define FONT_LOCATION "./font/Junicode-Bold.ttf"
 #define FONT_SIZE 16
 #define FONT_MIDDLE_SIZE 11
 #define FONT_SMALL_SIZE 11
@@ -138,10 +134,10 @@ int main(int argc, char **argv)
 	
 	//Setup
 	screen = spCreateDefaultWindow();
-	//set_particle_mode(settings_get_alpha_blending());
 	resize(screen->w,screen->h);
 	
 	run_splashscreen(resize);
+	spSetCulling(0);
 	init_music();
 	prepare_game_objects(1);
 	change_music("Midnight Mediation","Nick May");

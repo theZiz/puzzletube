@@ -1,5 +1,5 @@
-Copyright (c) 2010, Friedrich Althausen (http://friedrichalthausen.de). All rights reserved.
-
+Copyright (c) 2011, Jonas Hecksher, Playtypes, e-types AS (e-types.com),
+with Reserved Font Name "Play", "Playtype", "Playtype Sans".
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:
 http://scripts.sil.org/OFL

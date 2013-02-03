@@ -775,13 +775,11 @@ void draw_stone(int type,int h,int s,int v,int a,Sint32 posx_zero,int w)
 {
 	if (settings_get_stone_quality() == 2)
 	{
-		spSetCulling(0);
 		spBindTexture(stone_texture[type]);
 		spQuadTex3D(-7<<SP_ACCURACY-3,-7<<SP_ACCURACY-3,0,0,stone_texture[0]->h-SP_FONT_EXTRASPACE-1,
 								 7<<SP_ACCURACY-3,-7<<SP_ACCURACY-3,0,stone_texture[0]->w-SP_FONT_EXTRASPACE-1,stone_texture[0]->h-SP_FONT_EXTRASPACE-1,
 								 7<<SP_ACCURACY-3, 7<<SP_ACCURACY-3,0,stone_texture[0]->w-SP_FONT_EXTRASPACE-1,0,
 								-7<<SP_ACCURACY-3, 7<<SP_ACCURACY-3,0,0,0,spGetHSV(0,0,255-64+(2*spSin((-posx_zero>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)-((a+8)*SP_PI>>3))>>(SP_ACCURACY-5))));
-		spSetCulling(1);
 	}
 	else
 	if (settings_get_stone_quality() == 1)
@@ -803,7 +801,6 @@ void draw_stone(int type,int h,int s,int v,int a,Sint32 posx_zero,int w)
 		Uint16 darker = ((input * color >> 16) & 63488)
 									+ (((input & 2047) * (color & 2047) >> 11) & 2016)
 									+ ((input & 31) * (color & 31) >> 5);
-		spSetCulling(0);
 		spQuad3D(-5<<SP_ACCURACY-3,-5<<SP_ACCURACY-3,0,
 							5<<SP_ACCURACY-3,-5<<SP_ACCURACY-3,0,
 							5<<SP_ACCURACY-3, 5<<SP_ACCURACY-3,0,
@@ -824,11 +821,9 @@ void draw_stone(int type,int h,int s,int v,int a,Sint32 posx_zero,int w)
 							7<<SP_ACCURACY-3, 7<<SP_ACCURACY-3,0,
 							5<<SP_ACCURACY-3, 5<<SP_ACCURACY-3,0,
 						 -5<<SP_ACCURACY-3, 5<<SP_ACCURACY-3,0,lighter);
-		spSetCulling(1);
 	}
 	else
 	{
-		spSetCulling(0);
 		Uint16 input = spGetHSV(h,s,v);
 		Uint16 color = spGetHSV(0,0,255-96+(3*spSin((-posx_zero>>SP_HALF_ACCURACY+2)*(SP_PI>>SP_HALF_ACCURACY+1)-((a+8)*SP_PI>>3))>>(SP_ACCURACY-5)));
 		Uint16 output = ((input * color >> 16) & 63488)
@@ -838,7 +833,6 @@ void draw_stone(int type,int h,int s,int v,int a,Sint32 posx_zero,int w)
 							7<<SP_ACCURACY-3,-7<<SP_ACCURACY-3,0,
 							7<<SP_ACCURACY-3, 7<<SP_ACCURACY-3,0,
 						 -7<<SP_ACCURACY-3, 7<<SP_ACCURACY-3,0,output);
-		spSetCulling(1);
 	}	
 }
 
