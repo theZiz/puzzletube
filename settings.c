@@ -150,7 +150,7 @@ void settings_load()
 	settings_name[1]='A';
 	settings_name[2]='A';
 	settings_language = 0;
-	settings_first_start = 0;
+	settings_first_start = 1;
 	char buffer[256];
 	SDL_RWops *file=SDL_RWFromFile(get_path(buffer,"settings"SETTINGS_VERSION".dat"),"rb");
 	if (file == NULL)
@@ -164,6 +164,7 @@ void settings_load()
 	SDL_RWread(file,&settings_mode,sizeof(int),1);
 	SDL_RWread(file,settings_name,sizeof(char)*3,1);
 	SDL_RWread(file,&settings_language,sizeof(int),1);
+	settings_first_start = 0;
 	SDL_RWclose(file);
 }
 

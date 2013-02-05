@@ -134,8 +134,8 @@ void draw_menu(void)
 					break;
 			}
 			
-			spFontDrawMiddle(engineWindowX/2+((menu_fade-80)*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/10+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,spGetPossibleLanguageName(settings_get_language()),font);
-			spRotozoomSurface(spFontWidth(spGetPossibleLanguageName(settings_get_language()),font)/2+engineWindowX/2+((menu_fade+40)*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/10+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2)+font->maxheight/2,-1,flag,spGetSizeFactor() >> 3,spGetSizeFactor() >> 3,spSin(menu_counter << 8) >> 2);
+			spFontDrawMiddle(engineWindowX/2+((menu_fade-80)*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/10+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Language: English"),font);
+			spRotozoomSurface(spFontWidth(spGetTranslationFromCaption(translation,"Language: English"),font)/2+engineWindowX/2+((menu_fade+40)*spGetSizeFactor()>>SP_ACCURACY+2),6*engineWindowY/10+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2)+font->maxheight/2,-1,flag,spGetSizeFactor() >> 3,spGetSizeFactor() >> 3,spSin(menu_counter << 8) >> 2);
 
 			sprintf(buffer,"Volume %i%%",settings_get_volume());
 			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),7*engineWindowY/10+(spSin(menu_counter*300+1*SP_PI/4)>>SP_ACCURACY-2),-1,buffer,font);
@@ -654,20 +654,124 @@ case 2: //Play
 	return 0;
 }
 
+SDL_Surface** all_flags;
+Sint32 choosen_flag = 0;
+
+void draw_language_selection()
+{
+	int language = choosen_flag + SP_ONE/2 >> SP_ACCURACY;
+	if (language >= spGetPossibleLanguagesCount())
+		language -= spGetPossibleLanguagesCount();
+	spSetDefaultLanguage(spGetPossibleLanguage(language));	
+	spBundlePointer translation = settings_get_translation();
+	Sint32* modellViewMatrix=spGetMatrix();
+	int engineWindowX=spGetWindowSurface()->w;
+	int engineWindowY=spGetWindowSurface()->h;
+	spFontPointer font = settings_get_font();
+	spFontPointer small_font = settings_get_small_font();
+	spFontPointer middle_font = settings_get_middle_font();
+	spSetAlphaTest(1);
+	spSetZSet(0);
+	spSetZTest(0);
+	spResetZBuffer();
+	spIdentity();
+	spClearTarget(7);
+	spTranslate(0,1<<SP_ACCURACY,-10<<SP_ACCURACY);
+	spRotateX(SP_PI/8);
+	spRotateY(2*spMul(SP_PI,choosen_flag)/spGetPossibleLanguagesCount());
+	int i;
+	for (i = 0; i < spGetPossibleLanguagesCount(); i++)
+	{
+		Sint32 matrix[16];
+		memcpy( matrix, spGetMatrix(), 16 * sizeof( Sint32 ) ); //glPush()
+		spRotateX(2*SP_PI*i/spGetPossibleLanguagesCount());
+		SDL_Surface* flag = all_flags[i];
+		spBindTexture(flag);
+		spTranslate(0,0,5<<SP_ACCURACY);
+		//spRotateX(-SP_PI/8);
+		spQuadTex3D(-2*SP_ONE, SP_ONE,0,0,0,
+								-2*SP_ONE,-SP_ONE,0,0,flag->h-1,
+								 2*SP_ONE,-SP_ONE,0,flag->w-1,flag->h-1,
+								 2*SP_ONE, SP_ONE,0,flag->w-1,0,65535);
+		memcpy( spGetMatrix(), matrix,16 * sizeof( Sint32 ) ); //glPop()
+	}
+	spFontDrawMiddle(spGetWindowSurface()->w/2,   spGetWindowSurface()->h/16,-1,spGetTranslationFromCaption(translation,"Choose your language!"),font);
+	spFontDrawMiddle(spGetWindowSurface()->w/2,14*spGetWindowSurface()->h/16,-1,spGetPossibleLanguageName(language),font);
+	spFlip();
+}
+
+int direction = 0;
+
+int calc_language_selection(Uint32 steps)
+{
+	PspInput engineInput = spGetInput();
+	int i;
+	for (i = 0; i < steps; i++)
+	{
+		if (direction == 0)
+		{
+			if (engineInput->axis[0] < 0)
+				direction = -1;
+			else
+			if (engineInput->axis[0] > 0)
+				direction = 1;
+			if (engineInput->button[SP_BUTTON_START] || engineInput->button[SP_BUTTON_SELECT] ||
+				 (engineInput->button[SP_BUTTON_A] || engineInput->button[SP_BUTTON_B] ||
+					engineInput->button[SP_BUTTON_X] || engineInput->button[SP_BUTTON_Y]))
+			{
+				engineInput->button[SP_BUTTON_START] = 0;
+				engineInput->button[SP_BUTTON_SELECT] = 0;
+				engineInput->button[SP_BUTTON_A] = 0;
+				engineInput->button[SP_BUTTON_B] = 0;
+				engineInput->button[SP_BUTTON_X] = 0;
+				engineInput->button[SP_BUTTON_Y] = 0;
+				return 1;
+			}
+		}
+		else
+		{
+			choosen_flag += direction<<SP_ACCURACY-8;
+			if (choosen_flag < 0)
+				choosen_flag += spGetPossibleLanguagesCount() << SP_ACCURACY;
+			if (choosen_flag >= spGetPossibleLanguagesCount() << SP_ACCURACY)
+				choosen_flag -= spGetPossibleLanguagesCount() << SP_ACCURACY;
+			if (((choosen_flag >> SP_ACCURACY) << SP_ACCURACY) == choosen_flag)
+				direction = 0;
+		}
+	}
+	
+	return 0;
+}
+
 void run_menu(void (*resize)(Uint16 w,Uint16 h))
 {
 	menu_fade = MENUSIZE;
-	spSetDefaultLanguage(spGetPossibleLanguage(settings_get_language()));	
-	flag = spLoadSurface(spGetTranslationFromCaption(settings_get_translation(),"flag.png"));
 	if (settings_get_first_start())
 	{
+		all_flags = (SDL_Surface**)malloc(sizeof(SDL_Surface*)*spGetPossibleLanguagesCount());
+		choosen_flag = spGetPossibleLanguagesCount()-1 << SP_ACCURACY;
+		int i;
+		for (i = 0; i < spGetPossibleLanguagesCount(); i++)
+		{
+			spSetDefaultLanguage(spGetPossibleLanguage(i));	
+			all_flags[i] = spLoadSurface(spGetTranslationFromCaption(settings_get_translation(),"flag.png"));
+		}
+		spSetPerspectiveTextureMapping(1);
+		spLoop(draw_language_selection,calc_language_selection,10,resize,NULL);
+		spSetPerspectiveTextureMapping(0);
+		for (i = 0; i < spGetPossibleLanguagesCount(); i++)
+			spDeleteSurface(all_flags[i]);
+		free(all_flags);
+		settings_set_language(choosen_flag >> SP_ACCURACY);
 		menu_choice = 1<<SP_ACCURACY;
 		settings_save();
 	}
 	else
 		menu_choice = 0;
+	spSetDefaultLanguage(spGetPossibleLanguage(settings_get_language()));	
 	rotating_sound_on();
 	menu_resize = resize;
+	flag = spLoadSurface(spGetTranslationFromCaption(settings_get_translation(),"flag.png"));
 	spLoop(draw_menu,calc_menu,10,resize,NULL);
 	spDeleteSurface(flag);
 }

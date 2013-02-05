@@ -5,6 +5,14 @@
 en:./images/flag_en.png
 de:./images/flag_de.png
 
+# Start question
+--:Choose your language!
+en:Choose your language!
+de:Wähle deine Sprache!
+--:Language: English
+en:Language: English
+de:Sprache: Deutsch
+
 # Menu
 --:Play
 en:Play
