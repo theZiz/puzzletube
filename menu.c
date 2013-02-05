@@ -183,8 +183,8 @@ void draw_menu(void)
 			
 			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/6+(spSin(menu_counter*300+1*SP_PI/3)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Back to Menu"),font);
 
-			spTranslate(0,1<<SP_ACCURACY-2,3<<SP_ACCURACY-1);
-			spTranslate(-10<<SP_ACCURACY,(3<<SP_ACCURACY)-menu_choice*10/3,0);
+			spTranslate(0,1<<SP_ACCURACY-3,3<<SP_ACCURACY-1);
+			spTranslate(-10<<SP_ACCURACY,(5<<SP_ACCURACY-1)-menu_choice*3,0);
 			draw_particle_circle(-1,menu_counter);
 			spTranslate(20<<SP_ACCURACY,0,0);
 			draw_particle_circle(+1,menu_counter);
@@ -702,7 +702,7 @@ void draw_language_selection()
 	spFlip();
 }
 
-int direction = 0;
+int lan_direction = 0;
 
 int calc_language_selection(Uint32 steps)
 {
@@ -710,13 +710,13 @@ int calc_language_selection(Uint32 steps)
 	int i;
 	for (i = 0; i < steps; i++)
 	{
-		if (direction == 0)
+		if (lan_direction == 0)
 		{
 			if (engineInput->axis[0] < 0)
-				direction = -1;
+				lan_direction = -1;
 			else
 			if (engineInput->axis[0] > 0)
-				direction = 1;
+				lan_direction = 1;
 			if (engineInput->button[SP_BUTTON_START] || engineInput->button[SP_BUTTON_SELECT] ||
 				 (engineInput->button[SP_BUTTON_A] || engineInput->button[SP_BUTTON_B] ||
 					engineInput->button[SP_BUTTON_X] || engineInput->button[SP_BUTTON_Y]))
@@ -732,13 +732,13 @@ int calc_language_selection(Uint32 steps)
 		}
 		else
 		{
-			choosen_flag += direction<<SP_ACCURACY-8;
+			choosen_flag += lan_direction<<SP_ACCURACY-8;
 			if (choosen_flag < 0)
 				choosen_flag += spGetPossibleLanguagesCount() << SP_ACCURACY;
 			if (choosen_flag >= spGetPossibleLanguagesCount() << SP_ACCURACY)
 				choosen_flag -= spGetPossibleLanguagesCount() << SP_ACCURACY;
 			if (((choosen_flag >> SP_ACCURACY) << SP_ACCURACY) == choosen_flag)
-				direction = 0;
+				lan_direction = 0;
 		}
 	}
 	

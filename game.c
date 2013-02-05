@@ -1385,7 +1385,7 @@ void draw_game(void)
 		int i;
 		for (i = 0; i < 3; i++)
 		{
-			SDL_Surface* surface = spFontGetLetter(font,myhighscore_name[i])->surface;
+			SDL_Surface* surface = spFontGetLetter(countdown_font,myhighscore_name[i])->surface;
 			spBindTexture(surface);
 			int addx	= (i-1)*2*spGetSizeFactor()*24>>SP_ACCURACY;
 			int sizex = spGetSizeFactor()*24>>SP_ACCURACY;

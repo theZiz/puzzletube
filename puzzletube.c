@@ -108,7 +108,7 @@ void resize(Uint16 w,Uint16 h)
 	if (countdown_font)
 		spFontDelete(countdown_font);
 	countdown_font = spFontLoad(FONT_LOCATION,FONT_COUNTDOWN_SIZE*spGetSizeFactor()>>SP_ACCURACY);
-	spFontAdd(countdown_font,SP_FONT_GROUP_ASCII,0);//whole ASCII
+	spFontAdd(countdown_font,"0123ABCDEFGHIJKLMNOPQRSTUVWXYZ",0);
 	spFontAddBorder(countdown_font,65535);
 	settings_set_countdown_font(countdown_font);
 
