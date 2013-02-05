@@ -1304,8 +1304,11 @@ void draw_game(void)
 		spFontDrawMiddle(6*engineWindowX/7,4*engineWindowY/16,-1,spGetTranslationFromCaption(translation,"Points"),small_font);
 		sprintf(buffer,"%i",points);
 		spFontDrawMiddle(6*engineWindowX/7,5*engineWindowY/16,-1,buffer,font);
-		sprintf(buffer,"%i.%i %s",(120000-realTime)/1000,((120000-realTime)/100)%10,spGetTranslationFromCaption(translation,"Sec"));
-		spFontDrawMiddle(6*engineWindowX/7,8*engineWindowY/16,-1,buffer,font);
+		if (settings_get_mode() == 0)
+		{
+			sprintf(buffer,"%i.%i %s",(120000-realTime)/1000,((120000-realTime)/100)%10,spGetTranslationFromCaption(translation,"Sec"));
+			spFontDrawMiddle(6*engineWindowX/7,8*engineWindowY/16,-1,buffer,font);
+		}
 	}
 
 	if (settings_get_mode() == 2)
