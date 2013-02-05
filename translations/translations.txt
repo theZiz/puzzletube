@@ -265,8 +265,8 @@ de:- Steinstein: Explodiert nicht, außer mit Bombe
 en:Advices: 
 de:Tipps:
 --:help advices line 1
-en:- Use Combos for more points 
-de:- Nutze Kombos für mehr Punkte
+en:- Use Combos & domino effects for more points 
+de:- Nutz Kombos & Dominoeffekte für mehr Punkte
 --:help advices line 2
-en:- Get even more points with chain reactions
-de:- Kettenreaktion bringen noch mehr Punkte
+en:- Copy music to the folder "music" for your own music
+de:- Kopiere Musik in den Ordner "music" für eigene Musik
