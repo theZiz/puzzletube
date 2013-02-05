@@ -82,6 +82,9 @@ de:einen Button gedrückt, wähle 2. Stein und lass los
 --:Language
 en:Language: English
 de:Sprache: Deutsch
+--:Translation: Ziz & Foxblock
+en:Translation: Ziz & Foxblock
+de:Übersetzung: Ziz
 --:Back to Menu
 en:Back to Menu
 de:Zurück ins Menü
