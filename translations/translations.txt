@@ -49,6 +49,9 @@ de:Sterne: Rotierend
 --:Particles: On
 en:Particles: On
 de:Partikel: An
+--:Particles: Simple
+en:Particles: Simple
+de:Partikel: Einfach
 --:Particles: Off
 en:Particles: Off
 de:Partikel: Aus

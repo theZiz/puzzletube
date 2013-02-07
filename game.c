@@ -639,7 +639,7 @@ void make_win_situations_invalid()
 
 			stone[temp->y][temp->x].type=-1;
 			play_explosion();
-			if (settings_get_particles())
+			if (settings_get_particles() == 2)
 			{
 				new_particle(spCos((temp->x*SP_PI>>3)-SP_PI/32)*5,((temp->y-3)*2<<SP_ACCURACY)-(1<<SP_ACCURACY-1),spSin((temp->x*SP_PI>>3)-SP_PI/32)*5,
 										 stone[temp->y][temp->x].h,stone[temp->y][temp->x].s,stone[temp->y][temp->x].v,
@@ -651,6 +651,13 @@ void make_win_situations_invalid()
 										 stone[temp->y][temp->x].h,stone[temp->y][temp->x].s,stone[temp->y][temp->x].v,
 										 0,2*SP_PI+SP_PI/2-(temp->x*SP_PI>>3),0);
 				new_particle(spCos((temp->x*SP_PI>>3)+SP_PI/32)*5,((temp->y-3)*2<<SP_ACCURACY)+(1<<SP_ACCURACY-1),spSin((temp->x*SP_PI>>3)+SP_PI/32)*5,
+										 stone[temp->y][temp->x].h,stone[temp->y][temp->x].s,stone[temp->y][temp->x].v,
+										 0,2*SP_PI+SP_PI/2-(temp->x*SP_PI>>3),0);
+			}
+			else
+			if (settings_get_particles() == 1)
+			{
+				new_particle(spCos((temp->x*SP_PI>>3))*5,((temp->y-3)*2<<SP_ACCURACY),spSin((temp->x*SP_PI>>3))*5,
 										 stone[temp->y][temp->x].h,stone[temp->y][temp->x].s,stone[temp->y][temp->x].v,
 										 0,2*SP_PI+SP_PI/2-(temp->x*SP_PI>>3),0);
 			}
@@ -1003,6 +1010,9 @@ void draw_game(void)
 	//particles
 	spSetAlphaTest(0);
 	pparticle particle=firstparticle;
+	int multiplier = 1;
+	if (settings_get_particles() == 1)
+		multiplier = 2;
 	while (particle)
 	{
 		memcpy(matrix,modellViewMatrix,sizeof(Sint32)*16);
@@ -1010,14 +1020,14 @@ void draw_game(void)
 		spRotate(1<<SP_ACCURACY,0,0,particle->rotx);
 		spRotate(0,1<<SP_ACCURACY,0,particle->roty);
 		spRotate(0,0,1<<SP_ACCURACY,particle->rotz);
-		spQuad3D(-(particle->age<<SP_ACCURACY)/PARTICLE_AGE/4,
-						 -(particle->age<<SP_ACCURACY)/PARTICLE_AGE/4,0,
-							(particle->age<<SP_ACCURACY)/PARTICLE_AGE/4,
-						 -(particle->age<<SP_ACCURACY)/PARTICLE_AGE/4,0,
-							(particle->age<<SP_ACCURACY)/PARTICLE_AGE/4,
-							(particle->age<<SP_ACCURACY)/PARTICLE_AGE/4,0,
-						 -(particle->age<<SP_ACCURACY)/PARTICLE_AGE/4,
-							(particle->age<<SP_ACCURACY)/PARTICLE_AGE/4,0,
+		spQuad3D(-(particle->age<<SP_ACCURACY)/PARTICLE_AGE/4*multiplier,
+						 -(particle->age<<SP_ACCURACY)/PARTICLE_AGE/4*multiplier,0,
+							(particle->age<<SP_ACCURACY)/PARTICLE_AGE/4*multiplier,
+						 -(particle->age<<SP_ACCURACY)/PARTICLE_AGE/4*multiplier,0,
+							(particle->age<<SP_ACCURACY)/PARTICLE_AGE/4*multiplier,
+							(particle->age<<SP_ACCURACY)/PARTICLE_AGE/4*multiplier,0,
+						 -(particle->age<<SP_ACCURACY)/PARTICLE_AGE/4*multiplier,
+							(particle->age<<SP_ACCURACY)/PARTICLE_AGE/4*multiplier,0,
 							spGetHSV(particle->h,particle->s,particle->v));
 		memcpy(modellViewMatrix,matrix,sizeof(Sint32)*16);
 		particle=particle->next;
