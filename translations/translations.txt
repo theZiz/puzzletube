@@ -156,7 +156,7 @@ de:4 Steine
 en:The Underlining shows the achieved medal
 de:Die Unterstreichung zeigt die erreichte Medaille
 
-#Ingame:
+# Ingame:
 --:Game Mode:
 en:Game Mode:
 de:Spielmodus:
@@ -220,8 +220,27 @@ de:5x Kette!
 --:Mega Chain!
 en:Mega Chain!
 de:Mega Kette!
+# Trohpy stuff:
+--:& the gold trophy!
+en:& the gold trophy!
+de:& die güldene Trophäe!
+--:& the silver trophy!
+en:& the silver trophy!
+de:& die silberne Trophäe!
+--:& the bronze trophy!
+en:& the bronze trophy!
+de:& die bronzene Trophäe!
+--:next trophy:
+en:next trophy:
+de:nächste Trophäe:
+--:& the green trophy!
+en:& the green trophy!
+de:& die grüne Trophäe!
+--:(better than the maker)
+en:(better than the maker)
+de:(Besser als der Macher)
 
-#Help
+# Help
 --:HOW TO PLAY
 en:HOW TO PLAY
 de:TUTORIAL

@@ -23,6 +23,7 @@
 #include "../sparrow3d/sparrow3d.h"
 
 int get_highscore_trophy(int game_mode,int dificult,int points);
+int get_next_highscore_trophy(int game_mode,int dificult,int points);
 
 void settings_load();
 void settings_save();
@@ -57,6 +58,8 @@ spFontPointer settings_get_middle_font();
 void settings_set_middle_font(spFontPointer middle_font);
 spFontPointer settings_get_countdown_font();
 void settings_set_countdown_font(spFontPointer countdown_font);
+spFontPointer settings_get_highscore_font();
+void settings_set_highscore_font(spFontPointer highscore_font);
 
 void settings_reset_highscore_name(char* name);
 void settings_set_highscore_name(char* name);

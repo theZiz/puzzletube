@@ -41,19 +41,20 @@ spFontPointer settings_font;
 spFontPointer settings_small_font;
 spFontPointer settings_middle_font;
 spFontPointer settings_countdown_font;
+spFontPointer settings_highscore_font;
 
 int highscore[3][2][3];
 char highscore_name[3][2][3][3]; //game mode, normal/hard, top3
 const int highscore_goal[3][2][4] =
 //Points
-{{{100000,200000,300000,400000},
-  { 50000,100000,150000,200000}},
+{{{400000,300000,200000,100000},
+  {200000,150000,100000, 50000}},
 //Survival
- {{ 10000, 20000, 30000, 40000},
-  {  5000, 10000, 15000, 20000}},
+ {{ 40000, 30000, 20000, 10000},
+  { 20000, 15000, 10000,  5000}},
 //Race
- {{ 10000,  5000,  2500,  1000},
-  { 20000, 10000,  5000,  2500}}};
+ {{  1000,  2500,  5000, 10000},
+  {  2500,  5000, 10000, 20000}}};
   
 int get_highscore_trophy(int game_mode,int dificult,int points)
 {
@@ -61,13 +62,23 @@ int get_highscore_trophy(int game_mode,int dificult,int points)
 	for (i = 0; i < 4; i++)
 		if (game_mode == 2)
 		{
-			if (highscore_goal[game_mode][dificult][3-i] >= points)
+			if (highscore_goal[game_mode][dificult][i] >= points)
 				return i;
 		}
 		else
-			if (highscore_goal[game_mode][dificult][3-i] <= points)
+			if (highscore_goal[game_mode][dificult][i] <= points)
 				return i;
 	return 4;
+}
+
+int get_next_highscore_trophy(int game_mode,int dificult,int points)
+{
+	int i = get_highscore_trophy(game_mode,dificult,points);
+	printf("Your place is %i. Next better Place is %i.\n",i,i-1);
+	if (i == 0)
+		return 0;
+	printf("Points %i\n",highscore_goal[game_mode][dificult][i-1]);
+	return highscore_goal[game_mode][dificult][i-1];
 }
 
 char* get_highscore_name(int game_mode,int difficult,int rank)
@@ -146,6 +157,7 @@ void settings_load()
 	settings_middle_font = NULL;
 	settings_small_font = NULL;
 	settings_countdown_font = NULL;
+	settings_highscore_font = NULL;
 	settings_name[0]='A';
 	settings_name[1]='A';
 	settings_name[2]='A';
@@ -327,6 +339,16 @@ spFontPointer settings_get_countdown_font()
 void settings_set_countdown_font(spFontPointer countdown_font)
 {
 	settings_countdown_font = countdown_font;
+}
+
+spFontPointer settings_get_highscore_font()
+{
+	return settings_highscore_font;
+}
+
+void settings_set_highscore_font(spFontPointer highscore_font)
+{
+	settings_highscore_font = highscore_font;
 }
 
 void settings_reset_highscore_name(char* name)

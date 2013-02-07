@@ -31,12 +31,14 @@
 #define FONT_MIDDLE_SIZE 11
 #define FONT_SMALL_SIZE 11
 #define FONT_COUNTDOWN_SIZE 128
+#define FONT_HIGHSCORE_SIZE 48
 
 SDL_Surface* screen;
 spFontPointer font = NULL;
 spFontPointer small_font = NULL;
 spFontPointer middle_font = NULL;
 spFontPointer countdown_font = NULL;
+spFontPointer highscore_font = NULL;
 
 void resize(Uint16 w,Uint16 h)
 {
@@ -108,9 +110,17 @@ void resize(Uint16 w,Uint16 h)
 	if (countdown_font)
 		spFontDelete(countdown_font);
 	countdown_font = spFontLoad(FONT_LOCATION,FONT_COUNTDOWN_SIZE*spGetSizeFactor()>>SP_ACCURACY);
-	spFontAdd(countdown_font,"0123ABCDEFGHIJKLMNOPQRSTUVWXYZ",0);
+	spFontAdd(countdown_font,"0123",0);
 	spFontAddBorder(countdown_font,65535);
 	settings_set_countdown_font(countdown_font);
+
+	spFontSetShadeColor(65535);
+	if (highscore_font)
+		spFontDelete(highscore_font);
+	highscore_font = spFontLoad(FONT_LOCATION,FONT_HIGHSCORE_SIZE*spGetSizeFactor()>>SP_ACCURACY);
+	spFontAdd(highscore_font,"ABCDEFGHIJKLMNOPQRSTUVWXYZ",0);
+	spFontAddBorder(highscore_font,65535);
+	settings_set_highscore_font(highscore_font);
 
 	//Particles
 	resize_particle(w,h);

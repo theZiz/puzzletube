@@ -34,6 +34,7 @@ int star_add;
 
 typedef SDL_Surface *PSDL_Surface;
 PSDL_Surface stone_texture[9];
+PSDL_Surface trophy_texture[4];
 Sint32 w=0;
 
 Sint32 posx[4],posy[4];
@@ -487,15 +488,18 @@ void prepare_game_objects(char complete)
 	}
 	else
 	{
-		stone_texture[0] = spLoadSurface("./images/stone1.png");
-		stone_texture[1] = spLoadSurface("./images/stone2.png");
-		stone_texture[2] = spLoadSurface("./images/stone3.png");
-		stone_texture[3] = spLoadSurface("./images/stone4.png");
-		stone_texture[4] = spLoadSurface("./images/stone5.png");
-		stone_texture[5] = spLoadSurface("./images/stone6.png");
-		stone_texture[6] = spLoadSurface("./images/stone7.png");
-		stone_texture[7] = spLoadSurface("./images/stone8.png");
-		stone_texture[8] = spLoadSurface("./images/stone9.png");
+		int i;
+		char buffer[256];
+		for (i = 0; i < 9; i++)
+		{
+			sprintf(buffer,"./images/stone%i.png",i+1);
+			stone_texture[i] = spLoadSurface(buffer);
+		}
+		for (i = 0; i < 4; i++)
+		{
+			sprintf(buffer,"./images/trophy%i.png",i);
+			trophy_texture[i] = spLoadSurface(buffer);
+		}
 		resize_particle(spGetWindowSurface()->w,spGetWindowSurface()->h);
 	}
 }
@@ -505,6 +509,8 @@ void delete_game_objects()
 	int i;
 	for (i = 0;i<9;i++)
 		SDL_FreeSurface(stone_texture[i]);
+	for (i = 0;i<4;i++)
+		SDL_FreeSurface(trophy_texture[i]);
 }
 
 void new_particle(Sint32 x,Sint32 y,Sint32 z,Sint32 h,Uint8 s,Uint8 v,Sint32 rotx,Sint32 roty,Sint32 rotz)
@@ -845,6 +851,7 @@ void draw_game(void)
 	spFontPointer small_font = settings_get_small_font();
 	spFontPointer middle_font = settings_get_middle_font();
 	spFontPointer countdown_font = settings_get_countdown_font();
+	spFontPointer highscore_font = settings_get_highscore_font();
 	SDL_Surface* screen = spGetWindowSurface();
 	Sint32* modellViewMatrix=spGetMatrix();
 	//plight light=engineGetLightPointer();
@@ -1367,25 +1374,73 @@ void draw_game(void)
 	//insert name
 	if (insert_name)
 	{
+		int trophy;
+		switch (settings_get_mode())
+		{
+			case 0: //Points
+				trophy = get_highscore_trophy(settings_get_mode(),settings_get_color(),points);
+				break;
+			case 1: case 2: //Survival, Race
+				trophy = get_highscore_trophy(settings_get_mode(),settings_get_color(),realTime/100);
+				break;
+		}
 		draw_filled_border(5*engineWindowX/20,1*engineWindowY/20,15*engineWindowX/20,19*engineWindowY/20,BACKGROUND_COLOR);
-		draw_border			 (5*engineWindowX/20,1*engineWindowY/20,15*engineWindowX/20,19*engineWindowY/20,65535);
+		draw_border       (5*engineWindowX/20,1*engineWindowY/20,15*engineWindowX/20,19*engineWindowY/20,65535);
+		int movement = 0;
+		if (trophy < 4)
+		{
+			spBindTexture( trophy_texture[trophy] );
+			spQuad_tex(23*engineWindowX/40, 3*engineWindowY/40,0,0,0,
+			           23*engineWindowX/40,13*engineWindowY/40,0,0,trophy_texture[trophy]->h-1,
+			           29*engineWindowX/40,13*engineWindowY/40,0,trophy_texture[trophy]->w-1,trophy_texture[trophy]->h-1,
+			           29*engineWindowX/40, 3*engineWindowY/40,0,trophy_texture[trophy]->w-1,0,65535);
+			movement = 3*engineWindowX/40;
+		}
 		
-		spFontDrawMiddle(engineWindowX/2, 1*engineWindowY/12,-1,spGetTranslationFromCaption(translation,"You got"),font);
+		spFontDrawMiddle(engineWindowX/2-movement, 1*engineWindowY/12,-1,spGetTranslationFromCaption(translation,"You got"),font);
 		switch (settings_get_mode())
 		{
 			case 0: sprintf(buffer,"%i %s",points,spGetTranslationFromCaption(translation,"Points")); break;
 			case 1: case 2: sprintf(buffer,"%i.%i %s",realTime/1000,(realTime/100)%10,spGetTranslationFromCaption(translation,"Sec")); break;
 		}
-		spFontDrawMiddle(engineWindowX/2, 2*engineWindowY/12,-1,buffer,font);
+		spFontDrawMiddle(engineWindowX/2-movement, 2*engineWindowY/12,-1,buffer,font);
 		sprintf(buffer,"(%s %i)",spGetTranslationFromCaption(translation,"Rank"),insert_name);
-		spFontDrawMiddle(engineWindowX/2, 3*engineWindowY/12,-1,buffer,middle_font);
-		spFontDrawMiddle(engineWindowX/2, 4*engineWindowY/12,-1,spGetTranslationFromCaption(translation,"Enter your name"),font);
-		spFontDrawMiddle(engineWindowX/2, 5*engineWindowY/12,-1,spGetTranslationFromCaption(translation,"with the D-pad"),font);
+		spFontDrawMiddle(engineWindowX/2-movement,12*engineWindowY/48,-1,buffer,small_font);
+		switch (settings_get_mode())
+		{
+			case 0: //Points
+				sprintf(buffer,"%s %i %s",spGetTranslationFromCaption(translation,"next trophy:"),get_next_highscore_trophy(settings_get_mode(),settings_get_color(),points),spGetTranslationFromCaption(translation,"Points"));
+				break;
+			case 1: case 2://Survival, Race
+				sprintf(buffer,"%s %i.%i %s",spGetTranslationFromCaption(translation,"next trophy:"),get_next_highscore_trophy(settings_get_mode(),settings_get_color(),points)/10,get_next_highscore_trophy(settings_get_mode(),settings_get_color(),points)%10,spGetTranslationFromCaption(translation,"Sec"));
+				break;
+		}
+		switch (trophy)
+		{
+			case 3:
+				spFontDrawMiddle(engineWindowX/2, 8*engineWindowY/24,-1,spGetTranslationFromCaption(translation,"& the bronze trophy!"),font);
+				spFontDrawMiddle(engineWindowX/2,20*engineWindowY/48,-1,buffer,small_font);
+				break;
+			case 2:
+				spFontDrawMiddle(engineWindowX/2, 8*engineWindowY/24,-1,spGetTranslationFromCaption(translation,"& the silver trophy!"),font);
+				spFontDrawMiddle(engineWindowX/2,20*engineWindowY/48,-1,buffer,small_font);
+				break;
+			case 1:
+				spFontDrawMiddle(engineWindowX/2, 8*engineWindowY/24,-1,spGetTranslationFromCaption(translation,"& the gold trophy!"),font);
+				spFontDrawMiddle(engineWindowX/2,20*engineWindowY/48,-1,buffer,small_font);
+				break;
+			case 0:
+				spFontDrawMiddle(engineWindowX/2, 8*engineWindowY/24,-1,spGetTranslationFromCaption(translation,"& the green trophy!"),font);
+				spFontDrawMiddle(engineWindowX/2,20*engineWindowY/48,-1,spGetTranslationFromCaption(translation,"(better than the maker)"),small_font);
+				break;
+		}
+		spFontDrawMiddle(engineWindowX/2,12*engineWindowY/24,-1,spGetTranslationFromCaption(translation,"Enter your name"),font);
+		spFontDrawMiddle(engineWindowX/2,14*engineWindowY/24,-1,spGetTranslationFromCaption(translation,"with the D-pad"),font);
 		
 		int i;
 		for (i = 0; i < 3; i++)
 		{
-			SDL_Surface* surface = spFontGetLetter(countdown_font,myhighscore_name[i])->surface;
+			SDL_Surface* surface = spFontGetLetter(highscore_font,myhighscore_name[i])->surface;
 			spBindTexture(surface);
 			int addx	= (i-1)*2*spGetSizeFactor()*24>>SP_ACCURACY;
 			int sizex = spGetSizeFactor()*24>>SP_ACCURACY;
@@ -1395,13 +1450,13 @@ void draw_game(void)
 				sizex = sizex*3/4;
 				sizey = sizey*3/4;
 			}
-			spQuad_tex(addx+engineWindowX/2-sizex,7*engineWindowY/10+sizey,-1,0,surface->h-SP_FONT_EXTRASPACE-1,
-								 addx+engineWindowX/2+sizex,7*engineWindowY/10+sizey,-1,surface->w-SP_FONT_EXTRASPACE-1,surface->h-SP_FONT_EXTRASPACE-1,
-								 addx+engineWindowX/2+sizex,7*engineWindowY/10-sizey,-1,surface->w-SP_FONT_EXTRASPACE-1,0,
-								 addx+engineWindowX/2-sizex,7*engineWindowY/10-sizey,-1,0,0,65535);
+			spQuad_tex(addx+engineWindowX/2-sizex,15*engineWindowY/20+sizey,-1,0,surface->h-SP_FONT_EXTRASPACE-1,
+								 addx+engineWindowX/2+sizex,15*engineWindowY/20+sizey,-1,surface->w-SP_FONT_EXTRASPACE-1,surface->h-SP_FONT_EXTRASPACE-1,
+								 addx+engineWindowX/2+sizex,15*engineWindowY/20-sizey,-1,surface->w-SP_FONT_EXTRASPACE-1,0,
+								 addx+engineWindowX/2-sizex,15*engineWindowY/20-sizey,-1,0,0,65535);
 		}
 			 
-		spFontDrawMiddle(engineWindowX/2, 10*engineWindowY/12,-1,spGetTranslationFromCaption(translation,"and press [S]"),font);		
+		spFontDrawMiddle(engineWindowX/2, 41*engineWindowY/48,-1,spGetTranslationFromCaption(translation,"and press [S]"),font);		
 	}
 	
 
