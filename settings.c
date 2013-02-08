@@ -143,7 +143,7 @@ char* get_path(char* buffer,char* file)
 void settings_load()
 {
 	#ifdef REALGP2X
-		settings_stone_quality = 0;
+		settings_stone_quality = 1;
 	#else
 		settings_stone_quality = 2;
 	#endif
