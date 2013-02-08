@@ -99,7 +99,7 @@ void draw_menu(void)
 			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),1*engineWindowY/21+(spSin(menu_counter*300+6*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"SETTINGS"),font);
 			spFontDrawMiddle(engineWindowX/2+((menu_fade-32)*spGetSizeFactor()>>SP_ACCURACY+2),3*engineWindowY/21+(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Stone Quality:"),font);
 			factor = spDiv(27 << SP_ACCURACY - 8,spGetSizeFactor());
-			spTranslate(( ((menu_fade-32)*spGetSizeFactor()>>SP_ACCURACY+2)+spFontWidth(spGetTranslationFromCaption(translation,"Stone Quality:"),font)/2)*factor, (6*engineWindowY/21-(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2))*factor,-1<<SP_ACCURACY-2);
+			spTranslate(( ((menu_fade-32)*spGetSizeFactor()>>SP_ACCURACY+2)+spFontWidth(spGetTranslationFromCaption(translation,"Stone Quality:"),font)/2)*factor, (11*engineWindowY/42-(spSin(menu_counter*300+5*SP_PI/4)>>SP_ACCURACY-2))*factor,-1<<SP_ACCURACY-2);
 			spRotateZ(-spSin(menu_counter << 8) >> 2);
 			draw_stone(6,get_type_color_h(6,(menu_counter*16)%(2*SP_PI)),get_type_color_s(6,(menu_counter*16)%(2*SP_PI)),get_type_color_v(6,(menu_counter*16)%(2*SP_PI)),4,0,(menu_counter*16)%(2*SP_PI));
 			spRotateZ(spSin(menu_counter << 8) >> 2);
@@ -148,8 +148,9 @@ void draw_menu(void)
 			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),30*engineWindowY/32+(spSin(menu_counter*300+-2*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Select or Start: back"),small_font);
 
 
-			spTranslate(0,1<<SP_ACCURACY-2,-1<<SP_ACCURACY-1);
-			Sint32 t = (50<<SP_ACCURACY-3)-menu_choice*35/18;
+			spTranslate(0,1<<SP_ACCURACY-2,-1<<SP_ACCURACY-1);;
+			Sint32 t = (55<<SP_ACCURACY-3)-menu_choice*81/40;
+			//spLine3D(-11<<SP_ACCURACY,t,0,11<<SP_ACCURACY,t,0,65535);
 			spTranslate(-11<<SP_ACCURACY,t,0);
 			draw_particle_circle(-1,menu_counter);
 			spTranslate( 22<<SP_ACCURACY,0,0);
