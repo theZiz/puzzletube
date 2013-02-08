@@ -33,7 +33,7 @@ void init_music()
 {
 	musicName[0]=0;
 	spSoundInit();
-	spSoundSetChannels(32);
+	//spSoundSetChannels(32);
 	move_chunk = spSoundLoad("./sounds/Vertical Movement.ogg");
 	move_channel = -1;
 	rotating_chunk = spSoundLoad("./sounds/Rotating.ogg");
@@ -86,10 +86,15 @@ void set_volume(int volume)
 	spSoundSetVolume(volume);
 }
 
+int last_explosion = 0;
+
 void play_explosion()
 {
+	if (last_explosion > 0)
+		return;
 	int number = rand()%4;
 	spSoundPlay(explosion_chunk[number],-1,0,0,0);
+	last_explosion = 200;
 }
 
 void play_switch()
@@ -149,6 +154,8 @@ int volume_wait = 0;
 
 void calc_music(int steps)
 { 
+	if (last_explosion > 0)
+		last_explosion -= steps;
 	if (musicList && !Mix_PlayingMusic())
 	{
 		int nr = rand()%musicList->count;
