@@ -1419,28 +1419,31 @@ void draw_game(void)
 		switch (settings_get_mode())
 		{
 			case 0: //Points
-				sprintf(buffer,"%s %i %s",spGetTranslationFromCaption(translation,"next trophy:"),get_next_highscore_trophy(settings_get_mode(),settings_get_color(),points),spGetTranslationFromCaption(translation,"Points"));
+				sprintf(buffer,"%i %s",get_next_highscore_trophy(settings_get_mode(),settings_get_color(),points),spGetTranslationFromCaption(translation,"Points"));
 				break;
 			case 1: case 2://Survival, Race
-				sprintf(buffer,"%s %i.%i %s",spGetTranslationFromCaption(translation,"next trophy:"),get_next_highscore_trophy(settings_get_mode(),settings_get_color(),points)/10,get_next_highscore_trophy(settings_get_mode(),settings_get_color(),points)%10,spGetTranslationFromCaption(translation,"Sec"));
+				sprintf(buffer,"%i.%i %s",get_next_highscore_trophy(settings_get_mode(),settings_get_color(),points)/10,get_next_highscore_trophy(settings_get_mode(),settings_get_color(),points)%10,spGetTranslationFromCaption(translation,"Sec"));
 				break;
 		}
 		switch (trophy)
 		{
 			case 3:
-				spFontDrawMiddle(engineWindowX/2, 8*engineWindowY/24,-1,spGetTranslationFromCaption(translation,"& the bronze trophy!"),font);
-				spFontDrawMiddle(engineWindowX/2,20*engineWindowY/48,-1,buffer,small_font);
+				spFontDrawMiddle(engineWindowX/2, 8*engineWindowY/24,-1,spGetTranslationFromCaption(translation,"& the bronze trophy!"),middle_font);
+				spFontDrawMiddle(engineWindowX/2,19*engineWindowY/48,-1,spGetTranslationFromCaption(translation,"next:"),small_font);
+				spFontDrawMiddle(engineWindowX/2,21*engineWindowY/48,-1,buffer,small_font);
 				break;
 			case 2:
-				spFontDrawMiddle(engineWindowX/2, 8*engineWindowY/24,-1,spGetTranslationFromCaption(translation,"& the silver trophy!"),font);
-				spFontDrawMiddle(engineWindowX/2,20*engineWindowY/48,-1,buffer,small_font);
+				spFontDrawMiddle(engineWindowX/2, 8*engineWindowY/24,-1,spGetTranslationFromCaption(translation,"& the silver trophy!"),middle_font);
+				spFontDrawMiddle(engineWindowX/2,19*engineWindowY/48,-1,spGetTranslationFromCaption(translation,"next:"),small_font);
+				spFontDrawMiddle(engineWindowX/2,21*engineWindowY/48,-1,buffer,small_font);
 				break;
 			case 1:
-				spFontDrawMiddle(engineWindowX/2, 8*engineWindowY/24,-1,spGetTranslationFromCaption(translation,"& the gold trophy!"),font);
-				spFontDrawMiddle(engineWindowX/2,20*engineWindowY/48,-1,buffer,small_font);
+				spFontDrawMiddle(engineWindowX/2, 8*engineWindowY/24,-1,spGetTranslationFromCaption(translation,"& the gold trophy!"),middle_font);
+				spFontDrawMiddle(engineWindowX/2,19*engineWindowY/48,-1,spGetTranslationFromCaption(translation,"next:"),small_font);
+				spFontDrawMiddle(engineWindowX/2,21*engineWindowY/48,-1,buffer,small_font);
 				break;
 			case 0:
-				spFontDrawMiddle(engineWindowX/2, 8*engineWindowY/24,-1,spGetTranslationFromCaption(translation,"& the green trophy!"),font);
+				spFontDrawMiddle(engineWindowX/2, 8*engineWindowY/24,-1,spGetTranslationFromCaption(translation,"& the green trophy!"),middle_font);
 				spFontDrawMiddle(engineWindowX/2,20*engineWindowY/48,-1,spGetTranslationFromCaption(translation,"(better than the maker)"),small_font);
 				break;
 		}

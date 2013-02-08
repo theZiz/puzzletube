@@ -226,7 +226,7 @@ void draw_menu(void)
 				spFontDrawMiddle((j+1)*HIGHSCORE_GAP_X + (2*j+1)*HIGHSCORE_WIDTH/2 +(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),0*HIGHSCORE_HEIGHT/4+HIGHSCORE_GAP_ABOVE+(spSin(menu_counter*300+4*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Normal"),font);	
 				for (i = 0; i < 3; i++)
 				{
-					Uint16 color = 65535; //for trophies :)
+					Uint16 color = spGetRGB(63,63,63); //for trophies :)
 					switch (get_highscore_trophy(j,0,get_highscore(j,0,i)))
 					{
 						case 0: color = spGetRGB(0,255,0); break;
@@ -249,7 +249,14 @@ void draw_menu(void)
 				spFontDrawMiddle((j+1)*HIGHSCORE_GAP_X + (2*j+1)*HIGHSCORE_WIDTH/2 +(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),4*HIGHSCORE_HEIGHT/4+HIGHSCORE_GAP_ABOVE+HIGHSCORE_GAP_Y+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Hard"),font);	
 				for (i = 0; i < 3; i++)
 				{
-					Uint16 color = 65535; //for trophies :)
+					Uint16 color = spGetRGB(63,63,63); //for trophies :)
+					switch (get_highscore_trophy(j,1,get_highscore(j,1,i)))
+					{
+						case 0: color = spGetRGB(0,255,0); break;
+						case 1: color = spGetRGB(255,230,0); break;
+						case 2: color = spGetRGB(192,192,192); break;
+						case 3: color = spGetRGB(190,140,0); break;
+					}
 					char* name = get_highscore_name(j,1,i);
 					sprintf(buffer,"%i. %c%c%c",i+1,name[0],name[1],name[2]);
 					spFontDraw((j+1)*HIGHSCORE_GAP_X+j*HIGHSCORE_WIDTH+HIGHSCORE_GAP_IN+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),(i+5)*HIGHSCORE_HEIGHT/4+HIGHSCORE_GAP_ABOVE+HIGHSCORE_GAP_Y+(spSin(menu_counter*300+3*SP_PI*2/7)>>SP_ACCURACY-2),-1,buffer,middle_font);

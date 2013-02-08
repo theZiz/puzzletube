@@ -148,7 +148,7 @@ void settings_load()
 		settings_stone_quality = 2;
 	#endif
 	settings_stars_rotating = 2;
-	settings_particles = 1;
+	settings_particles = 2;
 	settings_volume = 100;
 	settings_color = 0;
 	settings_control = 0; //simple control

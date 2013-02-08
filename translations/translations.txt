@@ -174,7 +174,7 @@ en:Pause
 de:Pause
 --:You got
 en:You got
-de:Deine Punktzahl:
+de:Du hast:
 --:Rank
 en:Rank
 de:Platz
@@ -233,9 +233,9 @@ de:& die silberne Trophäe!
 --:& the bronze trophy!
 en:& the bronze trophy!
 de:& die bronzene Trophäe!
---:next trophy:
-en:next trophy:
-de:nächste Trophäe:
+--:next:
+en:next:
+de:nächste:
 --:& the green trophy!
 en:& the green trophy!
 de:& die grüne Trophäe!
