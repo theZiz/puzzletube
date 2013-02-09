@@ -690,7 +690,7 @@ void draw_language_selection()
 	spClearTarget(7);
 	spTranslate(0,1<<SP_ACCURACY,-10<<SP_ACCURACY);
 	spRotateX(SP_PI/8);
-	spRotateY(2*spMul(SP_PI,choosen_flag)/spGetPossibleLanguagesCount());
+	spRotateY(-2*spMul(SP_PI,choosen_flag)/spGetPossibleLanguagesCount());
 	int i;
 	for (i = 0; i < spGetPossibleLanguagesCount(); i++)
 	{
@@ -708,7 +708,8 @@ void draw_language_selection()
 		memcpy( spGetMatrix(), matrix,16 * sizeof( Sint32 ) ); //glPop()
 	}
 	spFontDrawMiddle(spGetWindowSurface()->w/2,   spGetWindowSurface()->h/16,-1,spGetTranslationFromCaption(translation,"Choose your language!"),font);
-	spFontDrawMiddle(spGetWindowSurface()->w/2,14*spGetWindowSurface()->h/16,-1,spGetPossibleLanguageName(language),font);
+	spFontDrawMiddle(spGetWindowSurface()->w/2,55*spGetWindowSurface()->h/64,-1,spGetPossibleLanguageName(language),font);
+	spFontDrawMiddle(spGetWindowSurface()->w/2,59*spGetWindowSurface()->h/64,-1,spGetTranslationFromCaption(translation,"Translation: Ziz & Foxblock"),small_font);
 	spFlip();
 }
 
@@ -723,10 +724,10 @@ int calc_language_selection(Uint32 steps)
 		if (lan_direction == 0)
 		{
 			if (engineInput->axis[0] < 0)
-				lan_direction = -1;
+				lan_direction = 1;
 			else
 			if (engineInput->axis[0] > 0)
-				lan_direction = 1;
+				lan_direction = -1;
 			if (engineInput->button[SP_BUTTON_START] || engineInput->button[SP_BUTTON_SELECT] ||
 				 (engineInput->button[SP_BUTTON_A] || engineInput->button[SP_BUTTON_B] ||
 					engineInput->button[SP_BUTTON_X] || engineInput->button[SP_BUTTON_Y]))
