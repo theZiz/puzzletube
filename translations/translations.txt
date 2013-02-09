@@ -4,294 +4,387 @@
 --:flag.png
 en:./images/flag_en.png
 de:./images/flag_de.png
+it:./images/flag_it.png
 
 # Start question
 --:Choose your language!
 en:Choose your language!
 de:Wähle deine Sprache!
+it:Scegli una lingua!
 --:Language: English
 en:Language: English
 de:Sprache: Deutsch
+it:Lingua:Italiano
 
 # Menu
 --:Play
 en:Play
 de:Spielen
+it:Gioca
 --:How to Play
 en:How to Play
 de:Tutorial
+it:Istruzioni
 --:Highscore
 en:Highscore
 de:Die Besten
+it:Classifica
 --:Settings
 en:Settings
 de:Einstellungen
+it:Settaggi
 --:Quit
 en:Quit
 de:Ende
+it:Esci
 
 # Settings
 --:SETTINGS
 en:SETTINGS
 de:EINSTELLUNGEN
+it:SETTAGGI
 --:Stone Quality:
 en:Stone Quality: 
-de:Stein Qualität: 
+de:Stein Qualität:
+it:Tipo Mattone: 
 --:Stars: Off
 en:Stars: Off
 de:Sterne: Keine
+it:Stelle: No
 --:Stars: Still
 en:Stars: Still
 de:Sterne: Fest
+it:Stelle: Fisse
 --:Stars: Rotating
 en:Stars: Rotating
 de:Sterne: Rotierend
+it:Stelle: Movimento
 --:Particles: On
 en:Particles: On
 de:Partikel: An
+it:Particelle: Si
 --:Particles: Simple
 en:Particles: Simple
 de:Partikel: Einfach
+it:Particelle: Semplici
 --:Particles: Off
 en:Particles: Off
 de:Partikel: Aus
+it:Particelle: No
 --:Control: Normal
 en:Control: Normal
 de:Steuerung: Normal
+it:Controlli: Normale
 --:Description Normal 1
 en:Move a selection with the D-Pad and switch
 de:Bewege ein Auswahlrechteck mit dem D-Pad und
+it:Scegli il mattone muovendo il D-Pad e premi
 --:Description Normal 2
 en:the direct neighbours with [A],[B],[X] oder [Y]
 de:tausche die direkten Nachbarn mit [A],[B],[X] und [Y]
+it:[A],[B],[X] oppure [Y] per fargli cambiare posto
 --:Control: Snake
 en:Control: Snake
 de:Steuerung: Schlange
+it:Controlli: Serpentone
 --:Description Snake 1
 en:Move a "snake" with the D-Pad and
 de:Bewege eine "Schlange" mit dem D-Pad und
+it:Muovi il serpentone con il Pad e scambia
 --:Description Snake 2
 en:flip head and tail with [A],[B],[X] or [Y]
 de:tausche Kopf und Schwanz mit [A],[B],[X] oder [Y]
+it:testa o coda con [A],[B],[X],[Y]
 --:Control: Padmode
 en:Control: Padmode (hard)
 de:Steuerung: Padmode (schwer)
+it:Modalità: Pad (difficile)
 --:Description Padmode 1
 en:Move a selection with the D-Pad, hold any
 de:Bewege ein Auswahlrechteck mit dem D-Pad, halte
+it:Scegli il mattone muovendo il D-Pad e tieni
 --:Description Padmode 2
 en:button pressed, select another stone and release
 de:einen Button gedrückt, wähle 2. Stein und lass los
+it:premuto il bottone, seleziona un altro mattone e rilascia
 --:Language
 en:Language: English
 de:Sprache: Deutsch
+it:Lingua: Italiano
 --:Translation: Ziz & Foxblock
 en:Translation: Ziz & Foxblock
 de:Übersetzung: Ziz
+it:Traduzione: Farox
 --:Back to Menu
 en:Back to Menu
 de:Zurück ins Menü
+it:Torna al Menu
 --:Select or Start: back
 en:[E] or [S]: back
 de:[E] oder [S]: zurück
+it:[E] oppure [S]: indietro
 
 # Highscore
 --:Highscore
 en:Highscore
 de:Die Besten
+it:Classifica
 --:Points
 en:Points
 de:Punkte
+it:Punti
 --:Survival
 en:Survival
 de:Überleben
+it:Resistere
 --:Race
 en:Race
 de:Zeitrennen
+it:Corsa
 --:Hard
 en:Hard
 de:Schwer
+it:Difficile
 --:Normal
 en:Normal
 de:Normal
+it:Normale
 --:Any button: back
 en:Any button: back
 de:Irgendein Button: Zurück
+it:Premi tasto per: Indietro
 
 # Game Settings
 --:PLAY
 en:PLAY
 de:SPIELEN
+it:Gioco
 --:<<< Play >>>
 en:<<< Play >>>
 de:<<< Spielen >>>
+it:<<< Giocare >>>
 --:Game Mode: Points
 en:Game Mode: Points
 de:Spielmodus: Punkte sammeln
+it:Modalità: Punti
 --:Game Mode: Survival
 en:Game Mode: Survival
 de:Spielmodus: Überleben
+it:Modalità: Resistere
 --:Game Mode: Race
 en:Game Mode: Race
 de:Spielmodus: Zeitrennen
+it:Modalità: Corsa
 --:Points description
 en:Get as much points as possible in 120 seconds
 de:Sammle in 120 Sekunden so viele Punkte wie möglich
+it:Accumula piu punti che puoi in 120 secondi
 --:Survival description
 en:Get points to keep the game going
 de:Sammle Punkte, um Zeit zu gewinnen
+it:Il gioco continua solo se fai punti
 --:Race description
 en:Get 100.000 points
 de:Sammle 100.000 Punkte
+it:Raccogli 100.000 punti
 --:Difficulty: Hard
 en:Difficulty: Hard
 de:Schwierigkeit: Schwer
+it:Difficoltà: Alta
 --:Difficulty: Normal
 en:Difficulty: Normal
 de:Schwierigkeit: Normal
+it:Difficoltà: Normale
 --:6 Stones
 en:6 Stones
 de:6 Steine
+it:6 Mattoni
 --:4 Stones
 en:4 Stones
 de:4 Steine
+it:4 mattoni
 --:The Underlining shows the achieved medal
 en:The Underlining shows the achieved medal
 de:Die Unterstreichung zeigt die erreichte Medaille
+it:Dove sottolineato indica la medaglia raggiunta
 
 # Ingame:
 --:Game Mode:
 en:Game Mode:
 de:Spielmodus:
+it:Modalità:
 --:Time survived
 en:Time survived
 de:Überlebte Zeit
+it:Tempo Resistito
 --:Sec
 en:Sec
 de:Sek
+it:Sec
 --:Pause
 en:Pause
 de:Pause
+it:Pausa
 --:You got
 en:You got
 de:Du hast:
+it:Hai Ottenuto:
 --:Rank
 en:Rank
 de:Platz
+it:Grado
 --:Enter your name
 en:Enter your name
-de:Gibt deinen Namen
+de:Gib deinen Namen
+it:Scrivi il nome
 --:with the D-pad
 en:with the D-pad
 de:mit dem D-Pad ein
+it:con il D-Pad
 --:and press [S]
 en:and press [S]
 de:und drücke [S]
+it:e premi [S]
 --:Time elapsed
 en:Time elapsed
 de:Vergangene Zeit
+it:Tempo impiegato
 --:Well!
 en:Well!
 de:Gut!
+it:Bravo!
 --:Great!
 en:Great!
 de:Großartig!
+it:Grande!
 --:Fantastic!
 en:Fantastic!
 de:Fantastisch!
+it:Fantastico!
 --:Incredible!
 en:Indredible!
 de:Unglaublich!
+it:Incredibile!
 --:Combo!
 en:Combo!
 de:Kombo!
+it:Combo!
 --:Chain!
 en:Chain!
 de:Kette!
+it:Catena!
 --:2x Chain!
 en:2x Chain!
 de:2x Kette!
+it:Catena x2
 --:3x Chain!
 en:3x Chain!
 de:3x Kette!
+it:Catena x3
 --:4x Chain!
 en:4x Chain!
 de:4x Kette!
+it:Catena x4
 --:5x Chain!
 en:5x Chain!
 de:5x Kette!
+it:Catena x5
 --:Mega Chain!
 en:Mega Chain!
 de:Mega Kette!
+it:Mega Catena
 # Trohpy stuff:
 --:& the gold trophy!
 en:& the gold trophy!
 de:& die güldene Trophäe!
+it:& il trofeo d'oro!
 --:& the silver trophy!
 en:& the silver trophy!
 de:& die silberne Trophäe!
+it:& il trofeo d'argento!
 --:& the bronze trophy!
 en:& the bronze trophy!
 de:& die bronzene Trophäe!
+it:& il trofeo di bronzo!
 --:next:
 en:next:
 de:nächste:
+it:prossimo:
 --:& the green trophy!
 en:& the green trophy!
 de:& die grüne Trophäe!
+it:& il trofeo verde!
 --:(better than the maker)
 en:(better than the maker)
 de:(Besser als der Macher)
+it:(meglio di niente)
 
 # Help
 --:HOW TO PLAY
 en:HOW TO PLAY
 de:TUTORIAL
+it:ISTRUZIONI
 --:help goal head line
 en:Game idea: 
-de:Spielidee: 
+de:Spielidee:
+it:Idea gioco: 
 --:help goal line 1
 en:- Puzzle game on a cylinder
 de:- Puzzlespiel auf einem Zylinder
+it:- Puzzle game in un cilindro
 --:help goal line 2
 en:- Quadrats of 2*2 stones of the same color explode
 de:- Quadrate von 2*2 gleichfarbigen Steinen explodieren
+it:- Quadrati di mattoni 2*2 dello stesso colore esplodono
 --:help goal line 3
 en:- Adjacent stones of the same color explode, too
 de:- Benachbarte gleichfarbene Steine explodieren mit
+it:- Esplodono anche i mattoni adiacenti dello stesso colore
 --:help goal line 4
 en:- More exploding stones => more points
 de:- Mehr explodierende Steine => mehr Punkte
+it:- Piu mattoni esplodono => piu punti
 --:help control head line
 en:Controls: 
-de:Steuerung: 
+de:Steuerung:
+it:Controlli: 
 --:help control line 1
 en:- Adjustable in the settings menu
 de:- Im Einstellungsmenü einstellbar
+it:- Configurali nel menu settaggi
 --:help control line 2
 en:- Switch two stones around a third with the buttons
 de:- Tausch zwei Steine um einen Dritten mit den Buttons
+it:- Scambia due mattoni intorno ad un terzo con i bottoni
 --:help control line 3
 en:- Use D-Pad for moving on cylinder
 de:- Nutz das D-Pad für die Navigation auf dem Zylinder
+it:- Usa il D-Pad per muovere il cilindro
 --:help stones head line
 en:Special Stones: 
-de:Spezielle Steine: 
+de:Spezielle Steine:
+it:Mattoni Speciali: 
 --:help stones line 1
 en:- Bomb stone: Explodes
 de:- Bombenstein: Explodiert
+it:- Mattone Bomba: Esplosivo
 --:help stones line 2
 en:- Rainbow Stone: Compatible to every colour
 de:- Regenbogenstein: Kompatibel zu jeder Farbe
+it:- Mattone Arcobaleno: Compatibile con tutti
 --:help stones line 3
 en:- Stone stone: Doesn't explode except with bombs
 de:- Steinstein: Explodiert nicht, außer mit Bombe
+it:- Mattone di pietra: Esplode solo con una Bomba
 --:help advices head line
 en:Advices: 
 de:Tipps:
+it:Consigli:
 --:help advices line 1
 en:- Use Combos & domino effects for more points 
 de:- Nutz Kombos & Dominoeffekte für mehr Punkte
+it:- Usa i Combo e Catene per avere piu punti
 --:help advices line 2
 en:- Copy music to the folder "music" for your own music
 de:- Kopiere Musik in den Ordner "music" für eigene Musik
+it:- Metti la tua musica preferita nella cartella "music"

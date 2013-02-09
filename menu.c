@@ -696,7 +696,7 @@ void draw_language_selection()
 	{
 		Sint32 matrix[16];
 		memcpy( matrix, spGetMatrix(), 16 * sizeof( Sint32 ) ); //glPush()
-		spRotateX(2*SP_PI*i/spGetPossibleLanguagesCount());
+		spRotateY(2*SP_PI*i/spGetPossibleLanguagesCount());
 		SDL_Surface* flag = all_flags[i];
 		spBindTexture(flag);
 		spTranslate(0,0,5<<SP_ACCURACY);
