@@ -21,7 +21,7 @@ endif
 ifeq ($(TARGET),gp2x)
 CPP = /opt/open2x/gcc-4.1.1-glibc-2.3.6/bin/arm-open2x-linux-gcc -DMOBILE_DEVICE -DARMCPU -DGP2X -DF100 $(GENERAL_TWEAKS) -DFAST_BUT_UGLY_2 
 STATIC = -Wl,-Bstatic -lSDL -lm -Wl,-Bdynamic
-DYNAMIC = -lSDL_mixer -lSDL_image -lSDL_ttf -lfreetype -lpng -lz -ljpeg -lsparrow3d 
+DYNAMIC = -lSDL_mixer -lSDL_image -lSDL_ttf -lfreetype -lpng -lz -ljpeg -lsparrow3d -lsparrowSound
 SDL = `/opt/open2x/gcc-4.1.1-glibc-2.3.6/bin/sdl-config --cflags`
 INCLUDE = -I/opt/open2x/gcc-4.1.1-glibc-2.3.6/include
 LIB = -L/opt/open2x/gcc-4.1.1-glibc-2.3.6/lib -Wl,-rpath=/opt/open2x/gcc-4.1.1-glibc-2.3.6/lib
@@ -29,7 +29,7 @@ endif
 ifeq ($(TARGET),wiz)
 CPP = /opt/open2x/gcc-4.1.1-glibc-2.3.6/bin/arm-open2x-linux-gcc -DMOBILE_DEVICE -DARMCPU -DGP2X -DWIZ $(GENERAL_TWEAKS) -DFAST_BUT_UGLY_2 
 STATIC = -Wl,-Bstatic -lpng -Wl,-Bdynamic
-DYNAMIC = -lSDL -lm  -lSDL_mixer -lSDL_image -lSDL_ttf -lfreetype  -lz -ljpeg -lsparrow3d 
+DYNAMIC = -lSDL -lm  -lSDL_mixer -lSDL_image -lSDL_ttf -lfreetype  -lz -ljpeg -lsparrow3d -lsparrowSound
 SDL = `/opt/open2x/gcc-4.1.1-glibc-2.3.6/bin/sdl-config --cflags`
 INCLUDE = -I/opt/open2x/gcc-4.1.1-glibc-2.3.6/include
 LIB = -L/opt/open2x/gcc-4.1.1-glibc-2.3.6/lib -Wl,-rpath=/opt/open2x/gcc-4.1.1-glibc-2.3.6/lib
