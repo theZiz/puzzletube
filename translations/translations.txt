@@ -5,7 +5,6 @@
 en:./images/flag_en.png
 de:./images/flag_de.png
 it:./images/flag_it.png
-nl:./images/flag_nl.png
 
 # Start question
 --:Choose your language!
@@ -141,12 +140,12 @@ nl:Taal: Nederlands
 en:Translation: Ziz & Foxblock
 de:Übersetzung: Ziz
 it:Traduzione: Farox
-nl:Vertaling: _wb_
+nl:Vertaling: _wb_ & Holliefant
 --:Back to Menu
 en:Back to Menu
 de:Zurück ins Menü
 it:Torna al Menu
-nl:Terug naar het menu
+nl:Terug naar menu
 --:Select or Start: back
 en:[E] or [S]: back
 de:[E] oder [S]: zurück
@@ -415,12 +414,12 @@ nl:- Puzzelspel op een cilinder
 en:- Squares of 2*2 stones of the same color explode
 de:- Quadrate von 2*2 gleichfarbigen Steinen explodieren
 it:- Quadrati di mattoni 2*2 dello stesso colore esplodono
-nl:- Vierkanten van 2x2 stenen vann dezelfde kleur ontploffen
+nl:- Vierkanten van 2x2 gelijkkleurige stenen ontploffen
 --:help goal line 3
 en:- Adjacent stones of the same color explode, too
 de:- Benachbarte gleichfarbene Steine explodieren mit
 it:- Esplodono anche i mattoni adiacenti dello stesso colore
-nl:- Aangrenzende stenen van dezelfde kleur ontploffen mee
+nl:- Aangrenzende gelijkkleurige stenen ontploffen mee
 --:help goal line 4
 en:- More exploding stones => more points
 de:- Mehr explodierende Steine => mehr Punkte
@@ -440,7 +439,7 @@ nl:- Aanpasbaar in het instellingen-menu
 en:- Switch two stones around a third with the buttons
 de:- Tausch zwei Steine um einen Dritten mit den Buttons
 it:- Scambia due mattoni intorno ad un terzo con i bottoni
-nl:- Verwissel twee stenen rond een derde met de knoppen
+nl:- Wissel twee stenen rond een derde met de knoppen
 --:help control line 3
 en:- Use D-Pad for moving on cylinder
 de:- Nutz das D-Pad für die Navigation auf dem Zylinder
@@ -475,9 +474,9 @@ nl:Advies:
 en:- Use Combos & domino effects for more points 
 de:- Nutz Kombos & Dominoeffekte für mehr Punkte
 it:- Usa i Combo e Catene per avere piu punti
-nl:- Gebruik combo's & keten-effecten voor meer punten
+nl:- Combo's & keten-effecten geven meer punten
 --:help advices line 2
 en:- Copy music to the folder "music" for your own music
 de:- Kopiere Musik in den Ordner "music" für eigene Musik
 it:- Metti la tua musica preferita nella cartella "music"
-nl:- Kopieer muziek naar de map "music" voor je eigen muziek
+nl:- Zet muziek in de map "music" voor je eigen muziek
