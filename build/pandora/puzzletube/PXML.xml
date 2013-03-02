@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PXML xmlns="http://openpandora.org/namespaces/PXML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="PXML_schema.xsd">
+  <package id="puzzletube-puzzletube-26222">
+    <version major="1" minor="1" release="6" build="4"/>
+    <author name="Ziz" website="http://ziz.delphigl.com"/>
+    <titles>
+      <title lang="en_US">
+        Puzzletube
+      </title>
+    </titles>
+    <title lang="en_US">
+      Puzzletube
+    </title>
+    <descriptions>
+      <description lang="en_US">
+        A puzzle game. On a tube!
+      </description>
+    </descriptions>
+    <description lang="en_US">
+      A puzzle game. On a tube!
+    </description>
+    <icon src="./puzzletube.png"/>
+  </package>
+  <application id="puzzletube-puzzletube-26223" appdata="puzzletube">
+    <exec command="./puzzletube.sh"/>
+    <title lang="en_US">Puzzletube</title>
+    <author name="Ziz" website="http://ziz.delphigl.com"/>
+    <version major="1" minor="1" release="6" build="4"/>
+    <osversion major="1" minor="0" release="0" build="0"/>
+    <description lang="en_US">A puzzle game. On a tube!</description>
+    <info name="README" type="text/plain" src="README.txt"/>
+    <icon src="./puzzletube.png"/>
+    <previewpics>
+      <pic src="previews/screenshot1.png"/>
+      <pic src="previews/screenshot2.png"/>
+      <pic src="previews/screenshot3.png"/>
+      <pic src="previews/screenshot4.png"/>
+    </previewpics>
+    <licenses>
+      <license name="GPLv2+" url="http://www.gnu.org/licenses/gpl-2.0.html" sourcecodeurl="https://github.com/theZiz/puzzletube"/>
+      <license name="MPL1.1" url="http://www.mozilla.org/MPL/1.1/" sourcecodeurl="https://github.com/theZiz/puzzletube"/>
+    </licenses>
+    <categories>
+      <category name="Game">
+        <subcategory name="BlocksGame"/>
+      </category>
+    </categories>
+  </application>
+</PXML>
