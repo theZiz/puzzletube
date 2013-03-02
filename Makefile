@@ -13,12 +13,13 @@ SPARROW_FOLDER = ../sparrow3d
 ifdef TARGET
 include $(SPARROW_FOLDER)/target-files/$(TARGET).mk
 BUILD = ./build/$(TARGET)/puzzletube
-LIB += -L$(SPARROW_FOLDER)/build/$(TARGET)/sparrow3d
+SPARROW_LIB = $(SPARROW_FOLDER)/build/$(TARGET)/sparrow3d
 else
 TARGET = "Default (change with make TARGET=otherTarget. See All targets with make targets)"
 BUILD = .
-LIB += -L$(SPARROW_FOLDER)
+SPARROW_LIB = $(SPARROW_FOLDER)
 endif
+LIB += -L$(SPARROW_LIB)
 
 all: puzzletube
 	@echo "=== Built for Target "$(TARGET)" ==="
@@ -28,6 +29,8 @@ targets:
 
 puzzletube: puzzletube.c particle.o game.o music.o menu.o stars.o settings.o lettering.o splashscreen.o makeBuildDir
 	$(CPP) $(CFLAGS) puzzletube.c particle.o game.o music.o menu.o stars.o settings.o lettering.o splashscreen.o $(SDL) $(INCLUDE) $(LIB) $(STATIC) $(DYNAMIC) -o $(BUILD)/puzzletube
+	cp $(SPARROW_LIB)/libsparrow3d.so $(BUILD)
+	cp $(SPARROW_LIB)/libsparrowSound.so $(BUILD)
 
 makeBuildDir:
 	 @if [ ! -d $(BUILD:/puzzletube=/) ]; then mkdir $(BUILD:/puzzletube=/);fi
