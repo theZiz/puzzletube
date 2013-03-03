@@ -7,6 +7,8 @@ do
   cd ../puzzletube
   make clean
   make TARGET=`echo "$f" | cut -d/ -f3 | cut -d. -f1`
+  echo "Built for:"
+  echo "$f" | cut -d/ -f3 | cut -d. -f1
 done
 make clean
 make
