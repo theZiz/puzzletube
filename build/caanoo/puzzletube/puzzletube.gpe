@@ -1,0 +1,6 @@
+#!/bin/sh
+cd `dirname $0`
+
+LD_LIBRARY_PATH=. ./puzzletube 2>&1 >puzzletube.log
+
+cd /usr/gp2x; ./gp2xmenu

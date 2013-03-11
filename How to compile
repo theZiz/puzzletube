@@ -1,10 +1,8 @@
-Important: You need to get sparrow3d
+Important: You need to get sparrow3d first
 (git://github.com/theZiz/sparrow3d.git) to compile puzzletube!
-If you got sparrow3d, type "make" to get the files needed by
-puzzleztube. And it is necessary, that the puzzletube folder and the sparrow3d
-folder are in the root directory, e.g.:
-/home/username/stuff/sparrow3d
-/home/username/stuff/puzzletube
-especially the name "sparrow3d" is important, except you want to edit nearly
-every *.h file of puzzletube ;-) alternatvely you can use some symlinks.
-
+Read the sparrow3d Makefile, understand it and compile it with "make".
+Or just type "make" and hope, that it works. ;)
+After that read the Makefile of puzzletube, understand it and compile it
+with "make", too. Again: You can try to compile just with "make" and
+may have luck, that you have the same folder-hierachy like me. But the
+Makefiles are very easy to read and understand, so give it a try. ;)

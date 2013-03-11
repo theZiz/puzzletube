@@ -5,6 +5,7 @@
 en:./images/flag_en.png
 de:./images/flag_de.png
 it:./images/flag_it.png
+nl:./images/flag_nl.png
 
 # Start question
 --:Choose your language!
@@ -62,7 +63,7 @@ de:Sterne: Keine
 it:Stelle: No
 nl:Sterren: Nee
 --:Stars: Still
-en:Stars: Still
+en:Stars: Fixed
 de:Sterne: Fest
 it:Stelle: Fisse
 nl:Sterren: Stilstaand
@@ -92,12 +93,12 @@ de:Steuerung: Normal
 it:Controlli: Normale
 nl:Besturing: Normaal
 --:Description Normal 1
-en:Move a selection with the D-Pad and switch
+en:Move selection with the D-Pad and switch
 de:Bewege ein Auswahlrechteck mit dem D-Pad und
 it:Scegli il mattone muovendo il D-Pad e premi
 nl:Beweeg de selectie met de D-Pad en verander
 --:Description Normal 2
-en:the direct neighbours with [A],[B],[X] or [Y]
+en:direct neighbours with [A],[B],[X] or [Y]
 de:tausche die direkten Nachbarn mit [A],[B],[X] und [Y]
 it:[A],[B],[X] oppure [Y] per fargli cambiare posto
 nl:de rechtstreekse buren met [A],[B],[X] of [Y]
@@ -122,12 +123,12 @@ de:Steuerung: Padmode (schwer)
 it:Modalità: Pad (difficile)
 nl:Besturing: Pad-mode (moeilijk)
 --:Description Padmode 1
-en:Move a selection with the D-Pad, hold any
+en:Move selection with the D-Pad, hold any
 de:Bewege ein Auswahlrechteck mit dem D-Pad, halte
 it:Scegli il mattone muovendo il D-Pad e tieni
 nl:Beweeg de selectie met de D-Pad, hou een knop
 --:Description Padmode 2
-en:button pressed, select another stone and release
+en:button, select another stone and release
 de:einen Button gedrückt, wähle 2. Stein und lass los
 it:premuto il bottone, seleziona un altro mattone e rilascia
 nl:ingedrukt, selecteer een andere steen en laat los
@@ -251,7 +252,7 @@ de:4 Steine
 it:4 Mattoni
 nl:4 Stenen
 --:The Underlining shows the achieved medal
-en:The Underlining shows the achieved medal
+en:The coloured bar shows the achieved medal
 de:Die Unterstreichung zeigt die erreichte Medaille
 it:Dove sottolineato indica la medaglia raggiunta
 nl:De bereikte medaille is onderstreept
@@ -308,7 +309,7 @@ de:Vergangene Zeit
 it:Tempo impiegato
 nl:Verstreken tijd
 --:Well!
-en:Well!
+en:Nice!
 de:Gut!
 it:Bravo!
 nl:Goed!
@@ -414,12 +415,20 @@ nl:- Puzzelspel op een cilinder
 en:- Squares of 2*2 stones of the same color explode
 de:- Quadrate von 2*2 gleichfarbigen Steinen explodieren
 it:- Quadrati di mattoni 2*2 dello stesso colore esplodono
+<<<<<<< HEAD
+nl:- Vierkanten van 2x2 stenen in dezelfde kleur ontploffen
+=======
 nl:- Vierkanten van 2x2 gelijkkleurige stenen ontploffen
+>>>>>>> bd476e1c49a81a6cb26f12585b3334a6d3fe7e07
 --:help goal line 3
-en:- Adjacent stones of the same color explode, too
-de:- Benachbarte gleichfarbene Steine explodieren mit
+en:- Adjacent & backside (wobble!) equal stones, too
+de:- Angrenzende & gegenüberlegende gleiche Steine auch
 it:- Esplodono anche i mattoni adiacenti dello stesso colore
+<<<<<<< HEAD
+nl:- Aangrenzende stenen in dezelfde kleur ontploffen mee
+=======
 nl:- Aangrenzende gelijkkleurige stenen ontploffen mee
+>>>>>>> bd476e1c49a81a6cb26f12585b3334a6d3fe7e07
 --:help goal line 4
 en:- More exploding stones => more points
 de:- Mehr explodierende Steine => mehr Punkte
@@ -441,7 +450,7 @@ de:- Tausch zwei Steine um einen Dritten mit den Buttons
 it:- Scambia due mattoni intorno ad un terzo con i bottoni
 nl:- Wissel twee stenen rond een derde met de knoppen
 --:help control line 3
-en:- Use D-Pad for moving on cylinder
+en:- Use D-Pad to move on the cylinder
 de:- Nutz das D-Pad für die Navigation auf dem Zylinder
 it:- Usa il D-Pad per muovere il cilindro
 nl:- Gebruik de D-Pad om te bewegen op de cilinder
@@ -461,7 +470,7 @@ de:- Regenbogenstein: Kompatibel zu jeder Farbe
 it:- Mattone Arcobaleno: Compatibile con tutti
 nl:- Regenboogsteen: Compatibel met elke kleur
 --:help stones line 3
-en:- Stone stone: Doesn't explode except with bombs
+en:- Stone stone: Can only be removed with bombs
 de:- Steinstein: Explodiert nicht, außer mit Bombe
 it:- Mattone di pietra: Esplode solo con una Bomba
 nl:- Steen-steen: Ontploft niet, behalve met bommen

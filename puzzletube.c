@@ -140,7 +140,7 @@ int main(int argc, char **argv)
 	settings_set_translation(translation);
 
 	//sparrow3D Init
-	//spSetDefaultWindowSize( 800, 480 );
+	spSetDefaultWindowSize( 800, 480 );
 	spInitCore();
 	spSetAffineTextureHack(0); //We don't need it :)
 	spInitMath();

@@ -299,7 +299,9 @@ void draw_menu(void)
 			line_length = spFontWidth(spGetTranslationFromCaption(translation,"help advices head line"),middle_font) + spFontWidth(spGetTranslationFromCaption(translation,"help advices line 1"),small_font);
 			spFontDraw(engineWindowX/2-line_length/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),12*engineWindowY/16+(spSin(menu_counter*300+ 4*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help advices head line"),middle_font);
 			spFontDrawRight(engineWindowX/2+line_length/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),12*engineWindowY/16+(spSin(menu_counter*300+ 4*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help advices line 1"),small_font);
+			#ifndef WIN32
 			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),13*engineWindowY/16+(spSin(menu_counter*300+ 3*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"help advices line 2"),small_font);
+			#endif
 
 			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),29*engineWindowY/32+(spSin(menu_counter*300+ 2*SP_PI*1/7)>>SP_ACCURACY-1),-1,spGetTranslationFromCaption(translation,"Any button: back"),small_font);
 			break;

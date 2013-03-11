@@ -1422,7 +1422,7 @@ void draw_game(void)
 				sprintf(buffer,"%i %s",get_next_highscore_trophy(settings_get_mode(),settings_get_color(),points),spGetTranslationFromCaption(translation,"Points"));
 				break;
 			case 1: case 2://Survival, Race
-				sprintf(buffer,"%i.%i %s",get_next_highscore_trophy(settings_get_mode(),settings_get_color(),points)/10,get_next_highscore_trophy(settings_get_mode(),settings_get_color(),points)%10,spGetTranslationFromCaption(translation,"Sec"));
+				sprintf(buffer,"%i.%i %s",get_next_highscore_trophy(settings_get_mode(),settings_get_color(),realTime/100)/10,get_next_highscore_trophy(settings_get_mode(),settings_get_color(),realTime/100)%10,spGetTranslationFromCaption(translation,"Sec"));
 				break;
 		}
 		switch (trophy)
