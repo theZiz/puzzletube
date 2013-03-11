@@ -44,7 +44,7 @@ void resize(Uint16 w,Uint16 h)
 {
   //Setup of the new/resized window
   spSelectRenderTarget(spGetWindowSurface());
-  spSetPerspective(135.0,(float)spGetWindowSurface()->w/(float)spGetWindowSurface()->h,0.1,100);
+  spSetPerspective(50.0,(float)spGetWindowSurface()->w/(float)spGetWindowSurface()->h,1.0,100);
 	spBundlePointer translation = settings_get_translation();
 	spFontShadeButtons(1);
 
