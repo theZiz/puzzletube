@@ -31,7 +31,7 @@ targets:
 puzzletube: puzzletube.c particle.o game.o music.o menu.o stars.o settings.o lettering.o splashscreen.o makeBuildDir
 	cp $(SPARROW_LIB)/libsparrow3d.so $(BUILD)
 	cp $(SPARROW_LIB)/libsparrowSound.so $(BUILD)
-	$(CPP) $(CFLAGS) puzzletube.c particle.o game.o music.o menu.o stars.o settings.o lettering.o splashscreen.o $(SDL) $(INCLUDE) $(LIB) -L. $(STATIC) $(DYNAMIC) -o $(BUILD)/puzzletube
+	$(CPP) $(CFLAGS) puzzletube.c particle.o game.o music.o menu.o stars.o settings.o lettering.o splashscreen.o $(SDL) $(INCLUDE) $(LIB) $(STATIC) $(DYNAMIC) -o $(BUILD)/puzzletube
 
 makeBuildDir:
 	 @if [ ! -d $(BUILD:/puzzletube=/) ]; then mkdir $(BUILD:/puzzletube=/);fi
