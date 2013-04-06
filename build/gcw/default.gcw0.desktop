@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Puzzletube
+Comment=A puzzle game on a tube
+Exec=puzzletube.sh
+Terminal=false
+Type=Application
+StartupNotify=true
+Icon=puzzletube
+Categories=games;
