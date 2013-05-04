@@ -6,6 +6,7 @@ en:./images/flag_en.png
 de:./images/flag_de.png
 it:./images/flag_it.png
 nl:./images/flag_nl.png
+nb:./images/flag_no.png
 
 # Start question
 --:Choose your language!
@@ -13,11 +14,13 @@ en:Choose your language!
 de:Wähle deine Sprache!
 it:Scegli una lingua!
 nl:Kies een taal!
+nb:Velg språk!
 --:Language: English
 en:Language: English
 de:Sprache: Deutsch
 it:Lingua: Italiano
 nl:Taal: Nederlands
+nb:Språk: Norsk Bokmål
 
 # Menu
 --:Play
@@ -25,26 +28,31 @@ en:Play
 de:Spielen
 it:Gioca
 nl:Speel
+nb:Spill
 --:How to Play
 en:How to Play
 de:Tutorial
 it:Istruzioni
 nl:Handleiding
+nb:Innføring
 --:Highscore
 en:Highscore
 de:Die Besten
 it:Classifica
 nl:Klassement
+nb:Bestenoteringer
 --:Settings
 en:Settings
 de:Einstellungen
 it:Settaggi
 nl:Instellingen
+nb:Innstillinger
 --:Quit
 en:Quit
 de:Ende
 it:Esci
 nl:Afsluiten
+nb:Avslutt
 
 # Settings
 --:SETTINGS
@@ -52,106 +60,127 @@ en:SETTINGS
 de:EINSTELLUNGEN
 it:SETTAGGI
 nl:INSTELLINGEN
+nb:INNSTILLINGER
 --:Stone Quality:
 en:Stone Quality: 
 de:Stein Qualität:
 it:Tipo Mattone: 
-nl:Steensoort: 
+nl:Steensoort:
+nb:Steinteksturer:
 --:Stars: Off
 en:Stars: Off
 de:Sterne: Keine
 it:Stelle: No
 nl:Sterren: Nee
+nb:Stjerner: Av
 --:Stars: Still
 en:Stars: Fixed
 de:Sterne: Fest
 it:Stelle: Fisse
 nl:Sterren: Stilstaand
+nb:Stjerner: Stillestående
 --:Stars: Rotating
 en:Stars: Rotating
 de:Sterne: Rotierend
 it:Stelle: Movimento
 nl:Sterren: Draaiend
+nb:Stjerner: Roterende
 --:Particles: On
 en:Particles: On
 de:Partikel: An
 it:Particelle: Si
 nl:Deeltjes: Aan
+nb:Partikler: På
 --:Particles: Simple
 en:Particles: Simple
 de:Partikel: Einfach
 it:Particelle: Semplici
 nl:Deeltjes: Eenvoudig
+nb:Partikler: Enkle
 --:Particles: Off
 en:Particles: Off
 de:Partikel: Aus
 it:Particelle: No
 nl:Deeltjes: Uit
+nb:Partikler: Av
 --:Control: Normal
 en:Control: Normal
 de:Steuerung: Normal
 it:Controlli: Normale
 nl:Besturing: Normaal
+nb:Kontroll: Normal
 --:Description Normal 1
 en:Move selection with the D-Pad and switch
 de:Bewege ein Auswahlrechteck mit dem D-Pad und
 it:Scegli il mattone muovendo il D-Pad e premi
 nl:Beweeg de selectie met de D-Pad en verander
+nb:Beveg utvalg med D-pad og
 --:Description Normal 2
 en:direct neighbours with [A],[B],[X] or [Y]
 de:tausche die direkten Nachbarn mit [A],[B],[X] und [Y]
 it:[A],[B],[X] oppure [Y] per fargli cambiare posto
 nl:de rechtstreekse buren met [A],[B],[X] of [Y]
+nb:geleid naboer med [A],[B],[X] eller [Y]
 --:Control: Snake
 en:Control: Snake
 de:Steuerung: Schlange
 it:Controlli: Serpentone
 nl:Besturing: Slang
+nb:Kontroll: Slange
 --:Description Snake 1
 en:Move a "snake" with the D-Pad and
 de:Bewege eine "Schlange" mit dem D-Pad und
 it:Muovi il serpentone con il Pad e scambia
 nl:Beweeg een "slang" met de D-Pad en
+nb:Beveg en "slange" med D-pad og
 --:Description Snake 2
 en:flip head and tail with [A],[B],[X] or [Y]
 de:tausche Kopf und Schwanz mit [A],[B],[X] oder [Y]
 it:testa o coda con [A],[B],[X],[Y]
 nl:verwissel kop en staart met [A],[B],[X] of [Y]
+nb:roker hode og hale med [A],[B],[X] eller [Y]
 --:Control: Padmode
 en:Control: Padmode (hard)
 de:Steuerung: Padmode (schwer)
 it:Modalità: Pad (difficile)
 nl:Besturing: Pad-mode (moeilijk)
+nb:Kontroll: Pad-modus (vanskelig)
 --:Description Padmode 1
 en:Move selection with the D-Pad, hold any
 de:Bewege ein Auswahlrechteck mit dem D-Pad, halte
 it:Scegli il mattone muovendo il D-Pad e tieni
 nl:Beweeg de selectie met de D-Pad, hou een knop
+nb:Beveg utvalg med D-Pad, hold vilkårlig
 --:Description Padmode 2
 en:button, select another stone and release
 de:einen Button gedrückt, wähle 2. Stein und lass los
 it:premuto il bottone, seleziona un altro mattone e rilascia
 nl:ingedrukt, selecteer een andere steen en laat los
+nb: knapp, velg en annen stein og slipp
 --:Language
 en:Language: English
 de:Sprache: Deutsch
 it:Lingua: Italiano
 nl:Taal: Nederlands
+nb:Språk: Norsk Bokmål
 --:Translation: Ziz & Foxblock
 en:Translation: Ziz & Foxblock
 de:Übersetzung: Ziz
 it:Traduzione: Farox
 nl:Vertaling: _wb_ & Holliefant
+nb:comradekingu
 --:Back to Menu
 en:Back to Menu
 de:Zurück ins Menü
 it:Torna al Menu
 nl:Terug naar menu
+nb:Tilbake til meny
 --:Select or Start: back
 en:[E] or [S]: back
 de:[E] oder [S]: zurück
 it:[E] oppure [S]: indietro
 nl:[E] of [S]: terug
+nb:[E] eller [S]: tilbake
 
 # Highscore
 --:Highscore
@@ -159,103 +188,123 @@ en:Highscore
 de:Die Besten
 it:Classifica
 nl:Klassement
+nb:Toppnotering
 --:Points
 en:Points
 de:Punkte
 it:Punti
 nl:Punten
+nb:Poeng
 --:Survival
 en:Survival
 de:Überleben
 it:Resistere
 nl:Overleven
+nb:Overlevelse
 --:Race
 en:Race
 de:Zeitrennen
 it:Corsa
 nl:Koersen
+nb:Renn
 --:Hard
 en:Hard
 de:Schwer
 it:Difficile
 nl:Moeilijk
+nb:Vanskelig
 --:Normal
 en:Normal
 de:Normal
 it:Normale
 nl:Normaal
+nb:Normal
 --:Any button: back
 en:Any button: back
 de:Irgendein Button: Zurück
 it:Premi tasto per: Indietro
 nl:Elke knop: terug
+nb: Vilkårlig knapp: tilbake
 
 # Game Settings
 --:PLAY
 en:PLAY
 de:SPIELEN
-it:Gioco
+it:GIOCO
 nl:SPEEL
+nb:SPILL
 --:<<< Play >>>
 en:<<< Play >>>
 de:<<< Spielen >>>
 it:<<< Giocare >>>
 nl:<<< Speel >>>
+nb:<<< Spill >>>
 --:Game Mode: Points
 en:Game Mode: Points
 de:Spielmodus: Punkte sammeln
 it:Modalità: Punti
 nl:Spelmode: Punten
+nb:Spillmodus: Poeng
 --:Game Mode: Survival
 en:Game Mode: Survival
 de:Spielmodus: Überleben
 it:Modalità: Resistere
 nl:Spelmode: Overleven
+nb:Spillmodus: Overlevelse
 --:Game Mode: Race
 en:Game Mode: Race
 de:Spielmodus: Zeitrennen
 it:Modalità: Corsa
 nl:Spelmode: Koersen
+nb:Spillmodus:Renn
 --:Points description
 en:Get as much points as possible in 120 seconds
 de:Sammle in 120 Sekunden so viele Punkte wie möglich
 it:Accumula piu punti che puoi in 120 secondi
 nl:Verzamel zoveel mogelijk punten in 120 seconden
+nb:Samle så mange poeng som mulig på 120 sekunder
 --:Survival description
 en:Get points to keep the game going
 de:Sammle Punkte, um Zeit zu gewinnen
 it:Il gioco continua solo se fai punti
 nl:Verzamel punten om te kunnen blijven spelen
+nb:Samle poeng for å holde spillet gående
 --:Race description
 en:Get 100.000 points
 de:Sammle 100.000 Punkte
 it:Raccogli 100.000 punti
 nl:Verzamel 100.000 punten
+nb:Samle 100.000 poeng
 --:Difficulty: Hard
 en:Difficulty: Hard
 de:Schwierigkeit: Schwer
 it:Difficoltà: Alta
 nl:Moeilijkheid: Moeilijk
+nb:Vanskelighetsgrad: Vanskelig
 --:Difficulty: Normal
 en:Difficulty: Normal
 de:Schwierigkeit: Normal
 it:Difficoltà: Normale
 nl:Moeilijkheid: Normaal
+nb:Vanskelighetsgrad: Normal
 --:6 Stones
 en:6 Stones
 de:6 Steine
 it:6 Mattoni
 nl:6 Stenen
+nb:6 Steiner
 --:4 Stones
 en:4 Stones
 de:4 Steine
 it:4 Mattoni
 nl:4 Stenen
+nb:4 Steiner
 --:The Underlining shows the achieved medal
 en:The coloured bar shows the achieved medal
 de:Die Unterstreichung zeigt die erreichte Medaille
 it:Dove sottolineato indica la medaglia raggiunta
 nl:De bereikte medaille is onderstreept
+nb:Den fargede linjen viser oppnådd medalje
 
 # Ingame:
 --:Game Mode:
@@ -263,137 +312,164 @@ en:Game Mode:
 de:Spielmodus:
 it:Modalità:
 nl:Spelmode:
+nb:Spillmodus:
 --:Time survived
 en:Time survived
 de:Überlebte Zeit
 it:Tempo Resistito
 nl:Overlevingstijd
+nb:Tid overlevd
 --:Sec
 en:Sec
 de:Sek
 it:Sec
 nl:Sec
+nb:Sek
 --:Pause
 en:Pause
 de:Pause
 it:Pausa
 nl:Pauze
+nb:Pause
 --:You got
 en:You got
 de:Du hast:
 it:Hai Ottenuto:
 nl:Je hebt
+nb:Du har
 --:Rank
 en:Rank
 de:Platz
 it:Grado
 nl:Plaats
+nb:Plass
 --:Enter your name
 en:Enter your name
 de:Gib deinen Namen
 it:Scrivi il nome
 nl:Geef je naam
+nb:Skriv inn ditt navn
 --:with the D-pad
 en:with the D-pad
 de:mit dem D-Pad ein
 it:con il D-Pad
 nl:met de D-Pad
+nb:med D-pad-en
 --:and press [S]
 en:and press [S]
 de:und drücke [S]
 it:e premi [S]
 nl:en druk [S]
+nb:og trykk [S]
 --:Time elapsed
 en:Time elapsed
 de:Vergangene Zeit
 it:Tempo impiegato
 nl:Verstreken tijd
+nb:Tid forløpt
 --:Well!
 en:Nice!
 de:Gut!
 it:Bravo!
 nl:Goed!
+nb:Flott!
 --:Great!
 en:Great!
 de:Großartig!
 it:Grande!
 nl:Geweldig!
+nb:Storslagent!
 --:Fantastic!
 en:Fantastic!
 de:Fantastisch!
 it:Fantastico!
 nl:Fantastisch!
+nb:Fantastisk!
 --:Incredible!
 en:Indredible!
 de:Unglaublich!
 it:Incredibile!
 nl:Ongelofelijk!
+nb:Ufattelig!
 --:Combo!
 en:Combo!
 de:Kombo!
 it:Combo!
 nl:Combo!
+nb:Kombinasjon!
 --:Chain!
 en:Chain!
 de:Kette!
 it:Catena!
 nl:Keten!
+nb:Kjede!
 --:2x Chain!
 en:2x Chain!
 de:2x Kette!
 it:Catena x2
 nl:2x Keten!
+nb:2x Kjede!
 --:3x Chain!
 en:3x Chain!
 de:3x Kette!
 it:Catena x3
 nl:3x Keten!
+nb:3x Kjede!
 --:4x Chain!
 en:4x Chain!
 de:4x Kette!
 it:Catena x4
 nl:4x Keten!
+nb:4x Kjede!
 --:5x Chain!
 en:5x Chain!
 de:5x Kette!
 it:Catena x5
 nl:5x Keten!
+nb:5x Kjede!
 --:Mega Chain!
 en:Mega Chain!
 de:Mega Kette!
 it:Mega Catena
 nl:Mega-keten!
+nb:Mega-Kjede!
 # Trohpy stuff:
 --:& the gold trophy!
 en:& the gold trophy!
 de:& die güldene Trophäe!
 it:& il trofeo d'oro!
 nl:& de gouden trofee!
+nb:& guld-troféet!
 --:& the silver trophy!
 en:& the silver trophy!
 de:& die silberne Trophäe!
 it:& il trofeo d'argento!
 nl:& de zilveren trofee!
+nb:& sølv-troféet!
 --:& the bronze trophy!
 en:& the bronze trophy!
 de:& die bronzene Trophäe!
 it:& il trofeo di bronzo!
 nl:& de bronzen trofee!
+nb:& bronse-troféet!
 --:next:
 en:next:
 de:nächste:
 it:prossimo:
 nl:volgende:
+nb:påfølgende
 --:& the green trophy!
 en:& the green trophy!
 de:& die grüne Trophäe!
 it:& il trofeo verde!
 nl:& de groene trofee!
+nb:& det grønne troféet!
 --:(better than the maker)
 en:(better than the maker)
 de:(Besser als der Macher)
 it:(meglio di niente)
 nl:(beter dan de maker)
+nb:(bedre enn konstruktøren) 
 
 # Help
 --:HOW TO PLAY
@@ -401,16 +477,19 @@ en:HOW TO PLAY
 de:TUTORIAL
 it:ISTRUZIONI
 nl:HANDLEIDING
+nb:INNFØRING
 --:help goal head line
 en:Game idea: 
 de:Spielidee:
 it:Idea gioco:
 nl:Spelconcept:
+nb:Spillkonsept:
 --:help goal line 1
 en:- Puzzle game on a cylinder
 de:- Puzzlespiel auf einem Zylinder
 it:- Puzzle game in un cilindro
 nl:- Puzzelspel op een cilinder
+nb:- Pusslespill på en sylinder
 --:help goal line 2
 en:- Squares of 2*2 stones of the same color explode
 de:- Quadrate von 2*2 gleichfarbigen Steinen explodieren
@@ -419,6 +498,7 @@ it:- Quadrati di mattoni 2*2 dello stesso colore esplodono
 nl:- Vierkanten van 2x2 stenen in dezelfde kleur ontploffen
 =======
 nl:- Vierkanten van 2x2 gelijkkleurige stenen ontploffen
+nb:- Kvadrater på 2*2 steiner av samme farge eksploderer
 >>>>>>> bd476e1c49a81a6cb26f12585b3334a6d3fe7e07
 --:help goal line 3
 en:- Adjacent & backside (wobble!) equal stones, too
@@ -428,64 +508,77 @@ it:- Esplodono anche i mattoni adiacenti dello stesso colore
 nl:- Aangrenzende stenen in dezelfde kleur ontploffen mee
 =======
 nl:- Aangrenzende gelijkkleurige stenen ontploffen mee
+nb:- Tilstøtende steiner i matchende farge også
 >>>>>>> bd476e1c49a81a6cb26f12585b3334a6d3fe7e07
 --:help goal line 4
 en:- More exploding stones => more points
 de:- Mehr explodierende Steine => mehr Punkte
 it:- Piu mattoni esplodono => piu punti
 nl:- Meer ontploffende stenen => meer punten
+nb:- Flere eksploderende steiner => flere poeng
 --:help control head line
 en:Controls: 
 de:Steuerung:
 it:Controlli: 
 nl:Besturing:
+nb:Styring
 --:help control line 1
 en:- Adjustable in the settings menu
 de:- Im Einstellungsmenü einstellbar
 it:- Configurali nel menu settaggi
 nl:- Aanpasbaar in het instellingen-menu
+nb:- Kan tillpasses i instillingsmenyen
 --:help control line 2
 en:- Switch two stones around a third with the buttons
 de:- Tausch zwei Steine um einen Dritten mit den Buttons
 it:- Scambia due mattoni intorno ad un terzo con i bottoni
 nl:- Wissel twee stenen rond een derde met de knoppen
+nb:- Roker to steiner rundt en tredje ved bruk av knappene
 --:help control line 3
 en:- Use D-Pad to move on the cylinder
 de:- Nutz das D-Pad für die Navigation auf dem Zylinder
 it:- Usa il D-Pad per muovere il cilindro
 nl:- Gebruik de D-Pad om te bewegen op de cilinder
+nb:- Bruk D-Pad-en for å bevege sylinderen
 --:help stones head line
 en:Special Stones: 
 de:Spezielle Steine:
 it:Mattoni Speciali: 
 nl:Bijzondere stenen:
+nb:Spesielle Steiner:
 --:help stones line 1
 en:- Bomb stone: Explodes
 de:- Bombenstein: Explodiert
 it:- Mattone Bomba: Esplosivo
 nl:- Bom-steen: Ontploft
+nb:- Bombestein: Eksploderer
 --:help stones line 2
 en:- Rainbow Stone: Compatible to every colour
 de:- Regenbogenstein: Kompatibel zu jeder Farbe
 it:- Mattone Arcobaleno: Compatibile con tutti
 nl:- Regenboogsteen: Compatibel met elke kleur
+nb: Regnbuestein: Kompatibel med alle farger
 --:help stones line 3
 en:- Stone stone: Can only be removed with bombs
 de:- Steinstein: Explodiert nicht, außer mit Bombe
 it:- Mattone di pietra: Esplode solo con una Bomba
 nl:- Steen-steen: Ontploft niet, behalve met bommen
+nb:- Vulkansk stein: Kan bare flyttes med bomber.
 --:help advices head line
 en:Advices: 
 de:Tipps:
 it:Consigli:
 nl:Advies:
+nb:Tips!
 --:help advices line 1
 en:- Use Combos & domino effects for more points 
 de:- Nutz Kombos & Dominoeffekte für mehr Punkte
 it:- Usa i Combo e Catene per avere piu punti
 nl:- Combo's & keten-effecten geven meer punten
+nb:- Bruk Kombinasjoner og dominoeffekter for flere poeng
 --:help advices line 2
 en:- Copy music to the folder "music" for your own music
 de:- Kopiere Musik in den Ordner "music" für eigene Musik
 it:- Metti la tua musica preferita nella cartella "music"
 nl:- Zet muziek in de map "music" voor je eigen muziek
+nb:- Kopier musikk til mappen "music" for egen musikk

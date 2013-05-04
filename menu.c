@@ -685,8 +685,8 @@ void draw_language_selection()
 	spFontPointer small_font = settings_get_small_font();
 	spFontPointer middle_font = settings_get_middle_font();
 	spSetAlphaTest(1);
-	spSetZSet(0);
-	spSetZTest(0);
+	spSetZSet(1);
+	spSetZTest(1);
 	spResetZBuffer();
 	spIdentity();
 	spClearTarget(7);
