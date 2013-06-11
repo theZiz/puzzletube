@@ -18,7 +18,7 @@
  Alexander Matthes (Ziz) , zizsdl_at_googlemail.com                         
 */
 #include "particle.h"
-#include "../sparrow3d/sparrow3d.h"
+#include <sparrow3d.h>
 
 SDL_Surface* smallParticle = NULL;
 SDL_Surface* middleParticle = NULL;

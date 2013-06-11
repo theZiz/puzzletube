@@ -20,7 +20,7 @@
 #ifndef _SETTINGS_H
 #define _SETTINGS_H
 
-#include "../sparrow3d/sparrow3d.h"
+#include <sparrow3d.h>
 
 int get_highscore_trophy(int game_mode,int dificult,int points);
 int get_next_highscore_trophy(int game_mode,int dificult,int points);

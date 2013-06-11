@@ -19,7 +19,7 @@
 */
 #ifndef _GAME_H
 #define _GAME_H
-#include "../sparrow3d/sparrow3d.h"
+#include <sparrow3d.h>
 #include "particle.h"
 #include "stars.h"
 

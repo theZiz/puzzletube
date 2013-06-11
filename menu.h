@@ -20,7 +20,7 @@
 #ifndef _MENU_H
 #define _MENU_H
 
-#include "../sparrow3d/sparrow3d.h"
+#include <sparrow3d.h>
 #include "particle.h"
 
 void run_menu(void (*resize)(Uint16 w,Uint16 h));

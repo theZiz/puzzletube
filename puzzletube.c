@@ -18,7 +18,7 @@
  Alexander Matthes (Ziz) , zizsdl_at_googlemail.com												 
 */
 
-#include "../sparrow3d/sparrow3d.h"
+#include <sparrow3d.h>
 #include "music.h"
 #include "menu.h"
 #include "settings.h"

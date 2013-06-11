@@ -23,7 +23,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
-#include "../sparrow3d/sparrow3d.h"
+#include <sparrow3d.h>
 
 #define LETTERING_TIMEOUT 10000
 

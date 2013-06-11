@@ -18,7 +18,7 @@
  Alexander Matthes (Ziz) , zizsdl_at_googlemail.com												 
 */
 #include "settings.h"
-#include "../sparrow3d/sparrow3d.h"
+#include <sparrow3d.h>
 #include <SDL.h>
 
 #define SETTINGS_VERSION "5"
