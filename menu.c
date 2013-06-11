@@ -602,6 +602,13 @@ case 2: //Play
 		}
 		if (engineInput->axis[0] == 0)
 			menu_block = 0;
+		if (engineInput->button[SP_BUTTON_SELECT])
+		{
+			engineInput->button[SP_BUTTON_SELECT] = 0;
+			nextstate = 0;
+			menu_fade = -1;
+			rotating_sound_on();
+		}
 		if (menu_move == 0 && (engineInput->button[SP_BUTTON_START] ||
 				engineInput->button[SP_BUTTON_A] || engineInput->button[SP_BUTTON_B] ||
 				engineInput->button[SP_BUTTON_X] || engineInput->button[SP_BUTTON_Y]))
