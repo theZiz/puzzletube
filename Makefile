@@ -63,5 +63,5 @@ splashscreen.o: splashscreen.c splashscreen.h
 	$(CPP) $(CFLAGS) -c splashscreen.c $(SDL) $(INCLUDE)
 
 clean:
-	rm *.o
-	rm puzzletube
+	rm -f *.o
+	rm -f puzzletube
