@@ -134,7 +134,7 @@ void draw_menu(void)
 			spRotozoomSurface(spFontWidth(spGetTranslationFromCaption(translation,"Language: English"),font)/2+engineWindowX/2+((menu_fade+40)*spGetSizeFactor()>>SP_ACCURACY+2),11*engineWindowY/21+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2)+font->maxheight/2,-1,flag,spGetSizeFactor() >> 3,spGetSizeFactor() >> 3,spSin(menu_counter << 8) >> 2);
 			spFontDrawMiddle(engineWindowX/2+((menu_fade)*spGetSizeFactor()>>SP_ACCURACY+2),47*engineWindowY/80+(spSin(menu_counter*300+2*SP_PI/4)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Translation: Ziz & Foxblock"),small_font);
 
-			sprintf(buffer,"Volume %i%%",settings_get_volume());
+			sprintf(buffer,"%s: %i%%",spGetTranslationFromCaption(translation,"Volume"),settings_get_volume());
 			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),14*engineWindowY/21+(spSin(menu_counter*300+1*SP_PI/4)>>SP_ACCURACY-2),-1,buffer,font);
 			switch (settings_get_particles())
 			{
@@ -374,6 +374,13 @@ int calc_menu(Uint32 steps)
 	switch (state)
 	{
 	case 0: //menu
+		if (engineInput->button[SP_BUTTON_SELECT])
+		{
+			engineInput->button[SP_BUTTON_SELECT] = 0;
+			nextstate = -4;
+			menu_fade = -1;
+			rotating_sound_on();
+		}
 		if (engineInput->axis[1]>0 && menu_move==0 && (menu_choice>>SP_ACCURACY)<4)
 			menu_move = 1;
 		if (engineInput->axis[1]<0 && menu_move==0 && (menu_choice>>SP_ACCURACY)>0)

@@ -196,6 +196,13 @@ fi:Käännös: Aapo Rantalainen
 it:Traduzione: Farox
 nl:Vertaling: _wb_ & Holliefant
 nb:Oversettelse: comradekingu
+--:Volume
+en:Volume
+de:Lautstärke
+fi:Tilavuus
+it:Volume
+nl:Volume
+nb:Volum
 --:Back to Menu
 en:Back to Menu
 de:Zurück ins Menü
