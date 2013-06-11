@@ -195,7 +195,7 @@ de:Übersetzung: Ziz
 fi:Käännös: Aapo Rantalainen
 it:Traduzione: Farox
 nl:Vertaling: _wb_ & Holliefant
-nb:comradekingu
+nb:Oversettelse: comradekingu
 --:Back to Menu
 en:Back to Menu
 de:Zurück ins Menü
@@ -574,23 +574,15 @@ en:- Squares of 2*2 stones of the same color explode
 de:- Quadrate von 2*2 gleichfarbigen Steinen explodieren
 fi:- Neliöt, joissa on 2*2 samanväristä kiveä, räjähtävät
 it:- Quadrati di mattoni 2*2 dello stesso colore esplodono
-<<<<<<< HEAD
-nl:- Vierkanten van 2x2 stenen in dezelfde kleur ontploffen
-=======
 nl:- Vierkanten van 2x2 gelijkkleurige stenen ontploffen
 nb:- Kvadrater på 2*2 steiner av samme farge eksploderer
->>>>>>> bd476e1c49a81a6cb26f12585b3334a6d3fe7e07
 --:help goal line 3
 en:- Adjacent & backside (wobble!) equal stones, too
 de:- Angrenzende & gegenüberlegende gleiche Steine auch
 fi:- sekä viereiset ja takapuolella olevat samanväriset
 it:- Esplodono anche i mattoni adiacenti dello stesso colore
-<<<<<<< HEAD
-nl:- Aangrenzende stenen in dezelfde kleur ontploffen mee
-=======
 nl:- Aangrenzende gelijkkleurige stenen ontploffen mee
 nb:- Tilstøtende steiner i matchende farge også
->>>>>>> bd476e1c49a81a6cb26f12585b3334a6d3fe7e07
 --:help goal line 4
 en:- More exploding stones => more points
 de:- Mehr explodierende Steine => mehr Punkte
