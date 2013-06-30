@@ -20,7 +20,7 @@ BUILD = .
 SPARROW_LIB = $(SPARROW_FOLDER)
 endif
 LIB += -L$(SPARROW_LIB)
-INCLUDE += -I$(SPARROW_LIB)
+INCLUDE += -I$(SPARROW_FOLDER)
 DYNAMIC += -lsparrow3d -lsparrowSound
 
 all: puzzletube

@@ -28,11 +28,11 @@ do
 		  echo "<a href=$PROGRAM.pnd>$NAME</a></br>" >> ../../index.htm
     else
       if [ $NAME = "i386" ]; then
-        tar cfvz "$PROGRAM-$NAME-$VERSION.tar.gz" $PROGRAM > /dev/null
+        tar cfvz "$PROGRAM-$NAME-$VERSION.tar.gz" * > /dev/null
         mv "$PROGRAM-$NAME-$VERSION.tar.gz" ../..
   		  echo "<a href=$PROGRAM-$NAME-$VERSION.tar.gz>$NAME</a></br>" >> ../../index.htm
       else
-        zip -r "$PROGRAM-$NAME-$VERSION.zip" $PROGRAM > /dev/null
+        zip -r "$PROGRAM-$NAME-$VERSION.zip" * > /dev/null
         mv "$PROGRAM-$NAME-$VERSION.zip" ../..
   		  echo "<a href=$PROGRAM-$NAME-$VERSION.zip>$NAME</a></br>" >> ../../index.htm
       fi
