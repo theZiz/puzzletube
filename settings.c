@@ -166,7 +166,18 @@ void settings_load()
 	settings_borders = 1;
 	settings_first_start = 1;
 	char buffer[256];
+	int version = 6;
 	SDL_RWops *file=SDL_RWFromFile(get_path(buffer,"settings"SETTINGS_VERSION".dat"),"rb");
+	if (file == NULL)
+	{
+		file=SDL_RWFromFile(get_path(buffer,"settings5.dat"),"rb");
+		version = 5;
+	}
+	if (file == NULL)
+	{
+		file=SDL_RWFromFile(get_path(buffer,"settings4.dat"),"rb");
+		version = 4;
+	}
 	if (file == NULL)
 		return;
 	SDL_RWread(file,&settings_stone_quality,sizeof(int),1);
@@ -177,9 +188,13 @@ void settings_load()
 	SDL_RWread(file,&settings_control,sizeof(int),1);
 	SDL_RWread(file,&settings_mode,sizeof(int),1);
 	SDL_RWread(file,settings_name,sizeof(char)*3,1);
-	SDL_RWread(file,&settings_language,sizeof(int),1);
-	SDL_RWread(file,&settings_borders,sizeof(int),1);
-	settings_first_start = 0;
+	if (version>=5)
+	{
+		SDL_RWread(file,&settings_language,sizeof(int),1);
+		settings_first_start = 0;
+	}
+	if (version>=6)
+		SDL_RWread(file,&settings_borders,sizeof(int),1);
 	SDL_RWclose(file);
 }
 
