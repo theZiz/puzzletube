@@ -24,8 +24,10 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <sparrow3d.h>
+#include "game.h"
 
 #define LETTERING_TIMEOUT 10000
+#define BORDERING_TIMEOUT 1000
 
 typedef struct slettering *plettering;
 typedef struct slettering {
@@ -41,5 +43,19 @@ void add_line();
 void calc_lettering(int steps);
 void delete_all_lettering();
 plettering get_first_lettering();
+
+typedef struct sbordering *pbordering;
+typedef struct sbordering {
+  Sint32 horizental_line[8][16];
+  Sint32 vertical_line[7][16];
+  int age;
+  pbordering next;
+} tbordering;
+
+void add_bordering(pwinsituation winsituation,Uint16 color);
+void calc_bordering(int steps);
+void delete_all_bordering();
+pbordering get_first_bordering();
+
 
 #endif
