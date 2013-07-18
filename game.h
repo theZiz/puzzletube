@@ -42,7 +42,7 @@ typedef struct sstone {
 
 typedef struct swinsituation *pwinsituation;
 typedef struct swinsituation {
-  int x,y;
+  int x,y,type;
   pwinsituation next;
 } twinsituation;
 
@@ -68,7 +68,7 @@ typedef struct sparticle {
 Sint32 get_type_color_h(int type,int w);
 Uint8 get_type_color_s(int type,int w);
 Uint8 get_type_color_v(int type,int w);
-void draw_stone(int type,int h,int s,int v,int a,Sint32 posx_zero,int w);
+void draw_stone(int type,int h,int s,int v,int a,Sint32 posx_zero,int w,int special);
 int run_game(int playernumber_,int starAdd,void (*resize)(Uint16 w,Uint16 h));
 void prepare_game_objects(char complete);
 void delete_game_objects();

@@ -21,7 +21,7 @@
 #include <sparrow3d.h>
 #include <SDL.h>
 
-#define SETTINGS_VERSION "5"
+#define SETTINGS_VERSION "6"
 #define HIGHSCORE_VERSION "3"
 
 int settings_stone_quality; //2 perfect, 1 okay, 0 gp2x
@@ -34,6 +34,7 @@ int settings_mode;
 int settings_control;
 int settings_first_start;
 int settings_language;
+int settings_borders;
 char settings_name[3];
 spBundlePointer settings_translation;
 
@@ -74,10 +75,10 @@ int get_highscore_trophy(int game_mode,int dificult,int points)
 int get_next_highscore_trophy(int game_mode,int dificult,int points)
 {
 	int i = get_highscore_trophy(game_mode,dificult,points);
-	printf("Your place is %i. Next better Place is %i.\n",i,i-1);
+	//printf("Your place is %i. Next better Place is %i.\n",i,i-1);
 	if (i == 0)
 		return 0;
-	printf("Points %i\n",highscore_goal[game_mode][dificult][i-1]);
+	//printf("Points %i\n",highscore_goal[game_mode][dificult][i-1]);
 	return highscore_goal[game_mode][dificult][i-1];
 }
 
@@ -162,6 +163,7 @@ void settings_load()
 	settings_name[1]='A';
 	settings_name[2]='A';
 	settings_language = 0;
+	settings_borders = 1;
 	settings_first_start = 1;
 	char buffer[256];
 	SDL_RWops *file=SDL_RWFromFile(get_path(buffer,"settings"SETTINGS_VERSION".dat"),"rb");
@@ -176,6 +178,7 @@ void settings_load()
 	SDL_RWread(file,&settings_mode,sizeof(int),1);
 	SDL_RWread(file,settings_name,sizeof(char)*3,1);
 	SDL_RWread(file,&settings_language,sizeof(int),1);
+	SDL_RWread(file,&settings_borders,sizeof(int),1);
 	settings_first_start = 0;
 	SDL_RWclose(file);
 }
@@ -218,6 +221,7 @@ void settings_save()
 	SDL_RWwrite(file,&settings_mode,sizeof(int),1);
 	SDL_RWwrite(file,settings_name,sizeof(char)*3,1);
 	SDL_RWwrite(file,&settings_language,sizeof(int),1);
+	SDL_RWwrite(file,&settings_borders,sizeof(int),1);
 	SDL_RWclose(file);
 }
 
@@ -379,6 +383,16 @@ void settings_set_language(int language)
 int settings_get_language()
 {
 	return settings_language;
+}
+
+void settings_set_borders(int borders)
+{
+	settings_borders = borders;
+}
+
+int settings_get_borders()
+{
+	return settings_borders;
 }
 
 void settings_set_translation(spBundlePointer translation)

@@ -116,16 +116,21 @@ pbordering first_bordering = NULL;
 	if (line[(y)][(x)] == -1) \
 		line[(y)][(x)] = color; \
 	else \
-		line[(y)][(x)] = -1;	
+		line[(y)][(x)] = -1;
+
+//#define DO_BORDERING_STUFF(line,x,y) line[(y)][(x)] = color;
 
 void add_bordering(pwinsituation winsituation,Uint16 color)
 {
 	//Create
 	pbordering bordering = (pbordering)malloc(sizeof(tbordering));
 	bordering->age = BORDERING_TIMEOUT;
+	bordering->alpha = SP_ONE;
 	bordering->next = first_bordering;
 	first_bordering = bordering;
 	//Marking the hor & ver lines out of the winsituation
+	char was_already[7][16];
+	memset(was_already,0,7*16);
 	int x,y;
 	for (x = 0; x < 16; x++)
 	{
@@ -138,13 +143,19 @@ void add_bordering(pwinsituation winsituation,Uint16 color)
 	}
 	while (winsituation)
 	{
-		DO_BORDERING_STUFF(bordering->horizental_line,winsituation->x,winsituation->y);
-		DO_BORDERING_STUFF(bordering->vertical_line,winsituation->x,winsituation->y);
-		DO_BORDERING_STUFF(bordering->horizental_line,winsituation->x,winsituation->y+1);
-		int x_plus_one = winsituation->x+1;
-		if (x_plus_one >= 16)
-			x_plus_one-=16;
-		DO_BORDERING_STUFF(bordering->vertical_line,x_plus_one,winsituation->y);
+		if (!was_already[winsituation->y][winsituation->x])
+		{
+			DO_BORDERING_STUFF(bordering->horizental_line,winsituation->x,winsituation->y);
+			DO_BORDERING_STUFF(bordering->vertical_line,winsituation->x,winsituation->y);
+			DO_BORDERING_STUFF(bordering->horizental_line,winsituation->x,winsituation->y+1);
+			int x_plus_one = winsituation->x+1;
+			if (x_plus_one >= 16)
+				x_plus_one-=16;
+			DO_BORDERING_STUFF(bordering->vertical_line,x_plus_one,winsituation->y);
+			was_already[winsituation->y][winsituation->x] = 1;
+		}
+		else
+			printf("Double! That shouldn't be: %i:%i\n",winsituation->x,winsituation->y);
 		winsituation = winsituation->next;
 	}
 }
@@ -157,6 +168,7 @@ void calc_bordering(int steps)
 	while (bordering)
 	{
 		bordering->age -= steps;
+		bordering->alpha = bordering->age*SP_ONE/BORDERING_TIMEOUT;
 		if (bordering->age<=0)
 			break;
 		last_bordering = bordering;

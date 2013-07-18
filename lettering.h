@@ -27,7 +27,7 @@
 #include "game.h"
 
 #define LETTERING_TIMEOUT 10000
-#define BORDERING_TIMEOUT 1000
+#define BORDERING_TIMEOUT 2000
 
 typedef struct slettering *plettering;
 typedef struct slettering {
@@ -49,6 +49,7 @@ typedef struct sbordering {
   Sint32 horizental_line[8][16];
   Sint32 vertical_line[7][16];
   int age;
+  Sint32 alpha;
   pbordering next;
 } tbordering;
 

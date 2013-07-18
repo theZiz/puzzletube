@@ -203,6 +203,20 @@ fi:Äänenvoimakkuus
 it:Volume
 nl:Volume
 nb:Volum
+--:Explosion borders: On
+en:Explosion borders: On
+de:Explosionsrahmen: An
+fi:Explosion borders: On
+it:Explosion borders: On
+nl:Explosion borders: On
+nb:Explosion borders: On
+--:Explosion borders: Off
+en:Explosion borders: Off
+de:Explosionsrahmen: Aus
+fi:Explosion borders: Off
+it:Explosion borders: Off
+nl:Explosion borders: Off
+nb:Explosion borders: Off
 --:Back to Menu
 en:Back to Menu
 de:Zurück ins Menü

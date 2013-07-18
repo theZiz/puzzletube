@@ -27,7 +27,7 @@
 #include "splashscreen.h"
 
 #define FONT_LOCATION "./font/Play-Bold.ttf"
-#define FONT_SIZE 16
+#define FONT_SIZE 15
 #define FONT_MIDDLE_SIZE 11
 #define FONT_SMALL_SIZE 11
 #define FONT_COUNTDOWN_SIZE 128
@@ -140,7 +140,7 @@ int main(int argc, char **argv)
 	settings_set_translation(translation);
 
 	//sparrow3D Init
-	spSetDefaultWindowSize( 800, 480 );
+	//spSetDefaultWindowSize( 800, 480 );
 	spInitCore();
 	spSetAffineTextureHack(0); //We don't need it :)
 	spInitMath();
