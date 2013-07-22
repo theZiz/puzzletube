@@ -192,7 +192,7 @@ nb:Språk: Norsk Bokmål
 --:Translation: Ziz & Foxblock
 en:Translation: Ziz & Foxblock
 de:Übersetzung: Ziz
-fi:Käännös: Aapo Rantalainen
+fi:Käännös: Aapo Rantalainen & Cloudef
 it:Traduzione: Farox
 nl:Vertaling: _wb_ & Holliefant
 nb:Oversettelse: comradekingu
@@ -206,17 +206,17 @@ nb:Volum
 --:Explosion borders: On
 en:Explosion borders: On
 de:Explosionsrahmen: An
-fi:Explosion borders: On
-it:Explosion borders: On
-nl:Explosion borders: On
-nb:Explosion borders: On
+fi:Räjähdysten reunat: Päällä
+it:Telaio Explosion: Si
+nl:Rand rond ontploffing: Aan
+nb:Eksplosjonsanvisninger: På
 --:Explosion borders: Off
 en:Explosion borders: Off
 de:Explosionsrahmen: Aus
-fi:Explosion borders: Off
-it:Explosion borders: Off
-nl:Explosion borders: Off
-nb:Explosion borders: Off
+fi:Räjähdysten reunat: Pois
+it:Telaio Explosion: No
+nl:Rand rond ontploffing: Uit
+nb:Eksplosjonsanvisninger: Av
 --:Back to Menu
 en:Back to Menu
 de:Zurück ins Menü
