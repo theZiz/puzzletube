@@ -1673,11 +1673,11 @@ int calc_game(Uint32 steps)
 					init_one_score_commit(0,points);
 					break;
 				case 1:
-					if (realTime > get_highscore(1,settings_get_color(),2))
+					if (realTime/100 > get_highscore(1,settings_get_color(),2))
 						insert_name = 3;
-					if (realTime > get_highscore(1,settings_get_color(),1))
+					if (realTime/100 > get_highscore(1,settings_get_color(),1))
 						insert_name = 2;
-					if (realTime > get_highscore(1,settings_get_color(),0))
+					if (realTime/100 > get_highscore(1,settings_get_color(),0))
 						insert_name = 1;
 					init_one_score_commit(1,realTime);
 					break;
