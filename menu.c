@@ -67,6 +67,7 @@ void draw_menu(void)
 	
 	spIdentity();
 	draw_music();
+	draw_c4a();
 	#ifdef MENU_DEBUG
 		printf("%i:	 Drew music\n",SDL_GetTicks());
 	#endif
@@ -329,6 +330,7 @@ int calc_menu(Uint32 steps)
 	if (settings_get_stars_rotating()==2)
 		star_counter += steps;
 	calc_music(steps);
+	calc_c4a(steps);
 	PspInput engineInput = spGetInput();
 	if (menu_fade>0)
 	{

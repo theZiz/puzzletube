@@ -20,6 +20,7 @@
 #include "game.h"
 #include "lettering.h"
 #include "settings.h"
+#include "c4a.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -1555,6 +1556,7 @@ void draw_game(void)
 	
 
 	draw_music();
+	draw_c4a();
 		
 	spFlip();
 }
@@ -1563,6 +1565,8 @@ int control_timeout;
 
 int calc_game(Uint32 steps)
 {
+	calc_music(steps);
+	calc_c4a(steps);
 	PspInput engineInput = spGetInput();
 	if (insert_name)
 	{
@@ -1620,7 +1624,6 @@ int calc_game(Uint32 steps)
 	
 	if (pause)
 		return 0;
-	calc_music(steps);
 	if (countdown == 4000)
 	{
 		if (engineInput->button[SP_BUTTON_B] || engineInput->button[SP_BUTTON_A] ||
@@ -1667,6 +1670,7 @@ int calc_game(Uint32 steps)
 						insert_name = 2;
 					if (points > get_highscore(0,settings_get_color(),0))
 						insert_name = 1;
+					init_one_score_commit(0,points);
 					break;
 				case 1:
 					if (realTime > get_highscore(1,settings_get_color(),2))
@@ -1675,6 +1679,7 @@ int calc_game(Uint32 steps)
 						insert_name = 2;
 					if (realTime > get_highscore(1,settings_get_color(),0))
 						insert_name = 1;
+					init_one_score_commit(1,realTime);
 					break;
 				case 2:
 					if (realTime/100 < get_highscore(2,settings_get_color(),2))
@@ -1683,6 +1688,7 @@ int calc_game(Uint32 steps)
 						insert_name = 2;
 					if (realTime/100 < get_highscore(2,settings_get_color(),0))
 						insert_name = 1;
+					init_one_score_commit(2,realTime/100);
 				break;
 			}
 			if (insert_name == 0)

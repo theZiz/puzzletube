@@ -21,7 +21,7 @@ SPARROW_LIB = $(SPARROW_FOLDER)
 endif
 LIB += -L$(SPARROW_LIB)
 INCLUDE += -I$(SPARROW_FOLDER)
-DYNAMIC += -lsparrow3d -lsparrowSound
+DYNAMIC += -lsparrow3d -lsparrowSound -lsparrowNet
 
 all: puzzletube
 	@echo "=== Built for Target "$(TARGET)" ==="
@@ -29,10 +29,11 @@ all: puzzletube
 targets:
 	@echo "The targets are the same like for sparrow3d. :P"
 
-puzzletube: puzzletube.c particle.o game.o music.o menu.o stars.o settings.o lettering.o splashscreen.o makeBuildDir
+puzzletube: puzzletube.c particle.o game.o music.o menu.o stars.o settings.o lettering.o splashscreen.o c4a.o makeBuildDir
 	cp $(SPARROW_LIB)/libsparrow3d.so $(BUILD)
 	cp $(SPARROW_LIB)/libsparrowSound.so $(BUILD)
-	$(CPP) $(CFLAGS) puzzletube.c particle.o game.o music.o menu.o stars.o settings.o lettering.o splashscreen.o $(SDL) $(INCLUDE) $(LIB) $(STATIC) $(DYNAMIC) -o $(BUILD)/puzzletube
+	cp $(SPARROW_LIB)/libsparrowNet.so $(BUILD)
+	$(CPP) $(CFLAGS) puzzletube.c particle.o game.o music.o menu.o stars.o settings.o lettering.o splashscreen.o c4a.o $(SDL) $(INCLUDE) $(LIB) $(STATIC) $(DYNAMIC) -o $(BUILD)/puzzletube
 
 makeBuildDir:
 	 @if [ ! -d $(BUILD:/puzzletube=/) ]; then mkdir $(BUILD:/puzzletube=/);fi
@@ -61,6 +62,9 @@ lettering.o: lettering.c lettering.h
 
 splashscreen.o: splashscreen.c splashscreen.h
 	$(CPP) $(CFLAGS) -c splashscreen.c $(SDL) $(INCLUDE)
+
+c4a.o: c4a.c c4a.h
+	$(CPP) $(CFLAGS) -c c4a.c $(SDL) $(INCLUDE)
 
 clean:
 	rm -f *.o

@@ -155,7 +155,9 @@ int main(int argc, char **argv)
 	prepare_game_objects(1);
 	change_music("Midnight Mediation","Nick May");
 	highscore_save();
+	init_c4a();
 	run_menu(resize);
+	quit_c4a();
 	delete_game_objects();
 	spDeleteBundle(translation,0);
 	quit_music();
