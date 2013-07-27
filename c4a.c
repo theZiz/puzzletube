@@ -67,7 +67,7 @@ void init_score_commit()
 	{
 		case 0:
 			if (get_highscore(0,1,score_row) != 0)
-				c4aThread = spNetC4ACommitScore(profile,"puzzletube_points",get_highscore(0,1,score_row),pointsScore);
+				c4aThread = spNetC4ACommitScore(profile,"puzzletube_points",get_highscore(0,1,score_row),&pointsScore);
 			else
 				c4aThread = NULL;
 				if (c4aThread == NULL)
@@ -82,7 +82,7 @@ void init_one_score_commit(int gametype,int score)
 	switch (gametype)
 	{
 		case 0:
-				c4aThread = spNetC4ACommitScore(profile,"puzzletube_points",score,pointsScore);
+				c4aThread = spNetC4ACommitScore(profile,"puzzletube_points",score,&pointsScore);
 			if (c4aThread == NULL)
 				printf("Points score %i already at server\n",score);
 			else
