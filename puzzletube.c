@@ -137,6 +137,33 @@ int main(int argc, char **argv)
 	//Language setup
 	spReadPossibleLanguages("./translations/languages.txt");
 	spBundlePointer translation = spLoadBundle("./translations/translations.txt",1);
+	/* //counting all hashes:
+	spTextPointer mom = translation->firstText;
+	int mesh[257];
+	memset(mesh,0,257*4);
+	int count = 0;
+	while (mom)
+	{
+		if (mom->hash >= 0 && mom->hash < 256)
+		{
+			mesh[mom->hash]++;
+		}
+		else
+			mesh[256]++;
+		count++;
+		mom = mom->next;
+	}
+	int i,j;
+	for (i = 0; i < 16; i++)
+	{
+		for (j = 0; j < 16; j++)
+		{
+			printf(" %3i",mesh[i+j*16]);
+		}
+		printf("\n");
+	}
+	printf("Invalid hash: %i\n",mesh[256]);
+	printf("Total hash: %i\n",count);*/
 	settings_set_translation(translation);
 
 	//sparrow3D Init
