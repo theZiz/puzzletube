@@ -26,12 +26,16 @@
 #include "game.h"
 #include "splashscreen.h"
 
-#define FONT_LOCATION "./font/Play-Bold.ttf"
+#define FONT_LOCATION "./font/CabinCondensed-Regular.ttf"
 #define FONT_SIZE 15
-#define FONT_MIDDLE_SIZE 11
-#define FONT_SMALL_SIZE 11
+#define FONT_MIDDLE_SIZE 10
+#define FONT_SMALL_SIZE 10
 #define FONT_COUNTDOWN_SIZE 128
 #define FONT_HIGHSCORE_SIZE 48
+#define FONT_COLOR_1 65535
+#define FONT_COLOR_2 48631
+#define FONT_BORDER_1 0
+#define FONT_BORDER_2 0
 
 SDL_Surface* screen;
 spFontPointer font = NULL;
@@ -49,14 +53,13 @@ void resize(Uint16 w,Uint16 h)
 	spFontShadeButtons(1);
 
 	//Font Loading
-	spFontSetShadeColor(65535);
+	spFontSetShadeColor(FONT_BORDER_1);
 	if (font)
 		spFontDelete(font);
 	font = spFontLoad(FONT_LOCATION,FONT_SIZE*spGetSizeFactor()>>SP_ACCURACY);
-	spFontAdd(font,SP_FONT_GROUP_ASCII,0);//whole ASCII
-	//spFontAdd(font,SP_FONT_GROUP_GERMAN,0);//some German letters
-	spFontAddEveryLetterOfTextBundle(font,translation,0);
-	spFontAddBorder(font,65535);
+	spFontAdd(font,SP_FONT_GROUP_ASCII,FONT_COLOR_1);//whole ASCII
+	spFontAddEveryLetterOfTextBundle(font,translation,FONT_COLOR_1);
+	spFontAddBorder(font,FONT_BORDER_1);
 	spFontMulWidth(font,15<<SP_ACCURACY-4);
 	spFontAddButton( font, 'A', SP_BUTTON_LEFT_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
 	spFontAddButton( font, 'B', SP_BUTTON_RIGHT_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
@@ -68,14 +71,14 @@ void resize(Uint16 w,Uint16 h)
 	spFontAddButton( font, 'E', SP_BUTTON_SELECT_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
 	settings_set_font(font);
 
-	spFontSetShadeColor(48631);
+	spFontSetShadeColor(FONT_BORDER_2);
 	if (small_font)
 		spFontDelete(small_font);
 	small_font = spFontLoad(FONT_LOCATION,FONT_SMALL_SIZE*spGetSizeFactor()>>SP_ACCURACY);
-	spFontAdd(small_font,SP_FONT_GROUP_ASCII,0);//whole ASCII
+	spFontAdd(small_font,SP_FONT_GROUP_ASCII,FONT_COLOR_2);//whole ASCII
 	//spFontAdd(small_font,SP_FONT_GROUP_GERMAN,0);//some German letters
-	spFontAddEveryLetterOfTextBundle(small_font,translation,0);
-	spFontAddBorder(small_font,48631);
+	spFontAddEveryLetterOfTextBundle(small_font,translation,FONT_COLOR_2);
+	spFontAddBorder(small_font,FONT_BORDER_2);
 	spFontMulWidth(small_font,15<<SP_ACCURACY-4);
 	spFontAddButton( small_font, 'A', SP_BUTTON_LEFT_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
 	spFontAddButton( small_font, 'B', SP_BUTTON_RIGHT_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
@@ -87,14 +90,14 @@ void resize(Uint16 w,Uint16 h)
 	spFontAddButton( small_font, 'E', SP_BUTTON_SELECT_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
 	settings_set_small_font(small_font);
 
-	spFontSetShadeColor(65535);
+	spFontSetShadeColor(FONT_BORDER_1);
 	if (middle_font)
 		spFontDelete(middle_font);
 	middle_font = spFontLoad(FONT_LOCATION,FONT_MIDDLE_SIZE*spGetSizeFactor()>>SP_ACCURACY);
-	spFontAdd(middle_font,SP_FONT_GROUP_ASCII,0);//whole ASCII
+	spFontAdd(middle_font,SP_FONT_GROUP_ASCII,FONT_COLOR_1);//whole ASCII
 	//spFontAdd(middle_font,SP_FONT_GROUP_GERMAN,0);//some German letters
-	spFontAddEveryLetterOfTextBundle(middle_font,translation,0);
-	spFontAddBorder(middle_font,65535);
+	spFontAddEveryLetterOfTextBundle(middle_font,translation,FONT_COLOR_1);
+	spFontAddBorder(middle_font,FONT_BORDER_1);
 	spFontMulWidth(middle_font,15<<SP_ACCURACY-4);
 	spFontAddButton( middle_font, 'A', SP_BUTTON_LEFT_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
 	spFontAddButton( middle_font, 'B', SP_BUTTON_RIGHT_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
@@ -106,20 +109,20 @@ void resize(Uint16 w,Uint16 h)
 	spFontAddButton( middle_font, 'E', SP_BUTTON_SELECT_NAME, spGetRGB(230,230,230), spGetRGB(64,64,64));
 	settings_set_middle_font(middle_font);
 
-	spFontSetShadeColor(65535);
+	spFontSetShadeColor(FONT_BORDER_1);
 	if (countdown_font)
 		spFontDelete(countdown_font);
 	countdown_font = spFontLoad(FONT_LOCATION,FONT_COUNTDOWN_SIZE*spGetSizeFactor()>>SP_ACCURACY);
-	spFontAdd(countdown_font,"0123",0);
-	spFontAddBorder(countdown_font,65535);
+	spFontAdd(countdown_font,"0123",FONT_COLOR_1);
+	spFontAddBorder(countdown_font,FONT_BORDER_1);
 	settings_set_countdown_font(countdown_font);
 
-	spFontSetShadeColor(65535);
+	spFontSetShadeColor(FONT_BORDER_1);
 	if (highscore_font)
 		spFontDelete(highscore_font);
 	highscore_font = spFontLoad(FONT_LOCATION,FONT_HIGHSCORE_SIZE*spGetSizeFactor()>>SP_ACCURACY);
-	spFontAdd(highscore_font,"ABCDEFGHIJKLMNOPQRSTUVWXYZ",0);
-	spFontAddBorder(highscore_font,65535);
+	spFontAdd(highscore_font,"ABCDEFGHIJKLMNOPQRSTUVWXYZ",FONT_COLOR_1);
+	spFontAddBorder(highscore_font,FONT_BORDER_1);
 	settings_set_highscore_font(highscore_font);
 
 	//Particles
