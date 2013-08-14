@@ -19,6 +19,7 @@ do
     cp -r music "$f/$PROGRAM"
     cp -r sounds "$f/$PROGRAM"
     cp -r translations "$f/$PROGRAM"
+    cp README "$f/$PROGRAM"
     cd $f
     echo "--> Create archive"
     if [ $NAME = "pandora" ]; then
@@ -43,6 +44,7 @@ do
     rm -r $PROGRAM/music
     rm -r $PROGRAM/sounds
     rm -r $PROGRAM/translations
+    rm $PROGRAM/README
     cd ..
     cd ..
   fi

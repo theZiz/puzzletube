@@ -36,8 +36,8 @@ void init_c4a()
 	profile = spNetC4AGetProfile();
 	if (profile == NULL)
 	{
-		sprintf(c4aStatus,"No c4a-prof found!");
-		c4aTimeout = 5000;
+		sprintf(c4aStatus,"C4A-Manager or Mini-C4A not installed.");
+		c4aTimeout = 20000;
 		c4aState = -3;
 	}
 	updateScores();
@@ -73,6 +73,22 @@ void init_score_commit()
 				if (c4aThread == NULL)
 					printf("Points score %i already at server\n",get_highscore(0,1,score_row));
 			break;
+		case 1:
+			if (get_highscore(1,1,score_row) != 0)
+				c4aThread = spNetC4ACommitScore(profile,"puzzletube_survival",get_highscore(1,1,score_row)*100,&survivalScore);
+			else
+				c4aThread = NULL;
+				if (c4aThread == NULL)
+					printf("Survival score %i already at server\n",get_highscore(1,1,score_row));
+			break;
+		case 2:
+			if (get_highscore(2,1,score_row) != 10000)
+				c4aThread = spNetC4ACommitScore(profile,"puzzletube_race",get_highscore(2,1,score_row)*100,&raceScore);
+			else
+				c4aThread = NULL;
+				if (c4aThread == NULL)
+					printf("Race score %i already at server\n",get_highscore(2,1,score_row));
+			break;
 	}
 }
 
@@ -85,6 +101,26 @@ void init_one_score_commit(int gametype,int score)
 				c4aThread = spNetC4ACommitScore(profile,"puzzletube_points",score,&pointsScore);
 			if (c4aThread == NULL)
 				printf("Points score %i already at server\n",score);
+			else
+			{
+				c4aTimeout = TIME_OUT;
+				c4aState = 5;
+			}
+			break;
+		case 1:
+				c4aThread = spNetC4ACommitScore(profile,"puzzletube_survival",score*100,&survivalScore);
+			if (c4aThread == NULL)
+				printf("Survival score %i already at server\n",score);
+			else
+			{
+				c4aTimeout = TIME_OUT;
+				c4aState = 5;
+			}
+			break;
+		case 2:
+				c4aThread = spNetC4ACommitScore(profile,"puzzletube_race",score*100,&raceScore);
+			if (c4aThread == NULL)
+				printf("Race score %i already at server\n",score);
 			else
 			{
 				c4aTimeout = TIME_OUT;
@@ -105,6 +141,12 @@ void send_c4a_scores(int timeout_sec,int timeout_dec)
 				case 0:
 					sprintf(c4aStatus,"Commit points scores. %i.%is",timeout_sec,timeout_dec);
 					break;
+				case 1:
+					sprintf(c4aStatus,"Commit survival scores. %i.%is",timeout_sec,timeout_dec);
+					break;
+				case 2:
+					sprintf(c4aStatus,"Commit race scores. %i.%is",timeout_sec,timeout_dec);
+					break;
 			}
 			break;
 		case SP_C4A_ERROR:
@@ -119,7 +161,7 @@ void send_c4a_scores(int timeout_sec,int timeout_dec)
 				score_row = 0;
 				c4aTimeout = TIME_OUT;
 				score_col++;
-				if (score_col >= 1) //later 3
+				if (score_col >= 3)
 				{
 					c4aState = 0;
 					break;
@@ -141,6 +183,12 @@ void send_one_c4a_scores(int timeout_sec,int timeout_dec)
 			{
 				case 0:
 					sprintf(c4aStatus,"Commit points scores. %i.%is",timeout_sec,timeout_dec);
+					break;
+				case 1:
+					sprintf(c4aStatus,"Commit survival scores. %i.%is",timeout_sec,timeout_dec);
+					break;
+				case 2:
+					sprintf(c4aStatus,"Commit race scores. %i.%is",timeout_sec,timeout_dec);
 					break;
 			}
 			break;

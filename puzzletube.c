@@ -187,10 +187,10 @@ int main(int argc, char **argv)
 	quit_c4a();
 	delete_game_objects();
 	spDeleteBundle(translation,0);
-	quit_music();
 	spFontDelete(font);
 	spFontDelete(small_font);
 	spFontDelete(middle_font);
+	quit_music();
 	spQuitCore();
 	return 0;
 }

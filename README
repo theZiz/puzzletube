@@ -7,7 +7,9 @@
 
 1. About his game
 2. How to play?
-2. How to contact?
+3. Compo4all
+4. Custom music
+5. How to contact?
 
 +-----------------+
 |1. About the game|
@@ -21,7 +23,7 @@ It is written by Ziz and licenced under the GPL and MPL. You can get
 the sourcode here: http://github.com/theZiz/puzzletube.
 
 At the moment it is avaible for GP2X, Wiz, Dingux, Caanoo, Openpandora
-and the GCW.
+and the GCW. Furthermore Linux and Windows PC.
 
 +---------------+
 |2. How to play?|
@@ -49,12 +51,28 @@ The last and newest mode named "D-Pad" (or similar) is a bit
 experimental, but much people seem to like it. You have to press A, B,
 C or D, hold it down (!) and with the D-Pad choice a stone to switch.
 
++------------+
+|3. Compo4all|
++------------+
+
+Puzzletube is compatibly to compo4all. That means, if puzzletube finds a
+c4a-prof file, which is created by compo4all manager or Mini-C4A, it commits
+scores to an online highscore system (called "Compo4all").
+
++---------------+
+|4. Custom Music|
++---------------+
+
+If you don't like the ingame music of puzzletube, you can mute it and use a
+player of your choice in background or just fill the music folder (if it not
+exist, create it) with your custom music, which will played ingame instead.
+
 +------------------+
-|3. How to contact?|
+|5. How to contact?|
 +------------------+
 
-Website: http://ziz.delphigl.com
-E-Mail: zizsdl@googlemail.com
+Website: http://ziz.gp2x.de
+E-Mail: alex.matthes@web.de (fuck you google mail!)
 If you are English speaking feel free to write about Puzzletube in one
 of these boards:
 http://www.gp32x.com/board/index.php?/topic/59408-riot-puzzletube-searching-allies/page__pid__963687__st__15&#entry963687

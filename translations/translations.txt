@@ -355,12 +355,12 @@ it:Difficoltà: Normale
 nl:Moeilijkheid: Normaal
 nb:Vanskelighetsgrad: Normal
 --:6 Stones
-en:6 Stones
-de:6 Steine
-fi:6 Kiveä
-it:6 Mattoni
-nl:6 Stenen
-nb:6 Steiner
+en:6 Stones & C4A commit
+de:6 Steine & C4A commit
+fi:6 Kiveä & C4A commit
+it:6 Mattoni & C4A commit
+nl:6 Stenen & C4A commit
+nb:6 Steiner & C4A commit
 --:4 Stones
 en:4 Stones
 de:4 Steine
@@ -688,3 +688,10 @@ fi:- Kuunnellaksesi omaa musiikkiasi, kopioi se hakemistoon "music"
 it:- Metti la tua musica preferita nella cartella "music"
 nl:- Zet muziek in de map "music" voor je eigen muziek
 nb:- Kopier musikk til mappen "music" for egen musikk
+--:help advices line 3
+en:- install c4a manager or Mini-C4A for online scores
+de:- Installier C4A-Manager oder Mini-C4A für online scores
+fi:- Asenna c4a manager tai Mini-C4A online pisteytystä varten
+it:- install c4a manager or Mini-C4A for online scores
+nl:- install c4a manager or Mini-C4A for online scores
+nb:- install c4a manager or Mini-C4A for online scores

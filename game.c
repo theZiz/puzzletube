@@ -1670,7 +1670,8 @@ int calc_game(Uint32 steps)
 						insert_name = 2;
 					if (points > get_highscore(0,settings_get_color(),0))
 						insert_name = 1;
-					init_one_score_commit(0,points);
+					if (insert_name)
+						init_one_score_commit(0,points);
 					break;
 				case 1:
 					if (realTime/100 > get_highscore(1,settings_get_color(),2))
@@ -1679,7 +1680,8 @@ int calc_game(Uint32 steps)
 						insert_name = 2;
 					if (realTime/100 > get_highscore(1,settings_get_color(),0))
 						insert_name = 1;
-					init_one_score_commit(1,realTime);
+					if (insert_name)
+						init_one_score_commit(1,realTime/100);
 					break;
 				case 2:
 					if (realTime/100 < get_highscore(2,settings_get_color(),2))
@@ -1688,7 +1690,8 @@ int calc_game(Uint32 steps)
 						insert_name = 2;
 					if (realTime/100 < get_highscore(2,settings_get_color(),0))
 						insert_name = 1;
-					init_one_score_commit(2,realTime/100);
+					if (insert_name)
+						init_one_score_commit(2,realTime/100);
 				break;
 			}
 			if (insert_name == 0)
