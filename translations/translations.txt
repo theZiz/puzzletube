@@ -694,4 +694,4 @@ de:- Installier C4A-Manager oder Mini-C4A für online scores
 fi:- Asenna c4a manager tai Mini-C4A online pisteytystä varten
 it:- install c4a manager or Mini-C4A for online scores
 nl:- install c4a manager or Mini-C4A for online scores
-nb:- install c4a manager or Mini-C4A for online scores
+nb:- Installér c4a-manager eller Mini-C4a for å ta del i onlineresultater.
