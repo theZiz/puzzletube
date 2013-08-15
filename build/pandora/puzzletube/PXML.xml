@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PXML xmlns="http://openpandora.org/namespaces/PXML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="PXML_schema.xsd">
   <package id="puzzletube-puzzletube-26222">
-    <version major="1" minor="2" release="2" build="0"/>
+    <version major="1" minor="3" release="0" build="0"/>
     <author name="Ziz" website="http://ziz.openhandhelds.org"/>
     <titles>
       <title lang="en_US">
@@ -16,6 +16,7 @@
         A puzzle game. On a tube!
         5th place in the RIOT Tag-Team Coding Competition and 3rd place in the DragonBox Coding Competition.
         Features:
+        * NEW: Compo4all support!
         * 5 languages (English, German, Italian, Dutch, Norsk)
         * New tube based puzzle game idea
         * 3 Game modes with 2 difficulties
@@ -30,6 +31,7 @@
       A puzzle game. On a tube!
       5th place in the RIOT Tag-Team Coding Competition and 3rd place in the DragonBox Coding Competition.
       Features:
+      * NEW: Compo4all support!
       * 5 languages (English, German, Italian, Dutch, Norsk)
       * New tube based puzzle game idea
       * 3 Game modes with 2 difficulties
@@ -45,10 +47,10 @@
     <exec command="./puzzletube.sh"/>
     <title lang="en_US">Puzzletube</title>
     <author name="Ziz" website="http://ziz.openhandhelds.org"/>
-    <version major="1" minor="2" release="2" build="0"/>
+    <version major="1" minor="3" release="0" build="0"/>
     <osversion major="1" minor="0" release="0" build="0"/>
     <description lang="en_US">A puzzle game. On a tube!</description>
-    <info name="README" type="text/plain" src="README.txt"/>
+    <info name="README" type="text/plain" src="README"/>
     <icon src="./puzzletube.png"/>
     <previewpics>
       <pic src="previews/screenshot1.png"/>
