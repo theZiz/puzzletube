@@ -26,8 +26,6 @@ char c4aStatus[256] = "";
 //int c4aFade;
 spNetC4AScorePointer raceScore=NULL,pointsScore=NULL,survivalScore=NULL;
 spNetC4AProfilePointer profile;
-SDL_Thread* c4aThread = NULL;
-int c4aTimeout;
 int c4aState = 0;
 
 void init_c4a()
@@ -37,7 +35,6 @@ void init_c4a()
 	if (profile == NULL)
 	{
 		sprintf(c4aStatus,"C4A-Manager or Mini-C4A not installed.");
-		c4aTimeout = 20000;
 		c4aState = -3;
 	}
 	updateScores();
@@ -49,13 +46,12 @@ void updateScores()
 		return;
 	int status = spNetC4AGetStatus();
 	if (status != SP_C4A_OK && status != SP_C4A_ERROR)
-		SDL_KillThread(c4aThread);
+		spNetC4ACancelTask();
 	spNetC4ADeleteScores(&pointsScore);
 	spNetC4ADeleteScores(&survivalScore);
 	spNetC4ADeleteScores(&raceScore);
 	c4aState = 1; //update
-	c4aThread = spNetC4AGetScore(&pointsScore,profile,"puzzletube_points");
-	c4aTimeout = TIME_OUT;
+	spNetC4AGetScore(&pointsScore,profile,"puzzletube_points",TIME_OUT);
 }
 
 int score_col = 0;
@@ -66,28 +62,16 @@ void init_score_commit()
 	switch (score_col)
 	{
 		case 0:
-			if (get_highscore(0,1,score_row) != 0)
-				c4aThread = spNetC4ACommitScore(profile,"puzzletube_points",get_highscore(0,1,score_row),&pointsScore);
-			else
-				c4aThread = NULL;
-				if (c4aThread == NULL)
-					printf("Points score %i already at server\n",get_highscore(0,1,score_row));
+			if (get_highscore(0,1,score_row) == 0 || spNetC4ACommitScore(profile,"puzzletube_points",get_highscore(0,1,score_row),&pointsScore,TIME_OUT))
+				printf("Points score %i already at server\n",get_highscore(0,1,score_row));
 			break;
 		case 1:
-			if (get_highscore(1,1,score_row) != 0)
-				c4aThread = spNetC4ACommitScore(profile,"puzzletube_survival",get_highscore(1,1,score_row)*100,&survivalScore);
-			else
-				c4aThread = NULL;
-				if (c4aThread == NULL)
-					printf("Survival score %i already at server\n",get_highscore(1,1,score_row));
+			if (get_highscore(1,1,score_row) == 0 || spNetC4ACommitScore(profile,"puzzletube_survival",get_highscore(1,1,score_row)*100,&survivalScore,TIME_OUT))
+				printf("Survival score %i already at server\n",get_highscore(1,1,score_row));
 			break;
 		case 2:
-			if (get_highscore(2,1,score_row) != 10000)
-				c4aThread = spNetC4ACommitScore(profile,"puzzletube_race",get_highscore(2,1,score_row)*100,&raceScore);
-			else
-				c4aThread = NULL;
-				if (c4aThread == NULL)
-					printf("Race score %i already at server\n",get_highscore(2,1,score_row));
+			if (get_highscore(2,1,score_row) == 10000 || spNetC4ACommitScore(profile,"puzzletube_race",get_highscore(2,1,score_row)*100,&raceScore,TIME_OUT))
+				printf("Race score %i already at server\n",get_highscore(2,1,score_row));
 			break;
 	}
 }
@@ -98,34 +82,21 @@ void init_one_score_commit(int gametype,int score)
 	switch (gametype)
 	{
 		case 0:
-				c4aThread = spNetC4ACommitScore(profile,"puzzletube_points",score,&pointsScore);
-			if (c4aThread == NULL)
+			if (spNetC4ACommitScore(profile,"puzzletube_points",score,&pointsScore,TIME_OUT))
 				printf("Points score %i already at server\n",score);
 			else
-			{
-				c4aTimeout = TIME_OUT;
 				c4aState = 5;
-			}
 			break;
 		case 1:
-				c4aThread = spNetC4ACommitScore(profile,"puzzletube_survival",score*100,&survivalScore);
-			if (c4aThread == NULL)
+			if (spNetC4ACommitScore(profile,"puzzletube_survival",score*100,&survivalScore,TIME_OUT))
 				printf("Survival score %i already at server\n",score);
 			else
-			{
-				c4aTimeout = TIME_OUT;
 				c4aState = 5;
-			}
 			break;
 		case 2:
-				c4aThread = spNetC4ACommitScore(profile,"puzzletube_race",score*100,&raceScore);
-			if (c4aThread == NULL)
+			if (spNetC4ACommitScore(profile,"puzzletube_race",score*100,&raceScore,TIME_OUT))
 				printf("Race score %i already at server\n",score);
-			else
-			{
-				c4aTimeout = TIME_OUT;
 				c4aState = 5;
-			}
 			break;
 	}
 }
@@ -134,7 +105,6 @@ void send_c4a_scores(int timeout_sec,int timeout_dec)
 {
 	switch (spNetC4AGetStatus())
 	{
-		case SP_C4A_ESTABLISHING:
 		case SP_C4A_PROGRESS:
 			switch (score_col)
 			{
@@ -151,7 +121,6 @@ void send_c4a_scores(int timeout_sec,int timeout_dec)
 			break;
 		case SP_C4A_ERROR:
 			sprintf(c4aStatus,"Error with connection");
-			c4aTimeout = 5000;
 			c4aState = -1;
 			break;
 		case SP_C4A_OK:
@@ -159,7 +128,6 @@ void send_c4a_scores(int timeout_sec,int timeout_dec)
 			if (score_row >= 3)
 			{
 				score_row = 0;
-				c4aTimeout = TIME_OUT;
 				score_col++;
 				if (score_col >= 3)
 				{
@@ -177,7 +145,6 @@ void send_one_c4a_scores(int timeout_sec,int timeout_dec)
 {
 	switch (spNetC4AGetStatus())
 	{
-		case SP_C4A_ESTABLISHING:
 		case SP_C4A_PROGRESS:
 			switch (score_col)
 			{
@@ -194,7 +161,6 @@ void send_one_c4a_scores(int timeout_sec,int timeout_dec)
 			break;
 		case SP_C4A_ERROR:
 			sprintf(c4aStatus,"Error with connection");
-			c4aTimeout = 5000;
 			c4aState = -1;
 			break;
 		case SP_C4A_OK:
@@ -207,42 +173,27 @@ void calc_c4a(int steps)
 {
 	int timeout_sec;
 	int timeout_dec;
-	if (c4aTimeout > 0)
-		c4aTimeout -= steps;
 	if (profile == NULL)
 		return;
 	if (c4aState > 0)
 	{
-		timeout_sec = c4aTimeout / 1000;
-		timeout_dec = (c4aTimeout / 100) % 10;
-		if (c4aTimeout <= 0)
-		{
-			SDL_KillThread(c4aThread);
-				c4aThread = NULL;
-			sprintf(c4aStatus,"connection timeout");
-			c4aTimeout = 5000;
-			c4aState = -2;
-		}
+		timeout_sec = spNetC4AGetTimeOut() / 1000;
+		timeout_dec = (spNetC4AGetTimeOut() / 100) % 10;
 	}
 	switch (c4aState)
 	{
 		case 1:
 			switch (spNetC4AGetStatus())
 			{
-				case SP_C4A_ESTABLISHING:
-					sprintf(c4aStatus,"Start loading points highscore. %i.%is",timeout_sec,timeout_dec);
-					break;
 				case SP_C4A_PROGRESS:
 					sprintf(c4aStatus,"Loading points highscore. %i.%is",timeout_sec,timeout_dec);
 					break;
 				case SP_C4A_ERROR:
 					sprintf(c4aStatus,"Error with connection");
-					c4aTimeout = 5000;
 					c4aState = -1;
 					break;
 				case SP_C4A_OK:
-					c4aThread = spNetC4AGetScore(&survivalScore,profile,"puzzletube_survival");
-					c4aTimeout = TIME_OUT;
+					spNetC4AGetScore(&survivalScore,profile,"puzzletube_survival",TIME_OUT);
 					c4aState = 2;
 					break;
 			}
@@ -250,20 +201,15 @@ void calc_c4a(int steps)
 		case 2:
 			switch (spNetC4AGetStatus())
 			{
-				case SP_C4A_ESTABLISHING:
-					sprintf(c4aStatus,"Start loading survival highscore. %i.%is",timeout_sec,timeout_dec);
-					break;
 				case SP_C4A_PROGRESS:
 					sprintf(c4aStatus,"Loading survival highscore. %i.%is",timeout_sec,timeout_dec);
 					break;
 				case SP_C4A_ERROR:
 					sprintf(c4aStatus,"Error with connection");
-					c4aTimeout = 5000;
 					c4aState = -1;
 					break;
 				case SP_C4A_OK:
-					c4aThread = spNetC4AGetScore(&raceScore,profile,"puzzletube_race");
-					c4aTimeout = TIME_OUT;
+					spNetC4AGetScore(&raceScore,profile,"puzzletube_race",TIME_OUT);
 					c4aState = 3;
 					break;
 			}
@@ -271,21 +217,16 @@ void calc_c4a(int steps)
 		case 3:
 			switch (spNetC4AGetStatus())
 			{
-				case SP_C4A_ESTABLISHING:
-					sprintf(c4aStatus,"Start loading race highscore. %i.%is",timeout_sec,timeout_dec);
-					break;
 				case SP_C4A_PROGRESS:
 					sprintf(c4aStatus,"Loading race highscore. %i.%is",timeout_sec,timeout_dec);
 					break;
 				case SP_C4A_ERROR:
 					sprintf(c4aStatus,"Error with connection");
-					c4aTimeout = 5000;
 					c4aState = -1;
 					break;
 				case SP_C4A_OK:
 					score_row = 0;
 					score_col = 0;
-					c4aTimeout = TIME_OUT;
 					init_score_commit();
 					c4aState = 4;
 					break;
@@ -302,13 +243,13 @@ void calc_c4a(int steps)
 
 void draw_c4a()
 {
+	if (c4aState == 0)
+		return;
+	if (spNetC4AGetTimeOut() <= 0)
+		return;
 	spFontPointer small_font = settings_get_small_font();
 	int engineWindowX=spGetWindowSurface()->w;
 	int engineWindowY=spGetWindowSurface()->h;
-	if (c4aState == 0)
-		return;
-	if (c4aTimeout <= 0)
-		return;
 	spFontDraw(1,engineWindowY-(small_font->maxheight),-1,c4aStatus,small_font);
 }
 
@@ -316,7 +257,7 @@ void quit_c4a()
 {
 	int status = spNetC4AGetStatus();
 	if (status != SP_C4A_OK && status != SP_C4A_ERROR)
-		SDL_KillThread(c4aThread);
+		spNetC4ACancelTask();
 	if (profile == NULL)
 		return;
 	spNetC4AFreeProfile(profile);
