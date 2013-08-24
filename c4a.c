@@ -20,13 +20,14 @@
 #include "c4a.h"
 #include "settings.h"
 
-#define TIME_OUT 10000
+#define TIME_OUT 15000
 
 char c4aStatus[256] = "";
 //int c4aFade;
 spNetC4AScorePointer raceScore=NULL,pointsScore=NULL,survivalScore=NULL;
 spNetC4AProfilePointer profile;
 int c4aState = 0;
+int c4aErrorTimeOut = 0;
 
 void init_c4a()
 {
@@ -35,6 +36,7 @@ void init_c4a()
 	if (profile == NULL)
 	{
 		sprintf(c4aStatus,"C4A-Manager or Mini-C4A not installed.");
+		c4aErrorTimeOut = 20000;
 		c4aState = -3;
 	}
 	updateScores();
@@ -45,7 +47,7 @@ void updateScores()
 	if (profile == NULL)
 		return;
 	int status = spNetC4AGetStatus();
-	if (status != SP_C4A_OK && status != SP_C4A_ERROR)
+	if (status > 0)
 		spNetC4ACancelTask();
 	spNetC4ADeleteScores(&pointsScore);
 	spNetC4ADeleteScores(&survivalScore);
@@ -121,6 +123,12 @@ void send_c4a_scores(int timeout_sec,int timeout_dec)
 			break;
 		case SP_C4A_ERROR:
 			sprintf(c4aStatus,"Error with connection");
+			c4aErrorTimeOut = 20000;
+			c4aState = -1;
+			break;
+		case SP_C4A_TIMEOUT:
+			sprintf(c4aStatus,"Connection timeout");
+			c4aErrorTimeOut = 20000;
 			c4aState = -1;
 			break;
 		case SP_C4A_OK:
@@ -161,6 +169,12 @@ void send_one_c4a_scores(int timeout_sec,int timeout_dec)
 			break;
 		case SP_C4A_ERROR:
 			sprintf(c4aStatus,"Error with connection");
+			c4aErrorTimeOut = 20000;
+			c4aState = -1;
+			break;
+		case SP_C4A_TIMEOUT:
+			sprintf(c4aStatus,"Connection timeout");
+			c4aErrorTimeOut = 20000;
 			c4aState = -1;
 			break;
 		case SP_C4A_OK:
@@ -173,6 +187,8 @@ void calc_c4a(int steps)
 {
 	int timeout_sec;
 	int timeout_dec;
+	if (c4aErrorTimeOut > 0)
+		c4aErrorTimeOut -= steps;
 	if (profile == NULL)
 		return;
 	if (c4aState > 0)
@@ -190,6 +206,12 @@ void calc_c4a(int steps)
 					break;
 				case SP_C4A_ERROR:
 					sprintf(c4aStatus,"Error with connection");
+					c4aErrorTimeOut = 20000;
+					c4aState = -1;
+					break;
+				case SP_C4A_TIMEOUT:
+					sprintf(c4aStatus,"Connection timeout");
+					c4aErrorTimeOut = 20000;
 					c4aState = -1;
 					break;
 				case SP_C4A_OK:
@@ -206,6 +228,12 @@ void calc_c4a(int steps)
 					break;
 				case SP_C4A_ERROR:
 					sprintf(c4aStatus,"Error with connection");
+					c4aErrorTimeOut = 20000;
+					c4aState = -1;
+					break;
+				case SP_C4A_TIMEOUT:
+					sprintf(c4aStatus,"Connection timeout");
+					c4aErrorTimeOut = 20000;
 					c4aState = -1;
 					break;
 				case SP_C4A_OK:
@@ -222,6 +250,12 @@ void calc_c4a(int steps)
 					break;
 				case SP_C4A_ERROR:
 					sprintf(c4aStatus,"Error with connection");
+					c4aErrorTimeOut = 20000;
+					c4aState = -1;
+					break;
+				case SP_C4A_TIMEOUT:
+					sprintf(c4aStatus,"Connection timeout");
+					c4aErrorTimeOut = 20000;
 					c4aState = -1;
 					break;
 				case SP_C4A_OK:
@@ -245,7 +279,7 @@ void draw_c4a()
 {
 	if (c4aState == 0)
 		return;
-	if (spNetC4AGetTimeOut() <= 0)
+	if (spNetC4AGetTimeOut() <= 0 && c4aErrorTimeOut <= 0)
 		return;
 	spFontPointer small_font = settings_get_small_font();
 	int engineWindowX=spGetWindowSurface()->w;
