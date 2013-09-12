@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PXML xmlns="http://openpandora.org/namespaces/PXML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="PXML_schema.xsd">
   <package id="puzzletube-puzzletube-26222">
-    <version major="1" minor="3" release="0" build="0"/>
+    <version major="1" minor="3" release="1" build="0"/>
     <author name="Ziz" website="http://ziz.openhandhelds.org"/>
     <titles>
       <title lang="en_US">
@@ -47,7 +47,7 @@
     <exec command="./puzzletube.sh"/>
     <title lang="en_US">Puzzletube</title>
     <author name="Ziz" website="http://ziz.openhandhelds.org"/>
-    <version major="1" minor="3" release="0" build="0"/>
+    <version major="1" minor="3" release="1" build="0"/>
     <osversion major="1" minor="0" release="0" build="0"/>
     <description lang="en_US">A puzzle game. On a tube!</description>
     <info name="README" type="text/plain" src="README"/>
@@ -60,7 +60,6 @@
     </previewpics>
     <licenses>
       <license name="GPLv2+" url="http://www.gnu.org/licenses/gpl-2.0.html" sourcecodeurl="https://github.com/theZiz/puzzletube"/>
-      <license name="MPL1.1" url="http://www.mozilla.org/MPL/1.1/" sourcecodeurl="https://github.com/theZiz/puzzletube"/>
     </licenses>
     <categories>
       <category name="Game">
