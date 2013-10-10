@@ -36,7 +36,7 @@ do
 				if [ $NAME = "gcw" ]; then
 					mksquashfs * "$PROGRAM-$NAME-$VERSION.opk" -all-root -noappend -no-exports -no-xattrs
 					mv "$PROGRAM-$NAME-$VERSION.opk" ../..
-					echo "<a href=$PROGRAM-$NAME-$VERSION.opk>$NAME</a></br>" >> ../../index.htm
+					echo "<a href=$PROGRAM-$NAME-$VERSION.opk type=\"application/x-opk+squashfs\">$NAME</a></br>" >> ../../index.htm
 				else
 					zip -r "$PROGRAM-$NAME-$VERSION.zip" * > /dev/null
 					mv "$PROGRAM-$NAME-$VERSION.zip" ../..
