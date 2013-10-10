@@ -172,6 +172,7 @@ int main(int argc, char **argv)
 	//sparrow3D Init
 	//spSetDefaultWindowSize( 800, 480 );
 	spInitCore();
+	spInitNet();
 	spSetAffineTextureHack(0); //We don't need it :)
 	spInitMath();
 	
@@ -194,6 +195,7 @@ int main(int argc, char **argv)
 	spFontDelete(small_font);
 	spFontDelete(middle_font);
 	quit_music();
+	spQuitNet();
 	spQuitCore();
 	return 0;
 }
