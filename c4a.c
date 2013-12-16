@@ -80,6 +80,8 @@ void init_score_commit()
 
 void init_one_score_commit(int gametype,int score)
 {
+	if (settings_get_color() == 0)
+		return;
 	score_col = gametype;
 	switch (gametype)
 	{
