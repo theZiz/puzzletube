@@ -7,6 +7,8 @@ echo "<html>" > index.htm
 echo "<head>" >> index.htm
 echo "</head>" >> index.htm
 echo "<body>" >> index.htm
+TIME=`date -u +"%d.%m.%Y %r"`
+echo "Updated at the $TIME." >> index.htm
 echo "<h1>$PROGRAM download links:</h1>" >> index.htm
 for f in $DEST
 do
