@@ -19,7 +19,7 @@
 */
 #ifndef _MUSIC_H
 #define _MUSIC_H
-#include <SDL/SDL_mixer.h>
+#include <sparrowSound.h>
 #include <sparrow3d.h>
 void init_music();
 void change_music(char* name,char* author);

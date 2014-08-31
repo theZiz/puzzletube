@@ -10,6 +10,10 @@ SDL = `sdl-config --cflags`
 
 SPARROW_FOLDER = ../sparrow3d
 
+SPARROW3D_LIB = libsparrow3d.so
+SPARROWNET_LIB = libsparrowNet.so
+SPARROWSOUND_LIB = libsparrowSound.so
+
 ifdef TARGET
 include $(SPARROW_FOLDER)/target-files/$(TARGET).mk
 BUILD = ./build/$(TARGET)/puzzletube
@@ -30,10 +34,10 @@ targets:
 	@echo "The targets are the same like for sparrow3d. :P"
 
 puzzletube: puzzletube.c particle.o game.o music.o menu.o stars.o settings.o lettering.o splashscreen.o c4a.o makeBuildDir
-	cp $(SPARROW_LIB)/libsparrow3d.so $(BUILD)
-	cp $(SPARROW_LIB)/libsparrowSound.so $(BUILD)
-	cp $(SPARROW_LIB)/libsparrowNet.so $(BUILD)
-	$(CPP) $(CFLAGS) puzzletube.c particle.o game.o music.o menu.o stars.o settings.o lettering.o splashscreen.o c4a.o $(SDL) $(INCLUDE) $(LIB) $(STATIC) $(DYNAMIC) -o $(BUILD)/puzzletube
+	cp -u $(SPARROW_LIB)/$(SPARROW3D_LIB) $(BUILD)
+	cp -u $(SPARROW_LIB)/$(SPARROWNET_LIB) $(BUILD)
+	cp -u $(SPARROW_LIB)/$(SPARROWSOUND_LIB) $(BUILD)
+	$(CPP) $(CFLAGS) puzzletube.c particle.o game.o music.o menu.o stars.o settings.o lettering.o splashscreen.o c4a.o $(SDL) $(INCLUDE) $(LIB) $(STATIC) $(DYNAMIC) -o $(BUILD)/puzzletube$(SUFFIX)
 
 makeBuildDir:
 	 @if [ ! -d $(BUILD:/puzzletube=/) ]; then mkdir $(BUILD:/puzzletube=/);fi
@@ -68,4 +72,4 @@ c4a.o: c4a.c c4a.h
 
 clean:
 	rm -f *.o
-	rm -f puzzletube
+	rm -f puzzletube$(SUFFIX)

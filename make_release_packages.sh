@@ -12,7 +12,7 @@ echo "Updated at the $TIME." >> index.htm
 echo "<h1>$PROGRAM download links:</h1>" >> index.htm
 for f in $DEST
 do
-	if [ -e "$f/$PROGRAM/$PROGRAM" ]; then
+	if [ -e "$f/$PROGRAM/$PROGRAM" ] || [ -e "$f/$PROGRAM/$PROGRAM.exe" ]; then
 		NAME=`echo "$f" | cut -d/ -f3 | cut -d. -f1`
 		echo "$NAME:"
 		echo "--> Copy temporary folders"
