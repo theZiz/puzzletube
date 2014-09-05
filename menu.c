@@ -206,7 +206,8 @@ void draw_menu(void)
 			#define HIGHSCORE_GAP_Y	 	(engineWindowX/64)
 			#define HIGHSCORE_HEIGHT 	((engineWindowY-HIGHSCORE_GAP_ABOVE-(8*HIGHSCORE_GAP_Y))/2)
 					
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),engineWindowY/48+(spSin(menu_counter*300+6*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Highscore"),font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),0+(spSin(menu_counter*300+7*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"The Underlining shows the achieved medal"),small_font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),2*engineWindowY/50+(spSin(menu_counter*300+6*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Highscore"),font);
 			spFontDrawMiddle(1*HIGHSCORE_GAP_X + 1*HIGHSCORE_WIDTH/2 +(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/48+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Points"),font);
 			spFontDrawMiddle(2*HIGHSCORE_GAP_X + 3*HIGHSCORE_WIDTH/2 +(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/48+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Survival"),font);
 			spFontDrawMiddle(3*HIGHSCORE_GAP_X + 5*HIGHSCORE_WIDTH/2 +(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),5*engineWindowY/48+(spSin(menu_counter*300+5*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Race"),font);
@@ -275,8 +276,8 @@ void draw_menu(void)
 								HIGHSCORE_WIDTH-2*HIGHSCORE_GAP_IN,engineWindowY/128,color);
 				}			
 			}
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),28*engineWindowY/32+(spSin(menu_counter*300+2*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"The Underlining shows the achieved medal"),small_font);
-			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),30*engineWindowY/32+(spSin(menu_counter*300+1*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Any button: back"),small_font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),28*engineWindowY/32+(spSin(menu_counter*300+2*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"[R]: Delete every third place (for C4A)"),small_font);
+			spFontDrawMiddle(engineWindowX/2+(menu_fade*spGetSizeFactor()>>SP_ACCURACY+2),30*engineWindowY/32+(spSin(menu_counter*300+1*SP_PI*2/7)>>SP_ACCURACY-2),-1,spGetTranslationFromCaption(translation,"Any other button: back"),small_font);
 			break;
 
 		case 4: //Help
@@ -666,11 +667,16 @@ case 2: //Play
 		}
 		break;
 	case 3: //high score
-		if (engineInput->button[SP_BUTTON_START] || engineInput->button[SP_BUTTON_SELECT] ||
+		if (engineInput->button[SP_BUTTON_START])
+		{
+			engineInput->button[SP_BUTTON_START] = 0;
+			delete_third_place();
+			settings_save();
+		}
+		if (engineInput->button[SP_BUTTON_SELECT] ||
 				engineInput->button[SP_BUTTON_A] || engineInput->button[SP_BUTTON_B] ||
 				engineInput->button[SP_BUTTON_X] || engineInput->button[SP_BUTTON_Y])
 		{
-			engineInput->button[SP_BUTTON_START] = 0;
 			engineInput->button[SP_BUTTON_SELECT] = 0;
 			engineInput->button[SP_BUTTON_A] = 0;
 			engineInput->button[SP_BUTTON_B] = 0;

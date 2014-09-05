@@ -50,6 +50,7 @@ void settings_set_borders(int borders);
 
 char* get_highscore_name(int game_mode,int difficult,int rank);
 int get_highscore(int game_mode,int difficult,int rank);
+void delete_third_place();
 void insert_highscore(int game_mode,int difficult,char* name,int points);
 
 spFontPointer settings_get_font();

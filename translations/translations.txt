@@ -275,13 +275,20 @@ fi:Normaali
 it:Normale
 nl:Normaal
 nb:Normal
---:Any button: back
-en:Any button: back
-de:Irgendein Button: Zurück
+--:[R]: Delete every third place (for C4A)
+en:[S]: Delete every (hard) third place (for C4A)
+de:[S]: Lösche jeden (schweren) dritten Platz (für C4A)
+fi:[S]: Delete every (hard) third place (for C4A)
+it:[S]: Delete every (hard) third place (for C4A)
+nl:[S]: Delete every (hard) third place (for C4A)
+nb:[S]: Delete every (hard) third place (for C4A)
+--:Any other button: back
+en:Any other button: back
+de:Irgendein anderer Button: Zurück
 fi:Poistu painamalla mitä tahansa nappia
 it:Premi tasto per: Indietro
 nl:Elke knop: terug
-nb: Vilkårlig knapp: tilbake
+nb:Vilkårlig knapp: tilbake
 
 # Game Settings
 --:PLAY

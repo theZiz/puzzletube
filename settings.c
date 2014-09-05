@@ -92,6 +92,21 @@ int get_highscore(int game_mode,int difficult,int rank)
 	return highscore[game_mode][difficult][rank];
 }
 
+void delete_third_place()
+{
+	int gm;
+	for (gm = 0; gm < 3; gm++)
+	{
+		highscore_name[gm][1][2][0]='N';
+		highscore_name[gm][1][2][1]='U';
+		highscore_name[gm][1][2][2]='B';
+		if (gm == 2)
+			highscore[gm][1][2]	= 10000;
+		else
+			highscore[gm][1][2]	= 0;
+	}
+}
+
 void insert_highscore(int game_mode,int difficult,char* name,int points)
 {
 	if (game_mode!=2 && highscore[game_mode][difficult][2] > points)

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PXML xmlns="http://openpandora.org/namespaces/PXML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="PXML_schema.xsd">
   <package id="puzzletube-puzzletube-26222">
-    <version major="1" minor="3" release="3" build="0"/>
+    <version major="1" minor="3" release="4" build="0"/>
     <author name="Ziz" website="http://ziz.openhandhelds.org"/>
     <titles>
       <title lang="en_US">
@@ -13,6 +13,7 @@
     </title>
     <descriptions>
       <description lang="en_US">
+		(New feature with version 1.3.4: Possibility to delete the third highscore place for C4A)
         A puzzle game. On a tube!
         5th place in the RIOT Tag-Team Coding Competition and 3rd place in the DragonBox Coding Competition.
         Features:
@@ -28,6 +29,7 @@
       </description>
     </descriptions>
     <description lang="en_US">
+	  (New feature with version 1.3.4: Possibility to delete the third highscore place for C4A)
       A puzzle game. On a tube!
       5th place in the RIOT Tag-Team Coding Competition and 3rd place in the DragonBox Coding Competition.
       Features:
@@ -47,7 +49,7 @@
     <exec command="./puzzletube.sh"/>
     <title lang="en_US">Puzzletube</title>
     <author name="Ziz" website="http://ziz.openhandhelds.org"/>
-    <version major="1" minor="3" release="3" build="0"/>
+    <version major="1" minor="3" release="4" build="0"/>
     <osversion major="1" minor="0" release="0" build="0"/>
     <description lang="en_US">A puzzle game. On a tube!</description>
     <info name="README" type="text/plain" src="README"/>
