@@ -289,6 +289,13 @@ fi:Poistu painamalla mitä tahansa nappia
 it:Premi tasto per: Indietro
 nl:Elke knop: terug
 nb:Vilkårlig knapp: tilbake
+--:Any button: back
+en:Any button: back
+de:Irgendein Button: Zurück
+fi:Poistu painamalla mitä tahansa nappia
+it:Premi tasto per: Indietro
+nl:Elke knop: terug
+nb:Vilkårlig knapp: tilbake
 
 # Game Settings
 --:PLAY
