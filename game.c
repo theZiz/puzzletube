@@ -2085,13 +2085,13 @@ int calc_game(Uint32 steps)
 				engineInput->button[SP_BUTTON_UP] = 0;
 				int x = (20-(posx[0]>>SP_ACCURACY)) & 15;
 				int y = 3+(posy[0]>>SP_ACCURACY+1);
-				if (y<7 && !choose_one && stone[y+1][x].new == 0 && stone[y+1][x].falling == 0 && stone[y+1][x].type >= 0)
+				if (y<6 && !choose_one && stone[y+1][x].new == 0 && stone[y+1][x].falling == 0 && stone[y+1][x].type >= 0)
 					choose_one = 4;
 				else
 				if (choose_one == 4)
 					choose_one = 0;
 				else
-				if (y<7 && stone[y+1][x].new == 0 && stone[y+1][x].falling == 0 && stone[y+1][x].type >= 0)
+				if (y<6 && stone[y+1][x].new == 0 && stone[y+1][x].falling == 0 && stone[y+1][x].type >= 0)
 				{
 					play_switch();
 					switch (choose_one)
