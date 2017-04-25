@@ -1,7 +1,7 @@
 #!/bin/sh
 # Change the folder to YOUR sparrow3d folder!
 PROGRAM="puzzletube"
-VERSION="1.3.4.0"
+VERSION="1.3.4.1"
 DEST=./build/*
 echo "<html>" > index.htm
 echo "<head>" >> index.htm

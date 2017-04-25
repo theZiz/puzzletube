@@ -39,7 +39,7 @@ puzzletube: puzzletube.c particle.o game.o music.o menu.o stars.o settings.o let
 	cp -u $(SPARROW_LIB)/$(SPARROW3D_LIB) $(BUILD)
 	cp -u $(SPARROW_LIB)/$(SPARROWNET_LIB) $(BUILD)
 	cp -u $(SPARROW_LIB)/$(SPARROWSOUND_LIB) $(BUILD)
-	$(CC) $(CFLAGS) puzzletube.c particle.o game.o music.o menu.o stars.o settings.o lettering.o splashscreen.o c4a.o $(SDL) $(INCLUDE) $(LIB) $(STATIC) $(DYNAMIC) -o $(BUILD)/puzzletube$(SUFFIX)
+	$(CC) $(CFLAGS) $(LINK_FLAGS) $< particle.o game.o music.o menu.o stars.o settings.o lettering.o splashscreen.o c4a.o $(SDL) $(INCLUDE) $(LIB) $(STATIC) $(DYNAMIC) -o $(BUILD)/$@$(SUFFIX)
 
 makeBuildDir:
 	 @if [ ! -d $(BUILD:/puzzletube=/) ]; then mkdir $(BUILD:/puzzletube=/);fi
@@ -48,29 +48,8 @@ makeBuildDir:
 particle.o: particle.c particle.h
 	$(CC) $(CFLAGS) -c particle.c $(SDL) $(INCLUDE)
 
-game.o: game.c game.h
-	$(CC) $(CFLAGS) -c game.c $(SDL) $(INCLUDE)
-
-music.o: music.c music.h
-	$(CC) $(CFLAGS) -c music.c $(SDL) $(INCLUDE)
-
-menu.o: menu.c menu.h
-	$(CC) $(CFLAGS) -c menu.c $(SDL) $(INCLUDE)
-
-stars.o: stars.c stars.h
-	$(CC) $(CFLAGS) -c stars.c $(SDL) $(INCLUDE)
-
-settings.o: settings.c settings.h
-	$(CC) $(CFLAGS) -c settings.c $(SDL) $(INCLUDE)
-
-lettering.o: lettering.c lettering.h
-	$(CC) $(CFLAGS) -c lettering.c $(SDL) $(INCLUDE)
-
-splashscreen.o: splashscreen.c splashscreen.h
-	$(CC) $(CFLAGS) -c splashscreen.c $(SDL) $(INCLUDE)
-
-c4a.o: c4a.c c4a.h
-	$(CC) $(CFLAGS) -c c4a.c $(SDL) $(INCLUDE)
+%.o: %.c %.h
+	$(CC) $(CFLAGS) -c $< $(SDL) $(INCLUDE)
 
 clean:
 	rm -f *.o

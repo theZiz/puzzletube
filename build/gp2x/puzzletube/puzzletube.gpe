@@ -1,3 +1,4 @@
 #!/bin/sh
 LD_LIBRARY_PATH=. ./puzzletube > log.txt
+sync
 cd /usr/gp2x; ./gp2xmenu

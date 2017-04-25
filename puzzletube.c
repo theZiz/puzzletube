@@ -19,6 +19,7 @@
 */
 
 #include <sparrow3d.h>
+#include <stdlib.h>
 #include "music.h"
 #include "menu.h"
 #include "settings.h"
