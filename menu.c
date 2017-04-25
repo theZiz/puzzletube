@@ -17,10 +17,14 @@
  For feedback and questions about my Files and Projects please mail me,		 
  Alexander Matthes (Ziz) , zizsdl_at_googlemail.com												 
 */
+#include <stdlib.h>
+#include <string.h>
 #include "menu.h"
 #include "game.h"
+#include "music.h"
 #include "settings.h"
 #include "particle.h"
+#include "c4a.h"
 
 #define MENUSIZE 1200
 

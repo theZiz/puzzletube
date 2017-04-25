@@ -26,6 +26,7 @@
 #include "particle.h"
 #include "game.h"
 #include "splashscreen.h"
+#include "c4a.h"
 
 #define FONT_LOCATION "./font/CabinCondensed-Regular.ttf"
 #define FONT_SIZE 15

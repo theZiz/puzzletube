@@ -21,6 +21,7 @@
 #include "lettering.h"
 #include "settings.h"
 #include "c4a.h"
+#include "music.h"
 #include <stdlib.h>
 #include <string.h>
 

@@ -71,4 +71,7 @@ int settings_get_first_start();
 
 void settings_set_translation(spBundlePointer translation);
 spBundlePointer settings_get_translation();
+
+void highscore_save();
+void highscore_load();
 #endif

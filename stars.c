@@ -18,7 +18,9 @@
  Alexander Matthes (Ziz) , zizsdl_at_googlemail.com                         
 */
 #include <sparrow3d.h>
-#ifndef WIN32
+#ifdef WIN32
+	#include <SDL_image.h>
+#else
 	#include <SDL/SDL_image.h>
 #endif
 #include "particle.h"
