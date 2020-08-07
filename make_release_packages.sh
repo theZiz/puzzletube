@@ -13,6 +13,7 @@ echo "<html>" > index.htm
 echo "<head>" >> index.htm
 echo "</head>" >> index.htm
 echo "<body>" >> index.htm
+echo "Version $VERSION" >> index.htm
 echo "Updated at the $TIME." >> index.htm
 echo "<h1>$PROGRAM download links:</h1>" >> index.htm
 
@@ -52,16 +53,25 @@ do
 					mksquashfs * "$PROGRAM-$VERSION.opk" -all-root -noappend -no-exports -no-xattrs
 					mv "$PROGRAM-$VERSION.opk" ../..
 					echo "<a href=$PROGRAM.opk type=\"application/x-opk+squashfs\">$NAME</a></br>" >> ../../index.htm
-					echo "unlink('$PROGRAM-$VERSION.opk');" >> ../../symlink.php
+					echo "unlink('$PROGRAM.opk');" >> ../../symlink.php
 					echo "symlink('$PROGRAM-$VERSION.opk', '$PROGRAM.opk');" >> ../../symlink.php
 					ZIP_CALL+=" $PROGRAM-$VERSION.opk"
 				else
-					zip -r "$PROGRAM-$NAME-$VERSION.zip" * > /dev/null
-					mv "$PROGRAM-$NAME-$VERSION.zip" ../..
-					echo "<a href=$PROGRAM-$NAME-$VERSION.zip>$NAME</a></br>" >> ../../index.htm
-					echo "unlink('$PROGRAM-$NAME.zip');" >> ../../symlink.php
-					echo "symlink('$PROGRAM-$NAME-$VERSION.zip', '$PROGRAM-$NAME.zip');" >> ../../symlink.php
-					ZIP_CALL+=" $PROGRAM-$NAME-$VERSION.zip"
+					if [ $NAME = "rg350" ]; then
+						mksquashfs * "$PROGRAM-$NAME-$VERSION.opk" -all-root -noappend -no-exports -no-xattrs
+						mv "$PROGRAM-$NAME-$VERSION.opk" ../..
+						echo "<a href=$PROGRAM-$NAME.opk type=\"application/x-opk+squashfs\">$NAME</a></br>" >> ../../index.htm
+						echo "unlink('$PROGRAM-$NAME.opk');" >> ../../symlink.php
+						echo "symlink('$PROGRAM-$NAME-$VERSION.opk', '$PROGRAM-$NAME.opk');" >> ../../symlink.php
+						ZIP_CALL+=" $PROGRAM-$NAME-$VERSION.opk"
+					else
+						zip -r "$PROGRAM-$NAME-$VERSION.zip" * > /dev/null
+						mv "$PROGRAM-$NAME-$VERSION.zip" ../..
+						echo "<a href=$PROGRAM-$NAME-$VERSION.zip>$NAME</a></br>" >> ../../index.htm
+						echo "unlink('$PROGRAM-$NAME.zip');" >> ../../symlink.php
+						echo "symlink('$PROGRAM-$NAME-$VERSION.zip', '$PROGRAM-$NAME.zip');" >> ../../symlink.php
+						ZIP_CALL+=" $PROGRAM-$NAME-$VERSION.zip"
+					fi
 				fi
 			fi
 		fi
